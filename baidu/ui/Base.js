@@ -1,6 +1,6 @@
 /*
  * Tangram UI
- * Copyright 2009 Baidu Inc. All rights reserved.
+ * Copyright 2009 Baidu, Inc. All rights reserved.
  * 
  * path: baidu/ui/Base.js
  * author: berg

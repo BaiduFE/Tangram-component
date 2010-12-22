@@ -1,6 +1,6 @@
 /*
  * Tangram
- * Copyright 2010 Baidu Inc. All rights reserved.
+ * Copyright 2010 Baidu, Inc. All rights reserved.
  * 
  * @author: meizz
  * @create: 2010-07-16

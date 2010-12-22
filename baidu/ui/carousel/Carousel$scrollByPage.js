@@ -1,6 +1,6 @@
 /*
  * Tangram
- * Copyright 2010 Baidu Inc. All rights reserved.
+ * Copyright 2010 Baidu, Inc. All rights reserved.
  * @path:ui/carousel/Carousel$scrollByPage.js
  * @author:linlingyu
  * @version:1.0.0

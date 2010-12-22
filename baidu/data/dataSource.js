@@ -1,6 +1,6 @@
 /**
  * Tangram
- * Copyright 2010 Baidu Inc. All rights reserved.
+ * Copyright 2010 Baidu, Inc. All rights reserved.
  * @path:data/dataSource.js
  * @author:walter
  * @version:1.0.0
