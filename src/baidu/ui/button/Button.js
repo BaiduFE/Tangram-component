@@ -47,7 +47,7 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
     uiType          : "button",
     //ui控件的class样式前缀 可选
     //classPrefix     : "tangram-button-",
-    tplBody         : '<div id="#{id}" #{statable} class="#{class}">#{content}</div>',
+    tplBody         : '<div id="#{id}" #{statable}>#{content}</div>',
     disabled         : false,
     statable        : true,
 
@@ -59,9 +59,8 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
     _getString : function(){
         var me = this;
         return baidu.format(me.tplBody, {
-	    id       : me.getId(),
+		    id       : me.getId(),
             statable : me._getStateHandlerString(),
-	    "class"  : me.getClass(),
             content  : me.content
         });
     },
@@ -82,7 +81,7 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
         if(me.title)
            body.title = me.title;
 
-        me.disabled && me.setState("disabled");
+        me.disabled ? me.setState("disabled");
         me.dispatchEvent("onload");
 	},
 
