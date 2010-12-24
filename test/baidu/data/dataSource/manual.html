@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>dataSource manual test - by walter</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+<script src='../../../../src/import.php?f=baidu.ui.get,baidu.data.dataSource.*'></script>
+<script src="http://img.baidu.com/js/tangram-1.1.1.js"></script>
+<link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+</head>
+<body>
+<input type="button" value="send local" onclick="local();"/>
+<input type="button" value="send ajax" onclick="ajax();"/>
+<input type="button" value="send sio" onclick="sio();"/>
+</body>
+<script language="javascript">
+var data = [{
+    id: "01",
+    name: "john",
+    age: 20
+}, {
+    id: "02",
+    name: "marry",
+    age: 21
+}], localSource = baidu.dataSource.local(data, {
+    transition: function(source){
+        var arr = [];
+        baidu.array.each(source, function(item){
+            arr.push({
+                name: item.name,
+                id: item.id
+            });
+        });
+        return arr;
+    }
+}), ajaxSource = baidu.dataSource.ajax("get.php", {
+    transition: function(source){
+        return source;
+    }
+}), sioSource = baidu.dataSource.sio("http://fe.baidu.com/dev/tangram/assets/test.js", {
+    transition: function(){
+        return name;
+    }
+});
+
+
+//local
+function local(){
+    localSource.get({
+        onsuccess: function(response){
+            alert(baidu.json.stringify(response));
+        }
+    });
+}
+
+//ajax
+function ajax(){
+    ajaxSource.get({
+        onsuccess: function(response){
+            alert(baidu.json.stringify(response));
+        },
+        failure: function(xhr){
+            alert('failed');
+        }
+    });
+}
+
+//sio
+function sio(){
+    sioSource.get({
+		callByType: "browser",
+        onsuccess: function(response){
+            alert(response);
+        }
+    });
+}
+</script>
+</html>

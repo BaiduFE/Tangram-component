@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>suggestion by berg</title>
+    <style>
+        .tangram_sug_wpr{border:1px solid #817F82;position:absolute;top:28px;left:0; margin:10px;padding:10px;}
+        .tangram_sug_wpr table{width:100%;background:#fff;cursor:default}
+        .tangram_sug_wpr td{font:14px verdana}
+        .tangram_sug_mo{background-color:#36c;color:#fff}
+
+        .tangram_sug_app{background-color:white;}
+        .tangram_sug_pre{background-color:white;}
+
+    </style>
+
+    <script src="../../../../src/baidu/ui/suggestion/output.js"></script>
+    <!--<script src="http://fe.baidu.com/get/tangram/code.py?tag=1.1.0&src=%2F%2F%2Fimport%20baidu.ui.suggestion.create%3B%0A&compress=source"></script>-->
+    <!--<script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.0.js"></script>-->
+    <!--<script src="../../../../src/baidu/ui.js"></script>-->
+    <!--<script src="../../../../src/baidu/ui/suggestion.js"></script>-->
+    <!--<script src="../../../../src/baidu/ui/suggestion/_Central.js"></script>-->
+    <!--<script src="../../../../src/baidu/ui/suggestion/_Div.js"></script>-->
+    <!--<script src="../../../../src/baidu/ui/suggestion/_Data.js"></script>-->
+    <!--<script src="../../../../src/baidu/ui/suggestion/_Input.js"></script>-->
+    <!--<script src="../../../../src/baidu/ui/suggestion/_Suggestion.js"></script>-->
+    <!--<script src="../../../../src/baidu/ui/suggestion/create.js"></script>-->
+</head>
+
+
+
+<body>
+<form action="/">
+    <input type=text name=kw id=kw />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <select id="issue_assigned_to_id" name="issue[assigned_to_id]">
+        <option value=""/>
+        <option value="1">Lei berg</option>
+    </select>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <select id="issue_assigned_to_id" name="issue[assigned_to_id]">
+        <option value=""/>
+        <option value="1">Lei berg</option>
+    </select>
+    <br />
+    <input type=text name=kw id=kw1 />
+
+    <div style="float:right"><input type=text name=kw id=kw2 size=100 /></div>
+
+    <input type=text name=kw id=kw100 />
+    <br />
+    <br />
+    <div id="status" style="position:absolute;right:0;top:0"></div>
+<textarea id="text_area">
+fdsjklfdjkl&nbsp;
+</textarea>
+</form>
+<script>
+
+var serverData = {};
+var options =
+    {
+        "onpick" : function(wd, idx, value, html){
+            baidu.g("status").innerHTML =  "<div style=color:red>pick:"+
+            "word :"+wd+" | "+
+            "index :"+idx+" | "+
+            "value :"+value+" | "+
+            "html :"+html+" | "+
+            "</div>"+baidu.g("status").innerHTML;
+        },
+        "onconfirm" : function(wd, idx, value, html){
+            baidu.g("status").innerHTML = "<div style=color:blue>confirm:"+
+            "word :"+wd+" | "+
+            "index :"+idx+" | "+
+            "value :"+value+" | "+
+            "html :"+html+" | "+
+            "</div>"+baidu.g("status").innerHTML;
+        },
+        "onhighlight" : function(wd, idx, value, html){
+            baidu.g("status").innerHTML = "<div style=color:green>highlight:"+
+            "word :"+wd+" | "+
+            "index :"+idx+" | "+
+            "value :"+value+" | "+
+            "html :"+html+" | "+
+            "</div>"+baidu.g("status").innerHTML;
+        },
+        "onhide" : function(){
+            baidu.g("status").innerHTML =  "<div style=color:grey>hide</div>" +baidu.g("status").innerHTML;
+        },
+        "append_html" : "<b>close</b>&nbsp;&gt;",
+        "prepend_html" : "<b>suggest here:</b>&nbsp;&gt;"
+    };
+
+var input1 = baidu.G("kw");
+input1.id = "";
+options.getData = function (wd){
+    sg.giveData(wd, [wd,{"input":"sd", "selection":"fas"},{"input":"ddd", "selection":"<b>ddd</b><span style='color:grey'>BT map</span>&nbsp;&gt;"},"dds", "3", "djfdlks","dd3xx.com","ddt","ddx","ddr","ddos","dde","dds"]);
+};
+
+var sg = baidu.suggestion.create(
+    input1,
+    options
+);
+
+options.getData = function (wd){
+    sg2.giveData(wd, [wd,{"input":"", "selection":""},{"input":"ddd", "selection":"<b>ddd</b><span style='color:grey'>BT map</span>&nbsp;&gt;"},"dds", "", "  ","dd3xx.com","ddt","ddx","ddr","ddos","dde","dds"]);
+};
+
+var sg2 = baidu.suggestion.create(
+    "kw2",
+    options
+);
+options.getData = function (wd){
+    var a = function(){
+        sg1.giveData(wd, [wd,{"input":"", "selection":""},{"input":"ddd", "selection":"<b>ddd</b><span style='color:grey'>BT map</span>&nbsp;&gt;"},"dds", "", "  ","dd3xx.com","ddt","ddx","ddr","ddos","dde","dds"]);
+    }
+    setTimeout(a, 200);
+};
+
+options.view = function(){return [100,100,132]};
+
+var sg1 = baidu.suggestion.create(
+    "kw1",
+    options
+);
+options.getData = function (wd){
+    sg3.giveData(wd, [wd,{"input":"sd", "selection":"fas"},{"input":"ddd", "selection":"<b>ddd</b><span style='color:grey'>BT map</span>&nbsp;&gt;"},"dds", "ddfjdlksa", "djfdlks","dd3xx.com","ddt","ddx","ddr","ddos","dde","dds"]);
+};
+
+options.view = null;
+
+var sg3 = baidu.suggestion.create(
+    "text_area",
+    options
+);
+</script>
+</body>
+</html>

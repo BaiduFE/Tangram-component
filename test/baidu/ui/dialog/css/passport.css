@@ -1,0 +1,333 @@
+.passport-content {
+	padding: 10px 22px 10px 10px;
+	font: 12px/ 18px '����';
+	text-align: left;
+	overflow: hidden;
+}
+
+ul,form,h2,fieldset {
+	margin: 0;
+	padding: 0;
+}
+
+.passport-content img {
+	border: none;
+}
+
+.passport-content a:link,.passport-content a:visited {
+	color: #261cdc;
+}
+
+.passport-content_wrapper {
+	padding-left: 18px;
+	clear: both;
+}
+
+.passport-content_footer {
+	padding-left: 8px;
+}
+
+.passport-content fieldset {
+	border: none;
+}
+
+.passport-content legend {
+	display: none;
+}
+
+.passport-content input {
+	vertical-align: middle;
+}
+
+.passport-content ul {
+	list-style-type: none;
+}
+
+.passport-content_nav {
+	padding-bottom: 8px;
+	font-size: 14px;
+}
+
+.passport-content_nav li a {
+	font-size: 14px;
+	line-height: 23px;
+}
+
+.passport-content_nav ul {
+	list-style-type: none;
+	padding: 0 18px;
+	height: 23px;
+	border-bottom: 1px solid #A1A1A1; *
+	overflow: hidden;
+}
+
+.passport-content_nav li {
+	float: left;
+	border: 1px solid #A1A1A1;
+	border-bottom: none;
+	padding: 0 12px;
+	height: 22px;
+	margin-right: 3px;
+	background: #EBF3FE;
+}
+
+.passport-content_nav li.focus {
+	height: 23px;
+	position: relative;
+	background: #fff;
+	line-height: 23px;
+}
+
+.passport-content_nav .focus a {
+	font-weight: bold;
+	color: black;
+}
+
+
+
+.pass-form-wapper-reg label {
+	font-weight: bold;
+}
+
+.pass-valid-note {
+	margin-left: 6px;
+}
+
+.pass-server-error {
+	color: red;
+}
+
+.pass-loginpass input,.pass-verifypass input {
+	width: 90px;
+}
+
+.pass-verifypass .pass-desc,.pass-verifycode .pass-desc {
+	height: 0;
+	display: none;
+}
+
+.pass-verifycode {
+	padding-bottom: 8px;
+	overflow: hidden;
+	zoom: 1;
+}
+
+.pass-verifycode input {
+	width: 60px;
+	margin-right: 6px;
+}
+
+.pass-verifycode * {
+	margin-top: 20px;
+	float: left;
+}
+
+.pass-verifycode img {
+	margin: 0 6px;
+	vertical-align: bottom;
+}
+
+.pass-sex input {
+	margin-top: -3px;
+}
+
+.pass-email input {
+	width: 186px;
+}
+
+.pass-desc {
+	display: block;
+	padding-left: 72px;
+	color: #666;
+}
+
+.pass-valid-note {
+	color: red;
+}
+
+#PassFormreg {
+	padding-top: 10px;
+}
+
+#PassRegAgree {
+	display: none;
+}
+
+.reg_protocal {
+	margin-top: -28px;
+	padding-left: 96px;
+	float: left;
+}
+
+.reg_protocal_tip {
+	color: #666;
+}
+
+#reg_recommended {
+	padding: 6px 0 0 10px;
+}
+
+#reg_recommended p {
+	margin: 0;
+}
+
+#reg_recommended h2 {
+	font: lighter 14px/ 22px 'Arial';
+	margin: 0;
+}
+
+#reg_recommended input {
+	vertical-align: middle;
+}
+
+.reg_recommended_title {
+	border-bottom: 1px solid #ccc;
+	background: #eee;
+	padding: 2px 8px;
+	height: 18px;
+	overflow: hidden;
+}
+
+.reg_recommended_wrapper {
+	width: 425px;
+	border: 1px solid #ccc;
+}
+
+#reg_recommended p.reg_face_link {
+	background: #fff;
+	border: 1px solid #D4D4D4;
+	height: 50px;
+	margin: 0 auto;
+	width: 50px;
+}
+
+.reg_name_link img {
+	vertical-align: middle;
+	margin-top: -3px;
+}
+
+#reg_recommended_cnt {
+	overflow-y: auto;
+	height: 100px;
+}
+
+#reg_recommended_cnt td {
+	width: 96px;
+	padding: 6px 2px 0;
+	text-align: center;
+	vertical-align: top;
+}
+
+#reg_recommended_cnt td p {
+	margin: ;
+}
+
+#reg_success_tip {
+	padding-top: 66px;
+	text-align: center;
+}
+
+.reg_success_tip_title {
+	background: #FDFDD5;
+	padding: 8px 0;
+	margin-bottom: 24px;
+}
+
+.reg_success_tip_title p {
+	height: 18px;
+	font-size: 14px;
+	line-height: 18px;
+}
+
+.reg_success_tip_title img {
+	margin-bottom: -3px;
+	margin-right: 18px;
+}
+
+.reg_success_tip_info {
+	margin-top: 24px;
+	color: #666;
+}
+
+#PassFormlogin p {
+	margin-bottom: 8px;
+}
+
+.pass-form-wapper-login {
+	padding-top: 18px;
+}
+
+.pass-form-wapper-login label {
+	font-size: 14px;
+}
+
+.passport_login_title {
+	font: bold 14px/ 22px 'Arial';
+	padding-left: 12px;
+}
+
+.passport_reg_entry {
+	border-top: 1px solid #A1A1A1;
+	text-align: center;
+	padding: 10px 0 18px 0;
+	margin-top: 16px;
+	zoom: 1;
+}
+
+.pass-safe-trigger {
+	display: none;
+}
+
+.pass-mem_pass {
+	margin-left: 56px;
+	padding-top: 8px;
+	height: 18px;
+}
+
+.pass-mem_pass label {
+	font-size: 12px;
+}
+
+#PassFormlogin {
+	padding-left: 12px;
+}
+
+#PassFormlogin button {
+	margin: 0 12px 0 54px;
+	padding: 0 10px;
+}
+
+#PassFormlogin .pass-server-error {
+	height: 18px;
+	margin-top: -18px;
+	float: left;
+	width: 100%;
+}
+
+.pass-form-wapper-login .pass-desc {
+	display: none;
+}
+
+#PassFormlogin .pass-verifycode {
+	margin-bottom: 0;
+}
+
+#PassFormlogin .pass-username input {
+	width: 136px;
+}
+
+#PassFormlogin .pass-password input {
+	width: 136px;
+}
+
+#PassFormlogin .pass-verifycode span {
+	display: none;
+}
+
+.pass-form p {
+	width: 100%;
+}
+
+#reg_recommended_cnt p {
+	width: 100%;
+}

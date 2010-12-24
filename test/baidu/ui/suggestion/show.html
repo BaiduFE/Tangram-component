@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>baidu.suggestion展示效果测试</title>
+        <script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.0.js"></script>
+		<!-- suggestion js -->
+		<script src="../../../../src/baidu/ui.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Central.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Div.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Data.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Input.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/create.js"></script>
+        <!-- suggestion js-->
+		<style>
+            
+			#aa {
+				position: absolute;
+				top: 100px;
+				left: 0px;
+			}
+			#ab {
+				position: fixed;
+				top: 100px;
+				left: 200px;
+			}
+			#ac {
+				position: inherit;
+				top: 50px;
+				left: 200px;
+			}
+			#ad {
+				position: relative;
+				top: 20px;
+				left: 100px;
+			}
+			#ae {
+				position: static;
+				top: 30px;
+				left: 1000px;
+			}
+			#i_div {
+				position: relative;
+				top: 30px;
+				left: 100px;
+			}
+			
+            .tangram_sug_wpr {
+                border: 1px solid #817F82;
+                position: absolute;
+                z-index: 3;
+                background-color: white;
+            }
+            
+            .tangram_sug_wpr table {
+                width: 100%;
+                background: #fff;
+                cursor: default
+            }
+            
+            .tangram_sug_wpr td {
+                font: 14px verdana
+            }
+            
+            .tangram_sug_mo {
+                background-color: #36c;
+                color: #fff
+            }
+            
+            .tangram_sug_ml {
+                background-color: #fff;
+                color: #000
+            }
+            
+            .tangram_sug_app {
+                background-color: white;
+            }
+            
+            .tangram_sug_pre {
+                background-color: white;
+            }
+            
+            .tangram_sug_sd {
+                z-index: 2
+            }
+            
+            #Layer1 {
+                position: absolute;
+                width: 197px;
+                height: 207px;
+                z-index: 1;
+                left: 706px;
+                top: 88px;
+            }
+        </style>
+    </head>
+    <body>
+        <p align=center style="font-size:120%">
+            <font color="#999900">
+                This is baidu.suggestion展示效果测试 test
+            </font>
+        </p>
+		<div id='i_div'>
+        &nbsp;&nbsp;<input type=text name="aa" id="aa" value="absolute" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type=text name="ab" id="ab" value="fixed"/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=text name="aa" id="ac" value="inherit" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type=text name="ab" id="ad" value="relative"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type=text name="aa" id="ae" value="static" />
+        <br/>
+		</div>
+        <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" 
+			codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="180" height="150">
+            <param name="wmode" value="ForTest.swf" value="transparent"><param name="quality" value="high">
+            <embed src="./ForTest.swf" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" 
+				type="application/x-shockwave-flash" width="180" height="150">
+            </embed>
+        </object>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <script type="text/javascript">
+            //options中的onhide事件
+            var raa = ["开始", {
+                "input": "i开始",
+                "selection": "s开始"
+            }, "#", {
+                "input": "*",
+                "selection": "#"
+            }, "1", {
+                "input": "3",
+                "selection": "1"
+            }, "E", {
+                "input": "P",
+                "selection": "E"
+            }, "a", {
+                "input": "b",
+                "selection": "a"
+            }, "aA190$%^", {
+                "input": "bB190$%^",
+                "selection": "aA190$%^"
+            }, "这是中文吗lll", "ａＢ２＠＃（\t\n 结束", {
+                "input": "这是中文吗zzz",
+                "selection": "这是中文吗lll"
+            }, {
+                "input": "ａＤ９＠＃（\t\n 结束",
+                "selection": "ａＤ２＠＃（\t\n 结束"
+            }, {
+                "input": "SAd12#$中文ａＢ１＃￥\t＊",
+                "selection": "<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"
+            }];
+            var options = {
+                "append_html": "<b>suggest here:</b>&gt;a",
+                "prepend_html": "<b>suggest here:</b>&gt;a"
+            };
+            options.getData = function(word){
+                saa.giveData("saa", raa);
+            };
+            var saa = baidu.suggestion.create(baidu.G("aa"), options);
+            options.getData = function(word){
+                sab.giveData("sab", raa);
+            };
+            var sab = baidu.suggestion.create(baidu.G("ab"), options);
+            options.getData = function(word){
+                sac.giveData("sac", raa);
+            };
+            var sac = baidu.suggestion.create(baidu.G("ac"), options);
+            options.getData = function(word){
+                sad.giveData("sad", raa);
+            };
+            var sad = baidu.suggestion.create(baidu.G("ad"), options);
+            options.getData = function(word){
+                sae.giveData("sae", raa);
+            };
+            var sae = baidu.suggestion.create(baidu.G("ae"), options);
+            
+        </script>
+        <img src="./Coffee Bean.bmp" width="151" height="171">
+        <iframe width="200" height="180">
+        </iframe>
+        <table width="200" border="1">
+            <tr>
+                <td>
+                    <p>
+                        <input type="hidden" name="hiddenField2"><input type="radio" name="radiobutton" value="radiobutton">AAAAAAAAAAAAA
+                    </p>
+                    <p>
+                        AAA
+                        <select name="select2">
+                        </select>
+                        AAA<input type="file" name="file2"><input type="submit" name="Submit2" value="提交">
+                        <fieldset>
+                        </fieldset>
+                        <p>
+                            <label>
+                                <input type="radio" name="RadioGroup1" value="单选">单选
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="RadioGroup1" value="单选">单选
+                            </label>
+                        </p>
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    </table>
+                    <div id="Layer1">
+                        <p>
+                            <input type="hidden" name="hiddenField"><input type="radio" name="radiobutton" value="radiobutton">AAAAAAAAAAAAA
+                        </p>
+                        <p>
+                            AAA
+                            <select name="select">
+                            </select>
+                            AAA<input type="file" name="file"><input type="submit" name="Submit" value="提交">
+                            <fieldset>
+                            </fieldset>
+                            <p>
+                                <label>
+                                    <input type="radio" name="RadioGroup1" value="单选">单选
+                                </label>
+                                <br>
+                                <label>
+                                    <input type="radio" name="RadioGroup1" value="单选">单选
+                                </label>
+                                <br>
+                            </p>
+                            <p>
+                                &nbsp;
+                            </p>
+                            <p>
+                                &nbsp;
+                            </p>
+                            </div>
+                        </body>
+                        </html>

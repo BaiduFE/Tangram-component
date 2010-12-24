@@ -84,9 +84,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
             mousedown   : me.getCallRef() + "._mouseDown(event)",
             thumb       : baidu.format(me.tplThumb, {
                 thumbId   : me.getId("thumb"),
-                thumbClass: me.getClass("thumb"),
-                mouseOver : me.getCallRef() + "._onMouseOver(this);",
-                mouseOut : me.getCallRef() + "._onMouseOut(this);"
+                thumbClass: me.getClass("thumb")
             })
 		});
 	},
@@ -99,7 +97,6 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
             mousePos = baidu.page.getMousePosition(),
             mainPos = baidu.dom.getPosition(me.getMain()),
 			len=0;
-        
         //如果点在了滑块上面，就不移动
         if(baidu.event.getTarget(e) == me.getThumb()){
             return ;

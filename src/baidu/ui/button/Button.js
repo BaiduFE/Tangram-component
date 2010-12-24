@@ -61,8 +61,8 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
         return baidu.format(me.tplBody, {
 		    id       : me.getId(),
             statable : me._getStateHandlerString(),
-		"class" : me.getClass(),            
-content  : me.content
+            "class"  : me.getClass(),
+            content  : me.content
         });
     },
 

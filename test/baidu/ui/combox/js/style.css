@@ -1,0 +1,53 @@
+.tangram-menubar-item-hover {
+	background: repeat-x scroll 0 -39px #7E9DB9;
+	border: 1px solid #7E9DB9;
+}
+
+.code-area {
+	border: none;
+	width: 630px;
+}
+
+.tangram-combox-arrow {
+	background: no-repeat scroll 0 -316px #7E9DB9;
+	float: right;
+	cursor: pointer;
+	height: 16px;
+	width: 16px;
+	position: absolute;
+	top: 2px;
+	top: 4px\9;
+	left: 134px;
+	left: 136px\9
+}
+
+.tangram-menubar {
+	height: 60px;
+	left: 0;
+	overflow: hidden;
+	background: none repeat scroll 0 0 #FFFFFF;
+	font-family: STHeiti, SimSun;
+	font-size: 12px;
+	padding: 1px 1px 0;
+	z-index: 100;
+	margin: 0 0 0 0;
+	margin-top: -1px\9;
+	border: 1px solid #7E9DB9;
+}
+
+.tangram-menubar-empty {
+	display: none
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	.tangram-combox-arrow {
+		top: 5px;
+		left: 138px;
+	}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	.tangram-menubar {
+		margin: -2 0 0 0;
+	}
+}
