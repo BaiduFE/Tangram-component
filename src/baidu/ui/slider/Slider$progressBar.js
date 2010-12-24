@@ -26,7 +26,7 @@ baidu.ui.slider.Slider.register(function(me){
                         layout : me.layout,
                         skin : me.skin ? me.skin + "-followProgressbar" : null
                 });
-                me.progressBar.render(me.getId("followProgressBar"));
+                me.progressBar.render(me.getId("progressbar"));
                 me._adjustProgressbar();
                 me.addEventListener("dispose", function(){
                         me.progressBar.dispose();
@@ -46,8 +46,8 @@ baidu.ui.slider.Slider.extend({
 	getProgressBarString : function(){
                 var me = this;
                 return baidu.string.format(me.tplProgressbar, {
-                        rsid : me.getId("followProgressBar"),
-                        "class" : me.getClass("followProgressbar")
+                        rsid : me.getId("progressbar"),
+                        "class" : me.getClass("progressbar")
                 });
         },
 	

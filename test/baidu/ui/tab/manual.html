@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+    <head>
+        <title>tab manual test - by berg</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script src='../../../../src/loader.js' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.tab.*' ></script>
+        <script>
+            Include("baidu.array.each");
+            Include("baidu.event.on");
+        </script>
+        <!--script src="http://img.baidu.com/js/tangram-1.1.1.js"></script-->
+        <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+<style>
+.my-tab {
+    border: 1px #eee solid;
+    padding: 5px;
+}
+li.tangram-tab-current{
+    border:1px red solid;
+}
+.tangram-tab-label a{
+    padding:5px;
+    display:block;
+}
+.tangram-tab-labels li{
+    list-style-type:none;
+    float:left;
+}
+.click-tab li{
+    cursor:pointer;
+}
+.hover-tab li{
+    cursor:default;
+}
+.tangram-tab-content{
+    border:1px #333 solid;
+}
+.tangram-tab-contents{
+    clear:both;
+}
+.tangram-tab-label{
+    border:1px grey solid;
+    margin:0 5px;
+}
+</style>
+    </head>
+
+    
+    <body>
+   <h4>basic(hover):</h4>
+   <div id="basic-tab-container" class="my-tab">
+       <h3>My tab</h3>
+   
+   </div>
+   <h4>click:</h4>
+        <div id="click-tab-container"></div>
+   <h4>hover:</h4>
+        <div id="hover-tab-container"></div>
+   <h4>render tab in dom:</h4>
+        <div>
+               <ul id="tab-in-dom">
+                    <li data-tangram="name:aaa"><a href="#aaa">aaa</a>
+                    <li data-tangram="name:bbb"><a href="#bbb">bbb </a>
+                    <li data-tangram="name:ccc"><a href="#ccc">ccc </a>
+               </ul>
+               <div>
+                   <div id="aaa">aaa content<br/>aaa content<br/></div>
+                   <div id="bbb">bbb content<br/>bbb content<br/></div>
+                   <div id="ccc">ccc content<br/>ccc content<br/></div>
+               </div>
+        </div>
+        <script>
+            //basic usage
+            //must bind event manually
+            var basicTab = baidu.ui.tab.create("basic-tab-container", {
+                content : [
+                    {
+                        label : "label1",
+                        content : "<p>content1</p>"
+                    },
+                    {
+                        label : "label2",
+                        content : "<p>content2</p>"
+                    },
+                    {
+                        label : "label3",
+                        content : "<p>content3</p>"
+                    }
+                ],
+                onload : function(){
+                    var basicTab = this;
+                    //focus the third basicTab when onload
+                    basicTab.focus(basicTab.getAllLabelItems()[2]);
+                    //bind mouseover event
+                    baidu.array.each(basicTab.getAllLabelItems(), function(item, key){
+                        baidu.on(item, "mouseover", function(e){
+                            clearTimeout(basicTab.timeCount);
+                            basicTab.timeCount = setTimeout(function(){
+                                basicTab.focus(item);
+                            }, 500);
+                        });
+                        baidu.on(item, "mouseout", function(e){
+                            clearTimeout(basicTab.timeCount);
+                        });
+                    });
+                }
+
+            });
+
+
+            //using click way
+            var clickTab = baidu.ui.tab.click("click-tab-container", {
+                content : [
+                    {
+                        label : "label1",
+                        content : "<p>content1</p>"
+                    },
+                    {
+                        label : "label2",
+                        content : "<p>content2</p>"
+                    },
+                    {
+                        label : "label3",
+                        content : "<p>content3</p>"
+                    }
+                ]
+            });
+
+            
+            //using mouseover way
+            var hoverTab = baidu.ui.tab.hover("hover-tab-container", {
+                content : [
+                    {
+                        label : "label1",
+                        content : "<p>content1</p>"
+                    },
+                    {
+                        label : "label2",
+                        content : "<p>content2</p>"
+                    },
+                    {
+                        label : "label3",
+                        content : "<p>content3</p>"
+                    }
+                ]
+            });
+
+            //init from DOM
+            var domTab = baidu.ui.tab.setup("tab-in-dom");
+
+        </script>
+    </body>
+</html>
