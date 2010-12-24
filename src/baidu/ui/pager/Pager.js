@@ -18,14 +18,14 @@
 ///import baidu.array.each;
 /**
  * 生成分页功能
- * @param {Object} [options] 选项
- * @param {Number} [options.beginPage] 起始页
- * @param {Number} [options.endPage] 结束页
- * @param {Number} [options.currentPage] 当前页
- * @param {Number} [options.itemCount] 显示页数
- * @param {Number} [options.leftItemCount] 当前页左侧显示次数
+ * @param {Object} [options] 选项.
+ * @param {Number} [options.beginPage] 起始页.
+ * @param {Number} [options.endPage] 结束页.
+ * @param {Number} [options.currentPage] 当前页.
+ * @param {Number} [options.itemCount] 显示页数.
+ * @param {Number} [options.leftItemCount] 当前页左侧显示次数.
  */
-baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
+baidu.ui.pager.Pager = baidu.ui.createUI(function(options) {
     this._init.apply(this, arguments);
 }).extend({
     uiType: 'pager',
@@ -54,7 +54,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
      * @param options
      * @see baidu.ui.pager.Pager#update
      */
-    _init: function (options){
+    _init: function(options) {
         var me = this;
         me.update();
     },
@@ -68,7 +68,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
      * @config itemCount {Number} 默认列出多少个a标签
      * @config leftItemCount {Function} 当前页的显示位置, 有默认实现
      */
-    update: function (options){
+    update: function(options) {
         var me = this;
         options = options || {};
         if (me.checkOptions(options)) {
@@ -83,7 +83,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
         }
         return false;
     },
-    _updateNoCheck: function (options){
+    _updateNoCheck: function(options) {
         var me = this;
         baidu.object.extend(me, options);
         if (me.getMain()) {
@@ -94,7 +94,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
      * 检查参数是否出错
      * @param {Object} options
      */
-    checkOptions: function (options){
+    checkOptions: function(options) {
         var me = this;
         var begin = options.beginPage || me.beginPage;
         var end = options.endPage || me.endPage;
@@ -111,7 +111,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
         }
 
         var current = options.currentPage || me.currentPage;
-        if (current < begin || current >= end){
+        if (current < begin || current >= end) {
             return false;
         }
         return true;
@@ -119,28 +119,28 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
     /**
      * 构造链接的HTML
      * @param page {Number}
-     * @param [spec] {String} first|last...
+     * @param [spec] {string} first|last...
      * @private
      */
-    _genItem: function (page, spec){
+    _genItem: function(page, spec) {
         var me = this;
         return baidu.string.format(me.tplItem, {
-            "class": spec ? me.getClass(spec) : '',
+            'class': spec ? me.getClass(spec) : '',
             page: page,
             href: baidu.string.format(me.tplHref, {
                 page: page
             }),
-            label: function (){
-                return ( spec
-                  ? (spec == "current"
+            label: function() {
+                return (spec
+                  ? (spec == 'current'
                        ? baidu.string.format(me.tplCurrentLabel, { page: page })
                        : me.specialLabelMap[spec]
                      )
-                  : baidu.string.format(me.tplLabel, { page: page }) );
+                  : baidu.string.format(me.tplLabel, { page: page }));
             }
         });
     },
-    _genBody: function (){
+    _genBody: function() {
         var me = this;
         var begin = me.beginPage;
         var end = me.endPage;
@@ -159,7 +159,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
             next: current + 1
         };
         var spec = {};
-        baidu.object.each(pageMap, function (s, k){
+        baidu.object.each(pageMap, function(s, k) {
             spec[k] = me._genItem(s, k);
         });
         spec.previous = pageMap.previous < begin ? '' : spec.previous;
@@ -168,22 +168,22 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
         spec.last = startPage + numlist >= end - 1 ? '' : spec.last;
         // 生成常规链接
         var buff = [];
-        for (var i=0; i<numlist; i++) {
+        for (var i = 0; i < numlist; i++) {
             var page = startPage + i;
-            buff[i] = me._genItem(page, page == current ? "current" : null);
+            buff[i] = me._genItem(page, page == current ? 'current' : null);
         }
         return baidu.string.format(me.tplBody, {
             id: me.getId(),
-            "class": me.getClass(),
+            'class': me.getClass(),
             items: spec.first + spec.previous + buff.join('') + spec.next + spec.last,
-            onclick: me.getCallRef() + "._handleOnClick(event, this);"
+            onclick: me.getCallRef() + '._handleOnClick(event, this);'
         });
     },
     /**
      * 刷新界面
      * @private
      */
-    _refresh: function (){
+    _refresh: function() {
         var me = this;
         me.getMain().innerHTML = me.getString();
     },
@@ -191,7 +191,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
      * 鼠标点击链接事件
      * @param evt
      */
-    _handleOnClick: function (evt){
+    _handleOnClick: function(evt) {
         evt = baidu.event.get(evt);
         var me = this,
             el = evt.target,
@@ -204,30 +204,30 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
             evt.preventDefault();
         }
     },
-    _notifyGotoPage: function (page, fromClick){
+    _notifyGotoPage: function(page, fromClick) {
         return this.dispatchEvent('ongotopage', { page: page, fromClick: fromClick });
     },
     /**
      * 跳转页面事件
      * 参数evt.page
      * 可以使用evt.returnValue = false来取消跳转
-     * @param evt {Object} 将要跳转到的页面的索引
+     * @param evt {Object} 将要跳转到的页面的索引.
      * @event
      */
-    ongotopage: function (evt){
+    ongotopage: function(evt) {
         //evt.returnValue = false;
     },
     /**
      * 获取用于生成控件的HTML
      */
-    getString: function (){
+    getString: function() {
         var me = this;
         if (me.currentPage === undefined) {
             me.currentPage = me.beginPage;
         }
         return me._genBody();
     },
-    render: function (container){
+    render: function(container) {
         var me = this;
         me.renderMain(container);
         me.getMain().innerHTML = me.getString();
@@ -237,7 +237,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
     /**
      * 销毁控件
      */
-    dispose: function (){
+    dispose: function() {
         var me = this;
         me.dispatchEvent('ondispose');
         if (me.getMain()) {
@@ -250,7 +250,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
             main = null;
             baidu.lang.Class.prototype.dispose.call(me);
         } else {
-            me.addEventListener('onload', function callee(){
+            me.addEventListener('onload', function callee() {
                 me.removeEventListener('onload', callee);
                 me.dispose();
             });

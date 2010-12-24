@@ -1,7 +1,7 @@
 /*
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * @path:ui/table/Table$title.js
  * @author:linlingyu
  * @version:1.0.0
@@ -18,62 +18,62 @@
 /**
  * 增加列标题
  */
-baidu.ui.table.Table.register(function(me){
-	if(me.title){
-		me.addEventListeners("load, update", function(){
-			if(!me.getTitleBody()){
-				baidu.dom.insertHTML(me.getTarget(), "afterBegin", me._getTitleString());
-				me.dispatchEvent("titleload");//这个事件派发主要是解决select插件
-				baidu.dom.setStyles(me.getBody(), {tableLayout : "fixed"});//这一步设置需要在getTitleBody之前，防止宽度提前撑开
-				baidu.dom.setStyles(me.getTitleBody(), {width : me.getBody().offsetWidth + "px", tableLayout : "fixed"});//这个地方很奇怪，不能用clientWidth，需要用offsetWidth各浏览器才显示正确
-				
+baidu.ui.table.Table.register(function(me) {
+	if (me.title) {
+		me.addEventListeners('load, update', function() {
+			if (!me.getTitleBody()) {
+				baidu.dom.insertHTML(me.getTarget(), 'afterBegin', me._getTitleString());
+				me.dispatchEvent('titleload');//这个事件派发主要是解决select插件
+				baidu.dom.setStyles(me.getBody(), {tableLayout: 'fixed'});//这一步设置需要在getTitleBody之前，防止宽度提前撑开
+				baidu.dom.setStyles(me.getTitleBody(), {width: me.getBody().offsetWidth + 'px', tableLayout: 'fixed'});//这个地方很奇怪，不能用clientWidth，需要用offsetWidth各浏览器才显示正确
+
 			}
-			if(me.getTitleBody() && me.columns){
-				baidu.array.each(me.columns, function(item){
-					if(item.hasOwnProperty("width")){
-						baidu.dom.setStyles(me.getTitleBody().rows[0].cells[item.index], {width : item.width});
+			if (me.getTitleBody() && me.columns) {
+				baidu.array.each(me.columns, function(item) {
+					if (item.hasOwnProperty('width')) {
+						baidu.dom.setStyles(me.getTitleBody().rows[0].cells[item.index], {width: item.width});
 					}
 				});
 			}
 		});
 		//
-		me.addEventListener("addrow", function(){
-            if(me.getRowCount() == 1){
-            	baidu.dom.setStyles(me.getTitleBody(), {width : me.getBody().offsetWidth + "px"});//当是IE6时，当没有row时，offsetWidth会为0
+		me.addEventListener('addrow', function() {
+            if (me.getRowCount() == 1) {
+            	baidu.dom.setStyles(me.getTitleBody(), {width: me.getBody().offsetWidth + 'px'});//当是IE6时，当没有row时，offsetWidth会为0
             }
 		});
 	}
 });
 //
 baidu.object.extend(baidu.ui.table.Table.prototype, {
-	tplTitle : '<div><table id="#{rsid}" class="#{tabClass}" cellspacing="0" cellpadding="0" border="0"><tr class="#{trClass}">#{col}</tr></table></div>',
-	
+	tplTitle: '<div><table id="#{rsid}" class="#{tabClass}" cellspacing="0" cellpadding="0" border="0"><tr class="#{trClass}">#{col}</tr></table></div>',
+
 	/**
 	 * 取得表格列标题的拼接字符串
-	 * @memberOf {TypeName} 
-	 * @return {TypeName} 
+	 * @memberOf {TypeName}
+	 * @return {TypeName}
 	 */
-	_getTitleString : function(){
+	_getTitleString: function() {
 		var me = this,
 			col = [],
-			clazz = "";
-		baidu.array.each(me.title, function(item){
-			col.push("<td>", item, "</td>");
+			clazz = '';
+		baidu.array.each(me.title, function(item) {
+			col.push('<td>', item, '</td>');
 		});
 		return baidu.string.format(me.tplTitle, {
-			rsid : me.getId("title"),
-			tabClass : me.getClass("title"),
-			trClass : me.getClass("title-row"),
-			col : col.join("")
+			rsid: me.getId('title'),
+			tabClass: me.getClass('title'),
+			trClass: me.getClass('title-row'),
+			col: col.join('')
 		});
 	},
-	
+
 	/**
 	 * 取得表格的table对象
-	 * @memberOf {TypeName} 
-	 * @return {html-element} 
+	 * @memberOf {TypeName}
+	 * @return {HTMLElement}
 	 */
-	getTitleBody : function(){
-		return baidu.g(this.getId("title"));
+	getTitleBody: function() {
+		return baidu.g(this.getId('title'));
 	}
 });

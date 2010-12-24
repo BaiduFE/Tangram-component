@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: baidu/data/storage.js
  * author: kexin
  * version: 1.0
@@ -40,12 +40,12 @@
 
 		// set,get,remove操作结果状态标识
 		status: {
-			"SUCCESS": 0,
-			"FAILURE": 1,
-			"OVERFLOW": 2
+			'SUCCESS': 0,
+			'FAILURE': 1,
+			'OVERFLOW': 2
 		},
 
-		// 保存参数设置 
+		// 保存参数设置
 		option: {}
 	};
 
@@ -58,7 +58,7 @@
 
     /* HTML5标准  Firefox3.5+, Chrome4+, Safari4+(win)
      * (src: http://www.whatwg.org/specs/web-apps/current-work/#the-localstorage)
-	 * 
+	 *
 	 * 每个域名和子域名有他们自己独立的本地存储区域。主域可以访问子域的存储区域，子域也可以访问父域的存储区域。
 	 *
 	 */
@@ -67,7 +67,7 @@
 			size: 10 * 1024 * 1024,
 
 			test: function() {
-				return window.localStorage ? true: false;
+				return window.localStorage ? true : false;
 			},
 
 			methods: {
@@ -85,20 +85,20 @@
 
 					var value;
 					if (option && option.expires) {
-						value = option.expires + "|" + val;
+						value = option.expires + '|' + val;
 					} else {
-						value = "0|" + val;
-					};
+						value = '0|' + val;
+					}
 
 					try {
 						this.store.setItem(key, value);
-					} catch(ex) {
+					} catch (ex) {
 						status = Config.status.OVERFLOW;
-					};
+					}
 
 					if (fn) {
 						fn.call(this, status, val);
-					};
+					}
 				},
 
 				get: function(key, fn) {
@@ -109,27 +109,27 @@
 						var value = this.store.getItem(key);
 						if (value == null) { // key不存在时返回null
 							status = Config.status.FAILURE;
-						};
+						}
 
 						// 判断是否过期，过期返回null
-						var pos = value.indexOf("|");
+						var pos = value.indexOf('|');
 						var exp = value.substring(0, pos);
 						var now = (new Date()).getTime();
 
-						if (exp > now || exp == "0") {
+						if (exp > now || exp == '0') {
 							value = value.substring(pos + 1, value.length);
 						} else {
 							value = null;
 							this.store.removeItem(key); // 过期时，再次读取删除key
 							status = Config.status.FAILURE;
-						};
-					} catch(ex) {
+						}
+					} catch (ex) {
 						status = Config.status.FAILURE;
-					};
+					}
 
 					if (fn) {
 						fn.call(this, status, value);
-					};
+					}
 				},
 
 				remove: function(key, fn) {
@@ -139,20 +139,20 @@
 
 					try {
 						var val = this.store.getItem(key);
-						var pos = val.indexOf("|");
+						var pos = val.indexOf('|');
 						value = val.substring(pos + 1, val.length);
 						if (val == null) { // 若key不存在则返回失败状态
 							status = Config.status.FAILURE;
 						} else {
 							this.store.removeItem(key);
-						};
-					} catch(ex) {
+						}
+					} catch (ex) {
 						status = Config.status.FAILURE;
-					};
+					}
 
 					if (fn) {
 						fn.call(this, status, value);
-					};
+					}
 				}
 			}
 		},
@@ -170,7 +170,7 @@
 			size: 64 * 1024,
 
 			test: function() {
-				return window.ActiveXObject ? true: false;
+				return window.ActiveXObject ? true : false;
 			},
 
 			methods: {
@@ -191,7 +191,7 @@
 					document.body.insertBefore(this.el, document.body.firstChild);
 
 					// 防止内存泄漏
-					baidu.on(window, "unload", function() {
+					baidu.on(window, 'unload', function() {
 						me.el = null;
 					});
 				},
@@ -214,21 +214,21 @@
 						// 添加过期时间
 						if (option && option.expires) {
 							this.el.expires = (new Date(option.expires + 8 * 60 * 60 * 1000)).toUTCString();
-							value = option.expires + "|" + val;
+							value = option.expires + '|' + val;
 						} else {
-							value = "0|" + val;
-						};
+							value = '0|' + val;
+						}
 
 						this.el.setAttribute(key, value);
 						this.el.save(key);
-					} catch(ex) {
+					} catch (ex) {
 						status = Config.status.OVERFLOW; // 存储时抛出异常认为是溢出
 						val = null;
-					};
+					}
 
 					if (fn) {
 						fn.call(this, status, val);
-					};
+					}
 				},
 
 				/**
@@ -241,32 +241,32 @@
 					var status = Config.status.SUCCESS;
 					try {
 						this.el.load(key);
-					} catch(e) {
-						alert("error!");
+					} catch (e) {
+						alert('error!');
 					}
 
 					var value = this.el.getAttribute(key); // 若过期则返回null
 					if (value) {
-						var pos = value.indexOf("|");
+						var pos = value.indexOf('|');
 						var exp = value.substring(0, pos);
 						var now = (new Date()).getTime();
 
-						if (exp > now || exp == "0") {
+						if (exp > now || exp == '0') {
 							value = value.substring(pos + 1, value.length);
 						} else {
 							value = null;
 							status = Config.status.FAILURE;
-						};
-					};
+						}
+					}
 
 					if (value == null) {
 						status = Config.status.FAILURE;
 						this.remove(key);
-					};
+					}
 
 					if (fn) {
 						fn.call(this, status, value);
-					};
+					}
 				},
 
 				/**
@@ -286,19 +286,19 @@
 						if (val == null) {
 							status = Config.status.FAILURE;
 						} else {
-							var pos = val.indexOf("|");
+							var pos = val.indexOf('|');
 							val = val.substring(pos + 1, val.length);
 							this.el.expires = new Date(315532799000).toUTCString(); // 315532799000 是格林威治时间1979年12月31日23时59分59秒。这是删除UserData的最靠前的一个有效expires时间了，再往前一毫秒，expires = new Date(315532798999).toUTCString(); 就删不掉userdata了，可以认为是IE的一个bug。
 							this.el.removeAttribute(key);
 							this.el.save(key);
-						};
-					} catch(ex) {
+						}
+					} catch (ex) {
 						status = Config.status.FAILURE;
-					};
+					}
 
 					if (fn) {
 						fn.call(this, status, val);
-					};
+					}
 				}
 			}
 		},
@@ -323,10 +323,10 @@
 					var val = baidu.cookie.get(key);
 					if (val == null) {
 						status = Config.status.FAILURE;
-					};
+					}
 					if (fn) {
 						fn.call(this, status, val);
-					};
+					}
 				},
 
 				set: function(key, val, fn, option) {
@@ -336,11 +336,11 @@
 					// expires参数类型转换
 					if (option && option.expires) {
 						option.expires = new Date(expires);
-					};
+					}
 					baidu.cookie.set(key, val, option);
 					if (fn) {
 						fn.call(this, status, val);
-					};
+					}
 				},
 
 				remove: function(key, fn) {
@@ -350,16 +350,16 @@
 					baidu.cookie.remove(key);
 					if (val == null) {
 						status = Config.status.FAILURE;
-					};
+					}
 					if (fn) {
 						fn.call(this, status, val);
-					};
+					}
 				}
 			}
 		}
 	};
 
-	/** 
+	/**
      * 初始化Storage
      * 主要工作，确定一种后端，根据搜索列表或用户指定，加载会默认调用，实例化时会再次调用。
      *
@@ -374,7 +374,7 @@
 		// 初始化后端方法列表
 		for (var i = 0, l = Config.methods.length; i < l; i++) {
 			storage.Store.prototype[Config.methods[i]] = empty;
-		};
+		}
 
 		if (Config.option.backend) {
 			// TODO: 若参数后端不在支持列表的情况
@@ -385,7 +385,7 @@
 				storage.size = Backends[b].size;
 				for (key in Backends[b].methods) {
 					storage.Store.prototype[key] = Backends[b].methods[key];
-				};
+				}
 			} else {
 				// 参数backend有误情况
 				for (var i = 0, l = Config.searchList.length; ! storage.type && i < l; i++) {
@@ -398,10 +398,10 @@
 						// 用实例方法扩展构造函数
 						for (key in b.methods) {
 							storage.Store.prototype[key] = b.methods[key];
-						};
-					};
-				};
-			};
+						}
+					}
+				}
+			}
 
 		} else {
 			// 遍历后端列表
@@ -415,10 +415,10 @@
 					// 用实例方法扩展构造函数
 					for (key in b.methods) {
 						storage.Store.prototype[key] = b.methods[key];
-					};
-				};
-			};
-		};
+					}
+				}
+			}
+		}
 	};
 
 	/**
@@ -426,7 +426,7 @@
        *
        */
 	var storage = {
-		version: "1.0",
+		version: '1.0',
 		type: null,
 		size: - 1,
 
@@ -436,8 +436,8 @@
 			for (var i = 0, l = Config.searchList.length; i < l; i++) {
 				if (Backends[Config.searchList[i]].test()) {
 					result.push(Config.searchList[i]);
-				};
-			};
+				}
+			}
 			return result;
 		},
 
@@ -446,12 +446,12 @@
 			// 名字检查
 			var name_re = /^[a-z][a-z0-9_ -]+$/i;
 			if (!name_re.exec(name)) {
-				throw new Error("Invalid name");
-			};
+				throw new Error('Invalid name');
+			}
 
 			if (!storage.type) {
-				throw new Error("No suitable storage found");
-			};
+				throw new Error('No suitable storage found');
+			}
 
 			this.name = name;
 
@@ -464,17 +464,17 @@
 		},
 
 		set: function(key, val, fn, option) {
-			var st = new storage.Store("bd_storage", {});
+			var st = new storage.Store('bd_storage', {});
 			st.set(key, val, fn, option);
 		},
 
 		get: function(key, fn, option) {
-			var st = new storage.Store("bd_storage", {});
+			var st = new storage.Store('bd_storage', {});
 			st.get(key, fn, option);
 		},
 
 		remove: function(key, fn) {
-			var st = new storage.Store("bd_storage", {});
+			var st = new storage.Store('bd_storage', {});
 			st.remove(key, fn);
 		}
 	};

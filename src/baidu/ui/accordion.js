@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/accordion.js
  * author: zhangyao
  * version: 1.0.0
@@ -13,4 +13,4 @@
 /**
  * 定义名字空间
  */
-baidu.ui.accordion = baidu.ui.accordion || {} ;
+baidu.ui.accordion = baidu.ui.accordion || {};

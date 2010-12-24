@@ -1,7 +1,7 @@
 /*
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/table/Table.js
  * author: berg
  * version: 1.0.0
@@ -32,112 +32,112 @@
  * 	columnIndex : 提供的选择列需要插入到第几列中，默认是0插入到第一列
  * }
  */
-baidu.ui.table.Table = baidu.ui.createUI(function(options){
+baidu.ui.table.Table = baidu.ui.createUI(function(options) {
 	var me = this;
 		me.data = me.data || [];		//数据
 		me._rows = [];					//所有的Row组件
 //		me.columns = me.columns || [];	//列的设置信息
 }).extend({
-    uiType          : "table",
-	tplBody			: '<div><table cellpadding="0" cellspacing="0" border="0" id="#{id}" class="#{class}" #{stateHandler}>#{rows}</table></div>',
+    uiType: 'table',
+	tplBody: '<div><table cellpadding="0" cellspacing="0" border="0" id="#{id}" class="#{class}" #{stateHandler}>#{rows}</table></div>',
     /**
      * 获得控件字符串
-     * @return {string} HTML string
+     * @return {string} HTML string.
      */
-	getString : function(){
+	getString: function() {
 		var me = this;
 		return baidu.format(me.tplBody, {
-			id          : me.getId(),
-			"class"     : me.getClass(),
-            rows        : me._getRowsString()
+			id: me.getId(),
+			'class' : me.getClass(),
+            rows: me._getRowsString()
 		});
 	},
-	
+
     /**
      * 获得所有行的字符串
-     * @return {string} HTML string
+     * @return {string} HTML string.
      */
-    _getRowsString : function(){
+    _getRowsString: function() {
         var me = this,
             i = 0,
             len = me.data.length,
             rowsArr = [],
             row;
-        
-        for(; i < len; i++){
+
+        for (; i < len; i++) {
             row = me.getRow(i);
-            if(!row){
+            if (!row) {
                 row = me._rows[i] = me._createRow(me.data[i]);
             }else {
                 row.update(me.data[i]);
             }
             rowsArr.push(row.getString());
         }
-        while(me._rows.length > me.data.length){//更新_rows中多余的数据,当update时user有可能会更新data
+        while (me._rows.length > me.data.length) {//更新_rows中多余的数据,当update时user有可能会更新data
         	me._rows.pop();
         }
-        return rowsArr.join("");
+        return rowsArr.join('');
     },
-	
+
 	/**
 	 * 渲染表格
      * @param {HTMLElement} target
 	 */
-	render : function(target){
-		
+	render: function(target) {
+
 		var me = this;
-        if(!target){return;}
-        baidu.dom.insertHTML(me.renderMain(target), "beforeEnd", me.getString());
+        if (!target) {return;}
+        baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me.getString());
         me.resizeColumn();
-		me.dispatchEvent("onload");
+		me.dispatchEvent('onload');
 	},
-	
+
     /**
      * 更新表格
-     * @param {object} options 参数
+     * @param {object} options 参数.
      */
-    update : function(options){
+    update: function(options) {
         var me = this;
         options = options || {};
         baidu.object.extend(me, options);
-        me.dispatchEvent("beforeupdate");
+        me.dispatchEvent('beforeupdate');
         me.getMain().innerHTML = me.getString();//getString会更新data
-		me.dispatchEvent("update");
+		me.dispatchEvent('update');
     },
-	
+
     /**
      * 按照columns的参数设置单元格的宽度
-     * @return {string} HTML string
+     * @return {string} HTML string.
      */
-	resizeColumn : function(){
+	resizeColumn: function() {
 		var me = this,
 			widthArray = [],
 			row = me.getBody().rows[0];
-		if(row && me.columns){
-			baidu.array.each(me.columns, function(item){
-				if(item.hasOwnProperty("width")){
-					baidu.dom.setStyles(row.cells[item.index], {width : item.width});
+		if (row && me.columns) {
+			baidu.array.each(me.columns, function(item) {
+				if (item.hasOwnProperty('width')) {
+					baidu.dom.setStyles(row.cells[item.index], {width: item.width});
 				}
 			});
 		}
 	},
     /**
      * 创建一个行控件
-     * @param {object} options 
-     * @return {baidu.ui.table.Row} 行控件
+     * @param {object} options
+     * @return {baidu.ui.table.Row} 行控件.
      */
-    _createRow : function(options){
+    _createRow: function(options) {
     	options.parent = this;
     	return baidu.ui.create(baidu.ui.table.Row, options);
     },
-    
+
     /**
      * 获得指定row控件
-     * @param {number}  index  索引
+     * @param {number}  index  索引.
      */
-    getRow : function(index){
+    getRow: function(index) {
         var row = this._rows[index];
-        if(row && !row.disposed){
+        if (row && !row.disposed) {
             return row;
         }
         //return this._rows[index] || null;
@@ -146,18 +146,18 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 
     /**
      * 获得表格中的行数
-     * @return {number} count 
+     * @return {number} count.
      */
-    getRowCount : function(){
+    getRowCount: function() {
         return this._rows.length;
     },
-	
+
     /**
      * 添加行
-     * @param {Object} optoins  创建Row所需要的options
-     * @param {number} index 可选参数，表示在指定的索引的row之前插入，不指定该参数将会在最后插入
+     * @param {Object} optoins  创建Row所需要的options.
+     * @param {number} index 可选参数，表示在指定的索引的row之前插入，不指定该参数将会在最后插入.
      */
-    _addRow : function(options, index){
+    _addRow: function(options, index) {
         var me = this,
 			index = baidu.lang.isNumber(index) ? index : me.getBody().rows.length,
         	row = me._createRow(options);
@@ -166,27 +166,27 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
         row.insertTo(index);
         return row.getId();
     },
-	
+
 	/**
-	 * 
-	 * @param {Object} optoins  创建Row所需要的options
+	 *
+	 * @param {Object} optoins  创建Row所需要的options.
 	 * @param {Object} index
-	 * @memberOf {TypeName} 
+	 * @memberOf {TypeName}
 	 */
-	addRow : function(options, index){
+	addRow: function(options, index) {
 		var me = this;
-		me.dispatchEvent("addrow", {rowId : me._addRow(options, index)});
+		me.dispatchEvent('addrow', {rowId: me._addRow(options, index)});
 	},
-	
+
     /**
      * 删除行
-     * @param {number} index 要删除的数据索引
+     * @param {number} index 要删除的数据索引.
      */
-    _removeRow : function(index){
+    _removeRow: function(index) {
         var me = this,
         	row = me._rows[index],
         	rowId;
-        if(row){
+        if (row) {
         	rowId = row.getId();
         	me.data.splice(index, 1);
 	        row.remove();
@@ -195,31 +195,31 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
         }
         return rowId;
     },
-	
+
 	/**
-	 * 
+	 *
 	 * @param {Object} index
-	 * @memberOf {TypeName} 
+	 * @memberOf {TypeName}
 	 */
-	removeRow : function(index){
+	removeRow: function(index) {
 		var me = this,
 			rowId = me._removeRow(index);
-		if(rowId){me.dispatchEvent("removerow", {rowId : rowId});}
+		if (rowId) {me.dispatchEvent('removerow', {rowId: rowId});}
 	},
-	
+
     /**
      * 获取target元素
-     * @return {HTMLElement} target
+     * @return {HTMLElement} target.
      */
-    getTarget : function(){
+    getTarget: function() {
     	var me = this;
         return baidu.g(me.targetId) || me.getMain();
     },
-	
+
     /**
      * 销毁当前实例
      */
-    dispose : function(){
+    dispose: function() {
         var me = this;
         baidu.dom.remove(me.getId());
     }

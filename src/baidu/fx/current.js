@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
- * 
+ *
  * @author: meizz
  * @create: 2010-07-16
  * @namespace: baidu.fx.current
@@ -12,17 +12,17 @@
 
 /**
  * 获取DOM元素正在运行的效果实例列表
- * 
  *
- * @param   {HTMLElement}   element 被查询的DOM元素
- * @return  {Array}                 线型函数
+ *
+ * @param   {HTMLElement}   element 被查询的DOM元素.
+ * @return  {Array}                 线型函数.
  */
 baidu.fx.current = function(element) {
     if (!(element = baidu.dom.g(element))) return null;
     var a, guids, reg = /\|([^\|]+)\|/g;
 
     // 可以向<html>追溯
-    do {if (guids = element.getAttribute("baidu_current_effect")) break;}
+    do {if (guids = element.getAttribute('baidu_current_effect')) break;}
     while ((element = element.parentNode) && element.nodeType == 1);
 
     if (!guids) return null;
@@ -31,10 +31,10 @@ baidu.fx.current = function(element) {
         //fix
         //在firefox中使用g模式，会出现ture与false交替出现的问题
         reg = /\|([^\|]+)\|/;
-        
-        for (var i=0; i<a.length; i++) {
+
+        for (var i = 0; i < a.length; i++) {
             reg.test(a[i]);
-            a[i] = window[baidu.guid]._instances[RegExp["\x241"]];
+            a[i] = window[baidu.guid]._instances[RegExp['\x241']];
         }
     }
     return a;

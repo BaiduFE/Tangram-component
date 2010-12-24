@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
- * 
+ *
  * @author: meizz
  * @namespace: baidu.fx.create
  * @version: 2010-01-23
@@ -13,30 +13,30 @@
 /**
  * 创建一个 fx 的实例
  *
- * @param {HTMLElement} element     添加效果的DOM元素
- * @param {JSON}        options     时间线的配置参数对象
- * @param {String}      fxName  效果名（可选）
- * @return {baidu.fx.Timeline}  时间线类的一个实例
+ * @param {HTMLElement} element     添加效果的DOM元素.
+ * @param {JSON}        options     时间线的配置参数对象.
+ * @param {string}      fxName  效果名（可选）.
+ * @return {baidu.fx.Timeline}  时间线类的一个实例.
  */
 baidu.fx.create = function(element, options, fxName) {
     var timeline = new baidu.fx.Timeline(options);
 
     timeline.element = element;
     timeline._className = fxName || timeline._className;
-    timeline["\x06original"] = {};   // 20100708
-    var catt = "baidu_current_effect";
+    timeline['\x06original'] = {};   // 20100708
+    var catt = 'baidu_current_effect';
 
     /**
      * 将实例的guid记录到DOM元素上，以便多个效果叠加时的处理
      */
-    timeline.addEventListener("onbeforestart", function(){
+    timeline.addEventListener('onbeforestart', function() {
         var me = this, guid;
-        me.attribName = "att_"+ me._className.replace(/\W/g, "_");
+        me.attribName = 'att_' + me._className.replace(/\W/g, '_');
         guid = me.element.getAttribute(catt);
-        me.element.setAttribute(catt, (guid||"") +"|"+ me.guid +"|", 0);
+        me.element.setAttribute(catt, (guid || '') + '|' + me.guid + '|', 0);
 
         if (!me.overlapping) {
-            (guid = me.element.getAttribute(me.attribName)) 
+            (guid = me.element.getAttribute(me.attribName))
                 && window[baidu.guid]._instances[guid].cancel();
 
             //在DOM元素上记录当前效果的guid
@@ -47,12 +47,12 @@ baidu.fx.create = function(element, options, fxName) {
     /**
      * 打扫dom元素上的痕迹，删除元素自定义属性
      */
-    timeline["\x06clean"] = function(e) {
+    timeline['\x06clean'] = function(e) {
     	var me = this, guid;
         if (e = me.element) {
             e.removeAttribute(me.attribName);
             guid = e.getAttribute(catt);
-            guid = guid.replace("|"+ me.guid +"|", "");
+            guid = guid.replace('|' + me.guid + '|', '');
             if (!guid) e.removeAttribute(catt);
             else e.setAttribute(catt, guid, 0);
         }
@@ -61,36 +61,36 @@ baidu.fx.create = function(element, options, fxName) {
     /**
      * 在时间线结束时净化对DOM元素的污染
      */
-    timeline.addEventListener("oncancel", function() {
-        this["\x06clean"]();
-        this["\x06restore"]();
+    timeline.addEventListener('oncancel', function() {
+        this['\x06clean']();
+        this['\x06restore']();
     });
 
     /**
      * 在时间线结束时净化对DOM元素的污染
      */
-    timeline.addEventListener("onafterfinish", function() {
-        this["\x06clean"]();
-        this.restoreAfterFinish && this["\x06restore"]();
+    timeline.addEventListener('onafterfinish', function() {
+        this['\x06clean']();
+        this.restoreAfterFinish && this['\x06restore']();
     });
 
     /**
      * 保存原始的CSS属性值 20100708
      */
     timeline.protect = function(key) {
-        this["\x06original"][key] = this.element.style[key];
+        this['\x06original'][key] = this.element.style[key];
     };
 
     /**
      * 时间线结束，恢复那些被改过的CSS属性值
      */
-    timeline["\x06restore"] = function() {
-        var o = this["\x06original"],
+    timeline['\x06restore'] = function() {
+        var o = this['\x06original'],
             s = this.element.style,
             v;
         for (var i in o) {
             v = o[i];
-            if (typeof v == "undefined") continue;
+            if (typeof v == 'undefined') continue;
 
             s[i] = v;    // 还原初始值
 
@@ -107,7 +107,7 @@ baidu.fx.create = function(element, options, fxName) {
 /**
  * fx 的所有 【属性、方法、接口、事件】 列表
  *
- * property【七个属性】                 默认值 
+ * property【七个属性】                 默认值
  *  element             {HTMLElement}           效果作用的DOM元素
  *  interval            {Number}        16      脉冲间隔时间（毫秒）
  *  duration            {Number}        500     时间线总时长（毫秒）

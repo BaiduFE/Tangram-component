@@ -21,29 +21,29 @@
 
 /**
  * 创建一个 Popup 层
- * 
+ *
  * @author: meizz
  * @namespace: baidu.ui.createPopup
  * @version: 2010-06-08
  *
- * @param   {JSON}      options     配置信息
+ * @param   {JSON}      options     配置信息.
  */
 baidu.ui.createPopup = function(options) {
-    var popup = baidu.lang.createSingle({isOpen : false});
-    popup.eid = "baidupopup_"+ popup.guid;
+    var popup = baidu.lang.createSingle({isOpen: false});
+    popup.eid = 'baidupopup_' + popup.guid;
 
     // IE 浏览器使用系统的 window.createPopup()
     var POPUP, IFRAME,
-        bodyStyle = "font-size:12px; margin:0;";
-    try {baidu.browser.ie && (POPUP = window.createPopup());}catch(ex){}
+        bodyStyle = 'font-size:12px; margin:0;';
+    try {baidu.browser.ie && (POPUP = window.createPopup());}catch (ex) {}
 
     // 非 IE 浏览器使用 <iframe> 作为 popup 的载体
     if (!POPUP) {
-        var str = "<iframe id='"+ popup.eid +"' scrolling='no'"+
-            " frameborder='0' style='position:absolute; z-index:1; "+
+        var str = "<iframe id='" + popup.eid + "' scrolling='no'" +
+            " frameborder='0' style='position:absolute; z-index:1; " +
             " width:0px; height:0px; background-color:#0FFFFF'></iframe>";
         if (!document.body) {document.write(str);} else {
-            baidu.dom.insertHTML(document.body, "afterbegin", str);
+            baidu.dom.insertHTML(document.body, 'afterbegin', str);
         }
     }
 
@@ -56,19 +56,19 @@ baidu.ui.createPopup = function(options) {
             me.window = POPUP;
             me.document = POPUP.document;
             var s = me.styleSheet = me.createStyleSheet();
-            s.addRule("body", bodyStyle);
-            me.dispatchEvent("onready");
+            s.addRule('body', bodyStyle);
+            me.dispatchEvent('onready');
         } else {
             // 初始化 iframe
             initIframe();
         }
-        baidu.event.on(window, "onblur", function(){
+        baidu.event.on(window, 'onblur', function() {
             me.focusme = false;
             if (!me.isOpen) return;
-            setTimeout(function(){if(!me.focusme) me.hide()}, 100);
+            setTimeout(function() {if (!me.focusme) me.hide()}, 100);
         });
-        baidu.event.on(window, "onresize", function(){me.hide()});
-        baidu.event.on(document, "onmousedown", function(){me.hide()});
+        baidu.event.on(window, 'onresize', function() {me.hide()});
+        baidu.event.on(document, 'onmousedown', function() {me.hide()});
     };
 
     function initIframe(delay) {
@@ -77,19 +77,19 @@ baidu.ui.createPopup = function(options) {
         // 修正Firefox的一个BUG
         // Firefox 对于刚刚动态创建的 <iframe> 写入的时候无法渲染内容
         if ((!delay && baidu.browser.firefox) || !IFRAME) {
-            setTimeout(function(){initIframe(true)}, 10);
+            setTimeout(function() {initIframe(true)}, 10);
             return;
         }
 
         popup.window = IFRAME.contentWindow;
         var d = popup.document = popup.window.document;
-        var s = "<html><head><style type='text/css'>"+
-            "body{"+ bodyStyle +" background-color:#FFFFFF;}\n"+
-            "</style></head><body onfocus='parent[\""+ baidu.guid +"\"]._instances[\""+
-            popup.guid +"\"].focusme=true'></body></html>";
+        var s = "<html><head><style type='text/css'>" +
+            'body{' + bodyStyle + ' background-color:#FFFFFF;}\n' +
+            "</style></head><body onfocus='parent[\"" + baidu.guid + '\"]._instances[\"' +
+            popup.guid + "\"].focusme=true'></body></html>";
         d.open(); d.write(s); d.close();
         popup.styleSheet = popup.createStyleSheet();
-        popup.dispatchEvent("onready");
+        popup.dispatchEvent('onready');
     }
 
     /**
@@ -106,7 +106,7 @@ baidu.ui.createPopup = function(options) {
      */
     popup.show = function(left, top, width, height, trigger, position) {
         if (POPUP) {
-            if (position == "top") top = -height;
+            if (position == 'top') top = -height;
             else top = trigger.offsetHeight;
 
             POPUP.show(0, top, width, height, trigger || document.body);
@@ -115,17 +115,17 @@ baidu.ui.createPopup = function(options) {
         } else if (IFRAME) {
             baidu.dom.show(this.eid);
 
-            if (position == "top") top -= height;
+            if (position == 'top') top -= height;
             else top = top + trigger.offsetHeight;
 
             this.isOpen = true;
             var s = IFRAME.style;
-            s.width = width +"px";
-            s.height = height +"px";
-            s.top = top +"px";
-            s.left = left +"px";
+            s.width = width + 'px';
+            s.height = height + 'px';
+            s.top = top + 'px';
+            s.left = left + 'px';
         }
-        this.dispatchEvent("onshow");
+        this.dispatchEvent('onshow');
     };
 
     /**
@@ -148,11 +148,11 @@ baidu.ui.createPopup = function(options) {
                 this.isOpen = false;
 
                 var s = IFRAME.style;
-                s.width = "0px";
-                s.height = "0px";
+                s.width = '0px';
+                s.height = '0px';
                 baidu.dom.hide(this.eid);
             }
-            this.dispatchEvent("onhide");
+            this.dispatchEvent('onhide');
         }
     };
 

@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/suggestion/Suggestion.js
  * author: berg
  * version: 1.1.0
@@ -27,15 +27,14 @@
 
 /**
  * Suggestion基类，建立一个Suggestion实例
- * 
- * @param  {Object}             options optional        选项参数
- * @config {DOMElement}                 target          input框
+ *
+ * @param  {Object}             options optional        选项参数.
+ * @config {HTMLElement}                 target          input框
  */
-
-baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
+baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function(options) {
     var suggestion = this;
 
-    suggestion.addEventListener("onload", function(){
+    suggestion.addEventListener('onload', function() {
         //监听suggestion外面的鼠标点击
         baidu.on(document, 'mousedown', suggestion.documentMousedownHandler);
 
@@ -48,42 +47,42 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
     suggestion.windowBlurHandler = suggestion.getWindowBlurHandler();
 
 }).extend({
-    event           : new Object,
+    event: new Object,
 
-    uiType          : "suggestion",
-    onbeforepick    : new Function,
-    onpick          : new Function,
-    onconfirm       : new Function,
-    onhighlight     : new Function,
-    onshow          : new Function,
-    onhide          : new Function,
+    uiType: 'suggestion',
+    onbeforepick: new Function,
+    onpick: new Function,
+    onconfirm: new Function,
+    onhighlight: new Function,
+    onshow: new Function,
+    onhide: new Function,
 
 
     /*
      * 计算view的函数
      */
     //view            : new Function(),
-   
-    getData         : function(){return []},
-    prependHTML     : "",
-    appendHTML      : "",
 
-    currentData     : {},
+    getData: function() {return []},
+    prependHTML: '',
+    appendHTML: '',
 
-    tplDOM          : "<div id='#{0}' class='#{1}'></div>",
+    currentData: {},
+
+    tplDOM: "<div id='#{0}' class='#{1}'></div>",
     tplPrependAppend: "<div id='#{0}' class='#{1}'>#{2}</div>",
-    tplBody : "<table cellspacing='0' cellpadding='2'><tbody>#{0}</tbody></table>",
-    tplRow : '<tr><td id="#{0}" onmouseover="#{2}" onmouseout="#{3}" onmousedown="#{4}" onclick="#{5}">#{1}</td></tr>',
+    tplBody: "<table cellspacing='0' cellpadding='2'><tbody>#{0}</tbody></table>",
+    tplRow: '<tr><td id="#{0}" onmouseover="#{2}" onmouseout="#{3}" onmousedown="#{4}" onclick="#{5}">#{1}</td></tr>',
 
 
     /*
      * 获得suggestion的外框HTML string
      * @private
      */
-    getString : function(){
+    getString: function() {
         var suggestion = this;
         return baidu.format(
-            suggestion.tplDOM, 
+            suggestion.tplDOM,
                 suggestion.getId(),
                 suggestion.getClass(),
                 suggestion.guid
@@ -93,31 +92,31 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
     /**
      * 将suggestion渲染到dom树中
      */
-    render : function(target){
+    render: function(target) {
         var suggestion = this,
             main;
-        if(suggestion.getMain()){
-            return ;
+        if (suggestion.getMain()) {
+            return;
         }
-        if(target.id){
+        if (target.id) {
             suggestion.targetId = target.id;
-        }else{
-            suggestion.targetId = target.id = suggestion.getId("input");
+        }else {
+            suggestion.targetId = target.id = suggestion.getId('input');
         }
 
         main = suggestion.renderMain();
 
-        main.style.display =  'none';
+        main.style.display = 'none';
         main.innerHTML = suggestion.getString();
 
-        this.dispatchEvent("onload");
+        this.dispatchEvent('onload');
     },
 
     /**
      * 当前suggestion是否处于显示状态
      * @private
      */
-    isShowing : function(){
+    isShowing: function() {
         var suggestion = this,
             main = suggestion.getMain();
         return main && main.style.display != 'none';
@@ -127,18 +126,18 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 把某个词放到input框中
      * @public
      */
-    pick : function(index){
+    pick: function(index) {
         var suggestion = this,
             currentData = suggestion.currentData,
-            word = currentData && typeof index == 'number' && typeof currentData[index] != 'undefined' ?  currentData[index].value : index,
+            word = currentData && typeof index == 'number' && typeof currentData[index] != 'undefined' ? currentData[index].value : index,
             eventData = {
-                data : {
-                    item    : word == index ? {value: index, content : index} : currentData[index],
-                    index   : index
+                data: {
+                    item: word == index ? {value: index, content: index} : currentData[index],
+                    index: index
                 }
             };
-        if(suggestion.dispatchEvent("onbeforepick", eventData)){
-            suggestion.dispatchEvent("onpick", eventData);
+        if (suggestion.dispatchEvent('onbeforepick', eventData)) {
+            suggestion.dispatchEvent('onpick', eventData);
         }
     },
 
@@ -150,28 +149,28 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * @param {boolean} showEmpty optional 如果sug数据为空是否依然显示 默认为false
      *
      */
-    show : function(word, data, showEmpty){
+    show: function(word, data, showEmpty) {
         var i = 0,
             len = data.length,
             suggestion = this;
 
-        if(len == 0 && !showEmpty){
+        if (len == 0 && !showEmpty) {
             suggestion.hide();
         } else {
             suggestion.currentData = [];
-            for(; i<len; i++){
-                if(typeof data[i].value != 'undefined'){
+            for (; i < len; i++) {
+                if (typeof data[i].value != 'undefined') {
                     suggestion.currentData.push(data[i]);
-                }else{
+                }else {
                     suggestion.currentData.push({
-                        value        : data[i],
-                        content     : data[i]
+                        value: data[i],
+                        content: data[i]
                     });
                 }
             }
             suggestion.getBody().innerHTML = suggestion.getBodyString();
             suggestion.getMain().style.display = 'block';
-            suggestion.dispatchEvent("onshow");
+            suggestion.dispatchEvent('onshow');
         }
     },
 
@@ -179,12 +178,12 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 高亮某个条目
      * @public
      */
-    highlight : function(index){
+    highlight: function(index) {
         var suggestion = this;
         suggestion.clearHighlight();
-        suggestion.getItem(index).className = suggestion.getClass("current");
-        this.dispatchEvent("onhighlight", {
-            data : this.getDataByIndex(index)
+        suggestion.getItem(index).className = suggestion.getClass('current');
+        this.dispatchEvent('onhighlight', {
+            data: this.getDataByIndex(index)
         });
     },
 
@@ -192,13 +191,13 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 隐藏suggestion
      * @public
      */
-    hide : function(){
+    hide: function() {
         var suggestion = this;
         //如果已经是隐藏状态就不用派发后面的事件了
-        if(!suggestion.isShowing())
-            return ;
+        if (!suggestion.isShowing())
+            return;
         suggestion.getMain().style.display = 'none';
-        suggestion.dispatchEvent("onhide");
+        suggestion.dispatchEvent('onhide');
     },
 
     /*
@@ -207,13 +206,13 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * @param {string} source 事件来源
      * @public
      */
-    confirm : function(index, source){
+    confirm: function(index, source) {
         var suggestion = this;
-        
+
         suggestion.pick(index);
-        suggestion.dispatchEvent("onconfirm", {
-            data : suggestion.getDataByIndex(index),
-            source : source
+        suggestion.dispatchEvent('onconfirm', {
+            data: suggestion.getDataByIndex(index),
+            source: source
         });
         suggestion.hide();
     },
@@ -222,10 +221,10 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 根据index拿到传给event的data数据
      * @private
      */
-    getDataByIndex : function(index){
+    getDataByIndex: function(index) {
         return {
-                item    : this.currentData[index],
-                index   : index
+                item: this.currentData[index],
+                index: index
             };
     },
 
@@ -233,7 +232,7 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 获得target的值
      * @public
      */
-    getTargetValue : function(){
+    getTargetValue: function() {
         return this.getTarget().value;
     },
 
@@ -241,13 +240,13 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 获得当前处于高亮状态的词索引
      * @private
      */
-	getHighlightIndex : function(){
+	getHighlightIndex: function() {
         var suggestion = this,
             len = suggestion.currentData.length,
             i = 0;
-		if(len && suggestion.isShowing()){
-			for(; i<len; i++){
-				if(suggestion.getItem(i).className == suggestion.getClass("current"))
+		if (len && suggestion.isShowing()) {
+			for (; i < len; i++) {
+				if (suggestion.getItem(i).className == suggestion.getClass('current'))
                     return i;
 			}
 		}
@@ -258,12 +257,12 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 清除suggestion中全部tr的蓝色背景样式
      * @private
      */
-	clearHighlight : function(){
+	clearHighlight: function() {
         var suggestion = this,
             i = 0,
             len = suggestion.currentData.length;
-		for(; i < len; i++){
-			suggestion.getItem(i).className = "";
+		for (; i < len; i++) {
+			suggestion.getItem(i).className = '';
 		}
 	},
 
@@ -271,7 +270,7 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 获得input框元素
      * @public
      */
-    getTarget : function(){
+    getTarget: function() {
         return baidu.g(this.targetId);
     },
 
@@ -279,48 +278,48 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 获得指定的条目
      * @private
      */
-    getItem : function(index){
-        return baidu.g(this.getId("item"+index));
+    getItem: function(index) {
+        return baidu.g(this.getId('item' + index));
     },
 
     /*
      * 渲染body部分的string
      * @private
      */
-    getBodyString : function(){
+    getBodyString: function() {
         var suggestion = this,
-            html = "",
+            html = '',
             itemsHTML = [],
             data = suggestion.currentData,
             len = data.length,
             i = 0;
 
-        function getPrependAppend(name){
+        function getPrependAppend(name) {
             return baidu.format(
-                suggestion.tplPrependAppend, 
+                suggestion.tplPrependAppend,
                 suggestion.getId(name),
                 suggestion.getClass(name),
-                suggestion[name+"HTML"]
+                suggestion[name + 'HTML']
             );
         }
 
 
-        html += getPrependAppend("prepend");
+        html += getPrependAppend('prepend');
 
-		for(; i<len; i++){
+		for (; i < len; i++) {
             itemsHTML.push(baidu.format(
-                suggestion.tplRow, 
-                suggestion.getId('item'+i),
+                suggestion.tplRow,
+                suggestion.getId('item' + i),
                 data[i].content,
-                suggestion.getCallString("itemOver", i),
-                suggestion.getCallString("itemOut"),
-                suggestion.getCallRef() + ".itemDown(event, "+i+")",
-                suggestion.getCallString("itemClick", i)
+                suggestion.getCallString('itemOver', i),
+                suggestion.getCallString('itemOut'),
+                suggestion.getCallRef() + '.itemDown(event, ' + i + ')',
+                suggestion.getCallString('itemClick', i)
             ));
 		}
 
-        html += baidu.format(suggestion.tplBody, itemsHTML.join(""));
-        html += getPrependAppend("append");
+        html += baidu.format(suggestion.tplBody, itemsHTML.join(''));
+        html += getPrependAppend('append');
         return html;
 	},
 
@@ -329,25 +328,25 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 高亮某个条目
      * @private
      */
-    itemOver : function(index){
+    itemOver: function(index) {
         this.highlight(index);
     },
 
     /*
      * @private
      */
-    itemOut : function(){
+    itemOut: function() {
         this.clearHighlight();
     },
 
     /*
      * @private
      */
-    itemDown : function(e, index){
+    itemDown: function(e, index) {
         this.dispatchEvent('onmousedownitem', {
-            data : this.getDataByIndex(index)
+            data: this.getDataByIndex(index)
         });
-        if(!baidu.ie){
+        if (!baidu.ie) {
             e.stopPropagation();
             e.preventDefault();
             return false;
@@ -357,13 +356,13 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
     /*
      * @private
      */
-    itemClick : function(index){
+    itemClick: function(index) {
         var suggestion = this;
 
-        suggestion.dispatchEvent("onitemclick", {
-            data : this.getDataByIndex(index)
+        suggestion.dispatchEvent('onitemclick', {
+            data: this.getDataByIndex(index)
         });
-        suggestion.confirm(index, "mouse");
+        suggestion.confirm(index, 'mouse');
     },
 
 
@@ -371,14 +370,14 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 外部事件绑定
      * @private
      */
-    getDocumentMousedownHandler : function (){
+    getDocumentMousedownHandler: function() {
         var suggestion = this;
-        return function(e){
+        return function(e) {
         	// todo : baidu.event.getTarget();
             e = e || window.event;
             var element = e.target || e.srcElement;
             //如果在target上面或者suggestion内部
-            if(element == suggestion.getTarget() || baidu.ui.get(element)){
+            if (element == suggestion.getTarget() || baidu.ui.get(element)) {
                 return;
             }
             suggestion.hide();
@@ -388,9 +387,9 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
     /*
      * @private
      */
-    getWindowBlurHandler : function(){
+    getWindowBlurHandler: function() {
         var suggestion = this;
-        return function(){
+        return function() {
             suggestion.hide();
         };
     },
@@ -399,9 +398,9 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 销毁suggesiton
      * @public
      */
-    dispose : function(){
+    dispose: function() {
         var suggestion = this;
-        suggestion.dispatchEvent("dispose");
+        suggestion.dispatchEvent('dispose');
 
         baidu.un(document, 'mousedown', suggestion.documentMousedownHandler);
         baidu.un(window, 'blur', suggestion.windowBlurHandler);

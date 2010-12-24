@@ -11,7 +11,6 @@
 
 ///import baidu.ui.dialog.Dialog;
 ///import baidu.dom.insertHTML;
-
 ///import baidu.ui.button.Button;
 ///import baidu.event.stopPropagation;
 
@@ -20,30 +19,28 @@
  *
  * 关闭按钮
  */
-
-baidu.extend(baidu.ui.dialog.Dialog.prototype,{
-    closeText  : "",
-    closeButton : true
+baidu.extend(baidu.ui.dialog.Dialog.prototype, {
+    closeText: '',
+    closeButton: true
 });
-baidu.ui.dialog.Dialog.register(function(me){
-    
-    me.closeButton && me.addEventListener("onload", function(){
+baidu.ui.dialog.Dialog.register(function(me) {
+    me.closeButton && me.addEventListener('onload', function() {
         var buttonInstance = baidu.ui.button.create({
-            parent : me,
-            classPrefix : me.classPrefix + "-close",
-            skin : me.skin ? me.skin + "-close" : "",
-            onclick : function(){
+            parent: me,
+            classPrefix: me.classPrefix + '-close',
+            skin: me.skin ? me.skin + '-close' : '',
+            onclick: function() {
                 me.close();
             },
-            onmousedown : function(e){
+            onmousedown: function(e) {
                baidu.event.stopPropagation(e.DOMEvent);
             },
-            element:me.getTitle(),
-            autoRender:true
+            element: me.getTitle(),
+            autoRender: true
         });
         me.closeButtonInstance = buttonInstance;
 
-        me.addEventListener("ondispose",function(e){
+        me.addEventListener('ondispose', function(e) {
             buttonInstance.dispose();
         });
     });

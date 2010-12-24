@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/button.js
  * author: zhangyao
  * version: 1.0.0
@@ -12,5 +12,6 @@
 
 /**
  * 定义名字空间
+ * @namespace
  */
-baidu.ui.button = baidu.ui.button || {} ;
+baidu.ui.button = baidu.ui.button || {};

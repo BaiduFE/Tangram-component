@@ -1,7 +1,7 @@
 /*
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/table/Row.js
  * author: berg
  * version: 1.0.0
@@ -33,89 +33,89 @@
  *  content : ["cell-0", "cell-1"...]
  * }
  */
-baidu.ui.table.Row = baidu.ui.createUI(function(options){
+baidu.ui.table.Row = baidu.ui.createUI(function(options) {
 	this._cells = {};				//所有生成的cell集合
-    this.addState("selected");		//
+    this.addState('selected');		//
 }).extend({
-    uiType : "table-row",
-    statable : true,
+    uiType: 'table-row',
+    statable: true,
 	//tplBody : '<table cellpadding="0" cellspacing="0" border="0" width="#{width}" id="#{id}" class="#{class}" #{stateHandler}>#{rows}</table>',
     /**
      * 重写默认的getMain方法
      * 在Row控件中，main元素就是getId获得的元素
-     * @return {HTMLElement} main main元素
+     * @return {HTMLElement} main main元素.
      */
-    getMain : function(){
+    getMain: function() {
         return baidu.g(this.getId());
     },
 
     /**
      * 获得控件字符串
-     * @param {array} data 行中每一列中的数据
+     * @param {array} data 行中每一列中的数据.
      */
-    getString : function(){
+    getString: function() {
 		var me = this,
 			colsArr = [],
-			clazz = me.getClass("col"),
+			clazz = me.getClass('col'),
 			columns = {};
         //提速
-		colsArr.push("<tr id='", me.getId(), "' class='", me.getClass(), "' data-guid='", me.guid, "' ", me._getStateHandlerString(), ">");
-		baidu.array.each(me.content, function(item, i){
+		colsArr.push("<tr id='", me.getId(), "' class='", me.getClass(), "' data-guid='", me.guid, "' ", me._getStateHandlerString(), '>');
+		baidu.array.each(me.content, function(item, i) {
 			colsArr.push('<td>', item, '</td>');
 		});
-		colsArr.push("</tr>");
-		return colsArr.join("");
+		colsArr.push('</tr>');
+		return colsArr.join('');
     },
-    
+
     /**
      * 更新当前控件
-     * @param {object} options optional
+     * @param {object} options optional.
      */
-    update : function(options){
+    update: function(options) {
 		var me = this,
 			cols = baidu.dom.children(me.getMain());
         options = options || {};
         baidu.object.extend(me, options);
-        baidu.array.each(cols, function(item, i){
+        baidu.array.each(cols, function(item, i) {
         	item.innerHTML = me.content[i];
         });
-		me.dispatchEvent("update");
+		me.dispatchEvent('update');
     },
-	
+
 	/**
 	 * 使用dom的方式在指定的索引位置插入一行
-	 * @param {Number} index 插入位置的索引
-	 * @memberOf {TypeName} 
+	 * @param {Number} index 插入位置的索引.
+	 * @memberOf {TypeName}
 	 */
-	insertTo : function(index){
+	insertTo: function(index) {
 		var me = this, row, cell;
-		if(!me.getMain()){//防止多次调用
+		if (!me.getMain()) {//防止多次调用
 			row = me.getParent().getBody().insertRow(index);
-			baidu.dom.setAttrs(row, {id : me.getId(), "class" : me.getClass(), "data-guid" : me.guid});
+			baidu.dom.setAttrs(row, {id: me.getId(), 'class' : me.getClass(), 'data-guid' : me.guid});
 			me.setStateHandler(row);
-			baidu.array.each(me.content, function(item, i){
+			baidu.array.each(me.content, function(item, i) {
 				cell = row.insertCell(i);
-				baidu.dom.setAttr(cell, "class", me.getClass("col"));
+				baidu.dom.setAttr(cell, 'class', me.getClass('col'));
 				cell.innerHTML = item;
 			});
 		}
 	},
-	
+
     /**
      * 获得所有列元素
-     * @return {array} cols
+     * @return {array} cols.
      */
-    _getCols : function(){
+    _getCols: function() {
         return baidu.dom.children(this.getId());
     },
-    
+
     /**
      * 获得一行中所有列的字符串
-     * @param {object} data  数据
-     * @param {number} index  当前行的索引
-     * @return {string} HTML string
+     * @param {object} data  数据.
+     * @param {number} index  当前行的索引.
+     * @return {string} HTML string.
      */
-    _getColsString : function(data, index){
+    _getColsString: function(data, index) {
         return colsArr.join('');
     },
 
@@ -123,25 +123,25 @@ baidu.ui.table.Row = baidu.ui.createUI(function(options){
     /**
      * 选中当前行
      */
-    select : function(){
+    select: function() {
     	var me = this, id = me.getMain().id;
-        if(!me.getState(id)['disabled']){
-            me.setState("selected", id);
+        if (!me.getState(id)['disabled']) {
+            me.setState('selected', id);
         }
     },
 
     /**
      * 去掉当前行的选中状态
      */
-    unselect : function(){
+    unselect: function() {
     	var me = this;
-        me.removeState("selected", me.getMain().id);
+        me.removeState('selected', me.getMain().id);
     },
 
     /**
      * 移除当前行
      */
-    remove : function(){
+    remove: function() {
         var me = this;
         me.getParent().getBody().deleteRow(me.getBody().rowIndex);
         me.dispose();
@@ -150,28 +150,28 @@ baidu.ui.table.Row = baidu.ui.createUI(function(options){
     /**
      * 如果指定行处于选中状态，让其取消选中状态，否则反之
      */
-    toggle : function(){
+    toggle: function() {
         var me = this;
-        if(me.getState(me.getMain().id)["selected"]){
+        if (me.getState(me.getMain().id)['selected']) {
             me.unselect();
-        }else{
+        }else {
             me.select();
         }
     },
-	
+
     /**
      * 根据索引取得单元格对象
      * @param {Number} index
-     * @memberOf {TypeName} 
-     * @return {baidu.ui.table.Cell} 
+     * @memberOf {TypeName}
+     * @return {baidu.ui.table.Cell}
      */
-	getCell : function(index){
+	getCell: function(index) {
 		var me = this, td = me._getCols()[index], cell;
-		if(td){
-			if(td.id){
+		if (td) {
+			if (td.id) {
 				cell = me._cells[td.id];
-			}else{
-				cell = new baidu.ui.table.Cell({target : td});
+			}else {
+				cell = new baidu.ui.table.Cell({target: td});
 				cell._initialize(me);
 				me._cells[cell.getId()] = cell;
 			}
@@ -179,14 +179,14 @@ baidu.ui.table.Row = baidu.ui.createUI(function(options){
 		td = null;
 		return cell;
 	},
-	
+
 	/**
 	 * 销毁实例
-	 * @memberOf {TypeName} 
+	 * @memberOf {TypeName}
 	 */
-    dispose : function(){
+    dispose: function() {
         var me = this;
-        me.dispatchEvent("dispose");
+        me.dispatchEvent('dispose');
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });

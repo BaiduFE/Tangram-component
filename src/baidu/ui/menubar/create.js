@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/menubar/create.js
  * author: rocy
  * version: 1.0.0
@@ -17,8 +17,8 @@
  * @param {Object} options
  * @return {baidu.ui.menubar.Menubar}
  */
-baidu.ui.menubar.create = function(data,options){
-	options = options || {};
-	options.data = data || [];
-	return new baidu.ui.menubar.Menubar(options);
+baidu.ui.menubar.create = function(data,options) {
+    options = options || {};
+    options.data = data || [];
+    return new baidu.ui.menubar.Menubar(options);
 };

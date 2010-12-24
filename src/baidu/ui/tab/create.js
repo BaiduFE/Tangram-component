@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/tab/create.js
  * author: berg
  * version: 1.0.0
@@ -22,7 +22,7 @@
  * @param {Object} options
  * @return {baidu.ui.tab.Tab}
  */
-baidu.ui.tab.create = function(main, options){
+baidu.ui.tab.create = function(main, options) {
     var t = new baidu.ui.tab.Tab(options);
     t.render(main);
     return t;

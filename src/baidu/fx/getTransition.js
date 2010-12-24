@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
- * 
+ *
  * @author: meizz
  * @create: 2010-07-15
  * @namespace: baidu.fx.getTransition
@@ -12,26 +12,26 @@
 
 /**
  * 获取线型函数
- * 
- * @param   {String}    name    transition的名称
- * @return  {function}          线型函数
+ *
+ * @param   {string}    name    transition的名称.
+ * @return  {function}          线型函数.
  */
 baidu.fx.getTransition = function(name) {
     var a = baidu.fx.transitions;
-    if (!name || typeof a[name] != "string") name = "linear";
-    return new Function("percent", a[name]);
+    if (!name || typeof a[name] != 'string') name = 'linear';
+    return new Function('percent', a[name]);
 };
 
 baidu.fx.transitions = {
-    none : "return 0"
-    ,full : "return 1"
-    ,linear : "return percent"  // 斜线
-    ,reverse : "return 1 - percent" // 反斜线
-    ,parabola : "return Math.pow(percent, 2)"   // 抛物线
-    ,antiparabola : "return 1 - Math.pow(1 - percent, 2)"   // 反抛物线
-    ,sinoidal : "return (-Math.cos(percent * Math.PI)/2) + 0.5" // 正弦波
-    ,wobble : "return (-Math.cos(percent * Math.PI * (9 * percent))/2) + 0.5"   // 摇晃
-    ,spring : "return 1 - (Math.cos(percent * 4.5 * Math.PI) * Math.exp(-percent * 6))" // 弹性阴尼
+    none: 'return 0'
+    , full: 'return 1'
+    , linear: 'return percent'  // 斜线
+    , reverse: 'return 1 - percent' // 反斜线
+    , parabola: 'return Math.pow(percent, 2)'   // 抛物线
+    , antiparabola: 'return 1 - Math.pow(1 - percent, 2)'   // 反抛物线
+    , sinoidal: 'return (-Math.cos(percent * Math.PI)/2) + 0.5' // 正弦波
+    , wobble: 'return (-Math.cos(percent * Math.PI * (9 * percent))/2) + 0.5'   // 摇晃
+    , spring: 'return 1 - (Math.cos(percent * 4.5 * Math.PI) * Math.exp(-percent * 6))' // 弹性阴尼
 };
 
 /*

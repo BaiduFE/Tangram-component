@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/dialog.js
  * author: berg
  * version: 1.0.0
@@ -13,5 +13,6 @@
 /**
  * 定义名字空间
  * instances用于存放实例guid及其状态
+ * @namespace
  */
-baidu.ui.dialog = baidu.ui.dialog || {instances : {}};
+baidu.ui.dialog = baidu.ui.dialog || {instances: {}};

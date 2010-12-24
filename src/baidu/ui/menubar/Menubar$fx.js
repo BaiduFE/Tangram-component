@@ -15,24 +15,24 @@
 /**
  * 为Menubar添加效果支持
  */
-baidu.object.extend(baidu.ui.menubar.Menubar.prototype,{
-	showFx : baidu.fx.expand,
-	showFxOptions : {duration:200},
-	hideFx : baidu.fx.collapse,
-	hideFxOptions : {duration:500,restoreAfterFinish:true}
+baidu.object.extend(baidu.ui.menubar.Menubar.prototype, {
+    showFx: baidu.fx.expand,
+    showFxOptions: {duration: 200},
+    hideFx: baidu.fx.collapse,
+    hideFxOptions: {duration: 500, restoreAfterFinish: true}
 });
 
-
-baidu.ui.menubar.Menubar.register(function(me){
-	me.addEventListener('onopen', function(){
-		!baidu.ui.menubar.showing && 'function' == typeof me.showFx && me.showFx(baidu.g(me.getId()),me.showFxOptions);
-	});
-	me.addEventListener('onbeforeclose',function(e){
-		try{
-			me.hideFx(baidu.g(me.getId()),me.hideFxOptions)
-				.addEventListener('onafterfinish',function(){me.close(true)});
-			e.returnValue = false;
-		}catch(error){}
-		return false;
-	});
+baidu.ui.menubar.Menubar.register(function(me) {
+	  me.addEventListener('onopen', function() {
+		    !baidu.ui.menubar.showing && 'function' == typeof me.showFx && me.showFx(baidu.g(me.getId()), me.showFxOptions);
+	  });
+	  me.addEventListener('onbeforeclose', function(e) {
+		    try {
+			      me.hideFx(baidu.g(me.getId()), me.hideFxOptions).addEventListener('onafterfinish', function() {
+                me.close(true)
+            });
+			      e.returnValue = false;
+		    }catch (error) {}
+		    return false;
+	  });
 });

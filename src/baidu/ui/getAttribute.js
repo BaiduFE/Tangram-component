@@ -1,7 +1,7 @@
 /*
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: baidu/ui/getAttribute.js
  * author: berg
  * version: 1.0.0
@@ -16,18 +16,16 @@
 /**
  *  从指定的dom元素中获取ui控件的属性值
  *
- *  todo: &datasource支持
+ *  TODO &datasource支持
  */
-
-baidu.ui.getAttribute = function(element){
-    var attributeName = "data-tangram",
+baidu.ui.getAttribute = function(element) {
+    var attributeName = 'data-tangram',
         attrs = element.getAttribute(attributeName),
         params = {},
         len,
         trim = baidu.string.trim;
 
     if (attrs) {
-        //element.removeAttribute(attributeName);
         attrs = attrs.split(';');
         len = attrs.length;
 

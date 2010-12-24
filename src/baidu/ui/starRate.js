@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/starRate.js
  * author: rocy
  * version: 1.0.0
@@ -12,5 +12,6 @@
 
 /**
  * 定义名字空间
+ * @namespace
  */
-baidu.ui.starRate = baidu.ui.starRate || {} ;
+baidu.ui.starRate = baidu.ui.starRate || {};

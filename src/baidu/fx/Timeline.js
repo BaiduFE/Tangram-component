@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
- * 
+ *
  * @author: meizz
  * @namespace: baidu.fx.Timeline
  * @create: 2010-01-23
@@ -36,26 +36,26 @@ baidu.fx.Timeline = baidu.lang.createClass(function(options) {
     baidu.object.extend(this, options);
 },
 {
-    className: "baidu.fx.Timeline"
-    ,options:{interval:16, duration:500, dynamic:true}
+    className: 'baidu.fx.Timeline'
+    , options: {interval: 16, duration: 500, dynamic: true}
 }).extend({  // 类的方法的扩展
 
     /**
      * 启动时间线
-     * @return {instance} 类实例
+     * @return {instance} 类实例.
      */
-    launch : function(){
+    launch: function() {
         var me = this;
-        me.dispatchEvent("onbeforestart");
+        me.dispatchEvent('onbeforestart');
 
         /**
         * initialize()接口，当时间线初始化同步进行的操作
         */
-        typeof me.initialize =="function" && me.initialize();
+        typeof me.initialize == 'function' && me.initialize();
 
-        me["\x06btime"] = new Date().getTime();
-        me["\x06etime"] = me["\x06btime"] + (me.dynamic ? me.duration : 0);
-        me["\x06pulsed"]();
+        me['\x06btime'] = new Date().getTime();
+        me['\x06etime'] = me['\x06btime'] + (me.dynamic ? me.duration : 0);
+        me['\x06pulsed']();
 
         return me;
     }
@@ -63,52 +63,52 @@ baidu.fx.Timeline = baidu.lang.createClass(function(options) {
     /** @ignore
      * [privite] 每个时间脉冲所执行的程序
      */
-    ,"\x06pulsed" : function(){
+    ,'\x06pulsed' : function() {
         var me = this;
         var now = new Date().getTime();
         // 当前时间线的进度百分比
-        me.percent = (now - me["\x06btime"]) / me.duration;
-        me.dispatchEvent("onbeforeupdate");
+        me.percent = (now - me['\x06btime']) / me.duration;
+        me.dispatchEvent('onbeforeupdate');
 
         // 时间线已经走到终点
-        if (now >= me["\x06etime"]){
-            typeof me.render == "function" && me.render(me.transition(me.percent = 1));
+        if (now >= me['\x06etime']) {
+            typeof me.render == 'function' && me.render(me.transition(me.percent = 1));
 
             // [interface run] finish()接口，时间线结束时对应的操作
-            typeof me.finish == "function" && me.finish();
+            typeof me.finish == 'function' && me.finish();
 
-            me.dispatchEvent("onafterfinish");
+            me.dispatchEvent('onafterfinish');
             me.dispose();
             return;
         }
 
         /**
         * [interface run] render() 用来实现每个脉冲所要实现的效果
-        * @param {Number} schedule 时间线的进度
+        * @param {Number} schedule 时间线的进度.
         */
-        typeof me.render == "function" && me.render(me.transition(me.percent));
-        me.dispatchEvent("onafterupdate");
+        typeof me.render == 'function' && me.render(me.transition(me.percent));
+        me.dispatchEvent('onafterupdate');
 
-        me["\x06timer"] = setTimeout(function(){me["\x06pulsed"]()}, me.interval);
+        me['\x06timer'] = setTimeout(function() {me['\x06pulsed']()}, me.interval);
     }
 
     /**
      * 重新计算 schedule，以产生各种适合需求的进度曲线
      */
-    ,transition : function(percent) {
+    ,transition: function(percent) {
         return percent;
     }
 
     /**
      * 撤销当前时间线的操作，并引发 restore() 接口函数的操作
      */
-    ,cancel : function() {
-        this["\x06timer"] && clearTimeout(this["\x06timer"]);
-        this["\x06etime"] = this["\x06btime"];
+    ,cancel: function() {
+        this['\x06timer'] && clearTimeout(this['\x06timer']);
+        this['\x06etime'] = this['\x06btime'];
 
         // [interface run] restore() 当时间线被撤销时的恢复操作
-        typeof this.restore == "function" && this.restore();
-        this.dispatchEvent("oncancel");
+        typeof this.restore == 'function' && this.restore();
+        this.dispatchEvent('oncancel');
 
         this.dispose();
     }
@@ -116,9 +116,9 @@ baidu.fx.Timeline = baidu.lang.createClass(function(options) {
     /**
      * 直接将时间线运行到结束点
      */
-    ,end : function() {
-        this["\x06timer"] && clearTimeout(this["\x06timer"]);
-        this["\x06etime"] = this["\x06btime"];
-        this["\x06pulsed"]();
+    ,end: function() {
+        this['\x06timer'] && clearTimeout(this['\x06timer']);
+        this['\x06etime'] = this['\x06btime'];
+        this['\x06pulsed']();
     }
 });

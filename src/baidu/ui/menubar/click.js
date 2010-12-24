@@ -24,7 +24,7 @@
  * @param {Object} options
  * @return {baidu.ui.menubar.Menubar}
  */
-baidu.ui.menubar.click = function(element, data, options){
+baidu.ui.menubar.click = function(element, data, options) {
     options = baidu.object.extend({
         data: data,
         type: 'click',
