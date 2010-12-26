@@ -53,8 +53,8 @@
 baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
 }).extend({
     //ui控件的类型，传入给UIBase **必须**
-    uiType            : "POPUP",
-   //ui控件的class样式前缀 可选
+    uiType            : "popup",
+    //ui控件的class样式前缀 可选
     //classPrefix     : "tangram-popup-",
 
     width           : '',
