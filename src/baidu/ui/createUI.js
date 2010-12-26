@@ -62,12 +62,12 @@ baidu.ui.createUI = function(constructor, options) {
 
     C.prototype = superClass.prototype;
 
-    // 继承父类的原型（prototype)链
-    var fp = ui.prototype = new C();
+    //继承父类的原型链
+    var proto = ui.prototype = new C();
 
     //继承Base中的方法到prototype中
     for (i in baidu.ui.Base) {
-        fp[i] = baidu.ui.Base[i];
+        proto[i] = baidu.ui.Base[i];
     }
 
     //给类扩展出一个静态方法，以代替 baidu.object.extend()
