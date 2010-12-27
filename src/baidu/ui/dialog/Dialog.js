@@ -143,7 +143,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         //main.style.left =  '-10000em';
         main.innerHTML = me.getString();
 
-		me.update(me);
+		me._update(me);
 
         baidu.dom.setStyles(me.getMain(), {
             position    : "absolute",
@@ -175,7 +175,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
      */
     open : function(options){
         var me = this;
-        me.update(options);
+        me._update(options);
         me.getMain().style.marginLeft = "auto";
         baidu.ui.dialog.instances[me.guid] = "show";
         me.dispatchEvent("onopen");
@@ -199,7 +199,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
      * @param  {Object}             options optional        选项参数
      *
      */
-    update : function(options){
+   _update : function(options){
         options = options || {};
         var me = this, contentWrapper = me.getContent();
 
@@ -221,12 +221,13 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         if(options.titleText)
             me.getTitleInner("title-inner").innerHTML = options.titleText;
 
-        //更新buttons
-        baidu.object.each(options.buttons,function(op,name){
-            me.buttonInstance[name] ? me.buttonInstance[name].update(op) : me.createButton(op,name); 
-        });
-
         me._updatePosition();
+    },
+
+    update:function(options){
+        var me = this;
+        options = options || {};
+        me._update(options);
         me.dispatchEvent("onupdate");
     },
 

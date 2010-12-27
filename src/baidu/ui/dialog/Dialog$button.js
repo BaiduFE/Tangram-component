@@ -58,6 +58,7 @@ baidu.extend(baidu.ui.dialog.Dialog.prototype,{
         if(button){
             button.dispose();
             delete(me.buttonInstances[name]);
+            delete(me.buttons[name]);
         }
     }
 });
@@ -76,6 +77,13 @@ baidu.ui.dialog.Dialog.register(function(me){
     me.addEventListener("ondispose",function(){
         baidu.object.each(me.buttons,function(opt, name){
             me.removeButton(name);
+        });
+    });
+
+    //在update时同时update buttons
+    me.addEventListener("onupdate",function(){
+        baidu.object.each(me.buttons,function(opt, name){
+            me.buttonInstances[name] ? me.buttonInstances[name].update(opt) : me.createButton(opt,name); 
         });
     });
 });

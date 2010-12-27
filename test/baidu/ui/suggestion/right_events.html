@@ -1,0 +1,724 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>正常用法，suggestion内容测试</title>
+		
+		<script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.0.js"></script>
+		<!-- suggestion js -->
+		<script src="../../../../src/baidu/ui.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Central.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Div.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Data.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Input.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/create.js"></script>
+		<!-- suggestion js-->
+		<!-- test js -->
+		<!-- test js -->
+		<style>
+		    .tangram_sug_wpr{border:1px solid #817F82;position:absolute;background-color:white;top:28px;left:0}
+		    .tangram_sug_wpr table{width:100%;background:#fff;cursor:default}
+		    .tangram_sug_wpr td{font:14px verdana}
+		    .tangram_sug_mo{background-color:#36c;color:#fff}
+		    .tangram_sug_ml{background-color:#fff;color:#000}
+		    .tangram_sug_app{background-color:white;}
+		    .tangram_sug_pre{background-color:white;}
+		
+		</style>
+	</head>
+	<body>
+		<p align=center style="font-size:120%">
+			<font color="#3333ee">This is options中的onhighlight事件 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		只含有"getData"：
+		<input type=text name="aa" id="aa" />
+		<input type=text name="ab" id="ab" />
+		含有"getData"、"prepend_html"和"append_html"：
+		<input type=text name="ac" id="ac" />
+		<input type=text name="ad" id="ad" />
+		<br />
+		含有"getData"和"append_html"：
+		<input type=text name="ae" id="ae" />
+		<input type=text name="af" id="af" />
+		含有"getData"和"prepend_html"：
+		<input type=text name="ag" id="ag" />
+		<input type=text name="ah" id="ah" />
+		<br />
+		<br />
+		<div id='div_a'></div>
+		<!-- =======================等价类分解符===================================================== -->
+		<p align=center style="font-size:120%">
+			<font color="#cc44cc">This is options中的onhide事件 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		只含有"getData"：
+		<input type=text name="ba" id="ba" />
+		<input type=text name="bb" id="bb" />
+		含有"getData"、"prepend_html"和"append_html"：
+		<input type=text name="bc" id="bc" />
+		<input type=text name="bd" id="bd" />
+		<br />
+		含有"getData"和"append_html"：
+		<input type=text name="be" id="be" />
+		<input type=text name="bf" id="bf" />
+		含有"getData"和"prepend_html"：
+		<input type=text name="bg" id="bg" />
+		<input type=text name="bh" id="bh" />
+		<br />
+		<br />
+		<div id='div_b'></div>
+		<!-- =======================等价类分解符===================================================== -->
+		<p align=center style="font-size:120%">
+			<font color="#33cccc">This is options中的onpick事件 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		只含有"getData"：
+		<input type=text name="ca" id="ca" />
+		<input type=text name="cb" id="cb" />
+		含有"getData"、"prepend_html"和"append_html"：
+		<input type=text name="cc" id="cc" />
+		<input type=text name="cd" id="cd" />
+		<br />
+		含有"getData"和"append_html"：
+		<input type=text name="ce" id="ce" />
+		<input type=text name="cf" id="cf" />
+		含有"getData"和"prepend_html"：
+		<input type=text name="cg" id="cg" />
+		<input type=text name="ch" id="ch" />
+		<br />
+		<br />
+		<div id='div_c'></div>
+		<!-- =======================等价类分解符===================================================== -->
+		<p align=center style="font-size:120%">
+			<font color="#33cc66">This is options中的onconfirm事件 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		只含有"getData"：
+		<input type=text name="da" id="da" />
+		<input type=text name="db" id="db" />
+		含有"getData"、"prepend_html"和"append_html"：
+		<input type=text name="dc" id="dc" />
+		<input type=text name="dd" id="dd" />
+		<br />
+		含有"getData"和"append_html"：
+		<input type=text name="de" id="de" />
+		<input type=text name="df" id="df" />
+		含有"getData"和"prepend_html"：
+		<input type=text name="dg" id="dg" />
+		<input type=text name="dh" id="dh" />
+		<br />
+		<br />
+		<div id='div_d'></div>
+		<!-- =======================等价类分解符===================================================== -->
+		<p align=center style="font-size:120%">
+			<font color="#33FF66">This is options中的view属性 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		只含有"getData"：
+		<input type=text name="ea" id="ea" />
+		<input type=text name="eb" id="eb" />
+		含有"getData"、"prepend_html"和"append_html"：
+		<input type=text name="ec" id="ec" />
+		<input type=text name="ed" id="ed" />
+		<br />
+		含有"getData"和"append_html"：
+		<input type=text name="ee" id="ee" />
+		<input type=text name="ef" id="ef" />
+		含有"getData"和"prepend_html"：
+		<input type=text name="eg" id="eg" />
+		<input type=text name="eh" id="eh" />
+		<br />
+		<br />
+		<div id='div_e'></div>
+		<!-- =======================等价类分解符===================================================== -->
+		<p align=center style="font-size:120%">
+			<font color="#99ccFF">This is 对一个input连续多次添加suggestion test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="fa" id="fa" />
+		<input type=text name="fb" id="fb" />
+		<input type="button" value="highlight" onclick="change_highlight()" />
+		<input type="button" value="pick" onclick="change_pick()" />
+		<input type="button" value="confirm" onclick="change_confirm()" />
+		<br />
+		<br />
+		<div id='div_f'></div>
+		<!-- =======================等价类分解符===================================================== -->
+		<p align=center style="font-size:120%">
+			<font color="#FFCC77">This is options中含有所有属性 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="ga" id="ga" />
+		<input type=text name="gb" id="gb" />
+		<input type="button" value="add_highlight" onclick="add_highlight()" />
+		<input type="button" value="add_pick" onclick="add_pick()" />
+		<input type="button" value="add_confirm" onclick="add_confirm()" />
+		<input type="button" value="add_hide" onclick="add_hide()" />
+		<input type="button" value="add_suggestion" onclick="add_suggestion()" />
+		<br />
+		<br />
+		<div id='div_g_h1'></div>
+		<div id='div_g_h2'></div>
+		<div id='div_g_p'></div>
+		<div id='div_g_c'></div>
+
+		<script type="text/javascript">
+	//回调函数
+	sab_call = function(){
+		sab.giveData("sab", raa);
+	};
+	sad_call = function(){
+		sad.giveData("sad", raa);	
+	};
+	saf_call = function(){
+		saf.giveData("saf", raa);	
+	};
+	sah_call = function(){
+		sah.giveData("sah", raa);	
+	};
+//options中的onhighlight事件
+//只含有"getData"
+	var raa = ["开始", {"input":"i开始", "selection":"s开始"}, "#", {"input":"*", "selection":"#"}, 
+					"5", {"input":"5", "selection":"1"}, "E", {"input":"P", "selection":"E"}, "a", {"input":"b", "selection":"a"}, "aA190$%^", 
+					{"input":"bB190$%^", "selection":"aA190$%^"}, "这是中文吗lll", "ａＢ２＃（\t 结束", 
+					{"input":"这是中文吗zzz", "selection":"这是中文吗lll"}, 
+					{"input":"ａＢｃＤ６９＠＃（\t 结束", "selection":"ａＢ２＃（\t 结束"},
+					{"input":"SAd12#$中文ａＢ１＃￥\t＊", "selection":"<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"}];
+	var options_1 = {
+		"onhighlight" : function(wd, idx, value, html){
+			if (parseInt(wd) == idx)
+				baidu.G("div_a").innerHTML = "highlight"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			saa.giveData("saa", raa);
+		}
+	};
+	var saa = baidu.suggestion.create("aa", options_1);
+	options_1.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sab_call);	};
+	var sab = baidu.suggestion.create(baidu.G("ab"), options_1);
+	
+	//options中含有"getData"、"prepend_html"和"append_html"
+	var options_2 = {
+		"onhighlight" : function(wd, idx, value, html){
+			if (parseInt(wd) == idx)
+        		baidu.G("div_a").innerHTML = "highlight"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			sac.giveData("sac", raa);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa",
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sac = baidu.suggestion.create(baidu.G("ad"), options_2);
+	options_2.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sad_call);	};	
+	var sad = baidu.suggestion.create("ac", options_2);
+	
+	//options中含有"getData"和"append_html"
+	var options_3 = {
+		"onhighlight" : function(wd, idx, value, html){
+			if (parseInt(wd) == idx)
+        		baidu.G("div_a").innerHTML = "highlight"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			sae.giveData("sae", raa);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sae = baidu.suggestion.create("ae", options_3);
+	options_3.getData = function(word){	baidu.ajax.get("./php/suggestion.php", saf_call);	};	
+	var saf = baidu.suggestion.create(baidu.G("af"), options_3);
+	
+	//options中含有"getData"和"prepend_html"
+	var options_4 = {
+		"onhighlight" : function(wd, idx, value, html){
+			if (parseInt(wd) == idx)
+        		baidu.G("div_a").innerHTML = "highlight"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			sag.giveData("sag", raa);
+		},
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sag = baidu.suggestion.create(baidu.G("ah"), options_4);
+	options_4.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sah_call);	};
+	var sah = baidu.suggestion.create("ag", options_4);
+</script>
+
+		<script type="text/javascript">
+//options中的onhide事件
+	//回调函数
+	sbb_call = function(){
+		sbb.giveData("sbb", raa);
+	};
+	sbd_call = function(){
+		sbd.giveData("sbd", raa);	
+	};
+	sbf_call = function(){
+		sbf.giveData("sbf", raa);	
+	};
+	sbh_call = function(){
+		sbh.giveData("sbh", raa);	
+	};
+//只含有"getData"
+	var hide_str = "nothing";
+	var options_1 = {
+		"onhide" : function(){
+			baidu.G("div_b").innerHTML = "only getData hide case";
+        },
+		"getData" : function(word){
+			sba.giveData("sba", raa);
+		}
+	};
+	var sba = baidu.suggestion.create("ba", options_1);
+	options_1.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sbb_call);	};
+	var sbb = baidu.suggestion.create(baidu.G("bb"), options_1);
+	
+	//options中含有"getData"、"prepend_html"和"append_html"
+	var options_2 = {
+		"onhide" : function(){
+			baidu.G("div_b").innerHTML =  "getData,prepend_html,append_html case";
+        },
+		"getData" : function(word){
+			sbc.giveData("sbc", raa);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa",
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sbc = baidu.suggestion.create(baidu.G("bd"), options_2);
+	options_2.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sbd_call);	};
+	var sbd = baidu.suggestion.create("bc", options_2);
+	
+	//options中含有"getData"和"append_html"
+	var options_3 = {
+		"onhide" : function(){
+			baidu.G("div_b").innerHTML = "getData,append_html case";
+        },
+		"getData" : function(word){
+			sbe.giveData("sbe", raa);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sbe = baidu.suggestion.create("be", options_3);
+	options_3.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sbf_call);	};
+	var sbf = baidu.suggestion.create(baidu.G("bf"), options_3);
+	
+	//options中含有"getData"和"prepend_html"
+	var options_4 = {
+		"onhide" : function(){
+			baidu.G("div_b").innerHTML = "getData,prepend_html case";
+        },
+		"getData" : function(word){
+			sbg.giveData("sbg", raa);
+		},
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sbg = baidu.suggestion.create(baidu.G("bh"), options_4);
+	options_4.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sbh_call);	};
+	var sbh = baidu.suggestion.create("bg", {
+		"onhide" : function(){
+			baidu.G("div_b").innerHTML = "getData,prepend_html case";
+        },
+		"getData" : function(word){
+			sbg.giveData("sbg", raa);
+		},
+		"prepend_html" : "<b>suggest here:</b>&gt;aa",
+        "getData" : function(word){	sbh.giveData("sbh", ["开始", {"input":"i开始", "selection":"s开始"}, "#", {"input":"*", "selection":"#"}, 
+					"5", {"input":"5", "selection":"1"}, "E", {"input":"P", "selection":"E"}, "a", {"input":"b", "selection":"a"}, "aA190$%^", 
+					{"input":"bB190$%^", "selection":"aA190$%^"}, "这是中文吗lll", "ａＢ２＃（\t 结束", 
+					{"input":"这是中文吗zzz", "selection":"这是中文吗lll"}, 
+					{"input":"ａＢｃＤ６９＠＃（\t 结束", "selection":"ａＢ２＃（\t 结束"},
+					{"input":"SAd12#$中文ａＢ１＃￥\t＊", "selection":"<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"}]);}
+	});
+</script>
+
+<script type="text/javascript">
+	//options中的onpick事件
+	//回调函数
+	scb_call = function(){
+		scb.giveData("scb", raa);
+	};
+	scd_call = function(){
+		scd.giveData("scd", raa);	
+	};
+	scf_call = function(){
+		scf.giveData("scf", raa);	
+	};
+	sch_call = function(){
+		sch.giveData("sch", raa);	
+	};
+	//只含有"getData"
+	var options_1 = {
+		"onpick" : function(wd, idx, value, html){
+			baidu.G("div_c").innerHTML = "pick"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			sca.giveData("sca", raa);
+		}
+	};
+	var sca = baidu.suggestion.create("ca", options_1);
+	options_1.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", scb_call);	};
+	var scb = baidu.suggestion.create(baidu.G("cb"), options_1);
+	
+	//options中含有"getData"、"prepend_html"和"append_html"
+	var options_2 = {
+		"onpick" : function(wd, idx, value, html){
+			baidu.G("div_c").innerHTML = "pick"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			scc.giveData("scc", raa);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa",
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var scc = baidu.suggestion.create(baidu.G("cd"), options_2);
+	options_2.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", scd_call);	};
+	var scd = baidu.suggestion.create("cc", options_2);
+	
+	//options中含有"getData"和"append_html"
+	var options_3 = {
+		"onpick" : function(wd, idx, value, html){
+			baidu.G("div_c").innerHTML = "pick"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			sce.giveData("sce", raa);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sce = baidu.suggestion.create("ce", options_3);
+	options_3.getData = function(word){	baidu.ajax.get("./php/suggestion.php", scf_call);	};
+	var scf = baidu.suggestion.create(baidu.G("cf"), options_3);
+	
+	//options中含有"getData"和"prepend_html"
+	var options_4 = {
+		"onpick" : function(wd, idx, value, html){
+			baidu.G("div_c").innerHTML = "pick"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			scg.giveData("scg", raa);
+		},
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var scg = baidu.suggestion.create(baidu.G("ch"), options_4);
+	options_4.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sch_call);	};
+	var sch = baidu.suggestion.create("cg", options_4);
+</script>
+
+		<script type="text/javascript">
+//options中的onconfirm事件
+	//回调函数
+	sdb_call = function(){
+		sdb.giveData("sdb", raa);
+	};
+	sdd_call = function(){
+		sdd.giveData("sdd", raa);	
+	};
+	sdf_call = function(){
+		sdf.giveData("sdf", raa);	
+	};
+	sdh_call = function(){
+		sdh.giveData("sdh", raa);	
+	};
+	//只含有"getData"
+	var options_1 = {
+		"onconfirm" : function(wd, idx, value, html){
+			baidu.G("div_d").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			sda.giveData("sda", raa);
+		}
+	};
+	var sda = baidu.suggestion.create("da", options_1);
+	options_1.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sdb_call);	};
+	var sdb = baidu.suggestion.create(baidu.G("db"), options_1);
+	
+	//options中含有"getData"、"prepend_html"和"append_html"
+	var options_2 = {
+		"onconfirm" : function(wd, idx, value, html){
+			baidu.G("div_d").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			sdc.giveData("sdc", raa);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa",
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sdc = baidu.suggestion.create(baidu.G("dd"), options_2);
+	options_2.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sdd_call);	};
+	var sdd = baidu.suggestion.create("dc", options_2);
+	
+	//options中含有"getData"和"append_html"
+	var options_3 = {
+		"onconfirm" : function(wd, idx, value, html){
+			baidu.G("div_d").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			sde.giveData("sde", raa);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sde = baidu.suggestion.create("de", options_3);
+	options_3.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sdf_call);	};
+	var sdf = baidu.suggestion.create(baidu.G("df"), options_3);
+	//options中含有"getData"和"prepend_html"
+	var options_4 = {
+		"onconfirm" : function(wd, idx, value, html){
+			baidu.G("div_d").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+        },
+		"getData" : function(word){
+			sdg.giveData("sdg", raa);
+		},
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sdg = baidu.suggestion.create(baidu.G("dh"), options_4);
+	options_4.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sdh_call);	};
+	var sdh = baidu.suggestion.create("dg", options_4);
+</script>
+		
+<script type="text/javascript">
+//options中的view事件
+	//回调函数
+	seb_call = function(){
+		seb.giveData("seb", raa);
+	};
+	sed_call = function(){
+		sed.giveData("sed", raa);	
+	};
+	sef_call = function(){
+		sef.giveData("sef", raa);	
+	};
+	seh_call = function(){
+		seh.giveData("seh", raa);	
+	};
+	//只含有"getData"
+	var options_1 = {
+		"view" : function(){
+			return [-30, 69, 110];
+        },
+        "onconfirm" : function(wd, idx, value, html){
+			baidu.G("div_e").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	    },
+		"getData" : function(word){
+			sea.giveData("sea", raa);
+		}
+	};
+	var sea = baidu.suggestion.create("ea", options_1);
+	options_1.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", seb_call);	};
+	var seb = baidu.suggestion.create(baidu.G("eb"), options_1);
+	
+	//options中含有"getData"、"prepend_html"和"append_html"
+	var options_2 = {
+		"view" : function(){
+			return [30, -5, 1000];
+        },
+        "onconfirm" : function(wd, idx, value, html){
+			baidu.G("div_e").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	    },
+		"getData" : function(word){
+			sec.giveData("sec", raa);
+		},
+		"append_html" : "<b>sug:</b>&gt;aa",
+		"prepend_html" : "<b>sug:</b>&gt;aa"
+	};
+	var sec = baidu.suggestion.create(baidu.G("ed"), options_2);
+	options_2.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sed_call);	};
+	var sed = baidu.suggestion.create("ec", options_2);
+	
+	//options中含有"getData"和"append_html"
+	var options_3 = {
+		"view" : function(){
+			return [30, 20, 100];
+        },
+        "onconfirm" : function(wd, idx, value, html){
+			baidu.G("div_e").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	    },
+		"getData" : function(word){
+			see.giveData("see", raa);
+		},
+		"append_html" : "<b>sug:</b>&gt;aa"
+	};
+	var see = baidu.suggestion.create("ee", options_3);
+	options_3.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sef_call);	};
+	var sef = baidu.suggestion.create(baidu.G("ef"), options_3);
+	
+	//options中含有"getData"和"prepend_html"
+	var options_4 = {
+		"view" : function(){
+			return [30, 10, 120];
+        },
+        "onconfirm" : function(wd, idx, value, html){
+			baidu.G("div_e").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	    },
+		"getData" : function(word){
+			seg.giveData("seg", raa);
+		},
+		"prepend_html" : "<b>sug:</b>&gt;aa"
+	};
+	var seg = baidu.suggestion.create(baidu.G("eh"), options_4);
+	options_4.getData = function(word){	baidu.ajax.get("./php/suggestion.php", seh_call);	};
+	var seh = baidu.suggestion.create("eg", options_4);
+</script>
+
+<script type="text/javascript">
+//对一个input连续多次添加suggestion
+	//回调函数
+	sfb_call = function(){
+		sfb.giveData("sfb", raa);
+	};
+	sfd_call = function(){
+		sfd.giveData("sfd", raa);	
+	};
+	sff_call = function(){
+		sff.giveData("sff", raa);	
+	};
+	sfh_call = function(){
+		sfh.giveData("sfh", raa);	
+	};
+	
+	var f_option_1 = {
+		"view" : function(){
+			return [330, 69, 120];
+        },
+		"getData" : function(word){
+			sfa.giveData("sfa", raa);
+		}
+	};
+	var sfa = baidu.suggestion.create("fa", f_option_1);
+	f_option_1.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sfb_call);	};
+	var sfb = baidu.suggestion.create(baidu.G("fb"), f_option_1);
+	
+	var sfd, sff, sfh;
+	/**
+	 * @fun 添加suggestion的onhighlight事件
+	 */
+	function change_highlight(){
+		var f_option_2 = {
+			"view" : function(){
+				return [300, 169, 120];
+        	},
+			"onhighlight" : function(wd, idx, value, html){
+				if (parseInt(wd) == idx)
+	        		baidu.G("div_f").innerHTML = "highlight"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	        },
+			"getData" : function(word){
+				sfc.giveData("sfc", raa);
+			},
+			"append_html" : "<b>suggest here:</b>&gt;aa",
+			"prepend_html" : "<b>suggest here:</b>&gt;aa"
+		};
+		var sfc = baidu.suggestion.create(baidu.G("fb"), f_option_2);
+		f_option_2.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sfd_call);	};
+		sfd = baidu.suggestion.create("fa", f_option_2);
+	}
+	/**
+	 * @fun 添加suggestion的onpick事件
+	 */
+	function change_pick(){
+		var f_option_3 = {
+			"view" : function(){
+				return [300, 269, 120];
+        	},
+			"onpick" : function(wd, idx, value, html){
+				baidu.G("div_f").innerHTML = "pick"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	        },
+			"getData" : function(word){
+				sfe.giveData("sfe", raa);
+			},
+			"append_html" : "<b>suggest here:</b>&gt;aa"
+		};
+		var sfe = baidu.suggestion.create("fa", f_option_3);
+		f_option_3.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sff_call);	};
+		sff = baidu.suggestion.create(baidu.G("fb"), f_option_3);
+	}
+	/**
+	 * @fun 添加suggestion的onconfirm事件
+	 */
+	function change_confirm(){
+		var f_option_4 = {
+			"view" : function(){
+				return [300, 369, 120];
+        	},
+			"onconfirm" : function(wd, idx, value, html){
+				baidu.G("div_f").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	        },
+			"getData" : function(word){
+				sfg.giveData("sfg", raa);
+			},
+			"prepend_html" : "<b>suggest here:</b>&gt;aa"
+		};
+		var sfg = baidu.suggestion.create(baidu.G("fb"), f_option_4);
+		f_option_4.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sfh_call);	};
+		sfh = baidu.suggestion.create("fa", f_option_4);
+	}
+</script>
+<script type="text/javascript">
+	//回调函数
+	sgb_call = function(){
+		sgb.giveData("sgb", raa);
+	};
+	var options = {
+        "append_html" : "<b>suggest here:</b>&gt;aa",
+        "prepend_html" : "<b>suggest here:</b>&gt;aa"
+    };
+    
+    function add_highlight(){
+    	options.onhighlight = function(wd, idx, value, html){
+				if (parseInt(wd) == idx)
+	        		baidu.G("div_g_h1").innerHTML = "highlight"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	    };
+		options.view = function(){
+        	return [100, 100, 100];
+        };
+    }
+    function add_pick(){
+    	options.onpick = function(wd, idx, value, html){
+				baidu.G("div_g_p").innerHTML = "pick"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	    };
+	    options.view = function(){
+        	return [100, 200, 100];
+        };
+    }
+    function add_confirm(){
+    	options.onconfirm = function(wd, idx, value, html){
+				baidu.G("div_g_c").innerHTML = "confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html;
+	    };
+	    options.view = function(){
+        	return [100, 300, 100];
+        };
+    }
+    function add_hide(){
+    	options.onhide = function(){
+			baidu.G("div_g_h2").innerHTML = "all onhide event";
+        };
+        options.view = function(){
+        	return [100, 400, 100];
+        };
+    }
+    function add_suggestion(){
+    	options.getData = function(word){	sga.giveData("sga", raa);	};
+        sga = baidu.suggestion.create("ga", options);
+        options.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sgb_call);	};
+        sgb = baidu.suggestion.create(baidu.G("gb"), options);
+    }
+    
+</script>
+
+ 
+	</body>
+</html>

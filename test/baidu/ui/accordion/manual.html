@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script src='../../../../src/loader.js' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.accordion.*' ></script>
+        <script>
+            Include("baidu.dom.g");
+        </script>
+        <!--script src="http://img.baidu.com/js/tangram-1.1.1.js"></script-->
+        <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+
+        <style type="text/css">
+		.tangram-accordion{
+			width:250px;
+		}
+		.tangram-accordion-header{
+			border:1px solid #B6C7DB;
+			margin:0;
+			padding-left:10px;
+			cursor:pointer;
+			font-size:14px;
+			line-height:22px;
+			background:url("line.gif") repeat scroll 0 -31px transparent;
+			font-weight:bold;
+		}
+		.tangram-accordion-content{
+			padding-left:10px;
+			color:#261CDC;
+			height:50px;
+			border-left:1px solid #B6C7DB;
+			border-right:1px solid #B6C7DB;
+			border-bottom:1px solid #B6C7DB;
+		}
+		.tangram-accordion-current{
+			background-image:url("line.gif");
+			background-position:-9px 0;
+			color:white;
+		}
+		.tangram-accordion-hover{
+			color:orange;
+		}
+		.container{
+			margin:20px 20px 20px 0;
+		}
+		#config{
+			width:300px;
+			height:150px;
+			border:2px solid #B6C7DB;
+			padding:20px;
+		}
+		</style>
+	</head>
+	<body>
+
+	<div id="config">
+		<h5>本实例不可render多次。</h5>
+		expandItem:<select name="expandItem" id="expandItem">
+			<option value="0">1</option>
+			<option value="1">2</option>
+			<option value="2">3</option>
+		</select>
+		<br><br>
+
+		expandable:<select name="expandable" id="expandable">
+			<option value="true">true</option>
+			<option value="false">false</option>
+		</select>
+		<br><br>
+
+		collapsible:<select name="collapsible" id="collapsible">
+			<option value="true">true</option>
+			<option value="false">false</option>
+		</select>
+		<input type="button" onclick="renderAccordion();" value="render">
+
+	</div>
+
+
+	<div id="container" class="container"></div>
+
+	<input type="button" onclick="add();" value="add item" style="display:none" id="add">
+	<input type="button" onclick="remove();" value="remove item 3" style="display:none" id="remove">
+	<script>
+		var test = [
+						{
+							header : "header1",
+							content: "content1"
+						},
+						{
+							header : "header2",
+							content: "content2"
+						},
+						{
+							header : "header3",
+							content: "content3"
+						}
+					];
+
+
+		function renderAccordion(){
+
+		    var	item = g("expandItem").value,
+				expand = g("expandable").value,
+				collapse = g("collapsible").value;
+			if(expand  == "true")expand = true;
+			if(expand  == "false")expand = false;
+			if(collapse  == "true")collapse = true;
+			if(collapse  == "false")collapse = false;
+
+
+			accordion = new baidu.ui.accordion.Accordion({items:test,expandItem:item,expandable:expand,collapsible:collapse});
+			accordion.render(baidu.g("container"));
+
+			document.getElementById("add").style.display = "inline";
+			document.getElementById("remove").style.display = "inline";
+		}
+
+
+		function add(){
+			accordion.addItem({header:"add header",content:"add content"});
+		}
+		function remove(){
+			accordion.removeItem(2);
+		}
+
+		function g(id){
+			return document.getElementById(id);
+		}
+	</script>
+    </body>
+</html>

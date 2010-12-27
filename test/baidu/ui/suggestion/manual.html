@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+    <head>
+        <title>suggestion manual test - by berg</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script src='../../../../src/loader.js' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.suggestion.*&path=../../tangram/src/' ></script>
+        <!--script src="http://img.baidu.com/js/tangram-1.1.1.js"></script-->
+        <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+<style>
+#console{background-color:black;color:white;width:400px;position:absolute;right:0;top:0;height:500px;overflow-y:scroll;}
+
+.tangram-suggestion-main{
+    background-color: #333;
+    border:1px #817F82 solid;
+    margin:10px;
+    padding:5px;
+    /*故意加上一堆margin等属性，保证suggestion在复杂环境下展现正确*/
+    position:absolute;
+    top:28px;
+    left:0
+}
+.tangram-suggestion table{width:100%;background:#fff;cursor:default}
+.tangram-suggestion td{font:14px verdana}
+.tangram-suggestion-current{background-color:#36c;color:#fff}
+
+.tangram-suggestion-append{background-color:white;}
+.tangram-suggestion-prepend{background-color:white;}
+</style>
+    </head>
+
+    
+    <body>
+        <div id="console"></div>
+
+        <input type="text" id="suggestion1" value="hi" />
+        <br />
+        <select>
+            <option>I'm a select</option>
+        </select>
+        <br /> <br /> <br /> <br /> <br /> <br />
+
+
+        <input type="text" id="suggestion2" value="" style="border:10px #333 solid;margin:3px;" />
+
+        <input type="text" id="suggestion3" value="" />
+
+
+        <script>
+
+            function eventAction(type, event){
+                var html = [],
+                    spaces = "&nbsp;&nbsp;&nbsp;&nbsp";
+                html.push("<span style='color:red'>" + type + " " + event.currentTarget.getTargetValue() + "</span>");
+                baidu.object.each(event.data, function(item, key){
+                    html.push("&nbsp;&nbsp;&nbsp;&nbsp;" + key + ":" + item);
+                    if(baidu.lang.isObject(item)){
+                        baidu.object.each(item, function(item, key){
+                            html.push("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + key + ":" + item);
+                        });
+                    }
+                });
+                baidu.dom.insertHTML("console", "afterBegin", html.join("<br />")+"<br />");
+            }
+            //静态配置
+            baidu.ui.suggestion.Suggestion.options = {
+                "onconfirm" : function(event){
+                    /*
+                    this.getTarget().style.display = "none";
+                    var me = this;
+                    setTimeout(function(){
+                        me.getTarget().style.display = "";
+                    },1000);
+                    */
+                    eventAction("confirm", event);
+                },
+                "onhighlight" : function(event){
+                    eventAction("highlight", event);
+                },
+                "onbeforepick" : function(event){
+                    eventAction("beforepick", event);
+                },
+                "onpick" : function(event){
+                    eventAction("pick", event);
+                },
+                "onhide" : function(event){
+                    eventAction("hide", event);
+                }
+            };
+            var defaultData = [
+                "ddmap",
+                {
+                    "value":"im not 2",
+                    "content":"2222"
+                },
+                {
+                    "value":"ddd",
+                    "content":"<b>ddd</b><span style='color:blue'>&lt;colorful&gt;</span>"
+                },
+                "dds",
+                "ddt",
+                "ddx"
+            ];
+            var sug1 = baidu.ui.suggestion.create(baidu.g("suggestion1"));
+            var sug2 = baidu.ui.suggestion.create(baidu.g("suggestion2"));
+            var sug3 = baidu.ui.suggestion.create(baidu.g("suggestion3"), {
+                view : function(pos){
+                    pos.top -= baidu.g("suggestion3").offsetHeight;
+                    pos.left += baidu.g("suggestion3").offsetWidth;
+                    return pos;
+                }
+            });
+
+            sug1.getData = sug2.getData = sug3.getData = function(){
+                this.setData("fk", defaultData);
+            };
+
+        </script>
+    </body>
+</html>

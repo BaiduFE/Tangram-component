@@ -1,0 +1,26 @@
+<html>
+<head>
+<script type="text/javascript">
+	var url = window.location.href, urlToken = url.split("#"), i, len;
+	/* 以test切割作为源路径计算方式*/
+	var paths = location.href.split( [ '?', '#' ]);
+	var proj = paths[0].split('/test/')[0];
+	var path = proj + '/test/tools/import.php?f=baidu.ui.modal.Modal';
+
+	var js = function(path){
+		var s = document.createElement('SCRIPT');
+		s.type = 'text/javascript';
+		s.src = path;
+		document.body.appendChild(s);
+		s = null;
+	}
+	var h = setInterval(function(){
+		if(document && document.body){			
+			clearInterval(h);
+			js(path);
+		}
+	}, 20);
+</script>
+</head>
+<body></body>
+</html>
