@@ -221,6 +221,11 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         if(options.titleText)
             me.getTitleInner("title-inner").innerHTML = options.titleText;
 
+        //更新buttons
+        baidu.object.each(options.buttons,function(op,name){
+            me.buttonInstance[name] ? me.buttonInstance[name].update(op) : me.createButton(op,name); 
+        });
+
         me._updatePosition();
         me.dispatchEvent("onupdate");
     },
