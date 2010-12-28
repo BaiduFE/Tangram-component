@@ -7,7 +7,7 @@ module("baidu.data.dataSource.ajax");
 //测试ajax的get方法
 test("get", function(){
     stop();
-    var ajaxSource = baidu.dataSource.ajax(upath||""+"get.php", {
+    var ajaxSource = baidu.dataSource.ajax((upath||"")+"get.php", {
         transition: function(source){
             return source;
         }
