@@ -27,7 +27,7 @@
  */
 baidu.ui.progressBar.ProgressBar = baidu.ui.createUI(function(options){
 }).extend({
-    uiType          : "progressBar",
+    uiType          : "progressbar",
 	tplBody			: '<div id="#{id}" class="#{class}">#{bar}</div>',
     tplBar          : '<div id="#{barId}" class="#{barClass}"></div>',
     

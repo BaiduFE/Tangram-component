@@ -21,6 +21,7 @@
 ///import baidu.ui.dialog.Dialog;
 ///import baidu.ui.dialog.Dialog$button;
 ///import baidu.ui.dialog.Dialog$keyboard;
+
 ///import baidu.lang.isString;
 ///import baidu.object.extend;
 
@@ -48,14 +49,14 @@ baidu.ui.dialog.confirm = function(content, options){
             }
         }
     },options || {}); 
-    
+    options.autoRender = true;
     if(baidu.isString(content)){
         options.contentText = content;
     } else {
         options.content = content;
     }
     
-    dialogInstance = new baidu.ui.dialog.Dialog(options);
+    dialogInstance = baidu.ui.dialog.create(options);
     
     //默认自动dispose
     if(typeof options.autoDispose == 'undefined' || options.autoDispose){
@@ -63,7 +64,7 @@ baidu.ui.dialog.confirm = function(content, options){
             this.dispose();
         });
     }
-    dialogInstance.render();
+    
     //默认打开dialog
     if(typeof options.autoOpen == 'undefined' || options.autoOpen){
         dialogInstance.open();

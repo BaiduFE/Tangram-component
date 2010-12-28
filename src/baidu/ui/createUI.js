@@ -10,6 +10,7 @@
 
 ///import baidu.ui;
 ///import baidu.ui.Base;
+///import baidu.ui.create;
 ///import baidu.object.extend;
 
 /**
