@@ -26,11 +26,7 @@ baidu.ui.slider.Slider.register(function(me){
                         layout : me.layout,
                         skin : me.skin ? me.skin + "-followProgressbar" : null
                 });
-<<<<<<< HEAD
                 me.progressBar.render(me.getId("progressbar"));
-=======
-                me.progressBar.render(me.getId("followProgressBar"));
->>>>>>> parent of 3819f2a... 整理0.1.1到master
                 me._adjustProgressbar();
                 me.addEventListener("dispose", function(){
                         me.progressBar.dispose();
@@ -50,13 +46,8 @@ baidu.ui.slider.Slider.extend({
 	getProgressBarString : function(){
                 var me = this;
                 return baidu.string.format(me.tplProgressbar, {
-<<<<<<< HEAD
                         rsid : me.getId("progressbar"),
                         "class" : me.getClass("progressbar")
-=======
-                        rsid : me.getId("followProgressBar"),
-                        "class" : me.getClass("followProgressbar")
->>>>>>> parent of 3819f2a... 整理0.1.1到master
                 });
         },
 	
