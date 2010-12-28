@@ -92,7 +92,7 @@ function getRealFilePath($filename){
     }
     //如果从path里面找不到，就去上级目录的tangram中找
     //为tangram component提供
-    return "../../tangram/src/". $filename;
+    return "../../Tangram-base/src/". $filename;
 }
 
 function getPackage($packagePath){
