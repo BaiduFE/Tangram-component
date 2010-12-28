@@ -15,9 +15,10 @@
 ///import baidu.dom.getPosition;
 ///import baidu.dom.getStyle;
 ///import baidu.dom.setStyle;
+///import baidu.dom.setOuterWidth;
 ///import baidu.dom._styleFilter.px;
 
-///import baidu.ui.smartPosition.set;
+///import baidu.ui.behavior.posable;
 
 ///import baidu.event.on;
 ///import baidu.event.un;
@@ -26,6 +27,7 @@
  * 为Suggestion提供位置校准功能
  */
 baidu.extend(baidu.ui.suggestion.Suggestion.prototype, {
+    posable : true,
     fixWidth : true,
     getWindowResizeHandler : function(){
         var suggestion = this;
@@ -39,13 +41,13 @@ baidu.extend(baidu.ui.suggestion.Suggestion.prototype, {
      * @private
      */
     adjustPosition : function(onlyAdjustShown){
-        var suggestion = this,
-            target = suggestion.getTarget(),
+        var me = this,
+            target = me.getTarget(),
             targetPosition,
-            main = suggestion.getMain(),
+            main = me.getMain(),
             pos;
 
-        if(!suggestion.isShowing() && onlyAdjustShown){
+        if(!me.isShowing() && onlyAdjustShown){
             return ;
         }
         targetPosition = baidu.dom.getPosition(target),
@@ -55,15 +57,10 @@ baidu.extend(baidu.ui.suggestion.Suggestion.prototype, {
                 width   : target.offsetWidth
             };
         //交给用户的view函数计算
-        pos =  typeof suggestion.view == "function" ? suggestion.view(pos) : pos;
+        pos =  typeof me.view == "function" ? me.view(pos) : pos;
 
-        baidu.ui.smartPosition.set(main, [pos.left, pos.top], {once:true});
-        baidu.ui.smartPosition.setBorderBoxStyles(
-            main, 
-            {
-                width : pos.width
-            }
-        );
+        me.setPosition([pos.left, pos.top], null, {once:true});
+        baidu.dom.setOuterWidth(main, pos.width);
     }
 });
 baidu.ui.suggestion.Suggestion.register(function(suggestion){
