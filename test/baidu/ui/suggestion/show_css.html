@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>baidu.suggestion的CSS样式展示效果测试</title>
+        <script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.0.js"></script>
+		<!-- suggestion js -->
+		<script src="../../../../src/baidu/ui.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Central.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Div.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Data.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Input.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/create.js"></script>
+		<!-- suggestion js-->
+        </script>
+        <style>
+            
+            .tangram_sug_wpr {
+                border: 3px solid #817F82;
+                margin: 10px;
+                padding: 10px;
+                position: absolute;
+                z-index: 2;
+                background-color: white;
+                top: 28px;
+                left: 0
+            }
+            
+            .tangram_sug_wpr table {
+                width: 100%;
+                background: #fff;
+                cursor: default
+            }
+            
+            .tangram_sug_wpr td {
+                font: 14px / 18px verdana
+            }
+            
+            .tangram_sug_mo {
+                background-color: #36c;
+                color: #fff
+            }
+            
+            .tangram_sug_ml {
+                background-color: #fff;
+                color: #000
+            }
+            
+            .tangram_sug_app {
+                background-color: white;
+            }
+            
+            .tangram_sug_pre {
+                background-color: white;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <p align=center style="font-size:120%">
+            <font color="#999900">
+                This is baidu.suggestion的CSS样式展示效果测试 test
+            </font>
+        </p>
+        &nbsp;&nbsp;<input type=text name="aa" id="aa" />
+        <br/>
+        <script type="text/javascript">
+            var arr = ["开始", {
+                "input": "i开始",
+                "selection": "s开始"
+            }, "#", {
+                "input": "*",
+                "selection": "#"
+            }, "1", {
+                "input": "3",
+                "selection": "1"
+            }, "E", {
+                "input": "P",
+                "selection": "E"
+            }, "a", {
+                "input": "b",
+                "selection": "a"
+            }, "aA190$%^", {
+                "input": "bB190$%^",
+                "selection": "aA190$%^"
+            }, "这是中文吗lll", "ａＢ２＠＃（\t结束", {
+                "input": "这是中文吗zzz",
+                "selection": "这是中文吗lll"
+            }, {
+                "input": "ａＢ９＠＃（\t 结束",
+                "selection": "ａＢ２＠＃（\t结束"
+            }, {
+                "input": "SAd12#$中文ａＢ１＃￥\t＊",
+                "selection": "<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"
+            }];
+            var options = {
+                "getData": function(word){
+                    saa.giveData("s", arr);
+                },
+                "append_html": "<b>suggest here:</b>&gt;a",
+                "prepend_html": "<b>suggest here:</b>&gt;a"
+            };
+            var saa = baidu.suggestion.create(baidu.G("aa"), options);
+            
+            
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+    <head>
+        <title>modal manual test - by berg</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.modal.*' ></script>
+        <script>
+            var modal_array = [];
+            var modal_in_div = [];
+            var color = ["red","black","yellow"],a=0,b=0;
+            function showModal (){
+                var modal = baidu.ui.modal.create();
+                modal.show({styles:{color:color[a]}});
+                modal_array.push(modal);
+                a++;
+            }
+            function hideModal(){
+                var modal = modal_array.pop();
+                modal.hide();
+            }
+
+            function createModalInDiv(){
+                var modal = baidu.ui.modal.create({
+                    container:"module_container"
+                });
+                modal.show({styles:{color:color[b]}});
+                modal_in_div.push(modal);
+                b++;
+            }
+
+            function hideModalInDiv(){
+                var modal = modal_in_div.pop();
+                modal.hide();
+            }
+        </script>
+    </head>
+
+    <body>
+        <div style="z-index:10000;position:absolute;top:400px">
+            <input type='button'  value="create modal" onclick="showModal()" />
+            <input type='button'  value="hide modal" onclick="hideModal()" />
+            <input type='button'  value="create modal in div" onclick="createModalInDiv()" />
+            <input type='button'  value="hide modal in div" onclick="hideModalInDiv()" />
+        </div>
+
+        <div style="height:500px; width:500px; background-color:green; position:absolute">
+        <div id="module_container" style="height:300px; width:300px; background-color:blue">
+            <select>
+                <OPTION>aaaaa</OPTION>
+            </select>
+        </div>
+        </div>
+    </body>
+</html>
