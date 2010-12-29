@@ -8,6 +8,8 @@
  * date: 2010/09/08
  */
 ///import baidu.ui.createUI;
+///import baidu.ui.Base.getParent;
+///import baidu.ui.Base.setParent;
 ///import baidu.ui.table.Table;
 ///import baidu.ui.behavior.statable;
 ///import baidu.ui.behavior.statable.setStateHandler;

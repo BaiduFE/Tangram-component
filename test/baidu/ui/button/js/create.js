@@ -1,7 +1,9 @@
 module("baidu.ui.button.create");
 
 test("create", function() {
-	var button = baidu.ui.button.create();
+	var target = document.createElement("div");
+	document.body.appendChild(target);
+	var button = baidu.ui.button.create(target);
 	var buttonElement = button.getMain();
 	ok(buttonElement, "dom created");
 	equals(button.uiType.toLowerCase(), "button", "check type");
