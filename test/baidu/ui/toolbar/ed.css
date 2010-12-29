@@ -1,0 +1,159 @@
+.toolbar_container{
+    display: block;
+    font-family: tahoma, arial, simsun, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    height: 24px;
+    width: 980px;
+    padding-top:2px;
+    padding-left:2px;
+    padding-right:2px;
+}
+
+.container1{
+    background-color:#F0F0EE;
+    border: 1px #CCCCCC solid; 
+}
+
+.container2{
+    background-color:#E5EFFD;
+    border: 1px #ABC6DD solid; 
+}
+
+.container1 .ed-button{
+    width:20px;
+    height:20px;
+    border: 1px solid #F0F0EE;
+    display:block;
+    background: url("icons.gif") no-repeat scroll 20px 20px transparent;
+}
+
+.container1 .ed-button-hover,.ed-button-highlight{
+    background-color: #B2BBD0;
+    border: 1px solid #0A246A;
+}
+
+.tangram-toolbar-sepatator{
+    background: url("icons.gif") repeat scroll -180px 0 transparent;
+    height: 20px;
+    margin: 2px 2px 0 4px;
+    width: 2px;
+}
+
+.container1 .undo{
+    background-position: -160px 0px;
+}
+
+.container1 .redo{
+    background-position: -100px 0px;
+}
+
+.container1 .bold{
+    background-position: -0px 0px;
+}
+
+.container1 .italic{
+    background-position: -60px 0px;
+}
+
+.container1 .underline{
+    background-position: -140px 0px;
+}
+
+.container1 .strikethrough{
+    background-position: -120px 0px;
+}
+
+.container1 .sub{
+    background-position: -600px 0px;
+}
+
+.container1 .sup{
+    background-position: -620px 0px;
+}
+
+.container1 .justifyleft{
+    background-position: -460px 0px;
+}
+
+.container1 .justifycenter{
+    background-position: -420px 0px;
+}
+
+.container1 .justifyright{
+    background-position: -480px 0px;
+}
+
+.container2 .button-group-main{
+    border-left:1px solid #ABC6DD;
+    border-right:1px solid #ABC6DD;
+    background-color:#FFFFFF;
+}
+
+.container2 .ed-button-hover{
+    background: url("button_bg.png") repeat scroll 88px 44px transparent !important;
+}
+
+.container2 .ed-button-press, .ed-button-highlight{
+    background: url("button_bg.png") repeat scroll 88px -44px transparent !important;
+}
+
+.button_content{
+    width:20px;
+    height:20px;
+    display:block;
+    background: url("icons.gif") no-repeat scroll 20px 20px transparent;
+}
+
+.container2 .ed-button{
+    background: url("button_bg.png") repeat scroll 0 0 transparent;
+    display: block;
+    height: 22px;
+    width: 22px;
+}
+
+.container2 .undo .button_content{
+    background-position: -160px 0px;
+}
+
+.container2 .redo .button_content{
+    background-position: -100px 0px;
+}
+
+.container2 .bold .button_content{
+    background-position: -0px 0px;
+}
+
+.container2 .italic .button_content{
+    background-position: -60px 0px;
+}
+
+.container2 .underline .button_content{
+    background-position: -140px 0px;
+}
+
+.container2 .strikethrough .button_content{
+    background-position: -120px 0px;
+}
+
+.container2 .sub .button_content{
+    background-position: -600px 0px;
+}
+
+.container2 .sup .button_content{
+    background-position: -620px 0px;
+}
+
+.container2 .justifyleft .button_content{
+    background-position: -460px 0px;
+}
+
+.container2 .justifycenter .button_content{
+    background-position: -420px 0px;
+}
+
+.container2 .justifyright .button_content{
+    background-position: -480px 0px;
+}
