@@ -1,10 +1,6 @@
 /*
- * JavaScript framework: mz
- * Copyright (c) 2010 meizz, http://www.meizz.com/
- *
- * http://www.meizz.com/mz/license/ MIT-style license
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software
+ * Tangram UI
+ * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
 ///import baidu.dom.show;
