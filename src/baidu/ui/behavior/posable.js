@@ -130,7 +130,7 @@
             me._positionByCoordinate(source, coordinate, {}, true);
         }
 		
-       // _scrollJustify || me.dispatchEvent('onpositionupdate');
+        _scrollJustify || me.dispatchEvent('onpositionupdate');
     };
 
     /**
