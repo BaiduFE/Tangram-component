@@ -28,7 +28,7 @@ baidu.ui.starRate.StarRate = baidu.ui.createUI(function(options){
 	
 	
 }).extend({
-	uiType  : "starrate",
+	uiType  : "starRate",
 	// 总共需要多少个星星【可选，默认显示5个】
 	total : 5,
 	// 亮着的星星数【可选，默认无】
