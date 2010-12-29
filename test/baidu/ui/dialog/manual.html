@@ -189,7 +189,9 @@ h2{
              * 创建一个静态配置的dialog
              */
             function createStaticConfigDialog(){
-                var dialog = baidu.ui.dialog.create();
+                var dialog = baidu.ui.dialog.create({
+                    "autoRender" : true
+                });
                 dialog.open();
             }
             /**
@@ -205,7 +207,8 @@ h2{
                             classPrefix :  "box"
                         }
                     ],
-                    skin : "test"
+                    skin : "test",
+                    "autoRender" : true
                 });
                 dialog.open();
             }
@@ -214,7 +217,9 @@ h2{
             //按照配置创建
             function createDialog(type){
                 var nowIndex = dialogPool.length;
-                var options = {};
+                var options = {
+                    autoRender : true
+                };
 
                 baidu.object.extend(options, getConfigureObject());
                 baidu.object.extend(options, getEventsObject());
@@ -228,7 +233,7 @@ h2{
 
                 var dialogContent = [];
                 dialogContent.push("<h4>dialog"+nowIndex+" -- zIndex:"+options.zIndex+"</h4>");
-                dialogContent.push("<a href='#;' onclick='baidu.ui.dialog.create({zIndex:"+ options.zIndex+1 +",closeOnEscape:false}).open();'>new dialog with closeOnEscape false</a>, ");
+                dialogContent.push("<a href='#;' onclick='baidu.ui.dialog.create({autoRender: true, zIndex:"+ options.zIndex+1 +",closeOnEscape:false}).open();'>new dialog with closeOnEscape false</a>, ");
                 dialogContent.push("<a href='#;' onclick='baidu.ui.get(this).close()'>close me</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:800, height: 800})'>big one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:200, height: 200})'>small one</a>, ");
