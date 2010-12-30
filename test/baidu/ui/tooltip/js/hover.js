@@ -6,14 +6,13 @@ test('show and hide', function() {
 	var tp = baidu.ui.tooltip.hover(div_test, {
 		content : 'show and hide',
 		onopen : function() {
-		setTimeout(function(){
-			t2 = new Date().getTime();
-			UserAction.mouseout(div_test);
-			ok(Math.abs(t2 - t1 - tp.showDelay) < 20, 'check show delay');
-			ok(isShown(tp.getMain().firstChild), 'shown after hover');
-			t2 = new Date().getTime();
-		},1);
-			
+			setTimeout(function(){
+				t2 = new Date().getTime();
+				UserAction.mouseout(div_test);
+				ok(Math.abs(t2 - t1 - tp.showDelay) < 30, 'check show delay');
+				ok(isShown(tp.getMain().firstChild), 'shown after hover');
+				t2 = new Date().getTime();
+			},10);
 		},
 		onclose : function() {
 			setTimeout(function(){
@@ -26,7 +25,6 @@ test('show and hide', function() {
 				ok(!isShown(tp.getMain().firstChild), 'hide after out');
 				start();
 			},600);
-			
 		}
 	});
 	stop();
