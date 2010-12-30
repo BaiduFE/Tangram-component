@@ -3,7 +3,7 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-///import baidu.ui.behavior.Posable;
+///import baidu.ui.behavior.posable;
 
 ///import baidu.dom.getPosition;
 
@@ -14,13 +14,13 @@
  * @param {HTMLElement|string} element optional 要对齐的元素或元素id，如果不指定，默认为当前控件的主元素.
  * @param {Object} options optional 选项，同setPosition方法.
  */
-baidu.ui.behavior.Posable.setPositionByElement =
+baidu.ui.behavior.posable.setPositionByElement =
     function(target, element, options) {
         target = baidu.g(target);
         element = baidu.g(element) || this.getMain();
         options = options || {};
 
-        me.__execPosFn(element, '_setPositionByElement', options.once, arguments);
+        this.__execPosFn(element, '_setPositionByElement', options.once, arguments);
     };
 
 /**
@@ -31,16 +31,16 @@ baidu.ui.behavior.Posable.setPositionByElement =
  * @param {HTMLElement|string} element optional 要对齐的元素或元素id，如果不指定，默认为当前控件的主元素.
  * @param {Object} options optional 选项，同setPosition方法.
  */
-baidu.ui.behavior.Posable._setPositionByElement =
+baidu.ui.behavior.posable._setPositionByElement =
     function(target, element, options) {
         options.once = false;
         var targetPos = baidu.dom.getPosition(target),
             coordinate = {};
 
         coordinate['x'] = targetPos.left +
-                            (sp.position.indexOf('right') >= 0 ? target.offsetWidth : 0);
+                            (options.position.indexOf('right') >= 0 ? target.offsetWidth : 0);
         coordinate['y'] = targetPos.top +
-                            (sp.position.indexOf('bottom') >= 0 ? target.offsetHeight : 0);
+                            (options.position.indexOf('bottom') >= 0 ? target.offsetHeight : 0);
 
         this._positionByCoordinate(element, coordinate, options);
     };
