@@ -56,7 +56,7 @@ baidu.ui.dialog.confirm = function(content, options){
         options.content = content;
     }
     
-    dialogInstance = baidu.ui.dialog.create(options);
+    dialogInstance = baidu.ui.create(baidu.ui.dialog.Dialog,options);
     
     //默认自动dispose
     if(typeof options.autoDispose == 'undefined' || options.autoDispose){

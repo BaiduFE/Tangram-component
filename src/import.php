@@ -28,6 +28,10 @@ if(isset($_GET['path'])){
     $PATH = array();
 }
 
+//如果从path里面找不到，就去上级目录的tangram中找
+//为tangram component提供
+array_push($PATH, "../../Tangram-base/src/", "../../tangram/src/");
+
 echo importTangram(explode(',', $_GET['f']), false);
 
 // 无敌旋转分隔线
@@ -90,9 +94,6 @@ function getRealFilePath($filename){
             return $eachPath . $filename;
         }
     }
-    //如果从path里面找不到，就去上级目录的tangram中找
-    //为tangram component提供
-    return "../../Tangram-base/src/". $filename;
 }
 
 function getPackage($packagePath){

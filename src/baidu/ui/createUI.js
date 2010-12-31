@@ -38,7 +38,6 @@ baidu.ui.createUI = function(constructor, options) {
             //扩展当前options中的项到this上
             baidu.object.extend(me, opt);
 
-
             me.classPrefix = me.classPrefix || "tangram-" + me.uiType.toLowerCase();
 
             //初始化行为
@@ -54,9 +53,9 @@ baidu.ui.createUI = function(constructor, options) {
             //执行控件自己的构造器
             constructor.apply(me, arguments);
 
-            //执行所有addons中的方法
-            for (i=0, n=ui.addons.length; i<n; i++) {
-                ui.addons[i](me);
+            //执行插件的构造器
+            for (i=0, n=ui._addons.length; i<n; i++) {
+                ui._addons[i](me);
             }
         },
         C = function(){};
@@ -89,10 +88,10 @@ baidu.ui.createUI = function(constructor, options) {
     };
 
     //插件支持
-    ui.addons = [];
+    ui._addons = [];
     ui.register = function(f){
         if (typeof f == "function")
-            ui.addons.push(f);
+            ui._addons.push(f);
     };
     
     //静态配置支持

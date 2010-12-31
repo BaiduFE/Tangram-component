@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/progressBar/ProgressBar.js
  * author: berg
  * version: 1.0.0
@@ -25,34 +25,36 @@
  *
  * @param options
  */
-baidu.ui.progressBar.ProgressBar = baidu.ui.createUI(function(options){
+baidu.ui.progressBar.ProgressBar = baidu.ui.createUI(function(options) {
 }).extend({
-    uiType          : "progressbar",
-	tplBody			: '<div id="#{id}" class="#{class}">#{bar}</div>',
-    tplBar          : '<div id="#{barId}" class="#{barClass}"></div>',
-    
-    //初始化时，进度条所在的值
-    value           : 0,
+    uiType: 'progressBar',
+	tplBody: '<div id="#{id}" class="#{class}">#{bar}</div>',
+    tplBar: '<div id="#{barId}" class="#{barClass}"></div>',
 
-    _min             : 0,
-    _max             : 100,
+    //初始化时，进度条所在的值
+    value: 0,
+
+    layout: 'horizontal',
+
+    _min: 0,
+    _max: 100,
 	 //位置变换
-	axis:{
-		horizontal:{offsetSize:"offsetWidth",size:"width"},
-		vertical:{offsetSize:"offsetHeight",size:"height"}
+	axis: {
+		horizontal: {offsetSize: 'offsetWidth', size: 'width'},
+		vertical: {offsetSize: 'offsetHeight', size: 'height'}
 	},
     /**
      * 获得控件字符串
-     * @return {string} HTML string
+     * @return {string} HTML string.
      */
-	getString : function(){
+	getString: function() {
 		var me = this;
-		return baidu.format(me.tplBody,{
-			id          : me.getId(),
-			"class"     : me.getClass(),
-            bar       : baidu.format(me.tplBar, {
-                barId   : me.getId("bar"),
-                barClass: me.getClass("bar")
+		return baidu.format(me.tplBody, {
+			id: me.getId(),
+			'class' : me.getClass(),
+            bar: baidu.format(me.tplBar, {
+                barId: me.getId('bar'),
+                barClass: me.getClass('bar')
             })
 		});
 	},
@@ -61,16 +63,20 @@ baidu.ui.progressBar.ProgressBar = baidu.ui.createUI(function(options){
 	 * 渲染进度条
      * @param {HTMLElement} target
 	 */
-	render : function(target){
+	render: function(target) {
 		var me = this,
             main;
 
-        if(!target){
-            return ;
+        if (!target) {
+            return;
         }
 
-        baidu.dom.insertHTML(me.renderMain(target), "beforeEnd", me.getString());
-		me.dispatchEvent("onload");
+        baidu.dom.insertHTML(
+            me.renderMain(target),
+            'beforeEnd',
+            me.getString()
+        );
+		me.dispatchEvent('onload');
 
         me.update();
 	},
@@ -78,30 +84,30 @@ baidu.ui.progressBar.ProgressBar = baidu.ui.createUI(function(options){
 
     /**
      * 更新progressBar状态
-     * @param {object} options 参数
+     * @param {object} options 参数.
      */
-    update : function(options){
+    update: function(options) {
         var me = this;
-		
+
         options = options || {};
         baidu.object.extend(me, options);
-		
-        me.value = Math.max(Math.min(me.value, me._max), me._min); 
-        if(me.value == me._lastValue){
-            return ;
+
+        me.value = Math.max(Math.min(me.value, me._max), me._min);
+        if (me.value == me._lastValue) {
+            return;
         }
 		var len = me.axis[me.layout].size;
         baidu.dom.setStyle(me.getBar(), len, me._calcPos(me.value));
         me._lastValue = me.value;
 
-		me.dispatchEvent("update");
+		me.dispatchEvent('update');
     },
 
     /**
      * 获得当前的value
-     * @return {number} value
+     * @return {number} value.
      */
-    getValue : function(){
+    getValue: function() {
         var me = this;
         return me.value;
     },
@@ -109,46 +115,46 @@ baidu.ui.progressBar.ProgressBar = baidu.ui.createUI(function(options){
     /**
      * 将value转换为位置信息
      */
-    _calcPos : function(value){
+    _calcPos: function(value) {
         var me = this;
-		var len =me.getBody()[me.axis[me.layout].offsetSize];
-        return value * ( len) / ( me._max - me._min );
+		var len = me.getBody()[me.axis[me.layout].offsetSize];
+        return value * (len) / (me._max - me._min);
     },
 
     /**
      * 禁用进度条
      */
-    disable : function(){
+    disable: function() {
         this.disabled = true;
     },
 
     /**
      * 启用进度条
      */
-    enable : function(){
+    enable: function() {
         this.disabled = false;
     },
-    
+
     /**
      * 获取target元素
-     * @return {HTMLElement} target
+     * @return {HTMLElement} target.
      */
-    getTarget : function(){
+    getTarget: function() {
         return baidu.g(this.targetId);
     },
-	
+
     /**
      * 获取进度条元素
-     * @return {HTMLElement} bar
+     * @return {HTMLElement} bar.
      */
-    getBar : function(){
-        return baidu.g(this.getId("bar"));
+    getBar: function() {
+        return baidu.g(this.getId('bar'));
     },
 
     /**
      * 销毁当前实例
      */
-    dispose : function(){
+    dispose: function() {
         var me = this;
         baidu.dom.remove(me.getId());
     }

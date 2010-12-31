@@ -45,7 +45,7 @@ baidu.ui.dialog.alert = function(content, options){
     } else {
         options.content = content;
     }
-    dialogInstance = baidu.ui.dialog.create(options);
+    dialogInstance = baidu.ui.create(baidu.ui.dialog.Dialog, options);
     
     //默认自动dispose
     if(typeof options.autoDispose == 'undefined' || options.autoDispose){

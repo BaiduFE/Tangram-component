@@ -215,7 +215,6 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
     chooseItem : function(data){
         var me = this;
         me.getInput().value = data.value.content;
-        me.dispatchEvent("onitemchosen",data);
     },
 
     /**
