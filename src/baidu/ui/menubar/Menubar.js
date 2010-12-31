@@ -19,6 +19,7 @@
 ///import baidu.dom.remove;
 ///import baidu.dom.setStyles;
 ///import baidu.dom.addClass;
+///import baidu.dom.hasClass;
 ///import baidu.dom.removeClass;
 ///import baidu.ui.smartPosition.element;
 
@@ -268,15 +269,15 @@ baidu.ui.createUI(function(options){
     open: function(){
         var me = this, 
             showing;
+        if (showing = baidu.ui.menubar.showing) {
+            showing.close(true);
+        }
         if (baidu.lang.isFunction(me.toggle) && !me.toggle()) {
             return;
         }
         if (!me.dispatchEvent("onbeforeopen")) 
             return;
-        if (showing = baidu.ui.menubar.showing) {
-            showing.close(true);
-        }
-        
+
         if (!me._initialized) { //如果已经初始化就不再重复update
             me.update();
             me._initialized = true;
@@ -297,6 +298,8 @@ baidu.ui.createUI(function(options){
         var me = this,
             body = me.getBody();
         if (!body) 
+            return;
+        if(baidu.dom.hasClass(body, me.getClass('empty')))
             return;
         baidu.ui.menubar.showing = null;
         if (directly || me.dispatchEvent("onbeforeclose")) {
