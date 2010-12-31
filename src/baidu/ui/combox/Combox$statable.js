@@ -16,6 +16,10 @@
 /**
  * 提供enable、disable行为
  */
+baidu.object.extend(baidu.ui.combox.Combox.prototype, {
+    statable: true
+});
+
 baidu.ui.combox.Combox.register(function(me){
     
     me.addEventListener('onenable', function(){
