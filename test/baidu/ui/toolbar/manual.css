@@ -1,0 +1,53 @@
+#toolBar-Container{
+    width:1000px;
+    height:300px;
+    border:1px solid #333333;
+}
+
+.tangram-button{
+    background-position:right -670px;
+    background-image:url("sprites_btn_b.png");
+    background-repeat:no-repeat;
+    cursor:pointer;
+    display:inline-block;
+    _display:inline;
+    padding-right:5px;
+    width:70px;
+}
+
+.tangram-button .in {
+    background-position:left -670px;
+    font-size:12px;
+    height:29px;
+    line-height:29px;
+    background-image:url("sprites_btn_b.png");
+    background-repeat:no-repeat;
+    color:#336699;
+    display:block;
+    padding-left:8px;
+    text-align:center;
+}
+
+.tangram-button-hover .in{
+    text-decoration:underline;
+}
+
+.tangram-button-disable .in{
+    color:#808080;
+}
+
+.tangram-button-press .in{
+    color:red
+}
+
+.tangram-toolbar-spacer{
+    background-color:red;
+}
+
+table{
+    border:1px solid red;
+}
+
+td{
+    border:1px solid green;
+}

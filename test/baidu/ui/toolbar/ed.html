@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+    <head>
+        <title>toolbar manual test - by lixiaopeng</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <link type="text/css" rel="stylesheet" media="all" href="ed.css" />
+        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.toolbar.*'></script>
+    </head>
+    <body>
+        <div id="toolbar_container1" class="toolbar_container container1"></div>
+        <br/>
+        <div id="toolbar_container2" class="toolbar_container container2"></div>
+        <script type="text/javascript">
+            var options1 = {
+                width:"960px",
+                height:"22px",
+                items:[
+                    {config:{classPrefix:"ed-button",skin:"undo",name:"undo",title:"Undo"}},
+                    {config:{classPrefix:"ed-button",skin:"redo",name:"redo",title:"Redo"}},
+                    {type:"separator"},
+                    {config:{classPrefix:"ed-button",skin:"bold",name:"bold",title:"Bold"}},
+                    {config:{classPrefix:"ed-button",skin:"italic",name:"italic",title:"Italic"}},
+                    {config:{classPrefix:"ed-button",skin:"underline",name:"underline",title:"Underline"}},
+                    {config:{classPrefix:"ed-button",skin:"strikethrough",name:"strikethrough",title:"strikethrough"}},
+                    {type:"separator"},
+                    {config:{classPrefix:"ed-button",skin:"sub",name:"sub",title:"Suberscript"}},
+                    {config:{classPrefix:"ed-button",skin:"sup",name:"sup",title:"Superscript"}},
+                    {type:"separator"},
+                    {config:{classPrefix:"ed-button",skin:"justifyleft",name:"justifyleft",title:"Align left"}},
+                    {config:{classPrefix:"ed-button",skin:"justifycenter",name:"justifycenter",title:"Align center"}},
+                    {config:{classPrefix:"ed-button",skin:"justifyright",name:"justifyright",title:"Align right"}}
+                ] 
+            };
+            var toolbar1 = new baidu.ui.toolbar.ToolBar(options1);
+            toolbar1.render("toolbar_container1");
+        </script>
+        <script type="text/javascript">
+            var button_content = "<span class='button_content'></span>";
+            var options2 = {
+                width:"960px",
+                height:"22px",
+                items:[
+                    {
+                        type:"toolbar",
+                        config:{
+                            skin:"button-group",
+                            items:[
+                                {config:{classPrefix:"ed-button",skin:"undo",name:"undo",title:"Undo",content:button_content}},
+                                {config:{classPrefix:"ed-button",skin:"redo",name:"redo",title:"Redo",content:button_content}}
+                            ]
+                        }
+                    },
+                    {type:"spacer",config:{width:"5px"}},
+                    {
+                        type:"toolbar",
+                        config:{
+                            skin:"button-group",
+                            items:[
+                                {config:{classPrefix:"ed-button",skin:"bold",name:"bold",title:"Bold",content:button_content}},
+                                {config:{classPrefix:"ed-button",skin:"italic",name:"italic",title:"Italic",content:button_content}},
+                                {config:{classPrefix:"ed-button",skin:"underline",name:"underline",title:"Underline",content:button_content}},
+                                {config:{classPrefix:"ed-button",skin:"strikethrough",name:"strikethrough",title:"strikethrough",content:button_content}},
+                            ]
+                        }
+                    },
+                    {type:"spacer",config:{width:"5px"}},
+                    {
+                        type:"toolbar",
+                        config:{
+                            skin:"button-group",
+                            items:[
+                                {config:{classPrefix:"ed-button",skin:"sub",name:"sub",title:"Suberscript",content:button_content}},
+                                {config:{classPrefix:"ed-button",skin:"sup",name:"sup",title:"Superscript",content:button_content}},          
+                            ]
+                        }          
+                    },
+                    {type:"spacer",config:{width:"5px"}},
+                    {
+                        type:"toolbar",
+                        config:{
+                            skin:"button-group",
+                            items:[
+                                {config:{classPrefix:"ed-button",skin:"justifyleft",name:"justifyleft",title:"Align left",content:button_content}},
+                                {config:{classPrefix:"ed-button",skin:"justifycenter",name:"justifycenter",title:"Align center",content:button_content}},
+                                {config:{classPrefix:"ed-button",skin:"justifyright",name:"justifyright",title:"Align right",content:button_content}}
+                            ]
+                        }
+                    },
+                ] 
+            };
+        var toolbar2 = new baidu.ui.toolbar.ToolBar(options2);
+        toolbar2.render("toolbar_container2");
+        </script>
+    </body>
+</html>
