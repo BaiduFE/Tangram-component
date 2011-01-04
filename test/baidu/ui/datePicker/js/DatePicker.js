@@ -13,7 +13,6 @@
 //	ua.importsrc('baidu.browser.ie');
 	var check = function(datePicker, direc) {
 		var coe;
-		debugger
 		var action = function(direc) {
 			if (direc == 'prev') {
 				coe = -1;
@@ -29,8 +28,7 @@
 		var layer = datePicker.currentWorkLayerName;
 		switch (layer) {
 		case 'date':
-			equal(datePicker.currentDate.getMonth(), (date.getMonth() + coe)%12,
-					direc + ' month');// normal
+			equal(datePicker.currentDate.getMonth(), (12+date.getMonth() + coe)%12,direc + ' month');// normal
 			// prev
 			datePicker.currentDate = new Date(2000, 0, 01);
 			action(direc);
@@ -90,7 +88,6 @@
 		stop();
 		var datePicker = new baidu.ui.datePicker.DatePicker();
 		var input = te.dom[0];
-		debugger
 		datePicker.trigger = input;
 		datePicker.popup = baidu.ui.datePicker.DatePicker.popup;
 		datePicker.render();
@@ -105,7 +102,7 @@
 		var m = date.getMonth();
 		//alert(document.body.outerHTML);
 		setTimeout(function() {// 等待动画结束
-			equal(datePicker.g('current').innerHTML, y + '年' + (m + 1) + '月');// date层
+			equal(datePicker.g('current').innerHTML, y + '年' + ((m + 1)/10<1?('0'+(m + 1)):(m + 1)) + '月');// date层
 //			clickObj(datePicker.g('current'))// month层
 //			clickObj(datePicker.g('current'))// year层
 			$(datePicker.g('current')).click();
@@ -138,7 +135,7 @@
 			start();
 		}, datePicker.duration + datePicker.pauseTime + 1);
 	})
-
+	
 	test('prev',function() {
 				stop();
 				setTimeout(function() {
@@ -149,7 +146,7 @@
 					datePicker.show();
 					var date = new Date();
 					equal(datePicker.g("header").innerHTML, '今天是'
-							+ date.getFullYear() + '年' + (date.getMonth() + 1)
+							+ date.getFullYear() + '年' + ((date.getMonth() + 1)/10<1?('0'+(date.getMonth() + 1)):(date.getMonth() + 1))
 							+ '月' + ((date.getDate())>9?date.getDate():'0'+date.getDate()) + '日');
 					equal(datePicker.currentWorkLayerName, 'date',
 							'current layer is date');// date
@@ -198,7 +195,6 @@
 			datePicker.trigger = te.dom[0];
 			datePicker.render();
 			datePicker.show();
-			debugger
 			check(datePicker, 'next');
 			datePicker.currentWorkLayerName = 'month';
 			check(datePicker, 'next');
@@ -286,7 +282,7 @@
 			datePicker.render();
 			datePicker.show();
 			datePicker.today();
-			equal(input.value, date.getFullYear() + '-' + (date.getMonth() + 1)
+			equal(input.value, date.getFullYear() + '-' + ((date.getMonth() + 1)/10<1?('0'+(date.getMonth() + 1)):(date.getMonth() + 1))
 					+ '-' + ((date.getDate())>9?date.getDate():'0'+date.getDate()));
 			start();
 		},100);
