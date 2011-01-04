@@ -1,0 +1,674 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>baidu.url.suggestion正常用法测试,事件测试</title>
+        
+		<script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.0.js"></script>
+		<!-- suggestion js -->
+		<script src="../../../../src/baidu/ui.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Central.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Div.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Data.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Input.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/create.js"></script>
+		<!-- suggestion js-->
+		<!-- test js -->
+		<!-- test js -->
+        <style>
+            .tangram_sug_wpr {
+                border: 1px solid #817F82;
+                position: absolute;
+                top: 28px;
+                left: 0
+            }
+            .tangram_sug_wpr table {
+                width: 100%;
+                background: #fff;
+                cursor: default
+            }
+            .tangram_sug_wpr td {
+                font: 14px verdana
+            }
+            .tangram_sug_mo {
+                background-color: #36c;
+                color: #fff
+            }
+            .tangram_sug_ml {
+                background-color: #fff;
+                color: #000
+            }
+            .tangram_sug_app {
+                background-color: white;
+            }
+            .tangram_sug_pre {
+                background-color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <p align=center style="font-size:120%">
+            <font color="#3333cc">
+                This is options中只含有getData且项为字符串 test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        没有项: <input type=text name="aa" id="aa" /><input type=text name="ab" id="ab" />一个项：<input type=text name="ac" id="ac" />
+		<input type=text name="ad" id="ad" />多个项：<input type=text name="ae" id="ae" /><input type=text name="af" id="af" />
+        <br/>
+        <br/>
+        <p align=center style="font-size:120%">
+            <font color="#3333cc">
+                This is options中只含有"getData"且项为object test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        一个项：<input type=text name="bc" id="bc" /><input type=text name="bd" id="bd" />多个项：<input type=text name="be" id="be" />
+		<input type=text name="bf" id="bf" />
+        <br/>
+        <br/>
+        <p align=center style="font-size:120%">
+            <font color="#3333cc">
+                This is options中只含有"getData"且项为字符串和object的混合 test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        多个项：<input type=text name="ce" id="ce" /><input type=text name="cf" id="cf" />
+        <br/>
+        <br/>
+        <!--  等价类分界点------------------------------------------------------------------------------------------------- -->
+        <p align=center style="font-size:120%">
+            <font color="#33cc66">
+                This is options中含有"getData"和"prepend_html"且项为字符串 test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        没有项: <input type=text name="da" id="da" /><input type=text name="db" id="db" />一个项：<input type=text name="dc" id="dc" />
+		<input type=text name="dd" id="dd" />多个项：<input type=text name="de" id="de" /><input type=text name="df" id="df" />
+        <br/>
+        <br/>
+        <p align=center style="font-size:120%">
+            <font color="#33cc66">
+                This is options中含有"getData"和"prepend_html"且项为object test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        一个项：<input type=text name="ec" id="ec" /><input type=text name="ed" id="ed" />多个项：<input type=text name="ee" id="ee" />
+		<input type=text name="ef" id="ef" />
+        <br/>
+        <br/>
+        <p align=center style="font-size:120%">
+            <font color="#33cc66">
+                This is options中含有"getData"和"prepend_html"且项为字符串和object的混合 test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        多个项：<input type=text name="fe" id="fe" /><input type=text name="ff" id="ff" />
+        <br/>
+        <br/>
+        <!--  等价类分界点------------------------------------------------------------------------------------------------- -->
+        <p align=center style="font-size:120%">
+            <font color="#FFCC77">
+                This is options中含有"getData"和"append_html"且项为字符串 test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        没有项: <input type=text name="ga" id="ga" /><input type=text name="gb" id="gb" />一个项：<input type=text name="gc" id="gc" />
+		<input type=text name="gd" id="gd" />多个项：<input type=text name="ge" id="ge" /><input type=text name="gf" id="gf" />
+        <br/>
+        <br/>
+        <p align=center style="font-size:120%">
+            <font color="#FFCC77">
+                This is options中含有"getData"和"append_html"且项为object test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        一个项：<input type=text name="ec" id="hc" /><input type=text name="hd" id="hd" />多个项：<input type=text name="ee" id="he" />
+		<input type=text name="hf" id="hf" />
+        <br/>
+        <br/>
+        <p align=center style="font-size:120%">
+            <font color="#FFCC77">
+                This is options中含有"getData"和"append_html"且项为字符串和object的混合 test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        多个项：<input type=text name="ie" id="ie" /><input type=text name="if" id="if" />
+        <br/>
+        <br/>
+        <!--  等价类分界点------------------------------------------------------------------------------------------------- -->
+        <p align=center style="font-size:120%">
+            <font color="#999900">
+                This is options中含有"getData"、"prepend_html"和"append_html"且项为字符串 test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        没有项: <input type=text name="ja" id="ja" /><input type=text name="jb" id="jb" />一个项：<input type=text name="jc" id="jc" />
+		<input type=text name="jd" id="jd" />多个项：<input type=text name="je" id="je" /><input type=text name="jf" id="jf" />
+        <br/>
+        <br/>
+        <p align=center style="font-size:120%">
+            <font color="#999900">
+                This is options中含有"getData"、"prepend_html"和"append_html"且项为object test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        一个项：<input type=text name="kc" id="kc" /><input type=text name="kd" id="kd" />多个项：<input type=text name="ke" id="ke" />
+		<input type=text name="kf" id="kf" />
+        <br/>
+        <br/>
+        <p align=center style="font-size:120%">
+            <font color="#999900">
+                This is options中含有"getData"、"prepend_html"和"append_html"且项为字符串和object的混合 test
+            </font>
+        </p>
+        <p>
+            备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+        </p>
+        多个项：<input type=text name="le" id="le" /><input type=text name="lf" id="lf" />
+        <br/>
+        <br/>
+        <script type="text/javascript">
+            //回调函数
+            sab_call = function(){
+                sab.giveData("sab", raa);
+            };
+            sad_call = function(){
+                sad.giveData("sad", rac);
+            };
+            saf_call = function(){
+                saf.giveData("saf", rae);
+            };
+            sbd_call = function(){
+                sbd.giveData("sbd", rbc);
+            };
+            sbf_call = function(){
+                sbf.giveData("sbf", rbe);
+            };
+            scf_call = function(){
+                scf.giveData("scf", rce);
+            };
+            //options中只含有getData且项为字符串
+            var options = {};
+            //没有项
+            var raa = [];
+            var options_1 = {
+                "getData": function(word){
+                    saa.giveData("saa", raa);
+                }
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sab_call);
+            }
+            var saa = baidu.suggestion.create("aa", options_1);
+            var sab = baidu.suggestion.create(baidu.G("ab"), options);
+            
+            //一个项
+            var rac = ["SAd12#$中文ａＢ１＃￥\t＊"];
+            var options_2 = {
+                "getData": function(word){
+                    sac.giveData("sac", rac);
+                }
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sad_call);
+            }
+            var sac = baidu.suggestion.create("ac", options_2);
+            var sad = baidu.suggestion.create(baidu.G("ad"), options);
+            
+            //多个项
+            var rae = ["开始", "#", "1", "E", "a", "aA190$%^", "这是中文吗lll", "ａＢ２＠＃（\t 结束"];
+            var options_3 = {
+                "getData": function(word){
+                    sae.giveData("sae", rae);
+                }
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", saf_call);
+            };
+            var sae = baidu.suggestion.create("ae", options_3);
+            var saf = baidu.suggestion.create(baidu.G("af"), options);
+            
+            //options中只含有"getData"且项为object
+            //一个项
+            var rbc = [{
+                "input": "SAd12#$中文ａＢ１＃￥\t＊",
+                "selection": "<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"
+            }];
+            var options_4 = {
+                "getData": function(word){
+                    sbc.giveData("sbc", rbc);
+                }
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sbd_call);
+            };
+            var sbc = baidu.suggestion.create("bc", options_4);
+            var sbd = baidu.suggestion.create(baidu.G("bd"), options);
+            
+            //多个项
+            var rbe = [{
+                "input": "i开始",
+                "selection": "s开始"
+            }, {
+                "input": "*",
+                "selection": "#"
+            }, {
+                "input": "3",
+                "selection": "1"
+            }, {
+                "input": "P",
+                "selection": "E"
+            }, {
+                "input": "b",
+                "selection": "a"
+            }, {
+                "input": "bB190$%^",
+                "selection": "aA190$%^"
+            }, {
+                "input": "这是中文吗zzz",
+                "selection": "这是中文吗lll"
+            }, {
+                "input": "ａＢｃＤ６９＠＃（\t 结束",
+                "selection": "ａＢ２＠＃（\t 结束"
+            }, {
+                "input": "SAd12#$中文ａＢ１＃￥\t＊",
+                "selection": "<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"
+            }];
+            var options_5 = {
+                "getData": function(word){
+                    sbe.giveData("sbe", rbe);
+                }
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sbf_call);
+            };
+            var sbe = baidu.suggestion.create("be", options_5);
+            var sbf = baidu.suggestion.create(baidu.G("bf"), options);
+            
+            //options中只含有"getData"且项为字符串和object的混合
+            //多个项
+            var rce = ["开始", {
+                "input": "i开始",
+                "selection": "s开始"
+            }, "#", {
+                "input": "*",
+                "selection": "#"
+            }, "1", {
+                "input": "3",
+                "selection": "1"
+            }, "E", {
+                "input": "P",
+                "selection": "E"
+            }, "a", {
+                "input": "b",
+                "selection": "a"
+            }, "aA190$%^", {
+                "input": "bB190$%^",
+                "selection": "aA190$%^"
+            }, "这是中文吗lll", "ａＢ２＠＃（\t 结束", {
+                "input": "这是中文吗zzz",
+                "selection": "这是中文吗lll"
+            }, {
+                "input": "ａＢｃＤ６９＠＃（\t 结束",
+                "selection": "ａＢ２＠＃（\t 结束"
+            }, {
+                "input": "SAd12#$中文ａＢ１＃￥\t＊",
+                "selection": "<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"
+            }];
+            var options_6 = {
+                "getData": function(word){
+                    sce.giveData("sce", rce);
+                }
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", scf_call);
+            };
+            var sce = baidu.suggestion.create("ce", options_6);
+            var scf = baidu.suggestion.create(baidu.G("cf"), options);
+        </script>
+        <script type="text/javascript">
+            //回调函数
+            sdb_call = function(){
+                sdb.giveData("sdb", raa);
+            };
+            sdd_call = function(){
+                sdd.giveData("sdd", rac);
+            };
+            sdf_call = function(){
+                sdf.giveData("sdf", rae);
+            };
+            sed_call = function(){
+                sed.giveData("sed", rbc);
+            };
+            sef_call = function(){
+                sef.giveData("sef", rbe);
+            };
+            sff_call = function(){
+                sff.giveData("sff", rce);
+            };
+            //options中含有"getData"和"prepend_html"且项为字符串
+            var options = {
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            //没有项
+            var options_1 = {
+                "getData": function getDataScripts(word){
+                    sda.giveData("sda", raa);
+                },
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sdb_call);
+            };
+            var sda = baidu.suggestion.create(baidu.G("da"), options_1);
+            var sdb = baidu.suggestion.create("db", options);
+            
+            //一个项
+            var options_2 = {
+                "getData": function(word){
+                    sdc.giveData("sdc", rac);
+                },
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sdd_call);
+            };
+            var sdc = baidu.suggestion.create(baidu.G("dd"), options_2);
+            var sdd = baidu.suggestion.create("dc", options);
+            
+            //多个项
+            var options_3 = {
+                "getData": function(word){
+                    sde.giveData("sde", rae);
+                },
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sdf_call);
+            };
+            var sde = baidu.suggestion.create(baidu.G("df"), options_3);
+            var sdf = baidu.suggestion.create("de", options);
+            
+            //options中含有"getData"和"prepend_html"且项为object
+            //一个项
+            var options_4 = {
+                "getData": function(word){
+                    sec.giveData("sec", rbc);
+                },
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sed_call);
+            };
+            var sec = baidu.suggestion.create(baidu.G("ed"), options_4);
+            var sed = baidu.suggestion.create("ec", options);
+            
+            //多个项
+            var options_5 = {
+                "getData": function(word){
+                    see.giveData("see", rbe);
+                },
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sef_call);
+            };
+            var see = baidu.suggestion.create(baidu.G("ef"), options_5);
+            var sef = baidu.suggestion.create("ee", options);
+            
+            //options中含有"getData"和"prepend_html"且项为字符串和object的混合
+            //多个项
+            var options_6 = {
+                "getData": function(word){
+                    sfe.giveData("sfe", rce);
+                },
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            }
+            options.getData = function(word){
+                baidu.sio.callByBrowser("./php/suggestion.php", sff_call);
+            };
+            var sfe = baidu.suggestion.create(baidu.G("ff"), options_6);
+            var sff = baidu.suggestion.create("fe", options);
+        </script>
+        <script type="text/javascript">
+            //回调函数
+            sgb_call = function(){
+                sgb.giveData("sgb", raa);
+            };
+            sgd_call = function(){
+                sgd.giveData("sgd", rac);
+            };
+            sgf_call = function(){
+                sgf.giveData("sgf", rae);
+            };
+            shd_call = function(){
+                shd.giveData("shd", rbc);
+            };
+            shf_call = function(){
+                shf.giveData("shf", rbe);
+            };
+            sif_call = function(){
+                sif.giveData("sif", rce);
+            };
+            //options中含有"getData"和"append_html"且项为字符串
+            var options = {
+                "append_html": "<b>suggest here:</b>&gt;aa"
+            };
+            //没有项
+            var options_1 = {
+                "getData": function getDataScripts(word){
+                    sga.giveData("sga", raa);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", sgb_call);
+            };
+            var sga = baidu.suggestion.create("ga", options_1);
+            var sgb = baidu.suggestion.create(baidu.G("gb"), options);
+            
+            //一个项
+            var options_2 = {
+                "getData": function(word){
+                    sgc.giveData("sgc", rac);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", sgd_call);
+            };
+            var sgc = baidu.suggestion.create("gc", options_2);
+            var sgd = baidu.suggestion.create(baidu.G("gd"), options);
+            
+            //多个项
+            var options_3 = {
+                "getData": function(word){
+                    sge.giveData("sge", rae);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", sgf_call);
+            };
+            var sge = baidu.suggestion.create("ge", options_3);
+            var sgf = baidu.suggestion.create(baidu.G("gf"), options);
+            
+            //options中含有"getData"和"append_html"且项为object
+            //一个项
+            var options_4 = {
+                "getData": function(word){
+                    shc.giveData("shc", rbc);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", shd_call);
+            };
+            var shc = baidu.suggestion.create("hc", options_4);
+            var shd = baidu.suggestion.create(baidu.G("hd"), options);
+            
+            //多个项
+            var options_5 = {
+                "getData": function(word){
+                    she.giveData("she", rbe);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", shf_call);
+            };
+            var she = baidu.suggestion.create("he", options_5);
+            var shf = baidu.suggestion.create(baidu.G("hf"), options);
+            
+            //options中含有"getData"和"append_html"且项为字符串和object的混合
+            //多个项
+            var options_6 = {
+                "getData": function(word){
+                    sie.giveData("sie", rce);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa"
+            }
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", sif_call);
+            };
+            var sie = baidu.suggestion.create("ie", options_6);
+            var sif = baidu.suggestion.create(baidu.G("if"), options);
+        </script>
+        <script type="text/javascript">
+            //回调函数
+            sjb_call = function(){
+                sjb.giveData("sjb", raa);
+            };
+            sjd_call = function(){
+                sjd.giveData("sjd", rac);
+            };
+            sjf_call = function(){
+                sjf.giveData("sjf", rae);
+            };
+            skd_call = function(){
+                skd.giveData("skd", rbc);
+            };
+            skf_call = function(){
+                skf.giveData("skf", rbe);
+            };
+            slf_call = function(){
+                slf.giveData("slf", rce);
+            };
+            //options中含有"getData"、"prepend_html"和"append_html"且项为字符串
+            var options = {
+                "append_html": "<b>suggest here:</b>&gt;aa",
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            //没有项
+            var options_1 = {
+                "getData": function getDataScripts(word){
+                    sja.giveData("sja", raa);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa",
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", sjb_call);
+            };
+            var sja = baidu.suggestion.create(baidu.G("jb"), options_1);
+            var sjb = baidu.suggestion.create("ja", options);
+            
+            //一个项
+            var options_2 = {
+                "getData": function(word){
+                    sjc.giveData("sjc", rac);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa",
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", sjd_call);
+            };
+            var sjc = baidu.suggestion.create(baidu.G("jd"), options_2);
+            var sjd = baidu.suggestion.create("jc", options);
+            
+            //多个项
+            var options_3 = {
+                "getData": function(word){
+                    sje.giveData("sje", rae);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa",
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", sjf_call);
+            };
+            var sje = baidu.suggestion.create(baidu.G("jf"), options_3);
+            var sjf = baidu.suggestion.create("je", options);
+            
+            //options中含有"getData"、"prepend_html"和"append_html"且项为object
+            //一个项
+            var options_4 = {
+                "getData": function(word){
+                    skc.giveData("skc", rbc);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa",
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", skd_call);
+            };
+            var skc = baidu.suggestion.create(baidu.G("kd"), options_4);
+            var skd = baidu.suggestion.create("kc", options);
+            
+            //多个项
+            var options_5 = {
+                "getData": function(word){
+                    ske.giveData("ske", rbe);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa",
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            };
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", skf_call);
+            };
+            var ske = baidu.suggestion.create(baidu.G("kf"), options_5);
+            var skf = baidu.suggestion.create("ke", options);
+            
+            //options中含有"getData"、"prepend_html"和"append_html"且项为字符串和object的混合
+            //多个项
+            var options_6 = {
+                "getData": function(word){
+                    sle.giveData("sle", rce);
+                },
+                "append_html": "<b>suggest here:</b>&gt;aa",
+                "prepend_html": "<b>suggest here:</b>&gt;aa"
+            }
+            options.getData = function(word){
+                baidu.ajax.get("./php/suggestion.php", slf_call);
+            };
+            var sle = baidu.suggestion.create(baidu.G("lf"), options_6);
+            var slf = baidu.suggestion.create("le", options);
+        </script>
+    </body>
+</html>

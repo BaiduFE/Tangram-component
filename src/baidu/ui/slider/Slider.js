@@ -84,9 +84,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
             mousedown   : me.getCallRef() + "._mouseDown(event)",
             thumb       : baidu.format(me.tplThumb, {
                 thumbId   : me.getId("thumb"),
-                thumbClass: me.getClass("thumb"),
-                mouseOver : me.getCallRef() + "._onMouseOver(this);",
-                mouseOut : me.getCallRef() + "._onMouseOut(this);"
+                thumbClass: me.getClass("thumb")
             })
 		});
 	},

@@ -23,6 +23,9 @@ baidu.ui.dialog.Dialog.register(function(me){
     me.addEventListener("onclose", function(){
         baidu.ui.smartCover.hide(this);
     });
+    me.addEventListener("onload", function(){
+        baidu.ui.smartCover.update(this);
+    });
     me.addEventListener("onupdate", function(){
         baidu.ui.smartCover.update(this);
     });

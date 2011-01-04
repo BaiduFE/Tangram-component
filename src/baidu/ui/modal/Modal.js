@@ -51,7 +51,7 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
         zIndex:1000
     };
 }).extend({
-    uiType    : "MODAL",
+    uiType    : "modal",
     _showing  : false,
 
     /**

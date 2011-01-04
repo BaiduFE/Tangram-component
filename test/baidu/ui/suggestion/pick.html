@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>baidu.suggestion.pick函数测试</title>
+		
+		<script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.0.js"></script>
+		<!-- suggestion js -->
+		<script src="../../../../src/baidu/ui.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Central.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Div.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Data.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Input.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/create.js"></script>
+		<!-- suggestion js-->
+		<!-- test js -->
+		<!-- test js -->
+		<style>
+		    .tangram_sug_wpr{border:1px solid #817F82;position:absolute;top:28px;left:0}
+		    .tangram_sug_wpr table{width:100%;background:#fff;cursor:default}
+		    .tangram_sug_wpr td{font:14px verdana}
+		    .tangram_sug_mo{background-color:#36c;color:#fff}
+		    .tangram_sug_ml{background-color:#fff;color:#000}
+		    .tangram_sug_app{background-color:white;}
+		    .tangram_sug_pre{background-color:white;}
+		</style>
+	</head>
+	<body>
+		<p align=center style="font-size:120%">
+			<font color="#999900">This is baidu.suggestion.pick函数测试 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		没有项：
+		<input type=text name="aa" id="aa" />
+		<input type="button" name="Submit1" value="pick下一个"
+			onclick="pick_next('aa')">
+		<input type="button" name="Submit2" value="指定字上屏"
+			onclick="pick_word('aa')">
+		<input type=text name="ab" id="ab" />
+		<input type="button" name="Submit3" value="pick下一个"
+			onclick="pick_next('ab')">
+		<input type="button" name="Submit4" value="指定字上屏"
+			onclick="pick_word('ab')">
+		<br />
+		一个string项：
+		<input type=text name="ac" id="ac" />
+		<input type="button" name="Submit5" value="pick下一个"
+			onclick="pick_next('ad')">
+		<input type="button" name="Submit6" value="指定字上屏"
+			onclick="pick_word('ad')">
+		<input type=text name="ad" id="ad" />
+		<input type="button" name="Submit7" value="pick下一个"
+			onclick="pick_next('ac')">
+		<input type="button" name="Submit8" value="指定字上屏"
+			onclick="pick_word('ac')">
+		<br />
+		一个object项：
+		<input type=text name="ae" id="ae" />
+		<input type="button" name="Submit9" value="pick下一个"
+			onclick="pick_next('ae')">
+		<input type="button" name="Submit10" value="指定字上屏"
+			onclick="pick_word('ae')">
+		<input type=text name="af" id="af" />
+		<input type="button" name="Submit11" value="pick下一个"
+			onclick="pick_next('af')">
+		<input type="button" name="Submit12" value="指定字上屏"
+			onclick="pick_word('af')">
+		<br />
+		多个项：
+		<input type=text name="ag" id="ag" />
+		<input type="button" name="Submit13" value="pick下一个"
+			onclick="pick_next('ah')">
+		<input type="button" name="Submit14" value="指定字上屏"
+			onclick="pick_word('ah')">
+		<input type=text name="ah" id="ah" />
+		<input type="button" name="Submit15" value="pick下一个"
+			onclick="pick_next('ag')">
+		<input type="button" name="Submit16" value="指定字上屏"
+			onclick="pick_word('ag')">
+		<br />
+		<br />
+
+		<script type="text/javascript">
+	//回调函数
+	sab_call = function(){
+		sab.giveData("sab", raa);
+	};
+	sad_call = function(){
+		sad.giveData("sad", rac);	
+	};
+	saf_call = function(){
+		saf.giveData("saf", rae);	
+	};
+	sah_call = function(){
+		sah.giveData("sah", rag);	
+	};
+	
+	var raa = [];
+	var options_1 = {
+		"getData" : function getDataScripts(word){
+			saa.giveData("saa", raa);	
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa",
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+
+	//没有项
+	var saa = baidu.suggestion.create("aa", options_1);
+	options_1.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sab_call);	};
+	var sab = baidu.suggestion.create(baidu.G("ab"), options_1);
+		
+	//一个string项
+	var rac = ["SAd12#$中文ａＢ１＃￥\t＊"];
+	var options_2 = {
+		"getData" : function(word){
+			sac.giveData("sac", rac);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa",
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sac = baidu.suggestion.create(baidu.G("ad"), options_2);
+	options_2.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sad_call);	};
+	var sad = baidu.suggestion.create("ac", options_2);
+	
+	//一个object项
+	var rae = [{"input":"SAd12#$中文ａＢ１＃￥\t＊", "selection":"<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"}];
+	var options_3 = {
+		"getData" : function(word){
+			sae.giveData("sae", rae);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa",
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};			
+	var sae = baidu.suggestion.create("ae", options_3);
+	options_3.getData = function(word){	baidu.ajax.get("./php/suggestion.php", saf_call);	};
+	var saf = baidu.suggestion.create(baidu.G("af"), options_3);
+	
+	//多个项
+	var rag = ["开始", {"input":"i开始", "selection":"s开始"}, "#", {"input":"*", "selection":"#"}, 
+					"1", {"input":"3", "selection":"1"}, "E", {"input":"P", "selection":"E"}, "a", {"input":"b", "selection":"a"}, "aA190$%^", 
+					{"input":"bB190$%^", "selection":"aA190$%^"}, "这是中文吗lll", "ａＢ２＠＃（\t 结束", 
+					{"input":"这是中文吗zzz", "selection":"这是中文吗lll"}, 
+					{"input":"ａＢ９＠＃（\t 结束", "selection":"ａＢ２＠＃（\t 结束"},
+					{"input":"SAd12#$中文ａＢ１＃￥\t＊", "selection":"<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"}];
+	var options_4 = {
+		"getData" : function(word){
+			sag.giveData("sag", rag);
+		},
+		"append_html" : "<b>suggest here:</b>&gt;aa",
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};	
+	var sag = baidu.suggestion.create(baidu.G("ah"), options_4);
+	options_4.getData = function(word){	baidu.ajax.get("./php/suggestion.php", sah_call);	};
+	var sah = baidu.suggestion.create("ag", options_4);
+
+	var count = 0;
+	//pick next button function
+	function pick_next(str){
+		switch(str){
+			case "aa" : 
+				saa.pick(count);
+				break;
+			case "ab" : 
+				sab.pick(count);
+				break;
+			case "ac" : 
+				sac.pick(count);
+				break;
+			case "ad" : 
+				sad.pick(count);
+				break;
+			case "ae" : 
+				sae.pick(count);
+				break;
+			case "af" : 
+				saf.pick(count);
+				break;
+			case "ag" : 
+				sag.pick(count);
+				break;
+			case "ah" : 
+				sah.pick(count);
+				break;
+		}
+		count++;
+	}
+	var word = new Array("", "#", "1", "E", "a", "aA190$%^", "这是中文吗lll", "ａＢｃＤ１２＠＃（\t\n 结束");
+	count = 0;
+	//pick word button function
+	function pick_word(str){
+		var sss;
+		switch(str){
+			case "aa" : 
+				sss = saa;
+				break;
+			case "ab" : 
+				sss = sab;
+				break;
+			case "ac" : 
+				sss = sac;
+				break;
+			case "ad" : 
+				sss = sad;
+				break;
+			case "ae" : 
+				sss = sae;
+				break;
+			case "af" : 
+				sss = saf;
+				break;
+			case "ag" : 
+				sss = sag;
+				break;
+			case "ah" : 
+				sss = sah;
+				break;
+		}
+		sss.pick(word[count]);
+		count++;
+		if (count == 8)
+			count = 0;
+	}
+</script>
+	</body>
+</html>

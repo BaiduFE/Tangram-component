@@ -30,33 +30,36 @@ baidu.extend(baidu.ui.dialog.Dialog.prototype,{
     
     /**
      * 创建底部按钮
+     * @param {Object} option 创建按钮的options
+     * @param {String} name 按钮的唯一标识符
      * @return void
      * */
-    createButtons:function(){
+    createButton:function(option,name){
         var me = this;
-        baidu.object.each(this.buttons,function(opt, name){
-           baidu.extend(opt,{
-               classPrefix : me.classPrefix + "-" + name,
-               skin : me.skin ? me.skin + "-" + name : "",
-               element : me.getFooter(),
-               autoRender : true,
-               parent : me
-           });
-           var buttonInstance = baidu.ui.create(baidu.ui.button.Button, opt);
-           me.buttonInstances[name] = buttonInstance;
-       });                     
+        baidu.extend(option,{
+            classPrefix : me.classPrefix + "-" + name,
+            skin : me.skin ? me.skin + "-" + name : "",
+            element : me.getFooter(),
+            autoRender : true,
+            parent : me
+        });
+        var buttonInstance = baidu.ui.create(baidu.ui.button.Button, option);
+        me.buttonInstances[name] = buttonInstance;
     },
    
     /**
      * 删除底部按钮
+     * @param {String} name 按钮的唯一标识符
      * @return void
      * */
-    removeButtons:function(){
-        var me = this;
-        baidu.object.each(me.buttonInstances,function(button,key){
+    removeButton:function(name){
+        var me = this,
+            button = me.buttonInstances[name];
+        if(button){
             button.dispose();
-        });
-        me.buttonInstances = {};
+            delete(me.buttonInstances[name]);
+            delete(me.buttons[name]);
+        }
     }
 });
 baidu.ui.dialog.Dialog.register(function(me){
@@ -65,11 +68,22 @@ baidu.ui.dialog.Dialog.register(function(me){
     
     //在onLoad时创建buttons
     me.addEventListener("onload",function(){
-        me.createButtons(); 
+        baidu.object.each(me.buttons,function(opt, name){
+            me.createButton(opt,name);
+        });
     });
 
     //在dispose时同时dispose buttons
     me.addEventListener("ondispose",function(){
-        me.removeButtons(); 
+        baidu.object.each(me.buttons,function(opt, name){
+            me.removeButton(name);
+        });
+    });
+
+    //在update时同时update buttons
+    me.addEventListener("onupdate",function(){
+        baidu.object.each(me.buttons,function(opt, name){
+            me.buttonInstances[name] ? me.buttonInstances[name].update(opt) : me.createButton(opt,name); 
+        });
     });
 });

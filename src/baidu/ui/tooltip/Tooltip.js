@@ -31,7 +31,7 @@
  */
 baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend({
 	//ui控件的类型 **必须**
-    uiType            : "TOOLTIP",
+    uiType            : "tooltip",
     //ui控件的class样式前缀 可选
     //classPrefix     : "tangram_tooltip_",
     width			: '',

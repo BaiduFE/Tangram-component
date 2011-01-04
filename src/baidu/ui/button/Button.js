@@ -61,8 +61,8 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
         return baidu.format(me.tplBody, {
 		    id       : me.getId(),
             statable : me._getStateHandlerString(),
-		"class" : me.getClass(),            
-content  : me.content
+		    "class" : me.getClass(),            
+            content  : me.content
         });
     },
 
@@ -128,5 +128,17 @@ content  : me.content
         }
         me.setState(eventName);
         me._fireEvent(eventName,null,null,e);
+    },
+
+    /**
+     * 更新button的属性
+     * @param {Object} options  更新button的属性
+     * */
+    update:function(options){
+        var me = this;
+        baidu.extend(me,options);
+        options.content && (me.getBody().innerHTML = options.content)
+
+        me.dispatchEvent("onupdate");
     }
 });

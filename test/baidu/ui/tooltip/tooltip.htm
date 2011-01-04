@@ -1,0 +1,60 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Tooltip</title>
+    <!-- 
+    <script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.1.js"></script>
+    <script language="JavaScript" src="../../../../baidu/baidu.js"></script>
+     -->
+    <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.tooltip.*' ></script>
+    
+    <!-- 
+    <script language="JavaScript" src="../../../../src/baidu/ui.js"></script>
+    <script language="JavaScript" src="../../../../src/baidu/ui/tooltip.js"></script>
+    <script language="JavaScript" src="../../../../src/baidu/ui/tooltip/Tooltip.js"></script>
+    <script language="JavaScript" src="../../../../src/baidu/ui/tooltip/create.js"></script>
+     -->
+
+    <link rel="stylesheet" href="css/reset.css" />
+    <link href="css/demo.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+    .tangram-tooltip{border:1px solid #666;background:#FFF;}
+    </style>
+</head>
+<body>
+<div id="wrapper">
+
+    <h1>Tooltip</h1>
+    <hr />
+    <a id="t0" href="javascript:void(0)" title="this is a title">Hover me</a><br>
+   	<a id="t1" href="javascript:void(0)" title="this is a title">Hover me1</a><br/>
+   	<a id="t2" href="javascript:void(0)" title="this is a title">Hover me2</a><br>
+   	<a id="t3" href="javascript:void(0)" title="this is a title">Hover me3</a><br>
+   	<a id="t4" href="javascript:void(0)" title="this is a title">Click me4</a><br>
+   	<a id="t5" href="javascript:void(0)" title="this is a title">Updatable tooltip</a><br/>
+   	<input type="text" id="i5" value="new content"/>
+   	<input type="button" onclick="tooltip5.update({content:baidu.g('i5').value})" value="update" /><br/>
+   	<a id="t6" href="javascript:void(0)" title="this is a title">Element content tooltip</a><br/>
+   	<div id="ele6" style="display:none">I am a element node.</div>
+    <div id="footer">
+        Tooltip &copy;
+    </div>
+</div>
+<script language="JavaScript">
+baidu.ui.tooltip.hover(baidu.g('t0'),{});
+baidu.ui.tooltip.hover(baidu.g('t1'),{positionBy:'mouse',width:500,content:'<div style="width:200px;height:200px;">tip of t1</div>'});
+baidu.ui.tooltip.hover(baidu.g('t2'),{positionBy:'element',offset:[10,40],content:'<div style="width:200px;height:200px;">tip of t2</div>'});
+baidu.ui.tooltip.hover(baidu.g('t3'),{content:'<div style="width:200px;height:200px;">tip of t3</div>'});
+baidu.ui.tooltip.click(baidu.g('t4'),{content:'<div style="width:300px;height:300px">click elsewhere to close me</div>'});
+var tooltip5 = baidu.ui.tooltip.hover(baidu.g('t5'),{content:'update me!<br/>Input content and click "update"'});
+baidu.ui.tooltip.hover(baidu.g('t6'),{contentElement:baidu.g('ele6'),content:'<div style="width:300px;height:300px">click elsewhere to close me</div>'});
+
+baidu.on('ele6','click',function(){alert("Dom mode is working.")})
+
+//暴力分隔线，下面的请各位无视！
+
+
+</script>
+
+</body>
+</html>

@@ -43,7 +43,7 @@
 
 baidu.ui.input.Input = baidu.ui.createUI(new Function).extend({
     //ui控件的类型，传入给UIBase **必须**
-    uiType            : "INPUT",
+    uiType            : "input",
     //ui控件的class样式前缀 可选
     //classPrefix     : "tangram-input-",
     tplBody         : '<input id="#{id}" class="#{class}" value="#{text}" onfocus="#{onfocus}" onblur="#{onblur}" onchange="#{onchange}" onkeydown="#{onkeydown}" onkeyup="#{onkeyup}" onmouseover="#{onmouseover}" onmouseout="#{onmouseout}" />',
