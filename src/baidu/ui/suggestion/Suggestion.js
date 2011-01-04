@@ -379,7 +379,6 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
             var element = e.target || e.srcElement,
                 ui = baidu.ui.get(element);
             //如果在target上面或者suggestion内部
-//            if(element == suggestion.getTarget() || baidu.ui.get(element)){
             if(element == suggestion.getTarget() || (ui && ui.uiType == suggestion.uiType)){
                 return;
             }
