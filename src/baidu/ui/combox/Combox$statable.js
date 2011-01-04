@@ -16,10 +16,9 @@
 /**
  * 提供enable、disable行为
  */
-baidu.object.extend(baidu.ui.combox.Combox.prototype,{
+baidu.ui.combox.Combox.extend({
     statable: true
 }); 
-
 
 baidu.ui.combox.Combox.register(function(me){
     
