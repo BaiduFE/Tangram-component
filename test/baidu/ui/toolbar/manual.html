@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+    <head>
+        <title>toolbar manual test - by lixiaopeng</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <link type="text/css" rel="stylesheet" media="all" href="manual.css" />
+        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.toolbar.*'></script>
+        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.button.Button,baidu.ui.menubar.Menubar,baidu.ui.combox.Combox'></script>
+    </head>
+    <body>
+        <div id="toolBar-Container"></div>
+        <script type="text/javascript">
+            var options = {
+                title:"title",
+                items:[{
+                    config:{
+                        name:"cut_button",
+                        content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"        
+                    }
+                },{
+                    type:"toolbar-spacer",
+                    config:{
+                        width:"20px"
+                    }
+                },{
+                    config:{
+                        name:"paste_button",
+                        content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"     
+                    }
+                },{
+                    type:"menubar",
+                    config:{
+                        name:"menu",
+                        target:"<li id='menulist'>这里是菜单</li>",
+                        data:[{content:"复制"},{content:"粘贴"}]
+                        /**
+                         * width
+                         * height
+                         * zIndex
+                         * onitemclick
+                         * onitemmouseover
+                         * onitemmouseout
+                         * onopen,
+                         * onclose,
+                         * onbeforeopen,
+                         * onbeforeclose
+                         * */
+                    }
+                },{
+                    type:"toolbar-toolbar",     
+                    config:{
+                        name:"ToolBar",
+                             direction:"vertical",
+                             title:"ToolBar",
+                             items:[{
+                             config:{
+                                name:"cut_button2",
+                                content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"        
+                            }
+                        },{
+                            type:"toolbar-spacer",
+                            config:{
+                                height:"50px"
+                            }
+                        },{
+                            config:{
+                                name:"paste_button2",
+                                content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"     
+                            }
+                        }/*,{
+                            type:"combox",
+                            config:{
+                                name:"combox",
+                                target:"<div class='code-area' style='height:130px' id='comboxContent'></div>",
+                                data:[{content:'content-option1',value:'1'},{content:'content-option2',value:'2'},{content:'content-option3',value:'3'}]//,
+                                //width,
+                                //height,
+                                //data,
+                                //zIndex,
+                                //onitemclick 
+                            }   
+                        }*/]
+                    }
+                    
+                },{
+                    type:"toolbar-toolbar",
+                    config:{
+                        name:"toolbar2",
+                        direction:"vertical",
+                        items:[{
+                            type:"toolbar-toolbar",
+                            config:{
+                                title:"toolbar",
+                                name:"toolbar2-1",
+                                items:[
+                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}},
+                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}}
+                                ]
+                            }
+                        },{
+                            type:"toolbar-toolbar",
+                            config:{
+                                name:"toolbar2-2",
+                                title:"toolbar",
+                                items:[
+                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}},
+                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}},
+                                    {config:{name:"button7",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}}
+                                ]
+                            }       
+                        }]
+                    }
+                }]
+            };
+            var toolbar = new baidu.ui.toolbar.Toolbar(options);
+            toolbar.render("toolBar-Container");
+        </script>
+
+    </body>
+</html>
