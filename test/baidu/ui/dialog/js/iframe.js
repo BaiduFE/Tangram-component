@@ -17,13 +17,12 @@ test("iframe", function() {
 		/* check title */
 		equals(options.titleText, d.getTitleInner().innerHTML, "check title");
 		var ele = d.getContent().firstChild;
-		var id = 'tangram-DIALOG--' + d.guid;
+		var id = 'tangram-dialog--' + d.guid;
 		var className = 'tangram-dialog-iframe';
 		/* check element is shown */
 		ok(isShown(ele), "check element is shown");
 		/* check element source */
-		ok(new RegExp(framesrc + "$").test(ele.src), "check iframe src : "
-				+ ele.src);
+		ok(new RegExp(framesrc + "$").test(ele.src), "check iframe src : "+ ele.src);
 		/* check element class */
 		equals(ele.className, className, "check iframe class");
 		/* check element name */
