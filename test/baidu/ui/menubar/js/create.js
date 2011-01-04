@@ -1,3 +1,5 @@
+module('baidu.ui.menubar.create');
+
 test('data', function() {
 	var data = [ {
 		content : 'm11'
@@ -70,7 +72,8 @@ test('onitemclick', function() {
 	}, check = function(e) {
 		equals(index, e.index, 'index in event');
 		equals(e.value, menu.items[index], 'data in event');
-		ok(!isShown(menu.getItem(index)), 'hide after on item click');
+		//ok(!isShown(menu.getItem(index)), 'hide after on item click');
+		ok(menu.getBody().className.match('tangram-menubar-empty')&&!menu.getBody().className.match('tangram-menubar-open'),'class empty is add and class open is remove ');
 	};
 	var menu = baidu.ui.menubar.create(options.data, options);
 	testingElement.obj.push(menu);
