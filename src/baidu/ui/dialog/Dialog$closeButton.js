@@ -43,7 +43,7 @@ baidu.ui.dialog.Dialog.register(function(me){
         });
         me.closeButtonInstance = buttonInstance;
 
-        me.addEventListener("ondispose",function(e){
+        me.addEventListener("ondispose",function(){
             buttonInstance.dispose();
         });
     });

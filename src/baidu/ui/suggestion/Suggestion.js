@@ -411,4 +411,3 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
         baidu.lang.Class.prototype.dispose.call(this);
     }
 });
-
