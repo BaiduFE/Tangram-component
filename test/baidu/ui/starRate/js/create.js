@@ -6,7 +6,7 @@ test('create',function(){
 	document.body.appendChild(div);
 	te.obj.push(div);
 	var sRate = new baidu.ui.starRate.create(div);
-	equal(sRate.uiType,'STARRATE','ui type is starRate');
+	equal(sRate.uiType,'starRate','ui type is starRate');
 	equal(sRate.classOn,'on','check classOn');
 	equal(sRate.classOff,'off','check classOff');
 	equal(sRate.total,5,'total is 5');
@@ -22,7 +22,7 @@ test('options',function(){
 		total : 10,
 		current : 3
 	});
-	equal(sRate.uiType,'STARRATE','ui type is starRate');
+	equal(sRate.uiType,'starRate','ui type is starRate');
 	equal(sRate.classOn,'on','check classOn');
 	equal(sRate.classOff,'off','check classOff');
 	equal(sRate.total,10,'total is 10');
