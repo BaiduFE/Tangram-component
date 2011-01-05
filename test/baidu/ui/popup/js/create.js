@@ -43,5 +43,5 @@ test('create',function(){
 	ok(popup.isShown(),'popup is opened');
 	popup.close();
 	ok(!popup.isShown(),'popup is hidden');
-	equal(popup.uiType,"POPUP",'ui type is popup');
+	equal(popup.uiType,"popup",'ui type is popup');
 });

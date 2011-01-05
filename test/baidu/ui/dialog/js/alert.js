@@ -12,13 +12,13 @@ test('alert', function() {
 		modal : false
 	});
 	equals(a.getContent().innerHTML, cnt, 'check content');
-	equals(a.uiType, 'DIALOG', 'check type');
+	equals(a.uiType, 'dialog', 'check type');
 	equals(a.type, 'alert', 'check dialog type');
 	var ab = a.getFooter().firstChild;
 	equals(ab.innerHTML, '确定', 'check accept button');
 	ok(isShown(a.getContent()), 'autoOpen');
 	UserAction.click(ab);
-	/* auto dispose on close */
+	// auto dispose on close 
 	ok(!a.getMain(), 'disposed on close auto');
 	te.obj.push(a);
 });
@@ -101,12 +101,18 @@ test('dialog position', function() {
 	equal(parseInt($(d.getBody()).css('height')), 302
 			+ d.getFooter().offsetHeight + d.getTitle().offsetHeight,
 			'check dialog height');
-	var left = (baidu.page.getViewWidth() - parseInt(d.getMain().offsetWidth))
+	var left = (baidu.page.getViewWidth() - parseInt(d.getMain().offsetWidth))//getViewWidth获取页面视觉区域宽度;
 			/ 2 + baidu.page.getScrollTop();
 	var top = (baidu.page.getViewHeight() - parseInt(d.getMain().offsetHeight))
 			/ 2 + baidu.page.getScrollLeft();
-	equal(d.getMain().style.left, (left > 0 ? left : 0) + 'px', 'check left');
-	equal(d.getMain().style.top, (top > 0 ? top : 0) + 'px', 'check top');
+	if(baidu.ie){//ie下居中，不会在半个像素那个位置
+		equal(d.getMain().style.left, Math.floor((left > 0 ? left : 0)) + 'px', 'check left');
+		equal(d.getMain().style.top, Math.floor((top > 0 ? top : 0)) + 'px', 'check top');
+	}
+	else {
+		equal(d.getMain().style.left, (left > 0 ? left : 0) + 'px', 'check left');
+		equal(d.getMain().style.top, (top > 0 ? top : 0) + 'px', 'check top');
+	}
 	equal(d.getMain().style.right, '', 'check right');
 	equal(d.getMain().style.bottom, '', 'check bottom');
 	te.obj.push(d);
