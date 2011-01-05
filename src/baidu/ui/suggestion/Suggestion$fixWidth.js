@@ -72,8 +72,9 @@ baidu.ui.suggestion.Suggestion.register(function(suggestion){
         //监听搜索框与suggestion弹出层的宽度是否一致。
         if(suggestion.fixWidth){
             suggestion.fixWidthTimer = setInterval(function (){
-                var main = suggestion.getMain();
-                if(main.offsetWidth !=0 && suggestion.getTarget().offsetWidth != main.offsetWidth){
+                var main = suggestion.getMain(),
+                    target = suggestion.getTarget();
+                if(main.offsetWidth !=0 && target && target.offsetWidth != main.offsetWidth){
                     suggestion.adjustPosition();
                     main.style.display = 'block';
                 }

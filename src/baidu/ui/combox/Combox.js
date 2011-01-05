@@ -35,7 +35,7 @@
  * @param {String} [options.width]             宽度
  * @param {String} [options.height]            高度
  * @param {Number} [options.zIndex = 1200]     z-index
- * @param {Boolean} [options.editable = false] 输入框是否可编辑
+ * @param {Boolean} [options.editable = true] 输入框是否可编辑
  * @param {Function} [options.filter]          数据过滤方法
  * @param {Object} [options.data]              combox数据，格式见example
  * @param {Object} [options.menu]              可由用户传入创建好的menu对象
@@ -67,7 +67,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
   me.menu = me.menu || false; //下拉menu,用于判断menu是否已存在
 }).extend({
     uiType: "combox",
-    editable: false,
+    editable: true,
     width: '',
     height: '',
     zIndex: 1200,

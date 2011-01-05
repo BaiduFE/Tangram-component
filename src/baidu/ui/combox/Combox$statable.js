@@ -8,14 +8,18 @@
  * date: 2010-12-09
  */
 
-///import baidu.ui.combox.Combox
-///import baidu.ui.behavior.statable
+///import baidu.ui.combox.Combox;
+///import baidu.ui.behavior.statable;
 ///import baidu.event.on;
 ///import baidu.event.un;
 
 /**
  * 提供enable、disable行为
  */
+baidu.ui.combox.Combox.extend({
+    statable: true
+}); 
+
 baidu.ui.combox.Combox.register(function(me){
     
     me.addEventListener('onenable', function(){

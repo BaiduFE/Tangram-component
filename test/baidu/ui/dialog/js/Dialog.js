@@ -15,7 +15,7 @@ test("get methods", function() {
 		contentText : "content",
 		modal : false
 	};
-	var d = new baidu.ui.dialog.Dialog(options), pre = 'tangram-DIALOG--' + d.guid;
+	var d = new baidu.ui.dialog.Dialog(options), pre = 'tangram-dialog--' + d.guid;
 	d.render();
 	/* get title */
 	equals(d.getTitle().id, pre + "-title", 'check title');
