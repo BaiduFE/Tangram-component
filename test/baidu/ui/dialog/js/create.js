@@ -131,6 +131,13 @@ test('center position', function() {
 			/ 2 + baidu.page.getScrollTop();
 	var top = (baidu.page.getViewHeight() - parseInt(d.getMain().offsetHeight))
 			/ 2 + baidu.page.getScrollLeft();
-	equal(d.getMain().style.left, (left > 0 ? left : 0) + 'px', 'check left');
-	equal(d.getMain().style.top, (top > 0 ? top : 0) + 'px', 'check top');
+	if(baidu.ie){
+		equal(d.getMain().style.left, Math.floor((left > 0 ? left : 0)) + 'px', 'check left');
+		equal(d.getMain().style.top, Math.floor((top > 0 ? top : 0)) + 'px', 'check top');
+	}
+	else{
+		equal(d.getMain().style.left,(left > 0 ? left : 0) + 'px', 'check left');
+		equal(d.getMain().style.top, (top > 0 ? top : 0) + 'px', 'check top');
+	}
+
 });
