@@ -7,7 +7,7 @@ test('single element', function() {
 	});
 	equals(tps.length || 1, 1, 'check length');
 	baidu.each(tps, function(tp, i) {
-		equals(tp.uiType, 'TOOLTIP', 'check type');
+		equals(tp.uiType, 'tooltip', 'check type');
 		equals(tp.targetId, divs[i].id, 'check type');
 	});
 	te.obj.push(tps);
@@ -20,7 +20,7 @@ test('single id', function() {
 	});
 	equals(tps.length || 1, 1, 'check length');
 	baidu.each(tps, function(tp, i) {
-		equals(tp.uiType, 'TOOLTIP', 'check type');
+		equals(tp.uiType, 'tooltip', 'check type');
 		equals(tp.targetId, divs[i].id, 'check type');
 	});
 	te.obj.push(tps);
@@ -33,7 +33,7 @@ test('multi element', function() {
 	});
 	equals(tps.length, divs.length, 'check length');
 	baidu.each(tps, function(tp, i) {
-		equals(tp.uiType, 'TOOLTIP', 'check type');
+		equals(tp.uiType, 'tooltip', 'check type');
 		equals(tp.targetId, divs[i].id, 'check type');
 	});
 })
@@ -48,7 +48,7 @@ test('multi id', function() {
 	});
 	equals(tps.length, divs.length, 'check length');
 	baidu.each(tps, function(tp, i) {
-		equals(tp.uiType, 'TOOLTIP', 'check type');
+		equals(tp.uiType, 'tooltip', 'check type');
 		equals(tp.targetId, divs[i].id, 'check type');
 	});
 	te.obj.push(tps);
