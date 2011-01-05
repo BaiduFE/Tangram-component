@@ -711,16 +711,16 @@ var UserAction = {
 		/**
 		 * 支持release分之，此处应该直接返回
 		 */
-		if(location.search.indexOf("release=true")>=0){
-			if(callback && typeof callback == "function")
+		if (location.search.indexOf("release=true") >= 0) {
+			if (callback && typeof callback == "function")
 				callback();
 			return;
 		}
-		
+
 		var srcpath = location.href.split("/test/")[0]
 				+ "/test/tools/br/import.php?f=" + src;
-		if(exclude)
-			srcpath += '&e='+exclude;
+		if (exclude)
+			srcpath += '&e=' + exclude;
 
 		/**
 		 * IE下重复载入会出现无法执行情况
@@ -774,13 +774,14 @@ var UserAction = {
 		op = typeof op == 'function' ? {
 			ontest : op
 		} : op;
-		var pw = op.win || window, w, f, url = '', id = op.id || 'f', fid = 'iframe#' + id;
+		var pw = op.win || window, w, f, url = '', id = op.id || 'f', fid = 'iframe#'
+				+ id;
 
-		op.finish = function() {			
-			if(te && te.dom)
-				te.dom.push(pw.$("div#div"+id)[0]);
+		op.finish = function() {
+			if (te && te.dom)
+				te.dom.push(pw.$("div#div" + id)[0]);
 			else
-				pw.$("div#div"+id).remove();
+				pw.$("div#div" + id).remove();
 			start();
 		};
 
@@ -795,7 +796,7 @@ var UserAction = {
 				url = this.src.split('import.php')[1];
 			}
 		});
-		pw.$(fid).attr('src', cpath + 'frame.php' + url).load(function() {				
+		pw.$(fid).attr('src', cpath + 'frame.php' + url).load(function() {
 			w = pw.frames[pw.frames.length - 1];
 			op.ontest(w, w.frameElement);
 		});
@@ -968,72 +969,106 @@ var UserAction = {
 			}
 
 			// Modern KHTML browsers should qualify as Safari X-Grade
-	if ((/KHTML/).test(ua)) {
-		o.webkit = 1;
-	}
-	// Modern WebKit browsers are at least X-Grade
-	m = ua.match(/AppleWebKit\/([^\s]*)/);
-	if (m && m[1]) {
-		o.webkit = numberify(m[1]);
-
-		// Mobile browser check
-		if (/ Mobile\//.test(ua)) {
-			o.mobile = "Apple"; // iPhone or iPod Touch
-		} else {
-			m = ua.match(/NokiaN[^\/]*|Android \d\.\d|webOS\/\d\.\d/);
-			if (m) {
-				o.mobile = m[0]; // Nokia N-series, Android, webOS,
-				// ex:
-				// NokiaN95
+			if ((/KHTML/).test(ua)) {
+				o.webkit = 1;
 			}
-		}
-
-		var m1 = ua.match(/Safari\/([^\s]*)/);
-		if (m1 && m1[1]) // Safari
-			o.safari = numberify(m1[1]);
-		m = ua.match(/Chrome\/([^\s]*)/);
-		if (o.safari && m && m[1]) {
-			o.chrome = numberify(m[1]); // Chrome
-		} else {
-			m = ua.match(/AdobeAIR\/([^\s]*)/);
-			if (m) {
-				o.air = m[0]; // Adobe AIR 1.0 or better
-			}
-		}
-	}
-
-	if (!o.webkit) { // not webkit
-		// @todo check Opera/8.01 (J2ME/MIDP; Opera Mini/2.0.4509/1316;
-		// fi; U;
-		// try get firefox and it's ver
-		// ssr)
-		m = ua.match(/Opera[\s\/]([^\s]*)/);
-		if (m && m[1]) {
-			o.opera = numberify(m[1]);
-			m = ua.match(/Opera Mini[^;]*/);
-			if (m) {
-				o.mobile = m[0]; // ex: Opera Mini/2.0.4509/1316
-			}
-		} else { // not opera or webkit
-			m = ua.match(/MSIE\s([^;]*)/);
+			// Modern WebKit browsers are at least X-Grade
+			m = ua.match(/AppleWebKit\/([^\s]*)/);
 			if (m && m[1]) {
-				o.ie = numberify(m[1]);
-			} else { // not opera, webkit, or ie
-				m = ua.match(/Gecko\/([^\s]*)/);
-				if (m) {
-					o.gecko = 1; // Gecko detected, look for revision
-					m = ua.match(/rv:([^\s\)]*)/);
+				o.webkit = numberify(m[1]);
+
+				// Mobile browser check
+				if (/ Mobile\//.test(ua)) {
+					o.mobile = "Apple"; // iPhone or iPod Touch
+				} else {
+					m = ua.match(/NokiaN[^\/]*|Android \d\.\d|webOS\/\d\.\d/);
+					if (m) {
+						o.mobile = m[0]; // Nokia N-series, Android, webOS,
+						// ex:
+						// NokiaN95
+					}
+				}
+
+				var m1 = ua.match(/Safari\/([^\s]*)/);
+				if (m1 && m1[1]) // Safari
+					o.safari = numberify(m1[1]);
+				m = ua.match(/Chrome\/([^\s]*)/);
+				if (o.safari && m && m[1]) {
+					o.chrome = numberify(m[1]); // Chrome
+				} else {
+					m = ua.match(/AdobeAIR\/([^\s]*)/);
+					if (m) {
+						o.air = m[0]; // Adobe AIR 1.0 or better
+					}
+				}
+			}
+
+			if (!o.webkit) { // not webkit
+				// @todo check Opera/8.01 (J2ME/MIDP; Opera Mini/2.0.4509/1316;
+				// fi; U;
+				// try get firefox and it's ver
+				// ssr)
+				m = ua.match(/Opera[\s\/]([^\s]*)/);
+				if (m && m[1]) {
+					o.opera = numberify(m[1]);
+					m = ua.match(/Opera Mini[^;]*/);
+					if (m) {
+						o.mobile = m[0]; // ex: Opera Mini/2.0.4509/1316
+					}
+				} else { // not opera or webkit
+					m = ua.match(/MSIE\s([^;]*)/);
 					if (m && m[1]) {
-						o.gecko = numberify(m[1]);
+						o.ie = numberify(m[1]);
+					} else { // not opera, webkit, or ie
+						m = ua.match(/Gecko\/([^\s]*)/);
+						if (m) {
+							o.gecko = 1; // Gecko detected, look for revision
+							m = ua.match(/rv:([^\s\)]*)/);
+							if (m && m[1]) {
+								o.gecko = numberify(m[1]);
+							}
+						}
 					}
 				}
 			}
 		}
-	}
-}
 
-return o;
-})()
+		return o;
+	})(),
+
+	/**
+	 * 提供队列方式执行用例的方案，接口包括start、add、next，方法全部执行完毕时会启动用例继续执行
+	 */
+	functionListHelper : function() {
+		var check = {
+			list : [],
+			start : function() {
+				var self = this;
+				$(this).bind('next', function() {
+					setTimeout(function() {// 避免太深的堆栈
+						if (self.list.length == 0)
+							start();
+						else
+							self.list.shift()();
+					}, 0);
+				});
+				self.next();
+			},
+			add : function(func) {
+				this.list.push(func);
+			},
+			next : function(delay) {
+				var self = this;
+				if (delay) {
+					setTimeout(function() {
+						$(self).trigger('next');
+					}, delay);
+				} else
+					$(this).trigger('next');
+			}
+		};
+		return check;
+	}
 };
 var ua = UserAction;
 var upath = ua.commonData.currentPath();
