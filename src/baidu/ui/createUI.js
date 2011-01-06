@@ -46,7 +46,13 @@ baidu.ui.createUI = function(constructor, options) {
                 //添加行为到控件上
                 if(typeof me[i] != 'undefined'){
                     baidu.object.extend(me, baidu.ui.behavior[i]);
-                    baidu.ui.behavior[i].call(me);
+                    if(baidu.lang.isFunction(me[i])){
+                        me.addEventListener("onload", function(){
+                            baidu.ui.behavior[i].call(me[i].apply(me));
+                        });
+                    }else{
+                        baidu.ui.behavior[i].call(me);
+                    }
                 }
             }
 

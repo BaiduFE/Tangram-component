@@ -102,10 +102,10 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * */
     tplMain: '<div id="#{mainId}" class="#{mainClass}" onmousedown="javascript:return false;">' +
             '#{title}' +
-            '<div id="#{mainCon}" class="#{mainConClass}">' +
+            '<div id="#{mainInner}" class="#{mainInnerClass}">' +
                 '<table cellpadding="0" cellspacing="0" style="width:100%; height:100%" id="#{tableId}">' +
                     '<tr><td style="width:100%; height:100%" #{position}>' +
-                        '<table cellpadding="0" cellspacing="0" id="#{tableConId}">#{content}</table>' +
+                        '<table cellpadding="0" cellspacing="0" id="#{tableInnerId}">#{content}</table>' +
                     '</td></tr>' +
                 '</table>' +
             '</div>' +
@@ -115,7 +115,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * tplTitle
      * @property
      * */
-    tplTitle: '<div id="#{titleId}" class="#{titleClass}"><div id="#{titleConId}" class="#{titleConClass}">#{title}</div></div>',
+    tplTitle: '<div id="#{titleId}" class="#{titleClass}"><div id="#{titleInnerId}" class="#{titleInnerClass}">#{title}</div></div>',
 
     /**
      * uiType
@@ -134,19 +134,21 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
         return baidu.format(me.tplMain, {
             'mainId' : me.getId('main'),
             'mainClass' : me.getClass('main'),
-            'mainCon' : me.getClass('mianCon'),
-            'mainConClass' : me.getClass('mainConClass'),
+            'mainInner' : me.getClass('mianInner'),
+            'mainInnerClass' : me.getClass('main-inner'),
             'title' : me.title === '' ? '' : baidu.format(me.tplTitle, {
                                                     'titleId' : me.getId('title'),
-                                                    'titleClass' : me.getClass('titleClass'),
-                                                    'titleConId' : me.getId('titleCon'),
-                                                    'titleConClass' : me.getClass('titleConClass'),
+                                                    'titleClass' : me.getClass('title'),
+                                                    'titleInnerId' : me.getId('titleInner'),
+                                                    'titleInnerClass' : me.getClass('title-inner'),
                                                     'title' : me.title
                                                 }),
             'tableId' : me.getId('table'),
             'position' : me._positionStr,
-            'tableConId' : me.getId('tableCon'),
-            'content' : me.direction == 'horizontal' ? '<tr>' + me._createCell(me.items.length, 'str') + '</tr>' : me._createCell(me.items.length, 'str')
+            'tableInnerId' : me.getId('tableInner'),
+            'content' : me.direction == 'horizontal' 
+                            ? '<tr>' + me._createCell(me.items.length, 'str') + '</tr>' 
+                            : me._createCell(me.items.length, 'str')
         });
     },
 
@@ -177,7 +179,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * */
     _createItems: function() {
         var me = this,
-            container = baidu.g(me.getId('tableCon')),
+            container = baidu.g(me.getId('tableInner')),
             tdCollection = [];
 
         baidu.each(container.rows, function(tr,tr_index) {
@@ -283,7 +285,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
             }
             cells = cells.join('');
         }else {
-            container = baidu.g(me.getId('tableCon'));
+            container = baidu.g(me.getId('tableInner'));
             containerTR = container.row[0];
             if (me.direction == 'horizontal') {
                 for (i = 0; i < num; i++) {

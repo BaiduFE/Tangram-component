@@ -25,29 +25,16 @@
 ///import baidu.fn.bind;
 
 /**
- * @author berg
+ * @author berg, lxp
  * @behavior 为ui控件添加定位行为
- *
  *
  * 根据用户参数将元素定位到指定位置
  * TODO: 1. 用surround做触边折返场景时, 折返的大小通常是原始高宽+另一元素的高宽
  *
- * @example 定义需要定位的元素，本例将保持main元素和target元素的定位关系
- * someUI.create({
- *  posable : function(me){
- *      me.setPositionByElement(me.getMain(), me.getTarget());
- *  }
  * });
  */
 (function() {
-    var Posable = baidu.ui.behavior.posable = function() {
-        this.addEventListener('onload', function() {
-            var me = this;
-            if (baidu.lang.isFunction(me.posable)) {
-                me.posable(me);
-            }
-        });
-    };
+    var Posable = baidu.ui.behavior.posable = function() { };
 
     /**
      * 将控件或者指定元素的左上角放置到指定的坐标
