@@ -55,5 +55,5 @@ baidu.ui.dialog.iframe = function(iframeSrc, options){
 
 baidu.ui.dialog.Dialog.extend({
     //iframeName : "",
-    tplIframe  : "<iframe width='100%' height='100%' frameborder='0' scrolling='no' src='#{0}' name='#{3}' id='#{1}' class='#{2}'></iframe>"
+    tplIframe  : "<iframe width='100%' height=99%' frameborder='0' scrolling='no' src='#{0}' name='#{3}' id='#{1}' class='#{2}'></iframe>"
 });
