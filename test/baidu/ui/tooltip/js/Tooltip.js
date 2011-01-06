@@ -3,7 +3,7 @@ test('target and type', function() {
 	var div = testingElement.dom[0];
 	var t = new baidu.ui.tooltip.Tooltip();
 	t.render(div);
-	equals(t.uiType, 'TOOLTIP', 'check type');
+	equals(t.uiType, 'tooltip', 'check type');
 	equals(t.targetId, div.id, 'check id');
 });
 
