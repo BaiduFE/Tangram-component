@@ -54,6 +54,6 @@ baidu.ui.dialog.iframe = function(iframeSrc, options){
 //通过extend方法扩展默认属性
 
 baidu.ui.dialog.Dialog.extend({
-    //iframeName : "",
-    tplIframe  : "<iframe width='100%' height=99%' frameborder='0' scrolling='no' src='#{0}' name='#{3}' id='#{1}' class='#{2}'></iframe>"
+    //TODO:以后改成计算的方式
+    tplIframe  : "<iframe width='100%' height='99%' frameborder='0' scrolling='no' src='#{0}' name='#{3}' id='#{1}' class='#{2}'></iframe>"
 });
