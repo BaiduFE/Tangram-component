@@ -25,7 +25,7 @@
  */
 baidu.extend(baidu.ui.dialog.Dialog.prototype,{
     enableKeyboard : true,
-    closeOnEscape : true,
+    closeOnEscape : true
 });
 baidu.ui.dialog.Dialog.register(function(me){
 

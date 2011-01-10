@@ -29,7 +29,7 @@
             var element, group;
             options = options || {};
             elementId = (options.element || me.getMain()).id;
-            group = options.group || '';
+            group = options.group;
 
             if (!me.getState(element.id, group)['disabled']) {
                 me.removeState('press', elementId, group);
@@ -42,12 +42,13 @@
             var element, group;
             options = options || {};
             elementId = (options.element || me.getMain()).id;
-            group = options.group || '';
+            group = options.group;
 
             if (!me.getState(element.id, group)['disabled']) {
                 me.removeState('press', elementId, group);
                 me.removeState('hover', elementId, group);
-                me.setState('disabled', elementId, group);
+                me.removeState('disabled', elementId, group);
+                me.setState('enabled', elementId, group);
             }
         });
     };
