@@ -1,4 +1,4 @@
-/*
+/**
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  *
@@ -8,7 +8,7 @@
  * date: 2010-12-20
  */
 
-///import baidu.ui.colorPicker;
+///import baidu.ui.colorPicker.ColorPicker;
 ///import baidu.ui.get;
 ///import baidu.event.on;
 ///import baidu.event.un;
@@ -20,39 +20,44 @@
 /**
  * 创建一个鼠标点击触发的colorPicker
  */
-baidu.object.extend(baidu.ui.colorPicker.ColorPicker.prototype, {
+baidu.ui.colorPicker.ColorPicker.extend({
     /**
      * 插件触发方式，默认为点击
-     * @param {String} [options.type = 'click']
+     * @param {String} [options.type = 'click'].
      */
     type: 'click',
-    
+
     /**
      * body点击事件，点击body关闭菜单
-     * @param {Object} e 事件
+     * @param {Object} e 事件.
      */
-    bodyClick: function(e){
-        var me = this;
+    bodyClick: function(e) {
+        var me = this,
             target = baidu.event.getTarget(e || window.event),
-            judge = function(el){
+            judge = function(el) {
                 return el == me.getTarget();
             };
 
         //判断如果点击的是菜单或者target则返回，否则直接关闭菜单
-        if (!target || judge(target) || baidu.dom.getAncestorBy(target, judge) || baidu.ui.get(target) == me) 
+        if (!target ||
+            judge(target) ||
+            baidu.dom.getAncestorBy(target, judge) ||
+            baidu.ui.get(target) == me) {
             return;
+        }
         me.close();
     }
 });
 
-baidu.ui.colorPicker.ColorPicker.register(function(me){
-    if (me.type != 'click') 
+baidu.ui.colorPicker.ColorPicker.register(function(me) {
+    if (me.type != 'click') {
         return;
-		
-    me.targetOpenHandler = baidu.fn.bind("open", me);
-    me.bodyClickHandler = baidu.fn.bind("bodyClick", me);
+    }
 
-    me.addEventListener('onload', function(){
+    me.targetOpenHandler = baidu.fn.bind('open', me);
+    me.bodyClickHandler = baidu.fn.bind('bodyClick', me);
+
+    me.addEventListener('onload', function() {
         var target = me.getTarget();
         if (target) {
             baidu.on(target, 'click', me.targetOpenHandler);
@@ -60,7 +65,7 @@ baidu.ui.colorPicker.ColorPicker.register(function(me){
         }
     });
 
-    me.addEventListener("ondispose", function(){
+    me.addEventListener('ondispose', function() {
         var target = me.getTarget();
         if (target) {
             baidu.un(target, 'click', me.targetOpenHandler);
