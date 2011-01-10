@@ -51,7 +51,7 @@ baidu.ui.dialog.Dialog.register(function(me){
                     break;
                 //回车键触发
                 case 13:
-                    enbaleEnter && onTop.dispatchEvent("onenter");
+                    enableEnter && onTop.dispatchEvent("onenter");
                     break;
                 default:
             }

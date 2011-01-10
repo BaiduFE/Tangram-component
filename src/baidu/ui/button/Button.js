@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
+ *
  * path: ui/button/Button.js
  * author: zhangyao,lixiaopeng
  * version: 1.0.0
@@ -29,7 +29,7 @@
 
 /**
  * button基类，创建一个button实例
- * 
+ *
  * @config {String}                     content			按钮文本信息
  * @config {Boolean}                    disabled		按钮是否有效，默认为false
  * @config {Function}                   onmouseover		鼠标悬停在按钮上时触发
@@ -39,127 +39,127 @@
  * @config {Function}                   onmouseout		鼠标移出按钮时触发
  * @config {Function}                   ondisable		按钮失效时触发
  * @config {Function}                   onenable		按钮有效时触发
- * @return {Button}                                     Button类
+ * @return {Button}                                     Button类.
  */
 
 baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
     //ui控件的类型，传入给UIBase **必须**
-    uiType          : "button",
-    //ui控件的class样式前缀 可选
-    //classPrefix     : "tangram-button-",
-    tplBody         : '<div id="#{id}" #{statable} class="#{class}">#{content}</div>',
-    disabled         : false,
-    statable        : true,
+    uiType: 'button',
+//ui控件的class样式前缀 可选
+//classPrefix     : "tangram-button-",
+tplBody: '<div id="#{id}" #{statable} class="#{class}">#{content}</div>',
+disabled: false,
+statable: true,
 
-    /**
-     *  获得button的HTML字符串
-     *  @private
-     *  @return {String} string
-     */
-    _getString : function(){
-        var me = this;
-        return baidu.format(me.tplBody, {
-		    id       : me.getId(),
-            statable : me._getStateHandlerString(),
-		    "class" : me.getClass(),            
-            content  : me.content
-        });
-    },
+/**
+ *  获得button的HTML字符串
+ *  @private
+ *  @return {String} string.
+ */
+_getString: function() {
+    var me = this;
+    return baidu.format(me.tplBody, {
+        id: me.getId(),
+           statable: me._getStateHandlerString(),
+           'class' : me.getClass(),
+           content: me.content
+    });
+},
 
     /**
      *  将button绘制到DOM树中。
      *  @public
      *  @param {HTMLElement} target
-     *  @return void
-     */	
-	render : function(target){
-		var me = this,
-            body;	
-        me.addState("click", "click");
-        baidu.dom.insertHTML(me.renderMain(target), "beforeEnd", me._getString());
-
-        body = baidu.g(target).lastChild;
-        if(me.title)
-           body.title = me.title;
-
-        me.disabled && me.setState("disabled");
-        me.dispatchEvent("onload");
-	},
-
-    /**
-     *  判断按钮是否处于失效状态。
-     *  @pubic
-     *  @return {Boolean} state
-     */ 	
-	isDisabled : function(){
-		var me = this,
-            id = me.getId();
-        return me.getState()['disabled'];
-	},
-	
-    /**
-     *  销毁实例。
-     *  @pubic
-     *  @return void
+     *  @return void.
      */
-	dispose : function(){
-		var me = this,
-		    body = me.getBody();
-        
-        //删除当前实例上的方法
-        baidu.each(me._allEventsName,function(item,index){
-            body["on" + item] = null;
-        });
+    render: function(target) {
+                 var me = this,
+                 body;
+                 me.addState('click', 'click');
+                 baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me._getString());
 
-        baidu.dom.remove(body);
-		baidu.lang.Class.prototype.dispose.call(me);
-	},
+                 body = baidu.g(target).lastChild;
+                 if (me.title)
+                     body.title = me.title;
 
-    /**
-     * 设置disabled属性
-     * @pubic
-     * @return void
-     * */
-    disable:function(){
-        var me = this;
-        me.dispatchEvent("ondisable",{element:body});
+                 me.disabled && me.setState('disabled');
+                 me.dispatchEvent('onload');
+             },
 
-    },
+             /**
+              *  判断按钮是否处于失效状态。
+              *  @pubic
+              *  @return {Boolean} state.
+              */
+             isDisabled: function() {
+                              var me = this,
+                              id = me.getId();
+                              return me.getState()['disabled'];
+                          },
 
-    /**
-     * 删除disabled属性
-     * @pubic
-     * @return void
-     * */
-    enable:function(){
-        var me = this;
-        me.dispatchEvent("onenable",{element:body});  
-    },
+                          /**
+                           *  销毁实例。
+                           *  @pubic
+                           *  @return void.
+                           */
+                          dispose: function() {
+                                        var me = this,
+                                        body = me.getBody();
 
-    /**
-     * 触发button事件
-     * @pubic
-     * @param {String} eventName
-     * @param {Object} e
-     * */
-    fire:function(eventType,e){
-        var me = this,eventType = eventType.toLowerCase();
-        if(me.getState()['disabled']){
-            return;
-        }
-        //me.setState(eventName);
-        me._fireEvent(eventType,null,null,e);
-    },
+                                        //删除当前实例上的方法
+                                        baidu.each(me._allEventsName, function(item,index) {
+                                            body['on' + item] = null;
+                                        });
 
-    /**
-     * 更新button的属性
-     * @param {Object} options  更新button的属性
-     * */
-    update:function(options){
-        var me = this;
-        baidu.extend(me,options);
-        options.content && (me.getBody().innerHTML = options.content)
+                                        baidu.dom.remove(body);
+                                        baidu.lang.Class.prototype.dispose.call(me);
+                                    },
 
-        me.dispatchEvent("onupdate");
-    }
+                                    /**
+                                     * 设置disabled属性
+                                     * @pubic
+                                     * @return void.
+                                     * */
+                                    disable: function() {
+                                                var me = this;
+                                                me.dispatchEvent('ondisable', {element: body});
+
+                                            },
+
+                                            /**
+                                             * 删除disabled属性
+                                             * @pubic
+                                             * @return void.
+                                             * */
+                                            enable: function() {
+                                                       var me = this;
+                                                       me.dispatchEvent('onenable', {element: body});
+                                                   },
+
+                                                   /**
+                                                    * 触发button事件
+                                                    * @pubic
+                                                    * @param {String} eventName
+                                                    * @param {Object} e
+                                                    * */
+                                                   fire: function(eventType,e) {
+                                                            var me = this, eventType = eventType.toLowerCase();
+                                                            if (me.getState()['disabled']) {
+                                                                return;
+                                                            }
+                                                            //me.setState(eventName);
+                                                            me._fireEvent(eventType, null, null, e);
+                                                        },
+
+                                                        /**
+                                                         * 更新button的属性
+                                                         * @param {Object} options  更新button的属性.
+                                                         * */
+                                                        update: function(options) {
+                                                                   var me = this;
+                                                                   baidu.extend(me, options);
+                                                                   options.content && (me.getBody().innerHTML = options.content);
+
+                                                                       me.dispatchEvent('onupdate');
+                                                               }
 });
