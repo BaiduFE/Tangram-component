@@ -81,6 +81,8 @@ baidu.ui.smartPosition.SmartPosition = baidu.ui.createUI(function(options){
             source = me.source,
             cH = baidu.page.getViewHeight(),
             cW = baidu.page.getViewWidth(),
+            scrollLeft = baidu.page.getScrollLeft(),
+            scrollTop  = baidu.page.getScrollTop(),
             sourceWidth = source.offsetWidth,
             sourceHeight = source.offsetHeight,
             offsetParent = source.offsetParent,
@@ -102,15 +104,10 @@ baidu.ui.smartPosition.SmartPosition = baidu.ui.createUI(function(options){
         elementStyle.top = me.coordinate.y + me.offset.y - parentPos.top - (me.position.indexOf("top") >= 0 ? sourceHeight : 0);
         switch (me.insideScreen){
             case "surround" :
-                elementStyle.left = me.coordinate['x'] - parentPos.left - (
-                    me.position.indexOf("left") >= 0 ? (me.coordinate["x"] - baidu.page.getScrollLeft() > sourceWidth ? sourceWidth : 0) :
-                                                       (cW - me.coordinate["x"] + baidu.page.getScrollLeft() > sourceWidth ? 0 : sourceWidth)
-                );
-                
-                elementStyle.top = me.coordinate['y'] - parentPos.top - (
-                    me.position.indexOf("top") >= 0 ? (me.coordinate["y"] - baidu.page.getScrollTop() > sourceHeight ? sourceHeight : 0) : 
-                                                      (cH - me.coordinate["y"] + baidu.page.getScrollTop() > sourceHeight ? 0 : sourceHeight)
-                );
+            	elementStyle.left += elementStyle.left < scrollLeft ? sourceWidth  : 
+            							((elementStyle.left + sourceWidth ) > (scrollLeft + cW) ? -sourceWidth : 0);
+            	elementStyle.top  += elementStyle.top  < scrollTop  ? sourceHeight :
+            							((elementStyle.top  + sourceHeight) > (scrollTop  + cH) ? -sourceHeight : 0);
                 break;
             case "fix" :
                 elementStyle.left = Math.max(

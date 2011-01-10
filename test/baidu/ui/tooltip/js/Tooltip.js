@@ -77,3 +77,7 @@ test('on', function() {
 	tp.open();
 	tp.close();
 });
+
+test('offset', function(){
+	equals(true, false, "TODO: offset 用例补充");
+});
