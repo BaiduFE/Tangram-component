@@ -62,8 +62,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
     //ui控件的class样式前缀 可选
     //classPrefix     : "tangram-dialog-",
 
-    width           : '400',
-    height          : '300',
+    //width           : '400',
+    //height          : '300',
 
     top             : 'auto',
     left            : 'auto',
@@ -234,7 +234,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
     /**
      * 获取body的寛高 
      * */
-    _getBodyOffset : function(){
+    _getBodyOffset:function(){
         var me = this,
             bodyOffset,
             body = me.getBody(),
@@ -283,8 +283,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
 
        baidu.setStyles(content,{
-           "width"  :   me.width,
-           "height" :   me.height
+           "width"  :   me.width || "",
+           "height" :   me.height || ""
        }); 
        bodyOffset = me._getBodyOffset();
        baidu.setStyles(body,bodyOffset); 

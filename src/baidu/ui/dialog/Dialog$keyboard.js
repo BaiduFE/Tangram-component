@@ -24,8 +24,9 @@
  * 2. enter 确认alert和confirm
  */
 baidu.extend(baidu.ui.dialog.Dialog.prototype,{
+    enableKeyboard : true,
     closeOnEscape : true,
-    enableKeyboard : true
+    enableEnter : true
 });
 baidu.ui.dialog.Dialog.register(function(me){
 
@@ -50,7 +51,7 @@ baidu.ui.dialog.Dialog.register(function(me){
                     break;
                 //回车键触发
                 case 13:
-                    onTop.dispatchEvent("onenter");
+                    enbaleEnter && onTop.dispatchEvent("onenter");
                     break;
                 default:
             }

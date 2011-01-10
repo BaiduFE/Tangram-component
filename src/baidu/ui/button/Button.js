@@ -116,18 +116,39 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
 	},
 
     /**
+     * 设置disabled属性
+     * @pubic
+     * @return void
+     * */
+    disable:function(){
+        var me = this;
+        me.dispatchEvent("ondisable",{element:body});
+
+    },
+
+    /**
+     * 删除disabled属性
+     * @pubic
+     * @return void
+     * */
+    enable:function(){
+        var me = this;
+        me.dispatchEvent("onenable",{element:body});  
+    },
+
+    /**
      * 触发button事件
      * @pubic
      * @param {String} eventName
      * @param {Object} e
      * */
-    fire:function(eventName,e){
-        var me = this,en = eventName.toLowerCase();
+    fire:function(eventType,e){
+        var me = this,eventType = eventType.toLowerCase();
         if(me.getState()['disabled']){
             return;
         }
-        me.setState(eventName);
-        me._fireEvent(eventName,null,null,e);
+        //me.setState(eventName);
+        me._fireEvent(eventType,null,null,e);
     },
 
     /**
