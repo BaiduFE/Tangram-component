@@ -26,7 +26,6 @@
 baidu.extend(baidu.ui.dialog.Dialog.prototype,{
     enableKeyboard : true,
     closeOnEscape : true,
-    enableEnter : true
 });
 baidu.ui.dialog.Dialog.register(function(me){
 
@@ -51,7 +50,7 @@ baidu.ui.dialog.Dialog.register(function(me){
                     break;
                 //回车键触发
                 case 13:
-                    enableEnter && onTop.dispatchEvent("onenter");
+                    onTop.dispatchEvent("onenter");
                     break;
                 default:
             }
