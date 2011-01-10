@@ -24,8 +24,8 @@
  * 2. enter 确认alert和confirm
  */
 baidu.extend(baidu.ui.dialog.Dialog.prototype,{
+    enableKeyboard : true,
     closeOnEscape : true,
-    enableKeyboard : true
 });
 baidu.ui.dialog.Dialog.register(function(me){
 

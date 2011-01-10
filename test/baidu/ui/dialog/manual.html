@@ -166,6 +166,7 @@ h2{
                 baidu.each(eventsArray, function(item, key){
                     options[item] = function(){
                         document.getElementById(item).style.backgroundColor = '#0f0';
+                       // console && console.log(item);
                     }
                 });
                 return options;
