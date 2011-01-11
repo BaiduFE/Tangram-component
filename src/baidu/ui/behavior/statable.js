@@ -31,11 +31,9 @@
             elementId = (options.element || me.getMain()).id;
             group = options.group;
 
-            if (!me.getState(element.id, group)['disabled']) {
-                me.removeState('press', elementId, group);
-                me.removeState('hover', elementId, group);
-                me.setState('disabled', elementId, group);
-            }
+            me.removeState('press', elementId, group);
+            me.removeState('hover', elementId, group);
+            me.setState('disabled', elementId, group);
         });
 
         me.addEventListener('onenable', function(type,options) {
@@ -44,12 +42,7 @@
             elementId = (options.element || me.getMain()).id;
             group = options.group;
 
-            if (!me.getState(element.id, group)['disabled']) {
-                me.removeState('press', elementId, group);
-                me.removeState('hover', elementId, group);
-                me.removeState('disabled', elementId, group);
-                me.setState('enabled', elementId, group);
-            }
+            me.removeState('disabled', elementId, group);
         });
     };
 

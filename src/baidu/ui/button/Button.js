@@ -110,7 +110,7 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
        });
 
        baidu.dom.remove(body);
-       baidu.lang.Class.prototype.dispose.call(me);
+        baidu.lang.Class.prototype.dispose.call(me);
    },
 
    /**
@@ -119,7 +119,8 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
     * @return void.
     * */
    disable: function() {
-       var me = this;
+        var me = this,
+        body = me.getBody();
        me.dispatchEvent('ondisable', {element: body});
    },
 
@@ -130,6 +131,7 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
     * */
    enable: function() {
        var me = this;
+       body = me.getBody();
        me.dispatchEvent('onenable', {element: body});
    },
 
