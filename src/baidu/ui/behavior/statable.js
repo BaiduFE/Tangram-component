@@ -17,6 +17,7 @@
 ///import baidu.array.each;
 ///import baidu.object.each;
 ///import baidu.fn.bind;
+///import baidu.lang.addEventListeners;
 
 /**
  * 为ui控件添加状态管理行为
@@ -25,24 +26,19 @@
     var Statable = baidu.ui.behavior.statable = function() {
         var me = this;
 
-        me.addEventListener('ondisable', function(type,options) {
-            var element, group;
+        baidu.addEventListeners("ondisable,onenable",function(type,options){
+        	var element, group;
             options = options || {};
             elementId = (options.element || me.getMain()).id;
             group = options.group;
 
-            me.removeState('press', elementId, group);
-            me.removeState('hover', elementId, group);
-            me.setState('disabled', elementId, group);
-        });
-
-        me.addEventListener('onenable', function(type,options) {
-            var element, group;
-            options = options || {};
-            elementId = (options.element || me.getMain()).id;
-            group = options.group;
-
-            me.removeState('disabled', elementId, group);
+        	if(type == "ondisable" && !me.getState(id, group)['disabled']){
+        		me.removeState('press', elementId, group);
+            	me.removeState('hover', elementId, group);
+            	me.setState('disabled', elementId, group);
+            }else if(type == "onenable" && me.getState(id, group)['disabled']){
+            	me.removeState('disabled', elementId, group);
+            }
         });
     };
 
