@@ -26,18 +26,18 @@
     var Statable = baidu.ui.behavior.statable = function() {
         var me = this;
 
-        baidu.addEventListeners("ondisable,onenable",function(type,options){
-        	var element, group;
-        	options = options || {};
-        	elementId = (options.element || me.getMain()).id;
-        	group = options.group;
-        	
-        	if(type == "ondisable" && !me.getState(id, group)['disabled']){
-        		me.removeState('press', elementId, group);
-        		me.removeState('hover', elementId, group);
-        		me.setState('disabled', elementId, group);
-        	}else if(type == "onenable" && me.getState(id, group)['disabled']){
-        		me.removeState('disabled', elementId, group);
+        baidu.addEventListeners('ondisable,onenable', function(type,options) {
+            var element, group;
+            options = options || {};
+            elementId = (options.element || me.getMain()).id;
+            group = options.group;
+
+            if (type == 'ondisable' && !me.getState(id, group)['disabled']) {
+        	    me.removeState('press', elementId, group);
+        	    me.removeState('hover', elementId, group);
+        	    me.setState('disabled', elementId, group);
+            }else if (type == 'onenable' && me.getState(id, group)['disabled']) {
+                me.removeState('disabled', elementId, group);
         	}
         });
     };
