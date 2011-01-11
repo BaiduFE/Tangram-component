@@ -130,3 +130,9 @@ test(
 				}
 			}, 20);
 		});
+test("offset",function(){
+	ok(false, "TODO: options.offset test case needed.")
+});
+test("insideScreen",function(){
+	ok(false, "TODO: options.insideScreen test case needed.")
+});

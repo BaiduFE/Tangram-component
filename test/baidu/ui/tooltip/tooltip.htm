@@ -39,17 +39,22 @@
     <div id="footer">
         Tooltip &copy;
     </div>
+    <div style="position:absolute; right:10px;top:100px;">
+    	<a id="t7" href="javascript:void(0)" title="this is a title">Right side tooltip</a><br/>
+    </div>
 </div>
 <script language="JavaScript">
 baidu.ui.tooltip.hover(baidu.g('t0'),{});
 baidu.ui.tooltip.hover(baidu.g('t1'),{positionBy:'mouse',width:500,content:'<div style="width:200px;height:200px;">tip of t1</div>'});
 baidu.ui.tooltip.hover(baidu.g('t2'),{positionBy:'element',offset:[10,40],content:'<div style="width:200px;height:200px;">tip of t2</div>'});
-baidu.ui.tooltip.hover(baidu.g('t3'),{content:'<div style="width:200px;height:200px;">tip of t3</div>'});
+baidu.ui.tooltip.hover(baidu.g('t3'),{offset:[40,40],content:'<div style="width:200px;height:200px;">tip of t3</div>'});
 baidu.ui.tooltip.click(baidu.g('t4'),{content:'<div style="width:300px;height:300px">click elsewhere to close me</div>'});
 var tooltip5 = baidu.ui.tooltip.hover(baidu.g('t5'),{content:'update me!<br/>Input content and click "update"'});
 baidu.ui.tooltip.hover(baidu.g('t6'),{contentElement:baidu.g('ele6'),content:'<div style="width:300px;height:300px">click elsewhere to close me</div>'});
 
 baidu.on('ele6','click',function(){alert("Dom mode is working.")})
+
+baidu.ui.tooltip.hover('t7',{offset:[0,0],content:'<div style="width:200px;height:200px;">tip of t7</div>'});
 
 //暴力分隔线，下面的请各位无视！
 
