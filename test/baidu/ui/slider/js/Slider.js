@@ -123,6 +123,7 @@ test('onslide', function() {
 	}, 60);
 })
 
+/*
 test('range', function() {
 	stop();
 	var options = {
@@ -154,6 +155,47 @@ test('range', function() {
 			clientY : thumbY
 		});
 		equal(s.value,200,'check value');
+		start();
+	}, 60);
+})
+*/
+
+test('set min max', function() {
+	stop();
+	var options = {
+		min:0,
+		max:300
+	}
+	var s = new baidu.ui.slider.Slider(options);
+	var div = te.dom[0];
+	s.render(div);
+	var thumb = s.getThumb();
+	var body = s.getBody();
+	var thumbX = parseInt(baidu.dom.getPosition(thumb)['left']);
+	var thumbY = parseInt(baidu.dom.getPosition(thumb)['top']);
+//	alert(document.body.outerHTML);
+	var divwidth =  parseInt($(body).css('width'));
+	ua.mousemove(thumb, {
+		clientX : thumbX,
+		clientY : thumbY
+	});
+	ua.mousedown(thumb, {
+		clientX : thumbX,
+		clientY : thumbY
+	});
+	setTimeout(function() {
+		ua.mousemove(thumb, {
+			clientX : thumbX + 405,
+			clientY : thumbY
+		});
+	}, 30);
+	setTimeout(function() {
+		ua.mouseup(thumb, {
+			clientX : thumbX + 405,
+			clientY : thumbY
+		});
+		equal($(thumb).css('left'),(divwidth-parseInt($(thumb).css('width')))+'px','check thumb left');
+		equal(s.getValue(),options.max,'check value');
 		start();
 	}, 60);
 })
