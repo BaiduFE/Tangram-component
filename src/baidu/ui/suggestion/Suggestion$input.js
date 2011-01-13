@@ -1,27 +1,22 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/suggestion/Suggestion$input.js
- * author: berg
- * version: 1.1.0
- * date: 2010-06-02
  */
 
 
 /**
  * 为Suggestion提供输入框监控功能
+ * @author berg
  */
 
-///import baidu.ui.suggestion;
-///import baidu.ui.suggestion.Suggestion;
+///import baidu.ui.Suggestion;
 ///import baidu.event.preventDefault;
 ///import baidu.event.stopPropagation;
 ///import baidu.dom.g;
 ///import baidu.event.on;
 ///import baidu.event.un;
 
-baidu.ui.suggestion.Suggestion.register(function(suggestion){
+baidu.ui.Suggestion.register(function(suggestion){
     var     target,
             //每次轮询获得的value
             oldValue = '',
@@ -122,8 +117,7 @@ baidu.ui.suggestion.Suggestion.register(function(suggestion){
         clearInterval(suggestion.circleTimer);
     });
 });
-baidu.object.extend(baidu.ui.suggestion.Suggestion.prototype, {
-
+baidu.ui.Suggestion.extend({
     /*
      * IE和M$输入法打架的问题
      * 在失去焦点的时候，如果是点击在了suggestion上面，那就取消其默认动作(默认动作会把字上屏)
