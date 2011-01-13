@@ -1,11 +1,6 @@
-/**
+/*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/colorPicker/ColorPicker$more.js
- * author: walter
- * version: 1.0.0
- * date: 2010-12-20
  */
 
 ///import baidu.ui.colorPicker.ColorPicker;
@@ -20,11 +15,13 @@
 
 /**
  * ColorPalette 插件
+ * @name baidu.ui.colorPicker.ColorPicker$more
  * @param {Number} [options.sliderLength = 150] 滑动条长度.
  * @param {String} options.coverImgSrc 调色板背景渐变图片路径.
  * @param {String} options.sliderImgSrc 滑动条背景图片路径.
  * @param {String} [options.titleText = 'More Colors'] 标题文字.
  * @param {Object} [options.dilogOption] 填出对话框配置.
+ * @author walter
  */
 baidu.ui.colorPicker.ColorPicker.extend({
 
@@ -37,6 +34,16 @@ baidu.ui.colorPicker.ColorPicker.extend({
     titleText: 'More Colors',
 
     dialogOption: {},
+    
+    /**
+     * fix mouseUp没有响应
+     * @private
+     */
+    _fixMouseUp: function() {
+        var colorPalette = this.colorPalette;
+        baidu.event.un(document, 'mousemove', colorPalette._movePadDotHandler);
+        baidu.event.un(document, 'mouseup', colorPalette._upPadDotHandler);
+    },
 
     /**
      * 生成调色板对话框
@@ -54,10 +61,10 @@ baidu.ui.colorPicker.ColorPicker.extend({
                     me.dispatchEvent('onchosen', {
                         color: me.colorPalette.hex
                     });
-                    me.colorPalette._fixMouseUp();
+                    me._fixMouseUp();
                 },
                 oncancel: function() {
-                    me.colorPalette._fixMouseUp();
+                    me._fixMouseUp();
                 },
                 draggable: true,
                 autoDispose: false,

@@ -1,11 +1,6 @@
-/**
+/*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/colorPicker/ColorPicker.js
- * author: walter
- * version: 1.0.0
- * date: 2010-12-20
  */
 
 ///import baidu.ui.colorPicker;
@@ -25,9 +20,14 @@
 
 /**
  * 颜色拾取器
+ * @name baidu.ui.colorPicker.ColorPicker
+ * @class
  * @param {Object} options 配置.
  * @param {Number} [options.gridSize = 8] 一行显示的颜色块个数.
  * @param {Function} [options.onchosen] 颜色选择事件.
+ * @plugin click 创建一个鼠标点击触发colorPicker的插件
+ * @plugin more 弹出调色板插件
+ * @author walter
  */
 baidu.ui.colorPicker.ColorPicker = baidu.ui.createUI(function(options) {
     var me = this;
@@ -46,7 +46,7 @@ baidu.ui.colorPicker.ColorPicker = baidu.ui.createUI(function(options) {
 
     tplBody: '<div id="#{id}" class="#{class}">#{content}</div>',
 
-    tplColor: '<a href="javascript:;" id="#{colorId}" style="#{colorStyle}" class="#{colorClass}" onclick="#{choose}" #{stateHandler}></a>',
+    tplColor: '<a href="javascript:;" id="#{colorId}" style="#{colorStyle}" class="#{colorClass}" onclick="javascript:#{choose};return false;" #{stateHandler}></a>',
 
     gridSize: 8,
 
@@ -98,9 +98,7 @@ baidu.ui.colorPicker.ColorPicker = baidu.ui.createUI(function(options) {
             colorStyle: 'background-color:#' + color,
             colorClass: me.getClass('color'),
             choose: me.getCallString('_choose', color),
-            stateHandler: me.statable ?
-                          me._getStateHandlerString('', color) :
-                          '' // TODO
+            stateHandler: me._getStateHandlerString('', color)
         });
     },
 
@@ -127,10 +125,9 @@ baidu.ui.colorPicker.ColorPicker = baidu.ui.createUI(function(options) {
         var me = this,
             main = me.getMain(),
             target = me.getTarget();
-
-        if (options) {
-            baidu.object.extend(me, options);
-        }
+        
+        options = options || {};
+        baidu.object.extend(me, options);
         baidu.dom.insertHTML(main, 'beforeEnd', me.getString());
         me.setPositionByElement(target, main, {
             position: me.position,
@@ -162,6 +159,7 @@ baidu.ui.colorPicker.ColorPicker = baidu.ui.createUI(function(options) {
             me._initialized = true;
         }
         baidu.dom.show(me.getMain());
+        baidu.ui.colorPicker.showing = me;
         me.dispatchEvent('onopen');
     },
 

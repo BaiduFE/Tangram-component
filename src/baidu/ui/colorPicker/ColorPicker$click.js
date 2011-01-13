@@ -1,11 +1,6 @@
-/**
+/*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/colorPicker/ColorPicker$click.js
- * author: walter
- * version: 1.0.0
- * date: 2010-12-20
  */
 
 ///import baidu.ui.colorPicker.ColorPicker;
@@ -19,6 +14,8 @@
 
 /**
  * 创建一个鼠标点击触发的colorPicker
+ * @name baidu.ui.colorPicker.ColorPicker$click
+ * @author walter
  */
 baidu.ui.colorPicker.ColorPicker.extend({
     /**
@@ -54,22 +51,22 @@ baidu.ui.colorPicker.ColorPicker.register(function(me) {
         return;
     }
 
-    me.targetOpenHandler = baidu.fn.bind('open', me);
-    me.bodyClickHandler = baidu.fn.bind('bodyClick', me);
+    me._targetOpenHandler = baidu.fn.bind('open', me);
+    me._bodyClickHandler = baidu.fn.bind('bodyClick', me);
 
     me.addEventListener('onload', function() {
         var target = me.getTarget();
         if (target) {
-            baidu.on(target, 'click', me.targetOpenHandler);
-            baidu.on(document, 'click', me.bodyClickHandler);
+            baidu.on(target, 'click', me._targetOpenHandler);
+            baidu.on(document, 'click', me._bodyClickHandler);
         }
     });
 
     me.addEventListener('ondispose', function() {
         var target = me.getTarget();
         if (target) {
-            baidu.un(target, 'click', me.targetOpenHandler);
-            baidu.un(document, 'click', me.bodyClickHandler);
+            baidu.un(target, 'click', me._targetOpenHandler);
+            baidu.un(document, 'click', me._bodyClickHandler);
         }
     });
 });

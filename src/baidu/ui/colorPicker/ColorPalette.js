@@ -1,11 +1,6 @@
-/**
+/*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/colorPicker/ColorPalette.js
- * author: walter
- * version: 1.0.0
- * date: 2010-12-20
  */
 
 ///import baidu.ui.colorPicker;
@@ -34,10 +29,13 @@
 
 /**
  * 复杂颜色拾取器
+ * @name baidu.ui.colorPicker.ColorPalette
+ * @class
  * @param {Object}  options 配置.
  * @param {Number}  [options.sliderLength = 150] 滑动条长度.
  * @param {String}  options.coverImgSrc 调色板渐变背景图片地址.
  * @param {String}  options.sliderImgSrc 滑动条背景图片地址.
+ * @author walter
  */
 baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
     var me = this;
@@ -70,7 +68,7 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
     /**
      * 颜色展示区域模板
      */
-    tplShow: '<div id="#{newColorId}" class="#{newColorClass}" onclick="#{showClick}"></div><div id="#{currentColorId}" class="#{currentColorClass}" onclick="#{currentClick}"></div><div id="#{hexId}" class="#{hexClass}"></div><div id="#{saveId}" class="#{saveClass}" onclick="#{saveClick}"></div>',
+    tplShow: '<div id="#{newColorId}" class="#{newColorClass}" onclick="#{showClick}"></div><div id="#{savedColorId}" class="#{savedColorClass}" onclick="#{savedColorClick}"></div><div id="#{hexId}" class="#{hexClass}"></div><div id="#{saveId}" class="#{saveClass}" onclick="#{saveClick}"></div>',
 
     sliderLength: 150,
 
@@ -111,12 +109,11 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
                              me.getString());
 
         me._createSlider();
-        me.padClickHandler = baidu.fn.bind('_padClick', me);
-        me.sliderClickHandler = baidu.fn.bind('_sliderClick', me);
+        me._padClickHandler = baidu.fn.bind('_onPadClick', me);
 
-        baidu.event.on(me.getPad(), 'click', me.padClickHandler);
+        baidu.event.on(me.getPad(), 'click', me._padClickHandler);
 
-        me._setImg();
+        me._setColorImgs();
         me.setSliderDot(me.sliderDotY);
         me.setPadDot(me.padDotY, me.padDotX);
         me._saveColor();
@@ -128,10 +125,10 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
      * 设置滑动条和调色板背景图片
      * @private
      */
-    _setImg: function() {
+    _setColorImgs: function() {
         var me = this,
             cover = me._getCover(),
-            slider = me.getSlider();
+            slider = me.getSliderBody();
 
         if (baidu.browser.ie) {
             me._setFilterImg(cover, me.coverImgSrc);
@@ -149,13 +146,10 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
      * @param {Object} src 图片src.
      */
     _setBackgroundImg: function(obj, src) {
-        var tpl = 'url(#{url})';
         if (!src) {
             return;
         }
-        baidu.dom.setStyle(obj, 'background', baidu.string.format(tpl, {
-            url: src
-        }));
+        baidu.dom.setStyle(obj, 'background', 'url(' + src + ')');
     },
 
     /**
@@ -164,14 +158,13 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
      * @param {Object} obj 要设置的对象.
      * @param {Object} src 图片src.
      */
-    _setFilterImg: function(obj, src) {
-        var tpl = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="#{url}", sizingMethod="crop")';
+    _setFilterImg: function(obj, src) {        
         if (!src) {
             return;
         }
-        baidu.dom.setStyle(obj, 'filter', baidu.string.format(tpl, {
-            url: src
-        }));
+        baidu.dom.setStyle(obj, 'filter',
+             'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' +
+              src + '", sizingMethod="crop")');
     },
 
     /**
@@ -200,7 +193,7 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
         return baidu.string.format(me.tplPadDot, {
             padDotId: me.getId('padDot'),
             padDotClass: me.getClass('padDot'),
-            mousedown: me.getCallString('_mouseDownPadDot')
+            mousedown: me.getCallString('_onPadDotMouseDown')
         });
     },
 
@@ -250,9 +243,9 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
         return baidu.string.format(me.tplShow, {
             newColorId: me.getId('newColor'),
             newColorClass: me.getClass('newColor'),
-            currentColorId: me.getId('currentColor'),
-            currentColorClass: me.getClass('currentColor'),
-            currentClick: me.getCallString('_currentColorClick'),
+            savedColorId: me.getId('savedColor'),
+            savedColorClass: me.getClass('savedColor'),
+            savedColorClick: me.getCallString('_onSavedColorClick'),
             hexId: me.getId('hex'),
             hexClass: me.getClass('hex'),
             saveId: me.getId('save'),
@@ -265,19 +258,19 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
      * 鼠标按下调色块事件
      * @private
      */
-    _mouseDownPadDot: function() {
+    _onPadDotMouseDown: function() {
         var me = this,
             pad = me.getPad(),
             position = baidu.dom.getPosition(pad);
 
-        me.padTop = position.top; //计算调色板的offsetTop，用于_mouseMovePadDot辅助计算
-        me.padLeft = position.left; //计算调色板的offsetTop，用于_mouseMovePadDot辅助计算
+        me.padTop = position.top; //计算调色板的offsetTop，用于_onPadDotMouseMove辅助计算
+        me.padLeft = position.left; //计算调色板的offsetTop，用于_onPadDotMouseMove辅助计算
 
-        me.movePadDotHandler = baidu.fn.bind('_mouseMovePadDot', me);
-        me.upPadDotHandler = baidu.fn.bind('_mouseUpPadDot', me);
+        me._movePadDotHandler = baidu.fn.bind('_onPadDotMouseMove', me);
+        me._upPadDotHandler = baidu.fn.bind('_onPadDotMouseUp', me);
 
-        baidu.event.on(document, 'mousemove', me.movePadDotHandler);
-        baidu.event.on(document, 'mouseup', me.upPadDotHandler);
+        baidu.event.on(document, 'mousemove', me._movePadDotHandler);
+        baidu.event.on(document, 'mouseup', me._upPadDotHandler);
     },
 
     /**
@@ -285,27 +278,27 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
      * @private
      * @param {Object} e 鼠标事件对象.
      */
-    _mouseMovePadDot: function(e) {
+    _onPadDotMouseMove: function(e) {
         e = e || event;
         var me = this,
             pageX = baidu.event.getPageX(e),
             pageY = baidu.event.getPageY(e);
 
         //计算鼠标坐标相对调色板左上角距离
-        me.padDotY = me._fixNumber(me.sliderLength, pageY - me.padTop);
-        me.padDotX = me._fixNumber(me.sliderLength, pageX - me.padLeft);
+        me.padDotY = me._adjustValue(me.sliderLength, pageY - me.padTop);
+        me.padDotX = me._adjustValue(me.sliderLength, pageX - me.padLeft);
 
         me.setPadDot(me.padDotY, me.padDotX); //设置调色块
     },
 
     /**
-     * 修正数值
+     * 校准value值，保证它在合理范围内
      * @private
-     * @param {Number} x 被比较的数值.
-     * @param {Number} y 需要修正的数值.
-     * @return {Number} 修正过的数值.
+     * @param {Number} x 范围上限,被校准的数值不能超过这个数值.
+     * @param {Number} y 需要校准的数值.
+     * @return {Number} 校准过的数值.
      */
-    _fixNumber: function(x, y) {
+    _adjustValue: function(x, y) {
         return Math.max(0, Math.min(x, y));
     },
 
@@ -313,20 +306,10 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
      * 鼠标松开调色块事件
      * @private
      */
-    _mouseUpPadDot: function() {
+    _onPadDotMouseUp: function() {
         var me = this;
-        baidu.event.un(document, 'mousemove', me.movePadDotHandler);
-        baidu.event.un(document, 'mouseup', me.upPadDotHandler);
-    },
-
-    /**
-     * fix mouseUp没有响应
-     * @private
-     */
-    _fixMouseUp: function() {
-        var me = this;
-        baidu.event.un(document, 'mousemove', me.movePadDotHandler);
-        baidu.event.un(document, 'mouseup', me.upPadDotHandler);
+        baidu.event.un(document, 'mousemove', me._movePadDotHandler);
+        baidu.event.un(document, 'mouseup', me._upPadDotHandler);
     },
 
     /**
@@ -334,7 +317,7 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
      * @param {Object} e 鼠标事件.
      * @private
      */
-    _padClick: function(e) {
+    _onPadClick: function(e) {
         var me = this,
             pad = me.getPad(),
             position = baidu.dom.getPosition(pad);
@@ -342,17 +325,17 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
         me.padTop = position.top;
         me.padLeft = position.left;
 
-        me._mouseMovePadDot(e); //将调色块移动到鼠标点击的位置
+        me._onPadDotMouseMove(e); //将调色块移动到鼠标点击的位置
     },
 
     /**
-     * currentColor 单击事件
+     * savedColor 单击事件
      * @private
      */
-    _currentColorClick: function() {
+    _onSavedColorClick: function() {
         var me = this,
             dot = me.getSliderDot(),
-            position = me.currentPosition;
+            position = me.savedColorPosition;
 
         me.setSliderDot(position.sliderDotY);
         baidu.dom.setStyle(dot, 'top', position.sliderDotY); //恢复滑动块位置
@@ -372,7 +355,7 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
      * 获取滑动条容器对象
      * @return {HTMLElement} dom节点.
      */
-    getSlider: function() {
+    getSliderBody: function() {
         return this.slider.getBody();
     },
 
@@ -476,16 +459,16 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
      */
     _saveColor: function() {
         var me = this,
-            currentColorContaner = baidu.dom.g(this.getId('currentColor'));
+            savedColorContainer = baidu.dom.g(this.getId('savedColor'));
 
-        baidu.dom.setStyle(currentColorContaner,
+        baidu.dom.setStyle(savedColorContainer,
                            'background-color',
                             me.hex); //显示颜色
 
-        me.currentHex = me.hex; //保存颜色值
+        me.savedColorHex = me.hex; //保存颜色值
 
         //保存滑动块、调色块状态
-        me.currentPosition = {
+        me.savedColorPosition = {
             sliderDotY: me.sliderDotY,
             padDotY: me.padDotY,
             padDotX: me.padDotX
@@ -567,7 +550,7 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
     dispose: function() {
         var me = this;
 
-        baidu.event.un(me.getPad(), 'click', me.padClickHandler);
+        baidu.event.un(me.getPad(), 'click', me._padClickHandler);
         me.slider.dispose();
 
         me.dispatchEvent('ondispose');
