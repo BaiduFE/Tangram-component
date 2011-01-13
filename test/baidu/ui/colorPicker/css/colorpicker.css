@@ -1,0 +1,217 @@
+.tangram-colorpicker {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid gray;
+}
+
+.tangram-colorpicker table {
+    border-collapse: separate;
+    color: #000000;
+    cursor: default;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    text-decoration: none;
+    vertical-align: baseline;
+    white-space: nowrap;
+    width: auto;
+}
+
+.tangram-colorpicker a:link, .tangram-colorpicker a:visited, .tangram-colorpicker a:hover, .tangram-colorpicker a:active {
+    color: #000000;
+    cursor: default;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.tangram-colorpicker-color {
+    border: 1px solid #808080;
+    display: block;
+    height: 9px;
+    overflow: hidden;
+    width: 9px;
+}
+
+.tangram-colorpicker-morecolorbutton {
+    margin: 1px;
+    border: 1px solid #FFF;
+    text-align: center;
+    font-size: 11px;
+    padding: 2px;
+    cursor: default;
+}
+
+.tangram-colorpicker-morecolorbutton-hover {
+    border: 1px solid #222222;
+    background: #222222 url(img/ui-bg_75.png) 50% 50% repeat-x;
+}
+
+.tangram-colorpalette {
+    display: block;
+    position: relative;
+	width: 360px;
+	height: 180px;
+	overflow: hidden;
+	background: url(img/colorpicker_background.png);
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.tangram-colorpalette-pad{
+	width: 150px;
+	height: 150px;
+	left: 14px;
+	top: 13px;
+	position: absolute;
+	background: #f00;
+	overflow: hidden;
+	cursor: crosshair;
+}
+
+.tangram-colorpalette-cover {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 150px;
+	height: 150px;
+}
+
+.tangram-colorpalette-padDot {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 11px;
+	height: 11px;
+	overflow: hidden;
+	background: url(img/colorpicker_select.gif);
+	margin: -5px 0 0 -5px;
+	z-index:1000;
+}
+
+.tangram-colorpalette-slider {
+	position: absolute;
+	top: 13px;
+	left: 171px;
+	width: 35px;
+	height: 150px;
+}
+
+.tangram-colorpalette-slider-thumb {
+	cursor: n-resize;
+	position: absolute;
+	width: 35px;
+	height: 9px;
+	overflow: hidden;
+	background: url(img/colorpicker_indic.gif) left top;
+	margin: -4px 0 0 0;
+	left: 0px;
+}
+
+.tangram-colorpalette-newColor {
+	position: absolute;
+	width: 60px;
+	height: 30px;
+	left: 213px;
+	top: 13px;
+}
+.tangram-colorpalette-currentColor {
+	position: absolute;
+	width: 60px;
+	height: 30px;
+	left: 283px;
+	top: 13px;
+}
+
+.tangram-colorpalette-hex {
+	position: absolute;
+	width: 72px;
+	height: 22px;
+	left: 212px;
+	top: 142px;
+}
+
+.tangram-colorpalette-save {
+	position: absolute;
+	width: 22px;
+	height: 22px;
+	background: url(img/save.png) top;
+	left: 322px;
+	top: 142px;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.tangram-dialog {
+    border: 2px solid #a8b9eb;
+    background: #ffffff;
+    color: #333;
+}
+
+.tangram-dialog-title {
+    background: none repeat scroll 0 0 #C7DEEC;
+    border-bottom: 1px solid #9EC9E9;
+    border-top: 1px solid #DCEAF3;
+    height: 27px;
+    cursor: move;
+}
+
+.tangram-dialog-title-inner {
+    color: #336699;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 27px;
+    padding-left: 12px;
+}
+
+.tangram-dialog-content {
+    position: relative;
+    height: auto;
+    font-size: 12px;
+}
+
+.tangram-dialog-footer {
+    background: none repeat scroll 0 0 #E6F3FB;
+    border-top: 1px solid #C5DFF0;
+    padding: 4px;
+    height: 20px;
+    height: 30px\9;
+}
+	
+.tangram-dialog-titletext{
+    margin: 0 10px;
+    line-height:24px;
+}
+
+.tangram-dialog-close{
+    width:19px;
+    height:19px;
+    right: 8px;
+    top:8px;
+    position:absolute;
+    background:url("img/close.gif");
+    cursor:pointer;
+}
+
+.tangram-dialog-accept{
+	color:#35608C;
+	font-family:STHeiti,SimSun;
+	font-size:12px;
+	font-weight:700;
+	height:20px;
+    text-align:center;
+	width:40px;
+	position:absolute;
+	cursor:pointer;
+}
+
+.tangram-dialog-cancel{
+	color:#35608C;
+	font-family:STHeiti,SimSun;
+	font-size:12px;
+	font-weight:700;
+	height:20px;
+    text-align:center;
+	width:40px;
+	position:absolute;
+	margin-left:50px;
+	cursor:pointer;
+}
