@@ -1,105 +1,84 @@
 /**
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/toolBar/ToolBar.js
- * @author lixiaopeng
- * @version 1.0.0
- * date: 2010/11/28
- * */
+ */
 
 ///import baidu.ui.toolbar._Item;
 
 ///import baidu.object.extend;
 ///import baidu.string.format;
 ///import baidu.dom.getStyle;
+///import baidu.dom.setStyle;
 ///import baidu.dom._styleFilter.px;
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.g;
 ///import baidu.array.each;
 ///import baidu.ui.createUI;
+///import baidu.object.merge;
 
 /**
- * toolBar基类，建立toolBar实例
- * @constructor
- * @param {Object}              config config参数.
- * @param {String}              [config.title=""]                   toolbar的title参数，默认为空.
- * @param {String}              [config.name="ToolBar_item_xxx"]    name参数，每个toolbar对象都有一个name参数.
- * @param {String}              [config.direction="horizontal"]     {"vertical"|"horizontal"} toolbar只能在横向和纵向之间进行选择，默认为横向，及"horizontal".
- * @param {String}              [config.position="left" | "top"]     当direction为horizontal时，默认值为left;当direction为vertical时,默认值为top.
- * @param {String|Number}       [config.width]                      宽度.
- * @param {String|Number}       [config.height]                     高度.
- * @param {String|HTMLElement}  [config.container=document.body]    实例容器.
- * @param {Object[]}            [config.items]                      创建ui的JSON.
- * @param {String}              [config.items.type="button"]ui控件类型
- *                                                                  目前支持的type值为:button,combox,menu,toolbar,separator,spacer.
- * @param {Object}              [options.items.XXX]                 创建ui控件所需要的config参数.
- * */
+ * @class   toolBar基类，建立toolBar实例
+ * @param   {Object}    options config参数.
+ * @config  {String}    [title=""]  toolbar的title参数，默认为空.
+ * @config  {String}    [name="ToolBar_item_xxx"]   name参数，每个toolbar对象都有一个name参数.
+ * @config  {String}    [direction="horizontal"]    有效值:"vertical","horizontal" toolbar只能在横向和纵向之间进行选择，默认为横向，及"horizontal".
+ * @config  {String}    [position="left" | "top"]   当direction为horizontal时，默认值为left;当direction为vertical时,默认值为top.
+ *                                                  align有效值:'left', 'right', 'center', 'justify', 'inherit'
+                                                    valign有效值:'top', 'middle', 'bottom', 'baseline'
+ * @config  {String|Number} [width]     宽度.
+ * @config  {String|Number} [height]    高度.
+ * @config  {String|HTMLElement}    [container=document.body]   实例容器.
+ * @config  {Array}     [items] Object数组，创建ui的JSON.
+ * @config  {String}    [type="button"] ui控件类型
+ * @config  {Object}    [config]    创建ui控件所需要的config参数.
+ * @author  lixiaopeng
+ */
 baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
     var me = this,
-        positionArray,
-        align = ['left', 'right', 'center', 'justify', 'inherit'],
-        valign = ['top', 'middle', 'bottom', 'baseline'],
         positionCheck = false,
-        positionPrefix = "align='";
+        positionPrefix = 'align="',
+        position = 'left';
 
-    positionArray = align;
-
-
-    /**
-     * 自身Item的集合
-     * @private
-     * @example
-     * {"cutButton":uiInstance}
-     * */
     me._itemObject = {};
-
     me.items = me.items || {};
-
-    /**position默认值设定及参数检查*/
-    if (me.direction != 'horizontal') {
+   
+    if(me.direction != 'horizontal'){
         me.direction = 'vertical';
-        positionArray = valign;
+        position = 'top';
     }
-    baidu.each(positionArray, function(item,key) {
-        if (item == me.position) {
-            positionCheck = true;
-            return false;
-        }
-    });
-    !positionCheck && (me.position = positionArray[0]);
-    me._positionStr = positionPrefix + me.position + "'";
+    me.position = me.position || position;
+    me._positionStr = positionPrefix + me.position + '"';
 
 }).extend({
 
+    /*
+     * @lends baidu.ui.toolbar.Toolbar.prototype
+     */
+
     /**
      * item容器,默认为document.body
-     * @public
-     * */
+     */
     container: document.body,
 
     /**
      * title
-     * @property
-     * */
+     */
     title: '',
 
     /**
      * direction
-     * @property
-     * */
+     */
     direction: 'horizontal',
 
     /**
      * position
-     * @property
-     * */
+     */
     position: 'left',
 
     /**
      * tplMain
-     * @property
-     * */
+     * @private
+     */
     tplMain: '<div id="#{mainId}" class="#{mainClass}" onmousedown="javascript:return false;">' +
             '#{title}' +
             '<div id="#{mainInner}" class="#{mainInnerClass}">' +
@@ -113,40 +92,52 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
 
     /**
      * tplTitle
-     * @property
-     * */
+     * @private
+     */
     tplTitle: '<div id="#{titleId}" class="#{titleClass}"><div id="#{titleInnerId}" class="#{titleInnerClass}">#{title}</div></div>',
 
     /**
+     * tplHorizontalCell
+     * @private
+     */
+    tplHorizontalCell: '<td id="#{id}" valign="middle"></td>',
+    
+    /**
+     * tplVerticalCell
+     * @private
+     */
+    tplVerticalCell: '<tr><td id="#{id}" valign="middle"></td></tr>',
+
+    /**
      * uiType
-     * @property
-     * */
+     * @private
+     */
     uiType: 'toolbar-toolbar',
 
     /**
      * 返回toolbar的html字符串
      * @private
      * @return {String} HTMLString.
-     * */
+     */
     getString: function() {
         var me = this;
 
         return baidu.format(me.tplMain, {
-            'mainId' : me.getId('main'),
-            'mainClass' : me.getClass('main'),
-            'mainInner' : me.getClass('mianInner'),
-            'mainInnerClass' : me.getClass('main-inner'),
-            'title' : me.title === '' ? '' : baidu.format(me.tplTitle, {
-                                                    'titleId' : me.getId('title'),
-                                                    'titleClass' : me.getClass('title'),
-                                                    'titleInnerId' : me.getId('titleInner'),
-                                                    'titleInnerClass' : me.getClass('title-inner'),
-                                                    'title' : me.title
+            mainId : me.getId('main'),
+            mainClass : me.getClass('main'),
+            mainInner : me.getClass('mianInner'),
+            mainInnerClass : me.getClass('main-inner'),
+            title : me.title === '' ? '' : baidu.format(me.tplTitle, {
+                                                    titleId : me.getId('title'),
+                                                    titleClass : me.getClass('title'),
+                                                    titleInnerId : me.getId('titleInner'),
+                                                    titleInnerClass : me.getClass('title-inner'),
+                                                    title : me.title
                                                 }),
-            'tableId' : me.getId('table'),
-            'position' : me._positionStr,
-            'tableInnerId' : me.getId('tableInner'),
-            'content' : me.direction == 'horizontal' 
+            tableId : me.getId('table'),
+            position : me._positionStr,
+            tableInnerId : me.getId('tableInner'),
+            content : me.direction == 'horizontal' 
                             ? '<tr>' + me._createCell(me.items.length, 'str') + '</tr>' 
                             : me._createCell(me.items.length, 'str')
         });
@@ -154,10 +145,9 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
 
     /**
      * 绘制toolbar
-     * @private
      * @param {String|HTMLElement}  [container=this.container] toolBar容器.
-     * @return void.
-     * */
+     * @return void
+     */
     render: function(container) {
         var me = this, main;
         me.container = container = baidu.g(container || me.container);
@@ -175,8 +165,8 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
     /**
      * 创建item
      * @private
-     * @return void.
-     * */
+     * @return void
+     */
     _createItems: function() {
         var me = this,
             container = baidu.g(me.getId('tableInner')),
@@ -195,10 +185,10 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
 
     /**
      * 使用传入config的方式添加ui组件到toolBar
-     * @param {Object} options ui控件的config参数，格式参照构造函数options.items.
-     * @param {HTMLElement} [container] ui控件的container,若没有container参数，则会自动根据当前toolbar的显示规则在最后创建container.
-     * @return {ui} uiInstance 创建好的ui对象.
-     * */
+     * @param   {Object}    options ui控件的config参数，格式参照构造函数options.items.
+     * @param   {HTMLElement}   [container] ui控件的container,若没有container参数，则会自动根据当前toolbar的显示规则在最后创建container.
+     * @return  {baidu.ui} uiInstance 创建好的ui对象.
+     */
     add: function(options,container) {
         var me = this,
             uiInstance = null,
@@ -211,12 +201,15 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
         if (!options)
             return;
 
-        /**检查默认参数*/
+        /*检查默认参数*/
         options = baidu.extend(defaultOptions, options);
-        options.config.statable = true;
+        delete(options.config.statable);
         options.type = options.type.toLowerCase();
 
-        //TODO:等baidu.ui.create修改完毕后替换掉
+        /*
+         * 用来查找对应的namespace并创建ui实例
+         * TODO:等baidu.ui.create修改完毕后替换掉
+         */
         ns = options.type.split('-');
         if (ns.length == 1) {
             ns = ns.shift();
@@ -228,7 +221,11 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
                 uiNS = uiNS[item];
             });
         }
-        uiNS && (uiInstance = baidu.ui.create(uiNS, options.config));
+        if(uiNS){
+            baidu.object.merge(uiNS,{statable:true},{overwrite:true,whiteList:["statable"]});
+            uiInstance = baidu.ui.create(uiNS,options.config);
+        }
+        //uiNS && (uiInstance = baidu.ui.create(uiNS, options.config));
         me.addRaw(uiInstance, container);
 
         return uiInstance;
@@ -236,11 +233,10 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
 
     /**
      * 直接向toolbar中添加已经创建好的uiInstance
-     * @public
      * @param {Object} uiInstance
      * @param {HTMLElement} container
      * @return void.
-     * */
+     */
     addRaw: function(uiInstance,container) {
         var me = this;
 
@@ -263,8 +259,8 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * @private
      * @param {Number} num 创建cell的数量.
      * @param {String} [type="str"] str|html.
-     * @return {String|HTMLElement} cell.
-     * */
+     * @return {String|HTMLElement} uiInstance的容器.
+     */
     _createCell: function(num,type) {
         var me = this,
             td,
@@ -276,11 +272,11 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
         if (type == 'str') {
             if (me.direction == 'horizontal') {
                 for (i = 0; i < num; i++) {
-                    cells.push("<td id='" + me.getId('cell-' + i) + "' valign='middle'></td>");
+                    cells.push(baidu.format(me.tplHorizontalCell,{id:me.getId('cell-' + i)}));
                 }
             }else {
                 for (i = 0; i < num; i++) {
-                    cells.push("<tr><td id='" + me.getId('cell-' + i) + "' valign='middle'></td></tr>");
+                    cells.push(baidu.format(me.tplVerticalCell,{id:me.getId('cell-' + i)}));
                 }
             }
             cells = cells.join('');
@@ -308,10 +304,10 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
     },
 
     /**
-     * 删除控件
+     * 删除toolbar item
      * @param   {String} name 需要删除的控件的标识符.
      * @return void.
-     * */
+     */
     remove: function(name) {
         var me = this, item;
         if (!name) return;
@@ -323,7 +319,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
     /**
      * 删除所有ui控件
      * @return void.
-     * */
+     */
     removeAll: function() {
         var me = this;
         baidu.object.each(me._itemObject, function(item,key) {
@@ -335,7 +331,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * enable ui组件，当不传入name时，enable所有ui组件到
      * @private
      * @param {String} [name] ui组件唯一标识符.
-     * */
+     */
     _enable: function(name) {
         var me = this, item;
 
@@ -350,7 +346,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * disable ui组件，当不传入name时，disable所有ui组建
      * @private
      * @param {String} [name] ui组件唯一标识符.
-     * */
+     */
     _disable: function(name) {
         var me = this, item;
 
@@ -364,7 +360,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
     /**
      * 激活toolbar中所有的item
      * @return void.
-     * */
+     */
     enableAll: function() {
         var me = this;
         baidu.object.each(me._itemObject, function(item,key) {
@@ -375,7 +371,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
     /**
      * 禁用toolbar中所有的item
      * @return void.
-     * */
+     */
     disableAll: function() {
         var me = this;
         baidu.object.each(me._itemObject, function(item,key) {
@@ -386,8 +382,8 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
     /**
      * 通过name获取ui组件
      * @param {String} name ui组件唯一标识符.
-     * @return {UI} 返回查找到的item.
-     * */
+     * @return {baidu.ui.Instance} 返回查找到的item.
+     */
     getItemByName: function(name) {
         var me = this, item = me._itemObject[name];
         if (!item) {
