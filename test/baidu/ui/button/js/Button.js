@@ -61,14 +61,9 @@ test("event", function() {
 		},
 		ondisable : function() {
 			ok(true, 'on disable');
-			equals(buttonEle.className,
-					"tangram-button tangram-button-disabled",
-					"check button ondisable style");
 		},
 		onenable : function() {
 			ok(true, 'on enable');
-			equals(buttonEle.className, "tangram-button",
-					"check button onenable style");
 		},
 		onclick : function(){
 			ok(true, 'on click');
@@ -84,8 +79,10 @@ test("event", function() {
 	ua.mouseup(button.getId());
 	ua.click(button.getId());
 	ua.mouseout(button.getId());
-	button.disable(button.getId());
-	button.enable(button.getId());
+	button.disable();
+	equals(buttonEle.className,"tangram-button tangram-button-disabled","check button ondisable style");
+	button.enable();
+	equals(buttonEle.className, "tangram-button","check button onenable style");
 	te.dom.push(button.getMain());
 });
 
