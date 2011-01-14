@@ -71,7 +71,7 @@ baidu.ui.button.Button = baidu.ui.createUI(new Function).extend({
      */
     render: function(target) {
         var me = this,
-        body;
+            body;
         me.addState('click', 'click');
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me._getString());
 
