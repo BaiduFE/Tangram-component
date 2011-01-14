@@ -1,6 +1,6 @@
 (function() {
-	UserAction.importsrc('baidu.ui.create');
-	UserAction.importsrc('baidu.dom.insertHTML');
+	UserAction.importsrc('baidu.ui.createUI,baidu.dom.insertHTML,baidu.ui.button.Button');
+//	UserAction.importsrc('baidu.dom.insertHTML');
 	module('baidu.ui.behavior.statable');
 	/**
 	 * Need create need time to load create.js
@@ -23,23 +23,22 @@
 		instance.renderMain();
 		// instance.render();
 		// 渲染body
-		instance.getMain().innerHTML = '<div id="' + instance.getId()
-				+ '"></div>';
+		instance.getMain().innerHTML = '<div id="' + instance.getId()+ '"></div>';
 		// 撑开body
 		instance.getBody().innerHTML = '<div style="width:200px;height:200px;border:1px solid red;"></div>';
 		// 发送onload事件
 		instance.dispatchEvent("onload");
 	}
 	
-	
+
 	test('set/get state', function() {
 		stop();
 		expect(4);
 		setTimeout(function() {
-			var DraggableUI = baidu.ui.create(new Function).extend( {
+			var DraggableUI = baidu.ui.createUI(new Function).extend( {
 				statable : true
 			});
-			var instance = new DraggableUI();
+			var instance = new baidu.ui.button.Button();
 			initializeUI(instance);
 			var main = instance.getMain();
 			instance.setState('press',main.id);
@@ -58,7 +57,7 @@
 	test('add/remove state', function() {
 		stop();
 		expect(7);
-		var DraggableUI = baidu.ui.create(new Function).extend( {
+		var DraggableUI = baidu.ui.createUI(new Function).extend( {
 			statable : true
 		});
 		var instance = new DraggableUI();
@@ -83,39 +82,44 @@
 	});
 
 	test('enable/disable', function() {
-		var DraggableUI = baidu.ui.create(new Function).extend( {
+		var DraggableUI = baidu.ui.createUI(new Function).extend( {
 			statable : true
 		});
-		expect(5);
+//		expect(5);
 		var instance = new DraggableUI( {
 			ondisable : function() {
-				ok(/disabled/.test(main.className), 'disable');
-				ok(!/press/.test(main.className), 'press is deleted');
-				ok(!/hover/.test(main.className), 'hover is deleted');
-				equal((instance.getState(main.id))['disabled'], 1, 'disaled status');
-
+                ok(true,"excute ondisable event");
 			},
 			onenable : function() {
-				ok(!/disabled/.test(main.className), 'enable');
+				ok(true,"excute onenable event");
 			}
 		});
 		initializeUI(instance);
 		var main = instance.getMain();
-		instance.disable();
-		instance.enable();
+//		instance.disable();
+//		instance.enable();
+        instance.dispatchEvent("ondisable");
+        ok(/disabled/.test(main.className), 'disable');
+		ok(!/press/.test(main.className), 'press is deleted');
+		ok(!/hover/.test(main.className), 'hover is deleted');
+		equal((instance.getState(main.id))['disabled'], 1, 'disaled status');
+        instance.dispatchEvent("onenable");
+        ok(!/disabled/.test(main.className), 'disable');
 		te.dom.push(main);
 		te.obj.push(instance);
 	});
+	
 
 	test('events', function() {
 		expect(6);
-		var DraggableUI = baidu.ui.create(new Function).extend( {
+
+		var DraggableUI = baidu.ui.createUI(new Function).extend( {
 			statable : true
 		});
 		var instance = new DraggableUI(
-				{
+				    {
 					onmouseover : function() {
-						equal(instance.getState(main.id)['hover'], 1,
+						equal(instance.getState(instance.getId())['hover'], 1,
 								'change status to hover');
 					},
 					onmouseout : function() {
@@ -123,7 +127,7 @@
 						ok(!/press/.test(main.className), 'remove press');
 					},
 					onmousedown : function() {
-						equal(instance.getState(main.id)['press'], 1,
+						equal(instance.getState(instance.getId())['press'], 1,
 								'change status to press');
 					},
 					onmouseup : function() {
@@ -134,40 +138,27 @@
 		);
 		initializeUI(instance);
 		var main = instance.getMain();
-		instance._setStateHandler(main, "", "main");
-		/* add hover */
-		ua.mouseover(main);
-		/* add press */
-		ua.mousedown(main);
-		/* remove hover and press */
-		ua.mouseout(main);
-		/* check mouseup remove press */
-		ua.mousedown(main);
-		ua.mouseup(main);
+		main.innerHTML = '<div id="' + instance.getId()+ '" '+instance._getStateHandlerString()+' ></div>';
+		// add hover
+		ua.mouseover(instance.getId());
+		// add press 
+		ua.mousedown(instance.getId());
+		// remove hover and press 
+		ua.mouseout(instance.getId());
+		// check mouseup remove press 
+		ua.mousedown(instance.getId());
+		ua.mouseup(instance.getId());
 		te.dom.push(main);
 	});
 
 	/* disable & enable 后事件能不能正常触发或者不触发 */
 
 	test('enable/disable--events', function() {
-		var DraggableUI = baidu.ui.create(new Function).extend( {
+		var DraggableUI = baidu.ui.createUI(new Function).extend( {
 			statable : true
 		});
 		expect(1);
 		var instance = new DraggableUI( {
-			ondisable : function() {
-				ua.mouseover(main);
-				ua.mousedown(main);
-				ua.mouseout(main);
-				ua.mousedown(main);
-				ua.mouseup(main);
-
-				te.dom.push(main);
-			},
-			onenable : function() {
-				ok(!/disabled/.test(main.className), 'enable');
-			},
-
 			onmouseover : function() {
 				ok(false, 'onmouseover should not be called');
 			},
@@ -181,11 +172,20 @@
 				ok(false, 'onmouseup should not be called');
 			}
 		});
-		initializeUI(instance);
+		//initializeUI(instance);
+		instance.renderMain();
 		var main = instance.getMain();
-		instance._setStateHandler(main, "", "main");
-		instance.disable();
-		instance.enable();
+		main.innerHTML = '<div id="' + instance.getId()+ '" '+instance._getStateHandlerString()+' ></div>';
+		instance.getBody().innerHTML = '<div style="width:200px;height:200px;border:1px solid red;"></div>';
+		instance.dispatchEvent("onload");
+        instance.dispatchEvent("ondisable");
+        ok(/disabled/.test(main.className), 'disabled');
+      	ua.mouseover(instance.getId());
+		ua.mousedown(instance.getId());
+		ua.mouseout(instance.getId());
+		ua.mousedown(instance.getId());
+		ua.mouseup(instance.getId());
+
 		te.dom.push(main);
 	});
 
