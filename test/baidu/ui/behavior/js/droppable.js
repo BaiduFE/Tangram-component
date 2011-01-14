@@ -25,8 +25,8 @@
 
 	test("function test", function() {
 		stop();
-		ua.importsrc('baidu.ui.create,baidu.dom.draggable', function() {
-			var DraggableUI = baidu.ui.create(new Function).extend( {
+		ua.importsrc('baidu.ui.createUI,baidu.dom.draggable', function() {
+			var DraggableUI = baidu.ui.createUI(new Function).extend( {
 				droppable : true
 			});
 			var instance = new DraggableUI( {
@@ -100,7 +100,7 @@
 		/* 运行该用例的时候注意将鼠标移到当前客户端可视区域，如可以移到任务栏处 */
 
 		stop();
-		ua.importsrc('baidu.ui.create,baidu.dom.draggable', function() {
+		ua.importsrc('baidu.ui.createUI,baidu.dom.draggable', function() {
 			var options = {
 				ondrop : function() {
 					ok(false, 'ondrop should not be called');
@@ -117,7 +117,7 @@
 			};
 			var div_drag = te.dom[0];
 			baidu.dom.draggable(div_drag);
-			var DraggableUI = baidu.ui.create(new Function).extend( {
+			var DraggableUI = baidu.ui.createUI(new Function).extend( {
 				droppable : true
 			});
 			var instance = new DraggableUI(options);
@@ -165,10 +165,10 @@
 	test('update',function(){
 		stop();
 		expect(2);
-		ua.importsrc('baidu.ui.create,baidu.dom.draggable', function() {
+		ua.importsrc('baidu.ui.createUI,baidu.dom.draggable', function() {
 			var div_drag = te.dom[0];
 			baidu.dom.draggable(div_drag);
-			var DraggableUI = baidu.ui.create(new Function).extend( {
+			var DraggableUI = baidu.ui.createUI(new Function).extend( {
 				droppable : true
 			});
 			var instance = new DraggableUI();

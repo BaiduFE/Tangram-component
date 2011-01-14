@@ -14,8 +14,8 @@ module('baidu.ui.slider.Slider$progressBar');
  */
 
 
-//TODO 到底滑块的滑动范围是多少？？？？？
-var dragFunc = function(ele, x , finalLeft, thumb) {
+//TODO 到底滑块的滑动范围是多少？？？？？，默认情况下滑块滑动范围根据slider的class设置的width
+var dragFunc = function(ele, x , pb, thumb) {
 	ua.mousemove(ele, {
 		clientX : x
 	});
@@ -25,8 +25,9 @@ var dragFunc = function(ele, x , finalLeft, thumb) {
 	ua.mouseup(ele, {
 		clientX : x
 	});
-	equal($(thumb).css('left'), finalLeft+'px', 'left');
-}
+	var pbSize = parseInt($(thumb).css('left'))+parseInt($(thumb).css('width'))/2+'px';
+	equal(pbSize, pb.getBar().style[pb.axis[pb.layout].size], 'left');
+};
 
 test('mouse within range',function(){
 	var sp = new baidu.ui.slider.Slider();
@@ -40,7 +41,7 @@ test('mouse within range',function(){
 	var left = parseInt($(thumb).css('left'));
 	ok(pb, 'progress bar is created');
 	x += progress;/*滑动在范围以内*/
-	dragFunc(body,x,left + progress-parseInt(thumb.offsetWidth/2),thumb);
+	dragFunc(body,x+100,pb,thumb);
 
 });
 /**
@@ -59,5 +60,5 @@ test('mouse outof range', function() {
 	var left = baidu.dom.getPosition(thumb)['left'];
 	ok(pb, 'progress bar is created');
 	/*mouse outof range*/
-	dragFunc(body, x + 40 , pb.getValue()*ratio, thumb);
+	dragFunc(body, x + 150 , pb, thumb);
 });
