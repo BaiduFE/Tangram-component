@@ -43,8 +43,8 @@
  * }
  */
 
-baidu.ui.carousel.Carousel = baidu.ui.createUI(function(opts){
-	this.contentText = opts.contentText || [];	//数组或对象在prototype中定义时会造成新建对象共用数据
+baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
+	this.contentText = options.contentText || [];	//数组或对象在prototype中定义时会造成新建对象共用数据
 }).extend({
 
 	uiType : "carousel",		// ui控件的类型 **必须**
