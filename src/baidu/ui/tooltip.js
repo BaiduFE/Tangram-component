@@ -9,5 +9,7 @@
  */
 
 ///import baidu.ui;
-
+/**
+ * @namespace 浮动tip，类似title属性鼠标悬浮之后的效果。
+ */
 baidu.ui.tooltip = baidu.ui.tooltip || {mainId : null};

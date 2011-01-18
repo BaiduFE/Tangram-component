@@ -11,6 +11,6 @@
 ///import baidu.ui;
 
 /**
- * 定义名字空间
+ * @namespace tab切换效果。
  */
 baidu.ui.tab = baidu.ui.tab || {} ;

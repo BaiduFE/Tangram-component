@@ -18,9 +18,11 @@
 
 /**
  * 创建一个基本tab
- * @param {HTMLElement} element
- * @param {Object} options
- * @return {baidu.ui.tab.Tab}
+ * @function
+ * @param   {HTMLElement}            element            存放选项卡的元素，选项卡会渲染到该元素内。
+ * @param   {Object}                 options            选项
+ * @config  {Function}               items              tab中的内容<pre> [{head : "label1",body : "<p>content1</p>"},{head : "label2",body : "<p>content2</p>"},{head : "label3",body : "<p>content3</p>"}]</pre>
+ * @return  {baidu.ui.tab.Tab}
  */
 baidu.ui.tab.create = function(main, options){
     var t = new baidu.ui.tab.Tab(options);

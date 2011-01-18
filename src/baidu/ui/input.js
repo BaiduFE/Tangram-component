@@ -11,6 +11,6 @@
 ///import baidu.ui;
 
 /**
- * 定义名字空间
+ * @namespace input文本框控件。
  */
 baidu.ui.input = baidu.ui.input || {} ;

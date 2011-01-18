@@ -10,6 +10,6 @@
 
 ///import baidu.ui;
 /**
- * 定义名字空间
+ * @namespace 日期选择器
  */
 baidu.ui.datePicker = baidu.ui.datePicker || {} ;
