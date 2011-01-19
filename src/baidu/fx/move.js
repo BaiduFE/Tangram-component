@@ -13,13 +13,24 @@
 ///import baidu.object.extend;
 ///import baidu.dom.getStyle;
 
+ 
 /**
- * 移动元素
- * 
- * @param   {HTMLElement}   element     DOM元素或者ID
- * @param   {JSON}          options     类实例化时的参数配置
- *          {x, y}
- * @return  {fx}     效果类的实例
+ * 移动元素，将参数元素移动到指定位置。注意：对static定位的DOM元素无效。
+ * @function
+ * @param       {string|HTMLElement}      element           元素或者元素的ID
+ * @param       {Object}                  options           选项。参数的详细说明如下表所示
+ * @config      {Number}                  x                 0,//横坐标移动的偏移量，默认值为0px。
+ * @config      {Number}                  y                 0,//纵坐标移动的偏移量，默认值为0px。
+ * @config      {Number}                  duration          500,//效果持续时间，默认值为500ms。
+ * @config      {Number}                  interval          16, //动画帧间隔时间，默认值为16ms。
+ * @config      {Function}                transition        function(schedule){return schedule;},时间线函数
+ * @config      {Function}                onbeforestart     function(){},//效果开始前执行的回调函数
+ * @config      {Function}                onbeforeupdate    function(){},//每次刷新画面之前会调用的回调函数
+ * @config      {Function}                onafterupdate     function(){},//每次刷新画面之后会调用的回调函数
+ * @config      {Function}                onafterfinish     function(){},//效果结束后会执行的回调函数
+ * @config      {Function}                oncancel          function(){},//效果被撤销时的回调函数
+ * @remark
+ * 1.0.0开始支持
  */
 baidu.fx.move = function(element, options) {
     if (!(element = baidu.dom.g(element))

@@ -19,34 +19,49 @@
 ///import baidu.string.format;
 ///import baidu.ui.createUI;
 ///import baidu.ui.carousel;
+
 /**
- * 跑马灯组件
- * @param {Object} opts :
- * {target : 存放carousel的容器,
- * 	contentText : 各个滚动的项，格式：[{content:"content-1"}, {content:"content-2"}],
- * 	orientation : 排列方式，取值：horizontal(默认), vertical,
- * 	flip : 滚动按钮方式，取值：item(一次滚动一个项), page(翻页滚动),
- * 	pageSize : 一行显示几个item，默认值3
- * 	isCycle : 是否循环滚动，默认值false
- * 	withButton : 是否显示翻转按钮
- * 	btnLabel : 按钮上的标签文字，格式，{prev:"prevPage", next:"nextPage"}
- * 	offsetWidth : 用户自定义的滚动宽度
- * 	offsetHeight : 用户自定义的滚动高度
- * 	onload : 初始化时的触发事件
- * 	onbeforescroll : 开始滚动时的触发事件
- * 	onafterscroll : 结束滚动时的触发事件
- * 	onprevitem : 当翻转到上一个滚动项时触发该事件
- * 	onnextitem : 当翻转到下一个滚动项时触发该事件
- * 	onprevpage : 当翻转到上一页时触发该事件
- * 	onnextpage : 当翻转到下一页时触发该事件
- * 	onitemclick : 点击某个滚动项时的触发事件
- * }
+ * carousel滚动控件。
+ * @class carousel类
+ * @param  {Object}   [options]           carousel的参数选项
+ * @config {HTMLElement}   target              存放控件的元素
+ * @config {Array}    contentText         用于生成滚动的条目
+ * @config {String}   orientation         排列方式，取值：horizontal（默认），vertical。
+ * @config {String}   flip                滚动按钮方式，取值：item（一次滚动一个项），page（翻页滚动）。
+ * @config {Number}   pageSize            一行显示几个item，默认值3。
+ * @config {Boolean}  isCycle             是否循环滚动，默认值false。
+ * @config {Boolean}  autoScroll          是否自动滚动。
+ * @config {Boolean}  showButton          是否显示翻转按钮，默认值true。
+ * @config {Number}   offsetWidth         用户自定义的滚动宽度
+ * @config {Number}   offsetHeight        用户自定义的滚动高度
+ * @config {Function} onload              初始化时的触发事件
+ * @config {Function} onbeforescroll      开始滚动时的触发事件
+ * @config {Function} onafterscroll       结束滚动时的触发事件
+ * @config {Function} onprevitem          当跳到上一个滚动项时触发该事件
+ * @config {Function} onnextitem          当跳到下一个滚动项时触发该事件
+ * @config {Function} onprevpage          当跳到上一页时触发该事件
+ * @config {Function} onnextPage          当跳到下一页时触发该事件
+ * @config {Function} onitemclick         点击某个滚动项时的触发事件
+ * @config {Function} onmouseover         当鼠标悬停在某个滚动项时的触发事件
+ * @config {Function} onmouseout          当鼠标移开某个滚动项时的触发事件
+ * @plugin autoScroll                     自动滚动
+ * @plugin btn                            为跑马灯添加控制按钮插件
+ * @plugin fx                             为跑马灯添加动画效果
+ * @plugin scrollByItem                   单次滚动单个元素的模式
+ * @plugin scrollByPage                   单次滚动一页的模式
+ * @plugin table                          让跑马灯支持多行多列
  */
 
-baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
-	this.contentText = options.contentText || [];	//数组或对象在prototype中定义时会造成新建对象共用数据
-}).extend({
-
+baidu.ui.carousel.Carousel = baidu.ui.createUI(
+	
+	function(opts){
+	this.contentText = opts.contentText || [];	//数组或对象在prototype中定义时会造成新建对象共用数据
+}).extend(
+    /**
+     *  @lends baidu.ui.carousel.Carousel.prototype
+     */
+{
+    
 	uiType : "carousel",		// ui控件的类型 **必须**
 	orientation : "horizontal",	//横竖向的排列方式，取值horizontal,vertical
 	pageSize : 3,				//每页显示多少个item
@@ -69,8 +84,8 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	
 	/**
 	 * 渲染carousel到指定的target容器中
-	 * @param {html-element} target table的父层容器
-	 * @memberOf {TypeName} 
+	 * @public
+	 * @param {HTMLElement} target table的父层容器
 	 */
 	render : function(target){
 		var me = this;
@@ -106,7 +121,7 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	
 	/**
 	 * 生成滚动结构的html字符串代码
-	 * @memberOf {TypeName} 
+	 * @private
 	 * @return {String} 生成html字符串
 	 */
 	getString : function(){
@@ -135,8 +150,7 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	
 	/**
 	 * 取得滚动容器
-	 * @memberOf {TypeName} 
-	 * @return {html-element} 
+	 * @return {HTMLElement}  滚动容器
 	 */
 	getScrollContainer : function(){
 		return baidu.g(this.getId("scroll"));
@@ -145,8 +159,7 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	/**
 	 * 取得参数索引值对应的item
 	 * @param {Number} index 取item的索引
-	 * @memberOf {TypeName} 
-	 * @return {html-element} 返回该索引下的html对象
+	 * @return {HTMLElement} 返回该索引下的html对象
 	 */
 
 	getItem : function(index){
@@ -155,9 +168,8 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	
 	/**
 	 * 插入一个item到末端，当存在第二参数表示要在该索引对应的item之前插入
-	 * @param {html-element} ele 需要插入的item，只取ele的内容
+	 * @param {HTMLElement} ele 需要插入的item，只取ele的innerHTML内容
 	 * @param {Number} index 在该索引指定的item前面插入
-	 * @memberOf {TypeName} 
 	 */
 
 	addItem : function(ele, index) {
@@ -198,19 +210,10 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	
 
 	/**
-
-	 * 
-
-	 * @param Number:index 被移除item的索引
-
-	 * @return htmlElement:被移除的html
-
-	 */
-	/**
 	 * 移除一个item
-	 * @param {Number} index 需移除的item的索引
-	 * @memberOf {TypeName} 
-	 * @return {html-element} 被移除的项
+	 * @public
+	 * @param {Number} index 需移除的item的索引 
+	 * @return {HTMLElement} 被移除的项
 	 */
 
 	removeItem : function(index) {
@@ -238,9 +241,9 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	
 	/**
 	 * 滚动到索引指定的item
+	 * @public
 	 * @param {Number} index 目标索引
 	 * @param {Number} scrollOffset 把item滚动到的位置，取值(0-pageSize)
-	 * @memberOf {TypeName} 
 	 */
 
 	scrollTo : function(index, scrollOffset) {
@@ -257,7 +260,6 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	 * 直接滚动到索引指定的item(无动画效果)
 	 * @param {Number} index 目标索引
 	 * @param {Number} scrollOffset 把item滚动到的位置，定义域(0, pageSize-1)
-	 * @memberOf {TypeName} 
 	 */
 
 	_scrollTo : function(index, scrollOffset) {
@@ -277,7 +279,6 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	/**
 	 * 设置索引对应的item的焦点
 	 * @param {Number} index 目标索引
-	 * @memberOf {TypeName} 
 	 */
 
 	focus : function(index) {
@@ -320,7 +321,6 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	
 	/**
 	 * 失去焦点
-	 * @memberOf {TypeName} 
 	 */
 
 	_blur : function() {
@@ -341,7 +341,7 @@ baidu.ui.carousel.Carousel = baidu.ui.createUI(function(options){
 	/**
 	 * 控件单个项的鼠标移入或移出的样式
 	 * @param {String} type 事件类型
-	 * @param {Number} index 目标id
+	 * @param {Number} rsid 目标id
 	 */
 	_onMouse : function(type, rsid){
 		this.dispatchEvent("mouse" + type, {target : baidu.g(rsid)});

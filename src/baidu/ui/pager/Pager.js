@@ -16,18 +16,28 @@
 ///import baidu.object.each;
 ///import baidu.object.extend;
 ///import baidu.array.each;
-/**
- * 生成分页功能
- * @param {Object} [options] 选项
- * @param {Number} [options.beginPage] 起始页
- * @param {Number} [options.endPage] 结束页
- * @param {Number} [options.currentPage] 当前页
- * @param {Number} [options.itemCount] 显示页数
- * @param {Number} [options.leftItemCount] 当前页左侧显示次数
+
+ /**
+ * 生成分页功能，默认会有一个横向的页面跳转链接列表，其两端有首页，尾页，上一页，下一页。若要自定义样式（如隐藏某些部件），请使用css（注：控件中各部件的css类名都有控件的tangram类名前缀）首页：first，尾页：last，上一页：previous，下一页：next，当前页：current。若要自定义控件生成的HTML，请参考源代码中以tpl开头的模板属性，类中的属性和方法都可以通过options动态覆盖。
+ * @class 
+ * @param     {Object}            [options]         更新选项，若选项值不符合规则，则此次更新不予更新任何选项
+ * @config    {Number}            beginPage         页码范围：起始页码，默认值1。
+ * @config    {Number}            endPage           页码范围：最后页码+1，必须大于起始页码，默认值100。
+ * @config    {Number}            currentPage       必须在页码范围内，若未指定currentPage且当前页码已超出页码范围，则会自动将currentPage更新到beginPage。
+ * @config    {Number}            itemCount         默认显示多少个页面的链接（不包括“首页”等特殊链接），默认值10。
+ * @config    {Number}            leftItemCount     当前页面链接在页面链接列表中的默认位置，必须小于itemCount，默认值4。
+ * @config    {Object}            specialLabelMap   设置首页，上一页，下一页链接显示的内容。默认为{first:'首页',next:'下一页',previous:'上一页'}
+ * @config    {String}            tplHref           链接显示样式，默认为"##{page}"
+ * @config    {String}            tplLabel          页码显示样式，默认为"[#{page}]"
+ * @config    {String}            tplCurrentLabel   选中页码的显示样式
  */
 baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
     this._init.apply(this, arguments);
-}).extend({
+}).extend(
+    /**
+     *  @lends baidu.ui.pager.Pager.prototype
+     */
+{
     uiType: 'pager',
     id: 'pager',
     tplHref: '##{page}',
@@ -61,12 +71,13 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
     // 特殊链接请使用css控制隐藏和样式
     /**
      * 更新设置
-     * @param options
-     * @config beginPage {Number}
-     * @config endPage {Number}
-     * @config currentPage {Number} 跳转目标页的索引
-     * @config itemCount {Number} 默认列出多少个a标签
-     * @config leftItemCount {Function} 当前页的显示位置, 有默认实现
+	 * @public 
+     * @param      {Object}     options          更新设置
+     * @config     {Number}     beginPage        开始页
+     * @config     {Number}     endPage          结束页
+     * @config     {Number}     currentPage      跳转目标页的索引
+     * @config     {Number}     itemCount        默认列出多少个a标签
+     * @config     {Function}   leftItemCount    当前页的显示位置, 有默认实现
      */
     update: function (options){
         var me = this;
@@ -92,6 +103,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
     },
     /**
      * 检查参数是否出错
+     * @private
      * @param {Object} options
      */
     checkOptions: function (options){
@@ -118,6 +130,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
     },
     /**
      * 构造链接的HTML
+     * @private
      * @param page {Number}
      * @param [spec] {String} first|last...
      * @private
@@ -140,6 +153,9 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
             }
         });
     },
+    /**
+     * @private
+     */
     _genBody: function (){
         var me = this;
         var begin = me.beginPage;
@@ -189,6 +205,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
     },
     /**
      * 鼠标点击链接事件
+     * @private
      * @param evt
      */
     _handleOnClick: function (evt){
@@ -208,9 +225,8 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
         return this.dispatchEvent('ongotopage', { page: page, fromClick: fromClick });
     },
     /**
-     * 跳转页面事件
-     * 参数evt.page
-     * 可以使用evt.returnValue = false来取消跳转
+     * 跳转页面事件  参数evt.page 可以使用evt.returnValue = false来取消跳转
+     * @private
      * @param evt {Object} 将要跳转到的页面的索引
      * @event
      */
@@ -219,6 +235,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
     },
     /**
      * 获取用于生成控件的HTML
+     * @private
      */
     getString: function (){
         var me = this;
@@ -227,6 +244,11 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
         }
         return me._genBody();
     },
+    /**
+     * 将控件渲染到目标元素
+     * @public
+     * @param    {String|HTMLElement}    container     目标元素或元素id
+     */
     render: function (container){
         var me = this;
         me.renderMain(container);
@@ -236,6 +258,7 @@ baidu.ui.pager.Pager = baidu.ui.createUI(function (options){
     },
     /**
      * 销毁控件
+	 * @public
      */
     dispose: function (){
         var me = this;

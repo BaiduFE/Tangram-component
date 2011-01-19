@@ -19,18 +19,15 @@
 ///import baidu.lang.isNumber;
 ///import baidu.dom.setStyles;
 ///import baidu.dom._styleFilter.px;
-/**
- *
- * 表格控件
- *
- * @param options
- * {data : 表格的数据，格式：[{id:"该id为checkbox的value", content:["单元格内容~1", "单元格内容~2", "单元格内容~3"]}]
- * 	title : 表格的列标题，格式：["columnName-0", "columnName-1", "columnName-2"]
- * 	columns : 对列的设置，格式[{col:index0, width:number0}, {col:index1, width:number1}, {col:index2, width:number2}]
- *  pageSize : 一页显示多少条记录
- * 	withSelect : 是否需要提供一个选择的列，默认为false不提供
- * 	columnIndex : 提供的选择列需要插入到第几列中，默认是0插入到第一列
- * }
+
+ /**
+ * Table表格控件。
+ * @class
+ * @param        {Object}                 [options]     选项
+ * @config       {Object}                 data          生成表格的数据，格式[{id : "rsid0", content : ["column0", "column1"]}, {id : "rsid0", content : ["column0", "column1"]}], id不是必要，当有选择列时用来定义用户的checkbox的value
+ * @config       {Object}                 columns       各个列的高级定义，格式[{index : 1, width : 100, type : "select"}, {index : 2, width : "100%", enableEdit : true}, {index : 3, width : "200px"}]
+ * @config       {Object}                 title         定义表格列的title说明，格式：["colName0", "删除", "colName2", "colName3"]
+ * @config       {Number}                 pageSize      一页显示多少行数据，默认全部显示
  */
 baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	var me = this;
@@ -42,6 +39,7 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	tplBody			: '<div><table cellpadding="0" cellspacing="0" border="0" id="#{id}" class="#{class}" #{stateHandler}>#{rows}</table></div>',
     /**
      * 获得控件字符串
+     * @private
      * @return {string} HTML string
      */
 	getString : function(){
@@ -55,6 +53,7 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	
     /**
      * 获得所有行的字符串
+     * @private
      * @return {string} HTML string
      */
     _getRowsString : function(){
@@ -81,7 +80,8 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	
 	/**
 	 * 渲染表格
-     * @param {HTMLElement} target
+	 * @public 
+     * @param {HTMLElement} target       目标父级元素
 	 */
 	render : function(target){
 		
@@ -94,7 +94,12 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	
     /**
      * 更新表格
-     * @param {object} options 参数
+     * @public
+     * @param     {object}                 options       选项
+	 * @config    {Object}                 data          生成表格的数据，格式[{id : "rsid0", content : ["column0", "column1"]}, {id : "rsid0", content : ["column0", "column1"]}], id不是必要，当有选择列时用来定义用户的checkbox的value
+     * @config    {Object}                 columns       各个列的高级定义，格式[{index : 1, width : 100, type : "select"}, {index : 2, width : "100%", enableEdit : true}, {index : 3, width : "200px"}]
+     * @config    {Object}                 title         定义表格列的title说明，格式：["colName0", "删除", "colName2", "colName3"]
+     * @config    {Number}                 pageSize      一页显示多少行数据，默认全部显示
      */
     update : function(options){
         var me = this;
@@ -107,6 +112,7 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	
     /**
      * 按照columns的参数设置单元格的宽度
+     * @private
      * @return {string} HTML string
      */
 	resizeColumn : function(){
@@ -123,6 +129,7 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	},
     /**
      * 创建一个行控件
+     * @private
      * @param {object} options 
      * @return {baidu.ui.table.Row} 行控件
      */
@@ -132,8 +139,10 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
     },
     
     /**
-     * 获得指定row控件
+     * 获得指定行控件
+     * @public
      * @param {number}  index  索引
+     * @return {baidu.ui.table.Row|null} 指定行控件
      */
     getRow : function(index){
         var row = this._rows[index];
@@ -146,6 +155,7 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 
     /**
      * 获得表格中的行数
+     * @public
      * @return {number} count 
      */
     getRowCount : function(){
@@ -154,6 +164,7 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	
     /**
      * 添加行
+     * @private
      * @param {Object} optoins  创建Row所需要的options
      * @param {number} index 可选参数，表示在指定的索引的row之前插入，不指定该参数将会在最后插入
      */
@@ -168,9 +179,10 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
     },
 	
 	/**
-	 * 
+	 * 添加行控件
+	 * @private
 	 * @param {Object} optoins  创建Row所需要的options
-	 * @param {Object} index
+	 * @param {Number} index
 	 * @memberOf {TypeName} 
 	 */
 	addRow : function(options, index){
@@ -180,6 +192,7 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	
     /**
      * 删除行
+     * @private
      * @param {number} index 要删除的数据索引
      */
     _removeRow : function(index){
@@ -197,10 +210,10 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
     },
 	
 	/**
-	 * 
-	 * @param {Object} index
-	 * @memberOf {TypeName} 
-	 */
+     * 删除行
+     * @public
+     * @param {number} index 要删除的数据索引
+     */
 	removeRow : function(index){
 		var me = this,
 			rowId = me._removeRow(index);
@@ -209,6 +222,7 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	
     /**
      * 获取target元素
+     * @private
      * @return {HTMLElement} target
      */
     getTarget : function(){
@@ -218,6 +232,7 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
 	
     /**
      * 销毁当前实例
+     * @public
      */
     dispose : function(){
         var me = this;

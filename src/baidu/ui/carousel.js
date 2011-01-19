@@ -9,7 +9,6 @@
  */
 //import baidu.ui
 /**
- * 定义名字空间
- * @type 
+ * @namespace 可以创建一个独立的样式美观且可以横向或纵向滚动的carousel控件。
  */
 baidu.ui.carousel = baidu.ui.carousel || {};

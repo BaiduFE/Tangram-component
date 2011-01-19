@@ -12,10 +12,10 @@
 
 /**
  * 获取DOM元素正在运行的效果实例列表
- * 
- *
- * @param   {HTMLElement}   element 被查询的DOM元素
- * @return  {Array}                 线型函数
+ * @function
+ * @param     {string|HTMLElement}     element     被查询的DOM元素或元素id
+ * @see baidu.fx.current
+ * @returns {Array} 效果对象
  */
 baidu.fx.current = function(element) {
     if (!(element = baidu.dom.g(element))) return null;

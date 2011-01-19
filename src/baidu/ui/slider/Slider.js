@@ -32,11 +32,19 @@
 ///import baidu.string.format;
 
 
-/**
- *
- * 拖动条控件，可用作音乐播放进度
- *
- * @param options
+ 
+ /**
+ * 拖动条控件，可用作音乐播放进度。
+ * @class
+ * @param      {String|HTMLElement}     target       存放滑块控件的元素，按钮会渲染到该元素内。
+ * @param      {Object}                 [options]    选项layout
+ * @config     {Number}                 value        记录滑块的当前进度值
+ * @config     {Number}                 layout       滑块的布局[水平：horizontal,垂直：vertical]
+ * @config     {Number}                 min          进度条最左边代表的值
+ * @config     {Number}                 max          进度条最右边代表的值
+ * @config     {Boolean}                disabled     是否禁用
+ * @config     {String}                 skin         自定义样式名称前缀
+ * @plugin     progressBar              进度条跟随滑块的滑动
  */
 baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
     var me = this;
@@ -47,7 +55,11 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
         me.range = [me.min, me.max];
     }
     
-}).extend({
+}).extend(
+    /**
+     *  @lends baidu.ui.slider.Slider.prototype
+     */
+{
 	//滑块的布局方式 horizontal :水平  vertical:垂直
 	layout          : "horizontal",
     uiType          : "slider",
@@ -72,9 +84,10 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     _dragOpt        : {},
 
-    /**[回复]
+    /**
      * 获得slider控件字符串
-     * @return {string} HTML string
+     * @private
+     * @return {String}  string     控件的html字符串
      */
 	getString : function(){
 		var me = this;
@@ -91,6 +104,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 处理鼠标在滚动条上的按下事件
+     * @private
      */
     _mouseDown : function(e){
         var me = this,
@@ -113,7 +127,8 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
     
 	/**
 	 * 渲染slider
-	 * @param {HTMLElement} target
+	 * @public
+	 * @param     {String|HTMLElement}   target     将渲染到的元素或元素id
 	 */
 	render : function(target){
 		var me = this,
@@ -133,6 +148,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 创建滑块
+     * @private
      */
     _createThumb : function(){
         var me = this;
@@ -156,6 +172,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 更新拖拽范围，使用户可以动态修改滑块的拖拽范围
+     * @private
      */
     _updateDragRange : function(){
         var me = this,
@@ -185,6 +202,14 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 更新slider状态
+	 * @public
+	 * @param   {Object}                 [options]    选项layout
+     * @config  {Number}                 value        记录滑块的当前进度值
+     * @config  {Number}                 layout       滑块的布局[水平：horizontal,垂直：vertical]
+     * @config  {Number}                 min          进度条最左边代表的值
+     * @config  {Number}                 max          进度条最右边代表的值
+     * @config  {Boolean}                disabled     是否禁用
+     * @config  {String}                 skin         自定义样式名称前缀
      */
     update : function(options){
         var me = this,len=0;
@@ -203,6 +228,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 校准value值，保证它在range范围内
+     * @private
      */
 
     _adjustValue : function(){
@@ -212,6 +238,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 将位置值转换为value，记录在当前实例中
+     * @private
      * @param {number} position
      */
     _calcValue : function(pos){
@@ -221,8 +248,8 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
     },
 
     /**
-     * 获得body元素的width
-     * todo: 考虑把两个函数放入基类
+     * 获得body元素的width   todo: 考虑把两个函数放入基类
+     * @private
      */
     _getWidth : function(){
         return parseInt(baidu.dom.getStyle(this.getBody(), "width"));
@@ -230,6 +257,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 获得body元素的height
+     * @private
      */
     _getHeight : function(){
         return parseInt(baidu.dom.getStyle(this.getBody(), "height"));
@@ -238,12 +266,14 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 获得thumb元素的width
+     * @private
      */
     _getThumbWidth : function(){
         return parseInt(baidu.dom.getStyle(this.getThumb(), "width"));
     },
 	/**
      * 获得thumb元素的height
+     * @private
      */
     _getThumbHeight : function(){
         return parseInt(baidu.dom.getStyle(this.getThumb(), "height"));
@@ -251,7 +281,8 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 获得当前的value
-     * @return {number} value
+	 * @public
+     * @return {Number} value     当前滑块位置的值
      */
     getValue : function(){
         return this.value;
@@ -259,6 +290,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 禁用滑块
+	 * @public
      */
     disable : function(){
         this.disabled = true;
@@ -266,6 +298,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 启用滑块
+	 * @public
      */
     enable : function(){
         this.disabled = false;
@@ -273,6 +306,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
     
     /**
      * 获取target元素
+	 * @private
      * @return {HTMLElement} target
      */
     getTarget : function(){
@@ -281,7 +315,8 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 	
     /**
      * 获取滑块元素
-     * @return {HTMLElement} thumb
+	 * @public
+     * @return {HTMLElement} thumb     滑块元素
      */
     getThumb : function(){
         return baidu.g(this.getId("thumb"));
@@ -289,6 +324,7 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
 
     /**
      * 销毁当前实例
+	 * @public
      */
     dispose : function(){
         var me = this;
