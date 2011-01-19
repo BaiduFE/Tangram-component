@@ -1,3 +1,6 @@
+
 ///import baidu.ui;
-//instances用于存放实例guid及其状态
+/**
+ * @namespace 组合菜单
+ */
 baidu.ui.combox = baidu.ui.combox || {instances : {}};

@@ -33,25 +33,48 @@
 ///import baidu.ui.popup;
 
 
-/**
- *
+/*
  * popup基类，建立一个popup实例，这个类原则上不对外暴露
  * reference: http://docs.jquery.com/UI/Popup (Popup in jquery)
- * 
- * @param  {Object}             options optional        选项参数
- * @config {DOMElement}                 content         放在content区域的元素
- * @config {String}                     contentText     放在content区域的字符串
- * @config {String}                     width           宽度
- * @config {String}                     height          高度
- * @config {String}                     popupClass     CSS前缀
- * @config {Function}                   onopen          当popup展示时触发
- * @config {Function}                   onclose         当popup隐藏时触发
- * @config {Function}                   onupdate        当popup更新位置时触发
- * @return {Popup}                                     Popup类
+ */
+
+ /**
+ * popup基类，建立一个popup实例
+ * @class
+ * @param     {Object}             options               选项
+ * @config    {DOMElement}         content               要放到popup中的元素，如果传此参数时同时传contentText，则忽略contentText。
+ * @config    {String}             contentText           popup中的内容
+ * @config    {String|Number}      width                 内容区域的宽度。注意，这里的内容区域指getContent()得到元素的区域，不包含title和footer。
+ * @config    {String|Number}      height                内容区域的高度
+ * @config    {String|Number}      top                   popup距离页面上方的距离
+ * @config    {String|Number}      left                  popup距离页面左方的距离
+ * @config    {String}             classPrefix           popup样式的前缀
+ * @config    {Number}             zIndex                popup的zIndex值
+ * @config    {Function}           onopen                popup打开时触发
+ * @config    {Function}           onclose               popup关闭时触发
+ * @config    {Function}           onbeforeclose         popup关闭前触发，如果此函数返回false，则组织popup关闭。
+ * @config    {Function}           onupdate              popup更新内容时触发
+ * @config    {Boolean}            closeOnEscape         keyboardSupport模块提供支持，当esc键按下时关闭popup
+ * @config    {String}             closeText             closeButton模块提供支持，关闭按钮上的文字
+ * @config    {Boolean}            modal                 modal模块支持，是否显示遮罩
+ * @config    {String}             modalColor            modal模块支持，遮罩的颜色
+ * @config    {Number}             modalOpacity          modal模块支持，遮罩的透明度
+ * @config    {Number}             modalZIndex           modal模块支持，遮罩的zIndex值
+ * @config    {Boolean}            draggable             draggable模块支持，是否支持拖拽
+ * @config    {Function}           ondragstart           draggable模块支持，当拖拽开始时触发
+ * @config    {Function}           ondrag                draggable模块支持，拖拽过程中触发
+ * @config    {Function}           ondragend             draggable模块支持，拖拽结束时触发
+ * @plugin    smartCover                                 智能遮罩
+ * @remark
+ * @return {baidu.ui.Popup}                                    Popup类
  */
 
 baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
-}).extend({
+}).extend(
+    /**
+     *  @lends baidu.ui.popup.Popup.prototype
+     */
+{
     //ui控件的类型，传入给UIBase **必须**
     uiType            : "popup",
    //ui控件的class样式前缀 可选
@@ -67,6 +90,9 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
     contentText     : '',
 
     //onopen          : function(){},
+    /**
+     * @private
+     */
     onbeforeclose   : function(){ return true},
     //onclose         : function(){},
     //onupdate        : function(){},
@@ -76,11 +102,16 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
 
     /**
      * 查询当前窗口是否处于显示状态
+     * @public
+     * @return    {Boolean}       是否处于显示状态
      */
     isShown : function(){
         return baidu.ui.popup.instances[this.guid] == 'show';
     },
 
+    /**
+	 * @private
+     */
     getString : function(){
         var me = this;
         return baidu.format(
@@ -91,8 +122,9 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
             );
     },
 
-    /*
+    /**
      * render popup到DOM树
+	 * @private
      */
     render : function(){
         var me = this,
@@ -120,8 +152,32 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
         return main;
     },
 
-    /*
+    /**
      * 显示当前popup
+	 * @public
+     * @param  {Object}             options               选项参数
+	 * @config {DOMElement}         content               要放到popup中的元素，如果传此参数时同时传contentText，则忽略contentText。
+     * @config {String}             contentText           popup中的内容
+     * @config {String|Number}      width                 内容区域的宽度。注意，这里的内容区域指getContent()得到元素的区域，不包含title和footer。
+     * @config {String|Number}      height                内容区域的高度
+     * @config {String|Number}      top                   popup距离页面上方的距离
+     * @config {String|Number}      left                  popup距离页面左方的距离
+     * @config {String}             classPrefix           popup样式的前缀
+     * @config {Number}             zIndex                popup的zIndex值
+     * @config {Function}           onopen                popup打开时触发
+     * @config {Function}           onclose               popup关闭时触发
+     * @config {Function}           onbeforeclose         popup关闭前触发，如果此函数返回false，则组织popup关闭。
+     * @config {Function}           onupdate              popup更新内容时触发
+     * @config {Boolean}            closeOnEscape         keyboardSupport模块提供支持，当esc键按下时关闭popup
+     * @config {String}             closeText             closeButton模块提供支持，关闭按钮上的文字
+     * @config {Boolean}            modal                 modal模块支持，是否显示遮罩
+     * @config {String}             modalColor            modal模块支持，遮罩的颜色
+     * @config {Number}             modalOpacity          modal模块支持，遮罩的透明度
+     * @config {Number}             modalZIndex           modal模块支持，遮罩的zIndex值
+     * @config {Boolean}            draggable             draggable模块支持，是否支持拖拽
+     * @config {Function}           ondragstart           draggable模块支持，当拖拽开始时触发
+     * @config {Function}           ondrag                draggable模块支持，拖拽过程中触发
+     * @config {Function}           ondragend             draggable模块支持，拖拽结束时触发
      */
     open : function(options){
         var me = this;
@@ -135,8 +191,9 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
         me.dispatchEvent("onopen");
     },
 
-    /*
+    /**
      * 隐藏当前popup
+	 * @public
      */
     close : function(){
         var me = this;
@@ -147,9 +204,32 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
         }
     },
     
-    /*
+    /**
      * 更新popup状态 
-     * @param  {Object}             options optional        选项参数
+	 * @public
+     * @param  {Object}             options               选项参数
+	 * @config {DOMElement}         content               要放到popup中的元素，如果传此参数时同时传contentText，则忽略contentText。
+     * @config {String}             contentText           popup中的内容
+     * @config {String|Number}      width                 内容区域的宽度。注意，这里的内容区域指getContent()得到元素的区域，不包含title和footer。
+     * @config {String|Number}      height                内容区域的高度
+     * @config {String|Number}      top                   popup距离页面上方的距离
+     * @config {String|Number}      left                  popup距离页面左方的距离
+     * @config {String}             classPrefix           popup样式的前缀
+     * @config {Number}             zIndex                popup的zIndex值
+     * @config {Function}           onopen                popup打开时触发
+     * @config {Function}           onclose               popup关闭时触发
+     * @config {Function}           onbeforeclose         popup关闭前触发，如果此函数返回false，则组织popup关闭。
+     * @config {Function}           onupdate              popup更新内容时触发
+     * @config {Boolean}            closeOnEscape         keyboardSupport模块提供支持，当esc键按下时关闭popup
+     * @config {String}             closeText             closeButton模块提供支持，关闭按钮上的文字
+     * @config {Boolean}            modal                 modal模块支持，是否显示遮罩
+     * @config {String}             modalColor            modal模块支持，遮罩的颜色
+     * @config {Number}             modalOpacity          modal模块支持，遮罩的透明度
+     * @config {Number}             modalZIndex           modal模块支持，遮罩的zIndex值
+     * @config {Boolean}            draggable             draggable模块支持，是否支持拖拽
+     * @config {Function}           ondragstart           draggable模块支持，当拖拽开始时触发
+     * @config {Function}           ondrag                draggable模块支持，拖拽过程中触发
+     * @config {Function}           ondragend             draggable模块支持，拖拽结束时触发
      *
      */
     update : function(options){
@@ -193,7 +273,10 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
     	var me = this;
         baidu.dom.setStyles(me.getMain(), { top : me.top, left : me.left});
     },
-    
+    /**
+     * 销毁控件
+	 * @public
+     */
     dispose : function(){
     	var me = this;
     	me.dispatchEvent("ondispose");

@@ -11,11 +11,17 @@
 ///import baidu.fx.Timeline;
 
 /**
- * 创建一个 fx 的实例
- *
- * @param {HTMLElement} element     添加效果的DOM元素
- * @param {JSON}        options     时间线的配置参数对象
- * @param {String}      fxName  效果名（可选）
+ * 效果基类。
+ * @class
+ * @param     {HTMLElement}           element            添加效果的DOM元素
+ * @param     {JSON}                  options            时间线的配置参数对象
+ * @config    {Function}              transition         function(schedule){return schedule;},时间线函数
+ * @config    {Function}              onbeforestart      function(){},//效果开始前执行的回调函数
+ * @config    {Function}              onbeforeupdate     function(){},//每次刷新画面之前会调用的回调函数
+ * @config    {Function}              onafterupdate      function(){},//每次刷新画面之后会调用的回调函数
+ * @config    {Function}              onafterfinish      function(){},//效果结束后会执行的回调函数
+ * @config    {Function}              oncancel           function(){},//效果被撤销时的回调函数
+ * @param     {String}                fxName             效果名（可选）
  * @return {baidu.fx.Timeline}  时间线类的一个实例
  */
 baidu.fx.create = function(element, options, fxName) {

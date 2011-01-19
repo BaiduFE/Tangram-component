@@ -1,3 +1,4 @@
+
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
@@ -11,7 +12,6 @@
 ///import baidu.ui;
 
 /**
- * 定义名字空间
- * instances用于存放实例guid及其状态
+ * @namespace 容器及对话框
  */
 baidu.ui.dialog = baidu.ui.dialog || {instances : {}};

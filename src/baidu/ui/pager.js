@@ -1,1 +1,2 @@
-/* * Tangram * Copyright 2009 Baidu Inc. All rights reserved. * * path: baidu/ui/pager/Pager.js * author: wenyuxiang * version: 1.0.1 * date: 2010/08/02 *////import baidu.ui;/** * 声明 baidu.ui.pager 包 */baidu.ui.pager = baidu.ui.pager || {};
+/* * Tangram * Copyright 2009 Baidu Inc. All rights reserved. * * path: baidu/ui/pager/Pager.js * author: wenyuxiang * version: 1.0.1 * date: 2010/08/02 *////import baidu.ui;/** * @namespace 可以轻松创建出样式美观，功能丰富的翻页控件。
+ */baidu.ui.pager = baidu.ui.pager || {};

@@ -16,8 +16,7 @@
 ///import baidu.lang.Class.addEventListeners;
 /**
  *
- * 和进度条结合
- * 进度条跟随滑块的滑动
+ * 和进度条结合  进度条跟随滑块的滑动
  */
 baidu.ui.slider.Slider.register(function(me){
 	me.addEventListener("load", function(){

@@ -1,5 +1,5 @@
 (function() {
-	UserAction.importsrc('baidu.ui.createUI,baidu.dom.insertHTML,baidu.ui.button.Button');
+//	UserAction.importsrc('baidu.ui.createUI,baidu.dom.insertHTML,baidu.ui.button.Button');
 //	UserAction.importsrc('baidu.dom.insertHTML');
 	module('baidu.ui.behavior.statable');
 	/**
@@ -34,6 +34,7 @@
 	test('set/get state', function() {
 		stop();
 		expect(4);
+		UserAction.importsrc('baidu.ui.createUI,baidu.dom.insertHTML,baidu.ui.button.Button',function(){
 		setTimeout(function() {
 			var DraggableUI = baidu.ui.createUI(new Function).extend( {
 				statable : true
@@ -52,6 +53,7 @@
 			te.dom.push(main);
 			start();
 		}, 100);
+		});
 	});
 
 	test('add/remove state', function() {

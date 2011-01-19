@@ -11,6 +11,6 @@
 ///import baidu.ui;
 
 /**
- * 定义名字空间
+ * @namespace 滑块控件。
  */
 baidu.ui.slider = baidu.ui.slider || {};

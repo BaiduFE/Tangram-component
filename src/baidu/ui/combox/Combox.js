@@ -29,43 +29,38 @@
 
 ///import baidu.string.format;
 
-/**
- * Combox 下拉列表框
- * @param {Object} [options]                   配置选项
- * @param {String} [options.width]             宽度
- * @param {String} [options.height]            高度
- * @param {Number} [options.zIndex = 1200]     z-index
- * @param {Boolean} [options.editable = true] 输入框是否可编辑
- * @param {Function} [options.filter]          数据过滤方法
- * @param {Object} [options.data]              combox数据，格式见example
- * @param {Object} [options.menu]              可由用户传入创建好的menu对象
- * @param {Function} [options.onitemclick]     menu条目点击响应事件
- * @param {Function} [options.onbeforeclose]   下拉框beforeclose 事件
- * @param {Function} [options.onclose]         下拉框close事件
- * @param {Function} [options.onbeforeopen]    下拉框beforeopen事件
- * @param {Function} [options.onopen]          下拉框open事件
- * 
- * @example
- * <div id='combox'></div>
- * var options = {
- *   width: 168,
- *   data: [{
- *       content: "复制",
- *       title: "复制当前单元格"
- *   }, {
- *       content: '粘贴',
- *       title: "粘贴当前单元格"
- *   }],
- *   element: 'combox',
- *   autoRender: true
- * };
- * var combox = baidu.ui.create(baidu.ui.combox.Combox, options);
+ /**
+ * combox类
+ * @class Combox类
+ * @param  {Object}               [options]        选项，用于创建combox。
+ * @config {Element}              target           combox的触发元素
+ * @config {Number|String}        width            宽度值。当指定element时，默认为element宽度；否则不设置（可以通过css指定）。
+ * @config {Number|String}        height           高度值。当指定element时，默认为element宽度；否则不设置（可以通过css指定）。
+ * @config {String}               skin             自定义样式前缀
+ * @config {Boolean}              editable         是否可以输入
+ * @config {Array}                data             储存combox每个条目的数据。每个条目数据格式: { content: 'some html string', value : ''}。
+ * @config {Array|Object}         offset           偏移量，若为数组，索引0为x方向，索引1为y方向; 若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
+ * @config {Number}               zIndex           浮起combox层的z-index值，默认为1200。
+ * @config {Function}             onitemclick      combox中单个条目鼠标点击的回调函数，参数:{data : {value: Item对应的数据, index : Item索引值}}
+ * @config {Function}             onbeforeclose    关闭之前触发
+ * @config {Function}             onclose          关闭时触发
+ * @config {Function}             onbeforeopen     打开之前触发
+ * @config {Function}             onopen           打开时触发
+ * @config {Function}             onmouseover      悬停时触发
+ * @config {Function}             onmouseout       离开时触发
+ * @config {Function}             onmousedown      鼠标按下时触发
+ * @config {Function}             onmouseup        鼠标抬起时触发
+ * @plugin    statable      状态插件
  */
 baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
   var me = this;
   me.data = me.data || [];
   me.menu = me.menu || false; //下拉menu,用于判断menu是否已存在
-}).extend({
+}).extend(
+    /**
+     *  @lends baidu.ui.combox.Combox.prototype
+     */
+{
     uiType: "combox",
     editable: true,
     width: '',
@@ -74,6 +69,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
 
     /**
      * 过滤方法
+	 * @public
      * @param {String} filterStr 需检索的字符串值
      * @param {Array} data 目标数据
      */
@@ -95,6 +91,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
 
     /**
      * 生成combox的html字符串代码
+     * @private
      * @return {String} 生成html字符串
      */
     getString: function(){
@@ -112,6 +109,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
 
     /**
      * 渲染控件
+	 * @public
      * @param {Object} target 目标渲染对象
      */
     render: function(target){
@@ -219,7 +217,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
 
     /**
      * 设置input的值
-     * @param {Object} value 值
+     * @param {String} value 值
      */
     setValue:function(value){
         this.getInput().value = value;
@@ -227,6 +225,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
 
     /**
      * 销毁Combox
+	 * @public
      */
     dispose: function(){
         var me = this;

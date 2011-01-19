@@ -15,10 +15,8 @@
 ///import baidu.dom.getStyle;
 
 /**
- * 按照borderBox盒模型设置DOM元素的样式值
- * 会对top, left, width, height进行处理
- * 保证设置的值为border内部的值
- * 
+ * 按照borderBox盒模型设置DOM元素的样式值,会对top, left, width, height进行处理,保证设置的值为border内部的值
+ * @private
  * @param {HTMLElement|string} element 目标元素或目标元素的id
  * @param {Object}             styles  要设置的样式集合
  * @return {HTMLElement} 被操作的DOM元素
