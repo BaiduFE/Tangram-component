@@ -26,7 +26,18 @@ function createCarousel(c, s) {
 	else if (s === false)
 		op['orientation'] = 'horizontal';
 	return new baidu.ui.carousel.Carousel(op);
+
 }
+
+//TODO
+test("carousel width",function(){
+    var c = te.dom[0];
+	var carousel = createCarousel(c);
+	carousel.render();
+	var item = carousel.getItem(0);
+	equals(carousel.getBody().style.width, item.offsetWidth*(carousel.pageSize)+'px',
+			"check carousel width");
+});
 
 test("render", function() {
 	var c = te.dom[0];
@@ -59,29 +70,24 @@ test("removeItem", function() {
 });
 
 test("scrollTo H", function() {
-	var cas, oitem, item, c;
-	cas = createCarousel(te.dom[0], false);
+    var cas, oitem, item, c;
+    cas = createCarousel(te.dom[0], false);
 	cas.render();
-	oitem = document.getElementById(cas.getId('item0')).offsetLeft;
+	item = document.getElementById(cas.getId("item" + 2)), c = document.getElementById(cas.getId());
 	cas.focus(0);
-	cas.scrollTo(2);
-	item = document.getElementById(cas.getId("item" + 2)), c = document
-			.getElementById(cas.getId());
-	equals(item.offsetLeft - c.scrollLeft, oitem,
-			"第二项是否在开始位置,即item offsetLeft为0");
+	cas.scrollTo(2);//scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
+    equals(c.scrollLeft, item.offsetWidth*2,"验证滚动距离是否为两个item的width");
 });
 
 test("scrollTo V", function() {
 	var cas, oitem, item, c;
 	cas = createCarousel(te.dom[0], true);
 	cas.render();
-	oitem = document.getElementById(cas.getId('item0')).offsetTop;
 	cas.focus(0);
 	cas.scrollTo(2);
 	item = document.getElementById(cas.getId("item" + 2));
 	c = document.getElementById(cas.getId());
-	var actual = item.offsetTop - c.scrollTop;
-	equals(actual, oitem, "第三项是否在开始位置，即item offsetTop为0");
+	equals(c.scrollTop, item.offsetHeight*2, "验证滚动距离是否为两个item的height");
 });
 
 test("focus, _blur", function() {
