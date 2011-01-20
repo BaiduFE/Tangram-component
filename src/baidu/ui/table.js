@@ -11,6 +11,6 @@
 ///import baidu.ui;
 
 /**
- * 定义名字空间
+ * @namespace 创建一个表格组件，支持增加删除行，支持设置列宽，增加checkbox列，增加表头说明，翻页等。
  */
 baidu.ui.table = baidu.ui.table || {};

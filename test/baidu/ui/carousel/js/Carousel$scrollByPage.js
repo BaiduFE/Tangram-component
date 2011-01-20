@@ -28,9 +28,8 @@
 					carousel.nextPage();
 					var item;
 					item = document.getElementById(carousel.getId("item" + 3)),
-							container = document.getElementById(carousel
-									.getId());
-					equals(item.offsetLeft - container.scrollLeft, offsetItem0,
+							container = document.getElementById(carousel.getId());
+					equals(container.scrollLeft, item.offsetWidth*3,
 							"item 3 turn to first after call nextpage");
 					carousel.prevPage();
 					item = document.getElementById(carousel.getId("item" + 0));

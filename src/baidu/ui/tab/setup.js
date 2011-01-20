@@ -17,7 +17,9 @@
 /**
  * setup tab控件
  *
- * @param {DOMElement} element 要渲染成tab的元素
+ * @param   {DOMElement}             element            要渲染成tab的元素
+ * @param   {Object}                 options            选项
+ * @config  {Function}               items              tab中的内容<pre> [{head : "label1",body : "<p>content1</p>"},{head : "label2",body : "<p>content2</p>"},{head : "label3",body : "<p>content3</p>"}]</pre>
  */
 
 baidu.ui.tab.setup = function(element, options){

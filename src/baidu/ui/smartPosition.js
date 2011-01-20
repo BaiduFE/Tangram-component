@@ -11,6 +11,6 @@
 ///import baidu.ui;
 
 /**
- * 定义名字空间
+ * @namespace 可以让一个元素按照指定的方式定位。
  */
 baidu.ui.smartPosition = baidu.ui.smartPosition || {};

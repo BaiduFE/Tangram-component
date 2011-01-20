@@ -24,14 +24,21 @@
 ///import baidu.ui.ItemSet;
 ///import baidu.object.extend;
 
-/**
+ /**
  * Tab标签组
- * @param {Object} [options] 选项
- * @return {baidu.ui.tab.Tab}
+ * @class
+ * @param      {Object}                 [options]          选项
+ * @config     {Function}               items              tab中的内容<pre> [{head : "label1",body : "<p>content1</p>"},{head : "label2",body : "<p>content2</p>"},{head : "label3",body : "<p>content3</p>"}]</pre>
+ * @plugin      dom                让Tab类支持从已有dom渲染出tab。
  */
+ 
 baidu.ui.tab.Tab = baidu.ui.createUI( function (options) {
 
-}, {superClass : baidu.ui.ItemSet}).extend( {
+}, {superClass : baidu.ui.ItemSet}).extend( 
+    /**
+     *  @lends baidu.ui.tab.Tab.prototype
+     */
+{
 	//ui控件的类型 **必须**
     uiType             :  "tab", 
     tplDOM           :  "<div id='#{id}' class='#{class}'>#{heads}#{bodies}</div>", 
@@ -41,6 +48,7 @@ baidu.ui.tab.Tab = baidu.ui.createUI( function (options) {
     tplBody   :  "<div id='#{id}' class='#{class}' style='display : #{display};'>#{body}</div>", 
 	/**
 	 * 获得tab的html string
+	 * @private
 	 * @return {HTMLString} string
 	 */
 	getString  :  function() {
@@ -70,6 +78,7 @@ baidu.ui.tab.Tab = baidu.ui.createUI( function (options) {
 	}, 
 	/**
 	 * 插入item html
+	 * @private
 	 * @param {Object} item
 	 * @param {int} index
 	 */
@@ -79,30 +88,34 @@ baidu.ui.tab.Tab = baidu.ui.createUI( function (options) {
 		baidu.dom.insertHTML(baidu.g(me.getId("bodyParent")),  "beforeEnd",  this._getBodyString(item, index));
 	}, 
 	/**
-	*兼容原接口getLabel
-	*@return {HTMLObject} head
+	* 兼容原接口getLabel
+	* @private
+	* @return {HTMLObject} head
 	*/
 	getLabel : function() {
 		return this.getHead();
 	}, 
 	/**
-	*兼容原接口getContent
-	*@return {HTMLObject} body
-	*/
+	 * 兼容原接口getContent
+	 * @private
+	 * @return {HTMLObject} body
+	 */
 	getContent : function() {
 		return this.getBody();
 	}, 
 	/**
-	*兼容原接口getAllLabelItems
-	*@return {Array[HTMLObject]} heads	
-	*/
+	 * 兼容原接口getAllLabelItems
+	 * @private
+	 * @return {Array[HTMLObject]} heads	
+	 */
 	getAllLabelItems : function() {
 		return this.getHeads();
 	}, 
-	/*
-	*兼容原接口focus
-	*@param {int} index	
-	*/
+	/**
+	 * 兼容原接口focus
+	 * @private
+	 * @param {Number} index	标签索引
+	 */
 	focus : function(index) {
 		this.selectByIndex(index);
 	}

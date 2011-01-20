@@ -11,15 +11,17 @@
 
 
 /**
- * 基础方法
- *
- * 创建一个slider实例
- *
- * @param {string|HTMLElement} target 创建的目标元素
- * @param {object} options optional 创建时的选项
- *
- * @return {baidu.ui.slider.Slider} slider实例
- *
+ * 基础方法,创建一个slider实例
+ * @function
+ * @param   {string|HTMLElement}     target       创建的目标元素
+ * @param   {Object}                 [options]    创建时的选项
+ * @config  {Number}                 value        记录滑块的当前进度值
+ * @config  {Number}                 layout       滑块的布局[水平：horizontal,垂直：vertical]
+ * @config  {Number}                 min          进度条最左边代表的值
+ * @config  {Number}                 max          进度条最右边代表的值
+ * @config  {Boolean}                disabled     是否禁用
+ * @config  {String}                 skin         自定义样式名称前缀
+ * @return  {baidu.ui.slider.Slider} slider实例
  */
 
 

@@ -23,13 +23,32 @@
 ///import baidu.ui.smartPosition.mouse;
 ///import baidu.ui.smartPosition.element;
 
-/**
+ /**
  * 弹出tip层,类似鼠标划过含title属性元素的效果
- * @param {Object} options 选项
- * @param {Object} [options.width] 宽度
- * @param {Object} [options.height] 高度
+ * @class
+ * @param       {Object}          options         选项
+ * @config      {Element}         content         Tooltip元素的内部html。当指定target时，默认为target的title属性，否则默认为空。
+ * @config      {String}          width           宽度
+ * @config      {String}          height          高度
+ * @config      {Array|Object}    offset          偏移量。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
+ * @config      {boolean}         single          是否全局单例。若该值为true，则全局共用唯一的浮起tooltip元素，默认为true。
+ * @config      {Number}          zIndex          浮起tooltip层的z-index值，默认为3000。
+ * @config      {String}          positionBy      浮起tooltip层的位置参考，取值['mouse','element']，分别对应针对鼠标位置或者element元素计算偏移，默认mouse。
+ * @config      {Function}        onopen          打开tooltip时触发。
+ * @config      {Function}        onclose         关闭tooltip时触发。
+ * @config      {Function}        onbeforeopen    打开tooltip前触发。
+ * @config      {Function}        onbeforeclose   关闭tooltip前触发。
+ * @config      {Number}          showDelay       触发显示的延迟，默认为100毫秒。
+ * @config      {Number}          hideDelay       触发隐藏的延迟，默认为500毫秒。
+ * @plugin      fx                Tooltip的展现和消失效果支持。
+ * @returns     {baidu.ui.tooltip.Tooltip}        Tooltip实例
  */
-baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend({
+ 
+baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend(
+    /**
+     *  @lends baidu.ui.tooltip.Tooltip.prototype
+     */
+{
 	//ui控件的类型 **必须**
     uiType            : "tooltip",
     //ui控件的class样式前缀 可选
@@ -44,9 +63,14 @@ baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend({
 	offsetPosition	: 'bottomRight',
 	offset			: [0,0],
 	tplBody			: '<div id="#{id}" class="#{class}"></div>',
-	//开关函数,返回false时不显示
+	/**
+	 * 开关函数,返回false时不显示
+     * @private
+     */
 	toggle			: function(){return true},
-
+    /**
+     * @private
+     */
 	getString : function(){
 		var me = this;
 		return baidu.format(me.tplBody,{
@@ -57,6 +81,7 @@ baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend({
     
 	/**
 	 * 打开tooltip
+	 * @public
 	 */
 	open : function(){
 		var me = this,
@@ -80,6 +105,8 @@ baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend({
 	
 	/**
 	 * 渲染Tooltip
+	 * @param  {String|HTMLElement}    target      需要渲染到的元素或者id    
+	 * @public
 	 */
 	render : function(target){
 		var me = this,
@@ -107,7 +134,21 @@ baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend({
 	
 	/**
 	 * 更新options
-	 * @param {} options
+	 * @public
+	 * @param       {object}          options         选项
+     * @config      {Element}         content         Tooltip元素的内部html。当指定target时，默认为target的title属性，否则默认为空。
+     * @config      {String}          width           宽度
+     * @config      {String}          height          高度
+     * @config      {Array|Object}    offset          偏移量。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
+     * @config      {boolean}         single          是否全局单例。若该值为true，则全局共用唯一的浮起tooltip元素，默认为true。
+     * @config      {Number}          zIndex          浮起tooltip层的z-index值，默认为3000。
+     * @config      {String}          positionBy      浮起tooltip层的位置参考，取值['mouse','element']，分别对应针对鼠标位置或者element元素计算偏移，默认mouse。
+     * @config      {Function}        onopen          打开tooltip时触发。
+     * @config      {Function}        onclose         关闭tooltip时触发。
+     * @config      {Function}        onbeforeopen    打开tooltip前触发。
+     * @config      {Function}        onbeforeclose   关闭tooltip前触发。
+     * @config      {Number}          showDelay       触发显示的延迟，默认为100毫秒。
+     * @config      {Number}          hideDelay       触发隐藏的延迟，默认为500毫秒。
 	 */
 	update : function(options){
 		var me = this,
@@ -165,6 +206,7 @@ baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend({
 	
 	/**
 	 * 关闭tooltip
+	 * @public
 	 */
 	close : function(){
 		var me = this;
@@ -185,7 +227,10 @@ baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend({
         this.getMain().style.left = "-100000px";
         baidu.ui.tooltip.showing = null;
     },
-	
+	/**
+	 * 销毁控件
+	 * @public
+	 */
 	dispose : function(){
 		var me = this;
 		me.dispatchEvent('ondispose');
@@ -194,7 +239,10 @@ baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend({
 		}
 		baidu.lang.Class.prototype.dispose.call(me);
 	},
-
+    /**
+     * 获取target元素
+	 * @private
+	 */
     getTarget : function(){
         return baidu.g(this.targetId);
     }

@@ -30,46 +30,33 @@ test(
 								.getElementById(carousel.getId());
 						var offsetItem0 = document.getElementById(carousel
 								.getId("item0")).offsetLeft;
-						ok(item.className.indexOf(carousel
-								.getClass("item-focus")) > -1,
+						var c = document.getElementById(carousel.getId());
+						ok(item.className.indexOf(carousel.getClass("item-focus")) > -1,
 								"item1 focus after call next");
-						equals(item.offsetLeft, item.offsetWidth+offsetItem0,
-								"item1 at second after call next");
+//						equals(carousel.getBody().scrollLeft, item.offsetWidth,
+//								"item1 at second after call next");
 						carousel.next();
 						carousel.next();
 						setTimeout(
 								function() {
-									item = document.getElementById(carousel
-											.getId("item" + 3));
-									equals(item.offsetLeft
-											- container.scrollLeft,
-											item.offsetWidth * 2+offsetItem0,
-											"item3 focus after call next*2");
+									item = document.getElementById(carousel.getId("item" + 3));
+									//比对body的scrollLeft值，向前或向后focus，到pagesize后，滚动
+									equals(c.scrollLeft,item.offsetWidth*1,"item3 focus after call next*2");
 									carousel.prev();
 									setTimeout(
 											function() {
-												item = document
-														.getElementById(carousel
-																.getId("item" + 2));
-												ok(
-														item.className
-																.indexOf(carousel
-																		.getClass("item-focus")) > -1,
+												item = document.getElementById(carousel.getId("item" + 2));
+												ok(item.className.indexOf(carousel.getClass("item-focus")) > -1,
 														"item2 focus after call prev");
-												equals(item.offsetLeft
-														- container.scrollLeft,
-														item.offsetWidth+offsetItem0,
-														"item2 at second after call prev");
+//												equals(item.offsetLeft - container.scrollLeft,
+//														item.offsetWidth+offsetItem0,
+//														"item2 at second after call prev");
 												carousel.prev();
 												carousel.prev();
 												setTimeout(
 														function() {
-															item = document
-																	.getElementById(carousel
-																			.getId("item" + 0));
-															equals(
-																	item.offsetLeft,
-																	offsetItem0,
+															item = document.getElementById(carousel.getId("item" + 0));
+															equals(c.scrollLeft,item.offsetWidth*0,
 																	"item0 at first after call prev*2");
 															start();
 														}, 20);
