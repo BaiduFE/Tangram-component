@@ -29,9 +29,37 @@ h2{
     padding-bottom:18px;
 }
 
-  .tangram-dialog-resizable-se{
-	background:url(img/resize.gif);
-  }
+.tangram-dialog-resizable-se{
+    background-color:yellow;
+}
+
+.tangram-dialog-resizable-e{
+    background-color:black;
+}
+
+.tangram-dialog-resizable-s{
+    background-color:green;
+}
+
+.tangram-dialog-resizable-w{
+    background-color:purple;
+}
+
+.tangram-dialog-resizable-n{
+    background-color:gray;
+}
+
+.tangram-dialog-resizable-nw{
+    background-color:aqua;
+}
+
+.tangram-dialog-resizable-ne{
+    background-color:blue;
+}
+
+.tangram-dialog-resizable-sw{
+    background-color:teal;
+}
 
 .tangram-dialog-title{
     background:url(img/bg1.gif) repeat-x;
@@ -321,7 +349,8 @@ h2{
         <select>
             <option>please cover me!</option>
         </select>
-        <div id="flashContainer"></div>
+        <div id="flashContainer1"></div>
+        <div id="flashContainer2"></div>
         <br />
         <br />
         <br />
@@ -371,18 +400,21 @@ h2{
         <br />
         <br />
         <script>
-            //baidu.ui.smartCover.options.hideFlash = false;
-            /*
+            baidu.ui.smartCover.options.hideFlash = true;
+            baidu.ui.smartCover.options.hideSelect = true;
             baidu.swf.create({
-
                 id: "flash",
-                url: "http://fe.baidu.com/dev/tangram/assets/test.swf",
-                width:800,
-                height:600
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90
 
-            }, "flashContainer");
-            */
-            //var d = baidu.ui.dialog.iframe("inner.html");
+            }, "flashContainer1");
+            baidu.swf.create({
+                id: "flash",
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90
+            }, "flashContainer2");
         </script>
     </body>
 </html>

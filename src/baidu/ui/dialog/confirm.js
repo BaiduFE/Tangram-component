@@ -47,7 +47,8 @@ baidu.ui.dialog.confirm = function(content, options) {
                     parent.dispatchEvent('oncancel') && parent.close();
                 }
             }
-        }
+        },
+        submitOnEnter: true
     },options || {});
     options.autoRender = true;
     if (baidu.isString(content)) {
@@ -71,7 +72,7 @@ baidu.ui.dialog.confirm = function(content, options) {
     }
 
     //注册ontener事件
-    dialogInstance.addEventListener('onenter', function(e) {
+    dialogInstance.submitOnEnter && dialogInstance.addEventListener('onenter', function(e) {
         this.buttonInstances['accept'].fire('click', e);
     });
     return dialogInstance;

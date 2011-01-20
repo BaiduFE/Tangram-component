@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/dialog/Dialog.js
- * author: berg
- * version: 1.0.0
- * date: 2010-05-18
  */
 
 
@@ -34,10 +29,10 @@
 ///import baidu.browser;
 
 ///import baidu.lang.isNumber;
+///import setBorderBoxHeight;
+///import setBorderBoxWidth;
 
-//声明包
 ///import baidu.ui.dialog;
-
 
 /**
  * dialog基类，建立一个dialog实例，这个类原则上不对外暴露
@@ -62,21 +57,14 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function(options) {
     //ui控件的class样式前缀 可选
     //classPrefix     : "tangram-dialog-",
 
-    width           : '',
-    height          : '',
+    width: '',
+    height: '',
 
     top: 'auto',
     left: 'auto',
     zIndex: 1000,//没有做层管理
     titleText: '',
-    //content         : false,
     contentText: '',
-
-    //onopen          : function(){},
-    onbeforeclose: function() { return true;},
-    //onclose         : function(){},
-    //onupdate        : function(){},
-
 
     //用style来保证其初始状态，不会占据屏幕的位置
     tplDOM: "<div id='#{id}' class='#{class}' style='position:relative'>#{title}#{content}#{footer}</div>",
@@ -86,6 +74,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function(options) {
 
     /**
      * 查询当前窗口是否处于显示状态
+     * @return {Boolean}
      */
     isShown: function() {
         return baidu.ui.dialog.instances[this.guid] == 'show';
@@ -99,31 +88,29 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function(options) {
             content = 'content',
             footer = 'footer';
 
-        return baidu.format(
-                me.tplDOM, {
-                    id: me.getId(),
-                    'class' : me.getClass(),
-                    title: baidu.format(
-                        me.tplTitle, {
-                            id: me.getId(title),
-                            'class' : me.getClass(title),
-                            'inner-id' : me.getId(titleInner),
-                            'inner-class' : me.getClass(titleInner),
-                            content: me.titleText
-                        }),
-                    content: baidu.format(
-                        me.tplContent, {
-                            id: me.getId(content),
-                            'class' : me.getClass(content),
-                            content: me.contentText
-                        }),
-                    footer: baidu.format(
-                        me.tplFooter, {
-                            id: me.getId(footer),
-                            'class' : me.getClass(footer)
-                        })
-                }
-            );
+        return baidu.format(me.tplDOM, {
+            id: me.getId(),
+            'class' : me.getClass(),
+            title: baidu.format(
+                me.tplTitle, {
+                    id: me.getId(title),
+                    'class' : me.getClass(title),
+                    'inner-id' : me.getId(titleInner),
+                    'inner-class' : me.getClass(titleInner),
+                    content: me.titleText
+                }),
+            content: baidu.format(
+                me.tplContent, {
+                    id: me.getId(content),
+                    'class' : me.getClass(content),
+                    content: me.contentText
+                }),
+            footer: baidu.format(
+                me.tplFooter, {
+                    id: me.getId(footer),
+                    'class' : me.getClass(footer)
+            })
+        });
     },
 
     /*
@@ -281,13 +268,12 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function(options) {
             content = me.getContent(),
             body = me.getBody();
 
-
-       baidu.setStyles(content, {
-           'width' : me.width,
-           'height' : me.height
-       });
-       bodyOffset = me._getBodyOffset();
-       baidu.setStyles(body, bodyOffset);
+        me.width = parseFloat(me.width);
+        me.height = parseFloat(me.height);
+        baidu.lang.isNumber(me.width) && baidu.dom.setOuterWidth(content,me.width);
+        baidu.lang.isNumber(me.height) && baidu.dom.setOuterHeight(content,me.height);
+        bodyOffset = me._getBodyOffset();
+        baidu.setStyles(body, bodyOffset);
 
         if ((me.left && me.left != 'auto') || (me.right && me.right != 'auto')) {
             //按照用户的值来设置

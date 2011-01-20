@@ -1,13 +1,7 @@
 /*
-  * Tangram
-  * Copyright 2009 Baidu Inc. All rights reserved.
-  * 
-  * path: ui/dialog/Dialog$resizable.js
-  * author: lixiaopeng
-  * version: 1.0.0
-  * date: 2010-05-18
-  */
-
+ * Tangram
+ * Copyright 2009 Baidu Inc. All rights reserved.
+ */
 
 ///import baidu.ui.dialog.Dialog;
 ///import baidu.event.on;
@@ -18,34 +12,50 @@
 /**
  * 为Dialog添加缩放功能
  * 可选参数
- * @param {Number} minWidth 最小宽度
- * @param {Number} minHeight 最小高度
- * */
-baidu.extend(baidu.ui.dialog.Dialog.prototype,{
-    resizable  : true,
-    minWidth   : 100,
-    minHeight  : 100
+ * @param {Number} minWidth 最小宽度.
+ * @param {Number} minHeight 最小高度.
+ * @param {Boolean} resizable 是否启用resizable.
+ * @direction {Array} direction 可已经resize的方向，默认为["s","e","n","w","se","sw","ne","nw"]8方向
+ */
+baidu.extend(baidu.ui.dialog.Dialog.prototype, {
+    resizable: true,
+    minWidth: 100,
+    minHeight: 100,
+    direction: ['s', 'e', 'n', 'w', 'se', 'sw', 'ne', 'nw']
 });
-baidu.ui.dialog.Dialog.register(function(me){
-    if(me.resizable){
-       var content,mr,body; 
-        me.addEventListener("onload",function(){
-            content = me.getContent();
-            body = me.getBody();
-            mr = baidu.getStyle(content,"marginRight");
-            me.resizeUpdate({target:content,container:body,classPrefix:me.classPrefix});
-        });
-    
-        me.addEventListener("onresize",function(){
-            me.dispatchEvent("onupdate");
-        });
-    
-        me.addEventListener("onresizeend",function(){
-            me.width = baidu.getStyle(body,"width");
-            me.height = baidu.getStyle(body,"height");
+baidu.ui.dialog.Dialog.register(function(me) {
+    if (me.resizable) {
+        var body,
+            content,
+            contentWidth, contentHeight,
+            bodyWidth, bodyHeight;
 
-            me.width = baidu.getStyle(content,"width");
-            me.height = baidu.getStyle(content,"height");
+        me.addEventListener('onload', function() {
+            body = me.getBody();
+            content = me.getContent();
+            main = me.getMain();
+            contentWidth = content.offsetWidth;
+            contentHeight = content.offsetHeight;
+            bodyWidth = body.offsetWidth;
+            bodyHeight = body.offsetHeight;
+
+            me.resizeUpdate({target: main, classPrefix: me.classPrefix});
+        });
+
+        me.addEventListener('onresize', function(styles) {
+            baidu.dom.setOuterWidth(content, contentWidth + styles.current.width - styles.original.width);
+            baidu.dom.setOuterHeight(content, contentHeight + styles.current.height - styles.original.height);
+
+            baidu.dom.setOuterWidth(body, bodyWidth + styles.current.width - styles.original.width);
+            baidu.dom.setOuterHeight(body, bodyHeight + styles.current.height - styles.original.height);
+        });
+
+        me.addEventListener('onresizeend', function() {
+            me.width = contentWidth = content.offsetWidth;
+            me.height = contentHeight = content.offsetHeight;
+
+            bodyWidth = body.offsetWidth;
+            bodyHeight = body.offsetHeight;
         });
     }
 });
