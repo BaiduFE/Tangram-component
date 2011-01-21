@@ -2,12 +2,13 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: ui/table/Row.js
+ * path: ui/Table/Row.js
  * author: berg
  * version: 1.0.0
  * date: 2010/09/08
  */
 ///import baidu.ui.Table;
+///import baidu.ui.Table.Cell;
 ///import baidu.ui.createUI;
 ///import baidu.ui.Base.getParent;
 ///import baidu.ui.Base.setParent;
@@ -20,7 +21,6 @@
 ///import baidu.dom.remove;
 ///import baidu.dom.setAttr;
 ///import baidu.dom.setAttrs;
-///import baidu.ui.Table.Cell;
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.fn.bind;

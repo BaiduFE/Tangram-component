@@ -2,12 +2,12 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  *
- * path: ui/dialog/Slider$progressBar.js
+ * path: ui/Slider/Slider$progressBar.js
  * author: linlingyu
  * version: 1.0.0
  * date: 2010-12-6
  */
-///import baidu.ui.slider.Slider;
+///import baidu.ui.Slider;
 ///import baidu.ui.ProgressBar;
 ///import baidu.dom.insertHTML;
 ///import baidu.string.format;

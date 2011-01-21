@@ -2,7 +2,7 @@
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
  * 
- * path: ui/accordion/Accordion.js
+ * path: ui/Accordion.js
  * author: zhangyao
  * version: 1.0.0
  * date: 2010-09-03

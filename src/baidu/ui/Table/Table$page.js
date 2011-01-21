@@ -2,7 +2,7 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * @path:ui/table/Table$page.js
+ * @path:ui/Table/Table$page.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-9-30
