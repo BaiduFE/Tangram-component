@@ -37,7 +37,6 @@
  * @config {Function}           ondrag                draggable模块支持，拖拽过程中触发
  * @config {Function}           ondragend             draggable模块支持，拖拽结束时触发
  * @config {Boolean}            [autoOpen]            是否一开始就打开，默认为true
- *
  */
 
 ///import baidu.ui.dialog;
@@ -51,7 +50,8 @@ baidu.ui.dialog.iframe = function(iframeSrc, options) {
     var dialog = new baidu.ui.dialog.Dialog(options),
         iframeId = dialog.getId('iframe'),
         iframeName = options.iframeName || iframeId,
-        iframeElement;
+        iframeElement,
+        contentWindow;
 
     dialog.contentText = baidu.format(dialog.tplIframe,{
         name: iframeName,
@@ -63,7 +63,10 @@ baidu.ui.dialog.iframe = function(iframeSrc, options) {
     
     //解决iframe加载后无法准确定位dialog的问题
     baidu.on(iframeElement, 'onload', function() {
-        iframeElement.height = Math.max(iframeElement.contentWindow.document.documentElement.scrollHeight,iframeElement.contentWindow.document.body.scrollHeight) + "px";
+        //同域则获取被包含页的高度并赋予iframe
+        if(contentWindow = iframeElement.contentWindow){
+            iframeElement.height = Math.max(contentWindow.document.documentElement.scrollHeight,contentWindow.document.body.scrollHeight) + "px";   
+        }
         dialog._updatePosition();
         dialog.dispatchEvent('onupdate');
     });
@@ -75,5 +78,14 @@ baidu.ui.dialog.iframe = function(iframeSrc, options) {
 
 //通过extend方法扩展默认属性
 baidu.ui.dialog.Dialog.extend({
-    tplIframe: "<iframe width='100%' frameborder='0' scrolling='no' name='#{name}' id='#{id}' class='#{class}'></iframe>"
+    tplIframe: "<iframe width='100%' height='98%' frameborder='0' scrolling='no' name='#{name}' id='#{id}' class='#{class}'></iframe>",
+
+    /**
+     * 获取iframe
+     * @public
+     * @return {HTMLElement} iframe
+     */
+    getIframe: function(){
+        return baidu.g(this.getId('iframe'));
+    }
 });

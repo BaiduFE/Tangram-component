@@ -63,6 +63,7 @@ baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend(
 	offsetPosition	: 'bottomRight',
 	offset			: [0,0],
 	tplBody			: '<div id="#{id}" class="#{class}"></div>',
+    insideScreen    : 'surround',
 	/**
 	 * 开关函数,返回false时不显示
      * @private
@@ -189,7 +190,7 @@ baidu.ui.tooltip.Tooltip = baidu.ui.createUI(new Function).extend(
 				once : true,
 				offset : me.offset,
 				position: me.offsetPosition,
-				insideScreen: 'surround'
+				insideScreen: me.insideScreen
 			};
 		switch(me.positionBy){
 			case "element":

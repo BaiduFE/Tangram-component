@@ -15,13 +15,13 @@
  * @param {Number} minWidth 最小宽度.
  * @param {Number} minHeight 最小高度.
  * @param {Boolean} resizable 是否启用resizable.
- * @direction {Array} direction 可已经resize的方向，默认为["s","e","n","w","se","sw","ne","nw"]8方向
+ * @direction {Array} direction 可已经resize的方向，默认为["s","e","se"]3方向
  */
 baidu.extend(baidu.ui.dialog.Dialog.prototype, {
     resizable: true,
     minWidth: 100,
     minHeight: 100,
-    direction: ['s', 'e', 'n', 'w', 'se', 'sw', 'ne', 'nw']
+    direction: ['s', 'e', 'se']
 });
 baidu.ui.dialog.Dialog.register(function(me) {
     if (me.resizable) {

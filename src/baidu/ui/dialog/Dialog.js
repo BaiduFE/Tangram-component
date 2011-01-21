@@ -97,13 +97,16 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
     /**
      * 查询当前窗口是否处于显示状态
+     * @public
      * @return {Boolean}  是否处于显示状态
      */
     isShown: function() {
         return baidu.ui.dialog.instances[this.guid] == 'show';
     },
     /**
+     * 获取dialog的HTML字符串
      * @private
+     * @return {String} DialogHtml
      */
     getString: function() {
         var me = this,
@@ -139,8 +142,9 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
     },
 
     /**
-     * render dialog到DOM树
+     * 绘制dialog到页面
 	 * @public
+     * @return {HTMLElement} mainDiv
      */
     render: function() {
         var me = this,
@@ -155,8 +159,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
         //main.style.left =  '-10000em';
         main.innerHTML = me.getString();
-
-		me._update(me);
+        me._updatePosition();
 
         baidu.dom.setStyles(me.getMain(), {
             position: 'absolute',
@@ -174,23 +177,24 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
     /**
      * 获得resize事件绑定的函数
+     * @private
+     * @return {Function}
      */
     getWindowResizeHandler: function() {
         var me = this;
         return function() {
-            me.update();
+            me._updatePosition();
         };
     },
-
 
     /**
      * 显示当前dialog
 	 * @public
-	 * @param  {Object}       options     optional        选项参数
+     * @return void
      */
-    open: function(options) {
+    open: function() {
         var me = this;
-        me._update(options);
+        me._updatePosition();    
         me.getMain().style.marginLeft = 'auto';
         baidu.ui.dialog.instances[me.guid] = 'show';
         me.dispatchEvent('onopen');
@@ -199,6 +203,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
     /**
      * 隐藏当前dialog
 	 * @public
+     * @return void
      */
     close: function() {
         var me = this;
@@ -210,36 +215,6 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         }
     },
 
-    /**
-     * 更新dialog状态 
-     * @private
-     * @param  {Object}       options     optional        选项参数
-     *
-     */
-   _update: function(options) {
-        options = options || {};
-        var me = this, contentWrapper = me.getContent();
-
-        //扩展options属性
-        baidu.object.extend(me, options);
-
-        //更新内容
-        if (options.content) {
-            //content优先
-            if (contentWrapper.firstChild != options.content) {
-                contentWrapper.innerHTML = '';
-                contentWrapper.appendChild(options.content);
-            }
-        }else if (options.contentText) {
-            contentWrapper.innerHTML = options.contentText;
-        }
-
-        //更新标题
-        if (options.titleText)
-            me.getTitleInner('title-inner').innerHTML = options.titleText;
-
-        me._updatePosition();
-    },
 	/**
      * 更新dialog状态 
 	 * @public
@@ -270,13 +245,36 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
      */
     update: function(options) {
         var me = this;
-        options = options || {};
-        me._update(options);
+            content = me.getContent(),
+            options = options || {};
+
+        //更新内容
+        if (options.content) {
+            if (content.firstChild != options.content) {
+                content.innerHTML = '';
+                content.appendChild(options.content);
+            }
+        }else if (options.contentText) {
+            if(options.contentText != me.contentText){
+                content.innerHTML = me.contentText;
+            }
+        }
+       
+        //更新标题
+        if (options.titleText)
+            me.getTitleInner('title-inner').innerHTML = options.titleText;
+        
+        baidu.extend(me,options || {});
+        
+        //更新位置参数
+        me._updatePosition();
         me.dispatchEvent('onupdate');
     },
 
     /**
-     * 获取body的寛高 
+     * 获取body的寛高
+     * @private
+     * @return {Object} {width,height}，名值对
      */
     _getBodyOffset: function() {
         var me = this,
@@ -293,7 +291,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
         //确定取值为数字
         function getStyleNum(d,style) {
-            var result = parseInt(baidu.getStyle(d, style));
+            var result = parseFloat(baidu.getStyle(d, style));
             result = isNaN(result) ? 0 : result;
             result = baidu.lang.isNumber(result) ? result : 0;
             return result;
@@ -315,6 +313,11 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         return bodyOffset;
     },
 
+    /**
+     * 更新dialog位置及内部元素styles
+     * @private
+     * @return void
+     * */
     _updatePosition: function() {
         var me = this,
         	bodyOffset,
@@ -325,6 +328,10 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             content = me.getContent(),
             body = me.getBody();
 
+        /*
+         * 暂不支持百分比形式的寛高计算
+         * 在render或者window resize时保证content上的寛高必有值
+         */
         me.width = parseFloat(me.width);
         me.height = parseFloat(me.height);
         baidu.lang.isNumber(me.width) && baidu.dom.setOuterWidth(content,me.width);
@@ -338,29 +345,28 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             right = me.right || '';
         } else {
             //自动居中
-            left = Math.max((baidu.page.getViewWidth() - parseInt(me.getMain().offsetWidth)) / 2 + baidu.page.getScrollLeft(), 0);
+            left = Math.max((baidu.page.getViewWidth() - parseFloat(me.getMain().offsetWidth)) / 2 + baidu.page.getScrollLeft(), 0);
         }
         //下面的代码是上面代码的重复
         if ((me.top && me.top != 'auto') || (me.bottom && me.bottom != 'auto')) {
             top = me.top || '';
             bottom = me.bottom || '';
         } else {
-            top = Math.max((baidu.page.getViewHeight() - parseInt(me.getMain().offsetHeight)) / 2 + baidu.page.getScrollTop(), 0);
+            top = Math.max((baidu.page.getViewHeight() - parseFloat(me.getMain().offsetHeight)) / 2 + baidu.page.getScrollTop(), 0);
         }
 
-        baidu.dom.setStyles(
-            me.getMain(), {
-                top: top,
-                right: right,
-                bottom: bottom,
-                left: left
-            }
-        );
+        baidu.dom.setStyles(me.getMain(), {
+            top: top,
+            right: right,
+            bottom: bottom,
+            left: left
+        });
     },
 
     /**
      * 获得title对应的dom元素
-     * @private
+     * @public
+     * @return {HTMLElement} title
      */
     getTitle: function() {
         return baidu.g(this.getId('title'));
@@ -368,7 +374,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
     /**
      * 获得title文字对应的dom元素
-     * @private
+     * @public
+     * @return {HTMLElement} titleInner
      */
     getTitleInner: function() {
         return baidu.g(this.getId('title-inner'));
@@ -376,7 +383,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
     /**
      * 获得content对应的dom元素
-     * @private
+     * @public
+     * @return {HTMLElement} content
      */
     getContent: function() {
         return baidu.g(this.getId('content'));
@@ -384,7 +392,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
     /**
      * 获得footer对应的dom元素
-     * @private
+     * @public
+     * @return {HTMLElement} footer
      */
     getFooter: function() {
         return baidu.g(this.getId('footer'));
@@ -393,6 +402,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
     /**
      * 销毁dialog实例
 	 * @public
+     * @return void
      */
     dispose: function() {
         var me = this;
