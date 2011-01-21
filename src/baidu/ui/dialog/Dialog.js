@@ -87,8 +87,6 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
     top: 'auto',
     left: 'auto',
     zIndex: 1000,//没有做层管理
-    titleText: '',
-    contentText: '',
     //用style来保证其初始状态，不会占据屏幕的位置
     tplDOM: "<div id='#{id}' class='#{class}' style='position:relative'>#{title}#{content}#{footer}</div>",
     tplTitle: "<div id='#{id}' class='#{class}'><span id='#{inner-id}' class='#{inner-class}'>#{content}</span></div>",
@@ -125,13 +123,13 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
                     'class' : me.getClass(title),
                     'inner-id' : me.getId(titleInner),
                     'inner-class' : me.getClass(titleInner),
-                    content: me.titleText
+                    content: me.titleText || ''
                 }),
             content: baidu.format(
                 me.tplContent, {
                     id: me.getId(content),
                     'class' : me.getClass(content),
-                    content: me.contentText
+                    content: me.contentText || ''
                 }),
             footer: baidu.format(
                 me.tplFooter, {
@@ -159,6 +157,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
         //main.style.left =  '-10000em';
         main.innerHTML = me.getString();
+        me._update();
         me._updatePosition();
 
         baidu.dom.setStyles(me.getMain(), {
@@ -173,6 +172,32 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         me.dispatchEvent('onload');
 
         return main;
+    },
+
+    _update:function(options){
+        var me = this,
+            content = me.getContent(),
+            options = options || {};
+
+        if(me.content){
+            if (content.firstChild != me.content) {
+                content.innerHTML = '';
+                content.appendChild(me.content);
+            }else if(options.content && options.content != me.content){
+                content.innerHTML = '';
+                content.appendChild(options.content);
+            }
+        }else if (me.contentText) {
+            content.innerHTML == '' && (content.innerHTML = me.contentText);
+        }else if(options.contentText && options.contentText != me.contentText){
+            content.innerHTML = options.contentText;
+        }
+        
+        baidu.extend(me,options || {});
+        
+        if(me.titleText){
+            me.getTitleInner('title-inner').innerHTML = me.titleText;
+        }
     },
 
     /**
@@ -245,28 +270,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
      */
     update: function(options) {
         var me = this;
-            content = me.getContent(),
-            options = options || {};
-
-        //更新内容
-        if (options.content) {
-            if (content.firstChild != options.content) {
-                content.innerHTML = '';
-                content.appendChild(options.content);
-            }
-        }else if (options.contentText) {
-            if(options.contentText != me.contentText){
-                content.innerHTML = me.contentText;
-            }
-        }
-       
-        //更新标题
-        if (options.titleText)
-            me.getTitleInner('title-inner').innerHTML = options.titleText;
-        
-        baidu.extend(me,options || {});
-        
-        //更新位置参数
+        me._update(options);
         me._updatePosition();
         me.dispatchEvent('onupdate');
     },
