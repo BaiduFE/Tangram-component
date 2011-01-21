@@ -8,7 +8,7 @@
  * date: 2010-12-6
  */
 ///import baidu.ui.slider.Slider;
-///import baidu.ui.progressBar.ProgressBar;
+///import baidu.ui.ProgressBar;
 ///import baidu.dom.insertHTML;
 ///import baidu.string.format;
 ///import baidu.dom.getStyle;
@@ -18,10 +18,10 @@
  *
  * 和进度条结合  进度条跟随滑块的滑动
  */
-baidu.ui.slider.Slider.register(function(me){
+baidu.ui.Slider.register(function(me){
 	me.addEventListener("load", function(){
 	        baidu.dom.insertHTML(me.getThumb(), "beforeBegin", me.getProgressBarString());
-                me.progressBar = baidu.ui.create(baidu.ui.progressBar.ProgressBar, {
+                me.progressBar = baidu.ui.create(baidu.ui.ProgressBar, {
                         layout : me.layout,
                         skin : me.skin ? me.skin + "-followProgressbar" : null
                 });
@@ -36,7 +36,7 @@ baidu.ui.slider.Slider.register(function(me){
 	});
 });
 
-baidu.ui.slider.Slider.extend({
+baidu.ui.Slider.extend({
         tplProgressbar : "<div id='#{rsid}' class='#{class}' style='position:absolute; left:0px; top:0px;'></div>",//这里position如果没有设置，会造成该div和thumb之间掉行
         
         /**
