@@ -1,0 +1,103 @@
+
+.tangram-menubar {
+    overflow: auto;
+    _height: 1%;
+    -moz-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+}
+
+.tangram-menubar-root {
+    overflow: auto;
+    _height: 1%;
+}
+
+.tangram-menubar, .tangram-menubar-root ul {
+    border: 1px solid #a6c9e2;
+    background: #fcfdfd url(img/ui-bg.png) 50% bottom repeat-x;
+    color: #222222;
+    -moz-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+}
+
+.tangram-menubar ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.tangram-menubar a:link, .tangram-menubar a:visited, .tangram-menubar a:hover, .tangram-menubar a:active {
+    float: left;
+    width: 96%;
+    padding: .3em 1%;
+    text-decoration: none;
+    outline: 0 !important;
+}
+
+.tangram-menubar-item{
+	color: #222222;
+	border: 1px solid #FFF;
+}
+
+.tangram-menubar li {
+    clear: both;
+    float: left;
+    width: 99%;
+    margin: 0;
+    padding: 1px;
+    border: 0;
+}
+
+.tangram-menubar-item-hover {
+    border: 1px solid #448dae;
+    background: #79c9ec url(img/ui-bg_75.png) 50% 50% repeat-x;
+    font-weight: normal;
+    color: #026890;
+}
+
+.tangram-menubar-item-hover a{
+	color: #026890;
+}
+
+.tangram-menubar-empty{
+	display:none;
+}
+
+.tangram-menubar-item-disabled {
+    opacity: .35;
+    filter: Alpha(Opacity = 35);
+    background-image: none;
+	cursor:default;
+}
+
+.tangram-menubar-arrow {
+    float: right;
+    cursor: pointer;
+    display: block;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    text-indent: -99999px;
+    background-image: url("img/ui-icons.png");
+	background-position:-32px -16px;
+	height:16px;
+    width:16px;
+}
+
+.tangram-menubar-content{
+	float: left;
+	display: block;
+}
+
+.tangram-menubar-icon {
+    float: left;
+    cursor: pointer;
+    display: block;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    text-indent: -99999px;
+    background-image: url("img/ui-icons.png");
+    height: 16px;
+    width: 16px;
+}
+
