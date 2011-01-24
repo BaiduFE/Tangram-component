@@ -1,16 +1,16 @@
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
- * @path:ui/carousel/Carousel$autoScroll.js
+ * @path:ui/Carousel/Carousel$autoScroll.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-11-02
  */
-///import baidu.ui.carousel.Carousel;
+///import baidu.ui.Carousel;
 /**
  * 自动滚动
  */
-baidu.ui.carousel.Carousel.register(function(me){
+baidu.ui.Carousel.register(function(me){
 	if(me.autoScroll){//如果存在表示要启动auto-scroll
 		me.addEventListener("afterscroll", function(){
 			me.autoScroll.timeOut = setTimeout(function(){

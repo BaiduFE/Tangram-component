@@ -2,26 +2,26 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * @path:ui/table/Table$page.js
+ * @path:ui/Table/Table$page.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-9-30
  */
-///import baidu.ui.table.Table;
+///import baidu.ui.Table;
 ///import baidu.lang.isNumber;
 ///import baidu.array.each;
 ///import baidu.dom.g;
 /**
  * 表格翻页的插件
  */
-baidu.ui.table.Table.register(function(me){
+baidu.ui.Table.register(function(me){
 	me._createPage();
 	me.addEventListener("beforeupdate", function(){
 		me._createPage();
 	});
 });
 //
-baidu.object.extend(baidu.ui.table.Table.prototype, {
+baidu.object.extend(baidu.ui.Table.prototype, {
 	currentPage : 1,	//当前页
 //	pageSize : 10,	//没有默认值，如果在options中设定了该值表示要分页，不设定则表示全部显示
 	_createPage : function(){

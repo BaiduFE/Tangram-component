@@ -2,12 +2,12 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * @path:ui/table/Table$page.js
+ * @path:ui/Table/Table$page.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-9-30
  */
-///import baidu.ui.table.Table;
+///import baidu.ui.Table;
 ///import baidu.array.each;
 ///import baidu.lang.isNumber;
 ///import baidu.dom.insertHTML;
@@ -22,7 +22,7 @@
 /**
  * 增加选择列的插件
  */
-baidu.ui.table.Table.register(function(me){
+baidu.ui.Table.register(function(me){
 //	me._selectedItems = {};      //当前选中的id:checkbox-id, data:row-data
 //	me._checkboxList = {};       //所有的 row-id 和 checkbox-id 对照表
 //  me._checkboxDomList = {};    //提高全选性能，提有DOM节点
@@ -47,7 +47,7 @@ baidu.ui.table.Table.register(function(me){
 	}
 });
 
-baidu.object.extend(baidu.ui.table.Table.prototype, {
+baidu.object.extend(baidu.ui.Table.prototype, {
 	tplSelect : '<input id="#{id}" type="checkbox" value="#{value}" onclick="#{handler}"/>', //这里事件使用onchange时ie会有问题
 //	titleCheckboxId : null,   //表格头部id
 	/**

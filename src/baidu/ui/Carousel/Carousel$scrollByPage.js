@@ -1,16 +1,16 @@
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
- * @path:ui/carousel/Carousel$scrollByPage.js
+ * @path:ui/Carousel/Carousel$scrollByPage.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-09-06
  */
-///import baidu.ui.carousel.Carousel;
+///import baidu.ui.Carousel;
 /**
  * 单次滚动一页的模式
  */
-baidu.object.extend(baidu.ui.carousel.Carousel.prototype, {
+baidu.object.extend(baidu.ui.Carousel.prototype, {
 	onbeforestartscroll : function(evt){this.focus(evt.index);},//onbeforestartscroll不能开放给用户使用,不能使用addEventListener注册
 	/**
 	 * 翻到上一页

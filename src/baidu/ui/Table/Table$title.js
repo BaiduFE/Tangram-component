@@ -2,12 +2,12 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * @path:ui/table/Table$title.js
+ * @path:ui/Table/Table$title.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-11-05
  */
-///import baidu.ui.table.Table;
+///import baidu.ui.Table;
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.setStyles;
 ///import baidu.dom.setStyle;
@@ -18,7 +18,7 @@
 /**
  * 增加列标题
  */
-baidu.ui.table.Table.register(function(me){
+baidu.ui.Table.register(function(me){
 	if(me.title){
 		me.addEventListeners("load, update", function(){
 			if(!me.getTitleBody()){
@@ -45,7 +45,7 @@ baidu.ui.table.Table.register(function(me){
 	}
 });
 //
-baidu.object.extend(baidu.ui.table.Table.prototype, {
+baidu.object.extend(baidu.ui.Table.prototype, {
 	tplTitle : '<div><table id="#{rsid}" class="#{tabClass}" cellspacing="0" cellpadding="0" border="0"><tr class="#{trClass}">#{col}</tr></table></div>',
 	
 	/**

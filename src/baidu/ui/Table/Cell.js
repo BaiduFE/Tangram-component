@@ -2,13 +2,13 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * @path:ui/table/Cell.js
+ * @path:ui/Table/Cell.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-9-30
  */
-///import baidu.ui.table.Table;
-///import baidu.ui.table.Row;
+///import baidu.ui.Table;
+///import baidu.ui.Table.Row;
 ///import baidu.dom.g;
 ///import baidu.dom.setAttrs;
 /**
@@ -18,7 +18,7 @@
  *
  * @param options
  */
-baidu.ui.table.Cell = baidu.ui.createUI(function(options){}).extend({
+baidu.ui.Table.Cell = baidu.ui.createUI(function(options){}).extend({
 	uiType : "table-cell",
 	
 	/**

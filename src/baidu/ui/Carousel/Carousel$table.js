@@ -1,14 +1,14 @@
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
- * @path:ui/carousel/Carousel$table.js
+ * @path:ui/Carousel/Carousel$table.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-09-21
  */
 
-///import baidu.ui.carousel.Carousel;
-///import baidu.ui.table.Table;
+///import baidu.ui.Carousel;
+///import baidu.ui.Table;
 ///import baidu.array.each;
 ///import baidu.dom.create;
 ///import baidu.lang.isArray;
@@ -16,13 +16,13 @@
 /**
  * 让跑马灯支持多行多列
  */
-baidu.ui.carousel.Carousel.register(function(me){
+baidu.ui.Carousel.register(function(me){
 	if(me.data){
 		me.gridLayout = me.gridLayout ? (baidu.lang.isArray(me.gridLayout) ? {row : me.gridLayout[0], col : me.gridLayout[1]} : me.gridLayout) : {row : 3, col : 3};
 		me._tableList = [];//table的数据
 		var data = me._formatData(me.data), contentText = me.contentText = [];
 		baidu.array.each(data, function(item, i){
-			me._tableList.push(baidu.ui.table.create({data : item}));
+			me._tableList.push(new baidu.ui.Table({data : item}));
 			contentText.push({content : me._tableList[me._tableList.length-1].getString()});
 		});
 		me.addEventListener("load", function(){
@@ -33,7 +33,7 @@ baidu.ui.carousel.Carousel.register(function(me){
 		});
 	}
 });
-baidu.object.extend(baidu.ui.carousel.Carousel.prototype, {
+baidu.object.extend(baidu.ui.Carousel.prototype, {
 	/**
 	 * 将一维的数组通过layout格式化成二维的数据
 	 * @param {Array} data 需要插入到table的数据(一维)

@@ -2,16 +2,14 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * @path:ui/table/Table$edit.js
+ * @path:ui/Table/Table$edit.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-11-05
  */
-///import baidu.ui.table.Table;
+///import baidu.ui.Table;
 ///import baidu.array.each;
-///import baidu.ui.input;
-///import baidu.ui.input.Input;
-///import baidu.ui.input.create;
+///import baidu.ui.Input;
 ///import baidu.dom.hide;
 ///import baidu.dom.show;
 ///import baidu.ui.get;
@@ -23,7 +21,7 @@
 /**
  * 使单元格支持编辑
  */
-baidu.ui.table.Table.register(function(me){
+baidu.ui.Table.register(function(me){
 	//me._editArray = [];	//存入用户设置的需要编辑的行对象
 	//me._textField;		//编辑的通用input
 	if(me.columns){
@@ -37,7 +35,10 @@ baidu.ui.table.Table.register(function(me){
 				}
 			});
 			if(me._editArray.length > 0){
-				me._textField = baidu.ui.input.create(me.getMain());
+                me._textField = baidu.ui.createUI({
+                    element : me.getMain(),
+                    autoRender : true
+                });
 				me._textField.getBody().onblur = function(evt){me._cellBlur(evt);}//为了保持和_cellFocus参数一致，这里不使用控件的onblur
 				baidu.dom.hide(me._textField.getBody());
 //				baidu.dom.setStyle(me.getBody(), "tableLayout", "fixed");
@@ -52,7 +53,7 @@ baidu.ui.table.Table.register(function(me){
 	}
 });
 //
-baidu.object.extend(baidu.ui.table.Table.prototype, {
+baidu.object.extend(baidu.ui.Table.prototype, {
 	/**
 	 * 绑定一行中的某列拥有双击事件
 	 * @param {baidu.ui.table.Row} row 行对象

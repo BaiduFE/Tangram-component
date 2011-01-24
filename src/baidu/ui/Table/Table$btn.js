@@ -2,25 +2,25 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * @path:ui/table/Table$btn.js
+ * @path:ui/Table/Table$btn.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-9-30
  */
-///import baidu.ui.table.Table;
-///import baidu.ui.table.Table$page;
+///import baidu.ui.Table;
+///import baidu.ui.Table.Table$page;
 ///import baidu.dom.insertHTML;
-///import baidu.ui.pager.Pager;
+///import baidu.ui.Pager;
 ///import baidu.event.on;
 ///import baidu.dom.g;
 ///import baidu.dom.setStyle;
 ///import baidu.lang.Class.addEventListeners;
 
-baidu.ui.table.Table.register(function(me){
+baidu.ui.Table.register(function(me){
 	me.addEventListeners("load, update", function(){
 		if(me.withPager){
 			baidu.dom.insertHTML(me.getTarget(), "beforeEnd", "<div id='" + me.getId("-pager") + "' align='right'></div>");
-			me.pager = new baidu.ui.pager.Pager({
+			me.pager = new baidu.ui.Pager({
 				endPage : me.getTotalPage() + 1,
 				ongotopage : function(evt){me.gotoPage(evt.page);}
 			});
@@ -33,7 +33,7 @@ baidu.ui.table.Table.register(function(me){
 		}
 	});
 });
-baidu.object.extend(baidu.ui.table.Table.prototype, {
+baidu.object.extend(baidu.ui.Table.prototype, {
 	/**
 	 * 取得存放pager的容器
 	 * @memberOf {TypeName} 

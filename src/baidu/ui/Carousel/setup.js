@@ -1,7 +1,7 @@
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
- * @path:ui/carousel/setup.js
+ * @path:ui/Carousel/setup.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-09-06
@@ -10,7 +10,7 @@
 ///import baidu.dom.g;
 ///import baidu.dom.children;
 ///import baidu.array.each;
-///import baidu.ui.carousel.Carousel;
+///import baidu.ui.Carousel;
  
  /**
  * 依据页面已有元素建立一个跑马灯。
@@ -47,8 +47,7 @@ baidu.ui.carousel.setup = function(ele, opt){
 		});
 	});
 	ele.innerHTML = "";
-	opt.target = ele;
-	var carousel = new baidu.ui.carousel.Carousel(opt);
-		carousel.render();
+	var carousel = new baidu.ui.Carousel(opt);
+		carousel.render(ele);
 	return carousel;
 };

@@ -1,17 +1,17 @@
 /*
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
- * @path:ui/carousel/Carousel$scrollByItem.js
+ * @path:ui/Carousel/Carousel$scrollByItem.js
  * @author:linlingyu
  * @version:1.0.0
  * @date:2010-09-06
  */
 
-///import baidu.ui.carousel.Carousel;
+///import baidu.ui.Carousel;
 /**
  * 单次滚动单个元素的模式
  */
-baidu.object.extend(baidu.ui.carousel.Carousel.prototype, {
+baidu.object.extend(baidu.ui.Carousel.prototype, {
 	/**
 	 * onbeforestartscroll的说明：item和page插件的实现初忠是移动和焦点分离，用户可只实现翻页而不定位焦点，
 	 * 当fx引入时，在内核中占用了fx的onbeforescroll事件，则当连续点击翻页（第一次翻还同结束时）没有办法得到当次滚动是否生效，

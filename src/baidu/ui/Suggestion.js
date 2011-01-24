@@ -230,35 +230,35 @@ baidu.ui.Suggestion = baidu.ui.createUI(function (options){
         return this.getTarget().value;
     },
 
-	/*
+    /*
      * 获得当前处于高亮状态的词索引
      * @private
      */
-	getHighlightIndex : function(){
+    getHighlightIndex : function(){
         var suggestion = this,
             len = suggestion.currentData.length,
             i = 0;
-		if(len && suggestion.isShowing()){
-			for(; i<len; i++){
-				if(suggestion.getItem(i).className == suggestion.getClass("current"))
+        if(len && suggestion.isShowing()){
+            for(; i<len; i++){
+                if(suggestion.getItem(i).className == suggestion.getClass("current"))
                     return i;
-			}
-		}
+            }
+        }
         return -1;
-	},
+    },
 
-	/*
+    /*
      * 清除suggestion中全部tr的蓝色背景样式
      * @private
      */
-	clearHighlight : function(){
+    clearHighlight : function(){
         var suggestion = this,
             i = 0,
             len = suggestion.currentData.length;
-		for(; i < len; i++){
-			suggestion.getItem(i).className = "";
-		}
-	},
+        for(; i < len; i++){
+            suggestion.getItem(i).className = "";
+        }
+    },
 
     /*
      * 获得input框元素
@@ -300,7 +300,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function (options){
 
         html += getPrependAppend("prepend");
 
-		for(; i<len; i++){
+        for(; i<len; i++){
             itemsHTML.push(baidu.format(
                 suggestion.tplRow, 
                 suggestion.getId('item'+i),
@@ -310,12 +310,12 @@ baidu.ui.Suggestion = baidu.ui.createUI(function (options){
                 suggestion.getCallRef() + ".itemDown(event, "+i+")",
                 suggestion.getCallString("itemClick", i)
             ));
-		}
+        }
 
         html += baidu.format(suggestion.tplBody, itemsHTML.join(""));
         html += getPrependAppend("append");
         return html;
-	},
+    },
 
     /*
      * 当每一个项目over、out、down、click时调用的函数
@@ -367,7 +367,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function (options){
     getDocumentMousedownHandler : function (){
         var suggestion = this;
         return function(e){
-        	// todo : baidu.event.getTarget();
+            // todo : baidu.event.getTarget();
             e = e || window.event;
             var element = e.target || e.srcElement,
                 ui = baidu.ui.get(element);

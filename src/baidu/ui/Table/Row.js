@@ -2,15 +2,16 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: ui/table/Row.js
+ * path: ui/Table/Row.js
  * author: berg
  * version: 1.0.0
  * date: 2010/09/08
  */
+///import baidu.ui.Table;
+///import baidu.ui.Table.Cell;
 ///import baidu.ui.createUI;
 ///import baidu.ui.Base.getParent;
 ///import baidu.ui.Base.setParent;
-///import baidu.ui.table.Table;
 ///import baidu.ui.behavior.statable;
 ///import baidu.ui.behavior.statable.setStateHandler;
 ///import baidu.dom.g;
@@ -20,7 +21,6 @@
 ///import baidu.dom.remove;
 ///import baidu.dom.setAttr;
 ///import baidu.dom.setAttrs;
-///import baidu.ui.table.Cell;
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.fn.bind;
@@ -35,7 +35,7 @@
  *  content : ["cell-0", "cell-1"...]
  * }
  */
-baidu.ui.table.Row = baidu.ui.createUI(function(options){
+baidu.ui.Table.Row = baidu.ui.createUI(function(options){
 	this._cells = {};				//所有生成的cell集合
     this.addState("selected");		//
 }).extend({
@@ -173,7 +173,7 @@ baidu.ui.table.Row = baidu.ui.createUI(function(options){
 			if(td.id){
 				cell = me._cells[td.id];
 			}else{
-				cell = new baidu.ui.table.Cell({target : td});
+				cell = new baidu.ui.Table.Cell({target : td});
 				cell._initialize(me);
 				me._cells[cell.getId()] = cell;
 			}
