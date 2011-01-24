@@ -1,21 +1,17 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/suggestion/Suggestion$data.js
- * author: berg
- * version: 1.1.0
- * date: 2010-06-02
  */
 
-///import baidu.ui.suggestion.Suggestion;
+///import baidu.ui.Suggestion;
 
 /**
  * 为Suggestion提供数据内存缓存
  * 扩展这里可做本地缓存
+ * @author berg
  */
 
-baidu.object.extend(baidu.ui.suggestion.Suggestion.prototype, {
+baidu.ui.Suggestion.extend({
     /*
      * 设置一组数据给suggestion
      * 调用者可以选择是否立即显示这组数据: noShow
@@ -30,7 +26,7 @@ baidu.object.extend(baidu.ui.suggestion.Suggestion.prototype, {
     }
 });
 
-baidu.ui.suggestion.Suggestion.register(function(suggestion){
+baidu.ui.Suggestion.register(function(suggestion){
     //初始化dataCache
     suggestion.dataCache = {},
     /*

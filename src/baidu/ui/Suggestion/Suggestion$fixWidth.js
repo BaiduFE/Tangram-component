@@ -1,14 +1,9 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/suggestion/Suggestion$fixWidth.js
- * author: berg
- * version: 1.1.0
- * date: 2010-06-02
  */
 
-///import baidu.ui.suggestion.Suggestion;
+///import baidu.ui.Suggestion;
 
 ///import baidu.object.extend;
 ///import baidu.browser.ie;
@@ -25,8 +20,9 @@
 
 /**
  * 为Suggestion提供位置校准功能
+ * @author berg
  */
-baidu.extend(baidu.ui.suggestion.Suggestion.prototype, {
+baidu.ui.Suggestion.extend({
     posable : true,
     fixWidth : true,
     getWindowResizeHandler : function(){
@@ -63,7 +59,7 @@ baidu.extend(baidu.ui.suggestion.Suggestion.prototype, {
         baidu.dom.setOuterWidth(main, pos.width);
     }
 });
-baidu.ui.suggestion.Suggestion.register(function(suggestion){
+baidu.ui.Suggestion.register(function(suggestion){
 
     suggestion.windowResizeHandler = suggestion.getWindowResizeHandler();
 
