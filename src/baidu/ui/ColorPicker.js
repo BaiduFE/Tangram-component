@@ -3,7 +3,6 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-///import baidu.ui.colorPicker;
 ///import baidu.ui.createUI;
 ///import baidu.ui.behavior.statable;
 ///import baidu.ui.behavior.posable.setPositionByElement;
@@ -20,7 +19,7 @@
 
 /**
  * 颜色拾取器
- * @name baidu.ui.colorPicker.ColorPicker
+ * @name baidu.ui.ColorPicker
  * @class
  * @param {Object} options 配置.
  * @param {Number} [options.gridSize = 8] 一行显示的颜色块个数.
@@ -29,7 +28,7 @@
  * @plugin more 弹出调色板插件
  * @author walter
  */
-baidu.ui.colorPicker.ColorPicker = baidu.ui.createUI(function(options) {
+baidu.ui.ColorPicker = baidu.ui.createUI(function(options) {
     var me = this;
     me._initialized = false; //判断是否已经初始化
 }).extend({
@@ -159,7 +158,7 @@ baidu.ui.colorPicker.ColorPicker = baidu.ui.createUI(function(options) {
             me._initialized = true;
         }
         baidu.dom.show(me.getMain());
-        baidu.ui.colorPicker.showing = me;
+        baidu.ui.ColorPicker.showing = me;
         me.dispatchEvent('onopen');
     },
 

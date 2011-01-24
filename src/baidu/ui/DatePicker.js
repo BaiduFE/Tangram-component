@@ -2,7 +2,7 @@
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
  * 
- * path: ui/datePicker/DatePicker.js
+ * path: ui/DatePicker.js
  * author: meizz
  * version: 1.0.0
  * date: 2010-05-18
@@ -24,8 +24,6 @@
 ///import baidu.fx.zoomIn;
 ///import baidu.fx.zoomOut;
 ///import baidu.ui.createPopup;
-
-///import baidu.ui.datePicker;
  
  /**
  * 日期选择输入控件
@@ -43,37 +41,37 @@
  * @config     {Function}    onpick          日期点击的回调函数，传入参数为json对象，其中target属性为选中的Date。
  * @returns    {String}      year|month|date 被操作的层代号
  */
-baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
+baidu.ui.DatePicker = baidu.lang.createClass(function(options){
     var lang = {
-	        sunday      : "\u65e5"
-	        ,monday     : "\u4e00"
-	        ,tuesday    : "\u4e8c"
-	        ,wednesday  : "\u4e09"
-	        ,thursday   : "\u56db"
-	        ,friday     : "\u4e94"
-	        ,saturday   : "\u516d"
-	
-	        ,january    : "\u4e00\u6708"
-	        ,february   : "\u4e8c\u6708"
-	        ,march      : "\u4e09\u6708"
-	        ,april      : "\u56db\u6708"
-	        ,may        : "\u4e94\u6708"
-	        ,june       : "\u516d\u6708"
-	        ,july       : "\u4e03\u6708"
-	        ,august     : "\u516b\u6708"
-	        ,september  : "\u4e5d\u6708"
-	        ,october    : "\u5341\u6708"
-	        ,november   : "\u5341\u4e00\u6708"
-	        ,december   : "\u5341\u4e8c\u6708"
-	
-	        ,titleToday : "\u4eca\u5929\u662fyyyy\u5e74MM\u6708dd\u65e5"
-	        ,titleYear  : "yyyy\u5e74"
-	        ,titleYearMonth : "yyyy\u5e74MM\u6708"
-	    },
-	    config = {
-	         prevHTML:"<input type='button' style='height:18px; width:100%; border:none; background-color:transparent' value='&lt;'>"
-	        ,nextHTML:"<input type='button' style='height:18px; width:100%; border:none; background-color:transparent' value='&gt;'>"
-	    };
+            sunday      : "\u65e5"
+            ,monday     : "\u4e00"
+            ,tuesday    : "\u4e8c"
+            ,wednesday  : "\u4e09"
+            ,thursday   : "\u56db"
+            ,friday     : "\u4e94"
+            ,saturday   : "\u516d"
+    
+            ,january    : "\u4e00\u6708"
+            ,february   : "\u4e8c\u6708"
+            ,march      : "\u4e09\u6708"
+            ,april      : "\u56db\u6708"
+            ,may        : "\u4e94\u6708"
+            ,june       : "\u516d\u6708"
+            ,july       : "\u4e03\u6708"
+            ,august     : "\u516b\u6708"
+            ,september  : "\u4e5d\u6708"
+            ,october    : "\u5341\u6708"
+            ,november   : "\u5341\u4e00\u6708"
+            ,december   : "\u5341\u4e8c\u6708"
+    
+            ,titleToday : "\u4eca\u5929\u662fyyyy\u5e74MM\u6708dd\u65e5"
+            ,titleYear  : "yyyy\u5e74"
+            ,titleYearMonth : "yyyy\u5e74MM\u6708"
+        },
+        config = {
+             prevHTML:"<input type='button' style='height:18px; width:100%; border:none; background-color:transparent' value='&lt;'>"
+            ,nextHTML:"<input type='button' style='height:18px; width:100%; border:none; background-color:transparent' value='&gt;'>"
+        };
     if ((navigator.platform == "Win32" || navigator.platform == "Windows") && (baidu.browser.ie || baidu.browser.chrome)) {
         config.prevHTML = "<input type='button' style='font-family:Webdings; height:18px; width:100%; border:none; background-color:transparent' value='3'>"
         config.nextHTML = "<input type='button' style='font-family:Webdings; height:18px; width:100%; border:none; background-color:transparent' value='4'>"
@@ -83,7 +81,7 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
     // 用户可以指定某些日期，高亮显示之
     me.dateList = [/* Date */];
 
-    baidu.object.extend(me, baidu.ui.datePicker.DatePicker.options);
+    baidu.object.extend(me, baidu.ui.DatePicker.options);
     baidu.object.extend(me, options);
 
     // 可以单独指定某个语言项
@@ -91,7 +89,7 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
     me.config = baidu.object.extend(baidu.object.extend({}, config), me.config);
 
     // 下面两句代码有循环引用之嫌，在析构的时候破之
-    me.Class = baidu.ui.datePicker.DatePicker;
+    me.Class = baidu.ui.DatePicker;
     me.Class.instance = me;
 
     // 当前操作的层名 year|month|date
@@ -113,9 +111,9 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
     ,duration : 365 // ms
     ,pauseTime : 240
     ,appointedDate : false
-},  className:"baidu.ui.datePicker.DatePicker"}).extend(
+},  className:"baidu.ui.DatePicker"}).extend(
     /**
-     *  @lends baidu.ui.datePicker.DatePicker.prototype
+     *  @lends baidu.ui.DatePicker.prototype
      */
 {
 
@@ -356,11 +354,11 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
                 var z = parseInt(me.g(x).style.zIndex);
                 me.g(x).style.zIndex = z - maxz;
             });
-            baidu.ui.datePicker.DatePicker.zIndex -= maxz;
+            baidu.ui.DatePicker.zIndex -= maxz;
         }
 
         var layer = me.g(name += (parseInt(a[0]) <= parseInt(a[1]) ? "1" : "2"));
-        layer.style.zIndex = ++ baidu.ui.datePicker.DatePicker.zIndex;
+        layer.style.zIndex = ++ baidu.ui.DatePicker.zIndex;
         return layer;
     }
 
@@ -577,7 +575,7 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
  * 日历选择器是单例的，在这里统一生成一个日历容器
  */
 (function(){
-    var dp = baidu.ui.datePicker.DatePicker;
+    var dp = baidu.ui.DatePicker;
     window[baidu.guid]._instances[(dp.guid = baidu.lang.guid())] = dp;
 
     dp.popup = baidu.ui.createPopup();

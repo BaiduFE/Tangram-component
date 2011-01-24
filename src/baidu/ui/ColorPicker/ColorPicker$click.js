@@ -3,7 +3,7 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-///import baidu.ui.colorPicker.ColorPicker;
+///import baidu.ui.ColorPicker;
 ///import baidu.ui.get;
 ///import baidu.event.on;
 ///import baidu.event.un;
@@ -14,10 +14,10 @@
 
 /**
  * 创建一个鼠标点击触发的colorPicker
- * @name baidu.ui.colorPicker.ColorPicker$click
+ * @name baidu.ui.ColorPicker.ColorPicker$click
  * @author walter
  */
-baidu.ui.colorPicker.ColorPicker.extend({
+baidu.ui.ColorPicker.extend({
     /**
      * 插件触发方式，默认为点击
      * @param {String} [options.type = 'click'].
@@ -46,7 +46,7 @@ baidu.ui.colorPicker.ColorPicker.extend({
     }
 });
 
-baidu.ui.colorPicker.ColorPicker.register(function(me) {
+baidu.ui.ColorPicker.register(function(me) {
     if (me.type != 'click') {
         return;
     }

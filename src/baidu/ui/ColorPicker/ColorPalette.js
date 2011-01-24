@@ -3,9 +3,9 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-///import baidu.ui.colorPicker;
+///import baidu.ui.ColorPicker;
 ///import baidu.ui.createUI;
-///import baidu.ui.slider.Slider;
+///import baidu.ui.Slider;
 
 ///import baidu.string.format;
 
@@ -29,7 +29,7 @@
 
 /**
  * 复杂颜色拾取器
- * @name baidu.ui.colorPicker.ColorPalette
+ * @name baidu.ui.ColorPicker.ColorPalette
  * @class
  * @param {Object}  options 配置.
  * @param {Number}  [options.sliderLength = 150] 滑动条长度.
@@ -37,7 +37,7 @@
  * @param {String}  options.sliderImgSrc 滑动条背景图片地址.
  * @author walter
  */
-baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
+baidu.ui.ColorPicker.ColorPalette = baidu.ui.createUI(function(options) {
     var me = this;
     me.hue = 360; //色相初始值
     me.saturation = 100; //饱和度初始值
@@ -217,7 +217,7 @@ baidu.ui.colorPicker.ColorPalette = baidu.ui.createUI(function(options) {
         var me = this,
             target = me._getSliderMain();
 
-        me.slider = baidu.ui.create(baidu.ui.slider.Slider, {
+        me.slider = baidu.ui.create(baidu.ui.Slider, {
             autoRender: true,
             element: target,
             layout: 'vertical',

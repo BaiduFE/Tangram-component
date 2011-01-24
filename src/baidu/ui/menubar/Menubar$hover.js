@@ -2,12 +2,11 @@
  * Tangram
  * Copyright 2010 Baidu Inc. All rights reserved.
  *
- * path: ui/menubar/Menubar$hover.js
+ * path: ui/Menubar/Menubar$hover.js
  * author: walter
  * version: 1.0.0
  * date: 2010-12-09
  */
-///import baidu.ui.menubar;
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.dom.g;
@@ -17,7 +16,7 @@
 /**
  *  鼠标hover触发menubar插件
  */
-baidu.object.extend(baidu.ui.menubar.Menubar.prototype, {
+baidu.ui.Menubar.extend({
     /**
      * 插件触发方式，默认为hover
      * @param {String} [options.type = 'hover']
@@ -68,7 +67,7 @@ baidu.object.extend(baidu.ui.menubar.Menubar.prototype, {
 	
 });
 
-baidu.ui.menubar.Menubar.register(function(me){
+baidu.ui.Menubar.register(function(me){
     me.targetHoverHandler = baidu.fn.bind('targetHover', me);
     me.targetMouseOutHandler = baidu.fn.bind('targetMouseOut', me);
     me.clearHandler = baidu.fn.bind('clearHideHandler', me)

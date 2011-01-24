@@ -3,10 +3,10 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-///import baidu.ui.colorPicker.ColorPicker;
-///import baidu.ui.colorPicker.ColorPalette;
-///import baidu.ui.button.Button;
-///import baidu.ui.dialog.confirm;
+///import baidu.ui.ColorPicker;
+///import baidu.ui.ColorPicker.ColorPalette;
+///import baidu.ui.Button;
+///import baidu.ui.Dialog.confirm;
 ///import baidu.ui.create;
 
 ///import baidu.object.extend;
@@ -15,7 +15,7 @@
 
 /**
  * ColorPalette 插件
- * @name baidu.ui.colorPicker.ColorPicker$more
+ * @name baidu.ui.ColorPicker.ColorPicker$more
  * @param {Number} [options.sliderLength = 150] 滑动条长度.
  * @param {String} options.coverImgSrc 调色板背景渐变图片路径.
  * @param {String} options.sliderImgSrc 滑动条背景图片路径.
@@ -23,7 +23,7 @@
  * @param {Object} [options.dilogOption] 填出对话框配置.
  * @author walter
  */
-baidu.ui.colorPicker.ColorPicker.extend({
+baidu.ui.ColorPicker.extend({
 
     sliderLength: 150,
 
@@ -52,7 +52,7 @@ baidu.ui.colorPicker.ColorPicker.extend({
     _createColorPaletteDialog: function() {
         var me = this;
         me.colorPaletteDialog =
-            baidu.ui.dialog.confirm('', baidu.object.extend({
+            baidu.ui.Dialog.confirm('', baidu.object.extend({
                 titleText: me.titleText,
                 height: 180,
                 width: 360,
@@ -79,7 +79,7 @@ baidu.ui.colorPicker.ColorPicker.extend({
     _createColorPalette: function() {
         var me = this;
         me.colorPalette =
-            baidu.ui.create(baidu.ui.colorPicker.ColorPalette, {
+            baidu.ui.create(baidu.ui.ColorPicker.ColorPalette, {
                 autoRender: true,
                 sliderLength: me.sliderLength,
                 coverImgSrc: me.coverImgSrc,
@@ -89,11 +89,11 @@ baidu.ui.colorPicker.ColorPicker.extend({
     }
 });
 
-baidu.ui.colorPicker.ColorPicker.register(function(me) {
+baidu.ui.ColorPicker.register(function(me) {
     me.addEventListener('onupdate', function() {
         var strArray = [],
             body = me.getBody();
-        baidu.ui.create(baidu.ui.button.Button, {
+        baidu.ui.create(baidu.ui.Button, {
             content: me.titleText,
             classPrefix: me.getClass('morecolorbutton'),
             autoRender: true,

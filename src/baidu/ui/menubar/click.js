@@ -2,7 +2,7 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  *
- * path: ui/menubar/click.js
+ * path: ui/Menubar/click.js
  * author: rocy
  * version: 1.0.0
  * date: 2010-12-09
@@ -12,9 +12,9 @@
  *
  * 获得menubar实例
  */
-///import baidu.ui.menubar.Menubar;
+///import baidu.ui.Menubar;
 ///import baidu.ui.create;
-///import baidu.ui.menubar.Menubar$click;
+///import baidu.ui.Menubar.Menubar$click;
 ///import baidu.dom.g;
 
 /**
@@ -22,14 +22,14 @@
  * @param {HTMLElement} element
  * @param {Array} data
  * @param {Object} options
- * @return {baidu.ui.menubar.Menubar}
+ * @return {baidu.ui.Menubar}
  */
-baidu.ui.menubar.click = function(element, data, options){
+baidu.ui.Menubar.click = function(element, data, options){
     options = baidu.object.extend({
         data: data,
         type: 'click',
         autoRender: true,
         element: baidu.g(element)
     }, options || {});
-    return baidu.ui.create(baidu.ui.menubar.Menubar, options);
+    return baidu.ui.create(baidu.ui.Menubar, options);
 };

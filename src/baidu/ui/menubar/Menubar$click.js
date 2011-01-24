@@ -2,12 +2,11 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  *
- * path: ui/menubar/Menubar$click.js
+ * path: ui/Menubar/Menubar$click.js
  * author: walter
  * version: 1.0.0
  * date: 2010-12-09
  */
-///import baidu.ui.menubar;
 ///import baidu.ui.get;
 ///import baidu.event.on;
 ///import baidu.event.un;
@@ -19,7 +18,7 @@
 /**
  * 创建一个鼠标点击触发的menubar
  */
-baidu.object.extend(baidu.ui.menubar.Menubar.prototype, {
+baidu.ui.Menubar.extend({
     /**
      * 插件触发方式，默认为点击
      * @param {String} [options.type = 'click']
@@ -44,7 +43,7 @@ baidu.object.extend(baidu.ui.menubar.Menubar.prototype, {
     }
 });
 
-baidu.ui.menubar.Menubar.register(function(me){
+baidu.ui.Menubar.register(function(me){
     if (me.type == 'click') {
 		me.targetOpenHandler = baidu.fn.bind("open", me);
 		me.bodyClickHandler = baidu.fn.bind("bodyClick", me);

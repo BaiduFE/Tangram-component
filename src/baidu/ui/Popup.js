@@ -2,7 +2,7 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: ui/popup/Popup.js
+ * path: ui/Popup.js
  * author: berg,rocy
  * version: 1.0.0
  * date: 2010-05-18
@@ -27,11 +27,6 @@
 ///import baidu.dom.remove;
 
 ///import baidu.string.format;
-
-
-//声明包
-///import baidu.ui.popup;
-
 
 /*
  * popup基类，建立一个popup实例，这个类原则上不对外暴露
@@ -69,10 +64,10 @@
  * @return {baidu.ui.Popup}                                    Popup类
  */
 
-baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
+baidu.ui.Popup = baidu.ui.createUI(function (options){
 }).extend(
     /**
-     *  @lends baidu.ui.popup.Popup.prototype
+     *  @lends baidu.ui.Popup.prototype
      */
 {
     //ui控件的类型，传入给UIBase **必须**
@@ -106,11 +101,11 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
      * @return    {Boolean}       是否处于显示状态
      */
     isShown : function(){
-        return baidu.ui.popup.instances[this.guid] == 'show';
+        return baidu.ui.Popup.instances[this.guid] == 'show';
     },
 
     /**
-	 * @private
+     * @private
      */
     getString : function(){
         var me = this;
@@ -124,7 +119,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
 
     /**
      * render popup到DOM树
-	 * @private
+     * @private
      */
     render : function(){
         var me = this,
@@ -139,7 +134,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
         
         main.innerHTML = me.getString();
 
-		me.update(me);
+        me.update(me);
 
         baidu.dom.setStyles(me.getMain(), {
             position    : "absolute",
@@ -154,9 +149,9 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
 
     /**
      * 显示当前popup
-	 * @public
+     * @public
      * @param  {Object}             options               选项参数
-	 * @config {DOMElement}         content               要放到popup中的元素，如果传此参数时同时传contentText，则忽略contentText。
+     * @config {DOMElement}         content               要放到popup中的元素，如果传此参数时同时传contentText，则忽略contentText。
      * @config {String}             contentText           popup中的内容
      * @config {String|Number}      width                 内容区域的宽度。注意，这里的内容区域指getContent()得到元素的区域，不包含title和footer。
      * @config {String|Number}      height                内容区域的高度
@@ -186,29 +181,29 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
 
         me.getMain().style.marginLeft = "auto";
         
-        baidu.ui.popup.instances[me.guid] = "show";
+        baidu.ui.Popup.instances[me.guid] = "show";
 
         me.dispatchEvent("onopen");
     },
 
     /**
      * 隐藏当前popup
-	 * @public
+     * @public
      */
     close : function(){
         var me = this;
         if(me.dispatchEvent("onbeforeclose")){
             me.getMain().style.marginLeft = "-100000px";
-            baidu.ui.popup.instances[me.guid] = "hide";
+            baidu.ui.Popup.instances[me.guid] = "hide";
             me.dispatchEvent("onclose");
         }
     },
     
     /**
      * 更新popup状态 
-	 * @public
+     * @public
      * @param  {Object}             options               选项参数
-	 * @config {DOMElement}         content               要放到popup中的元素，如果传此参数时同时传contentText，则忽略contentText。
+     * @config {DOMElement}         content               要放到popup中的元素，如果传此参数时同时传contentText，则忽略contentText。
      * @config {String}             contentText           popup中的内容
      * @config {String|Number}      width                 内容区域的宽度。注意，这里的内容区域指getContent()得到元素的区域，不包含title和footer。
      * @config {String|Number}      height                内容区域的高度
@@ -250,37 +245,37 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
             //建议popup不要支持text
             contentWrapper.innerHTML = options.contentText;
         }
-		me._updateSize();
+        me._updateSize();
         me._updatePosition();
         me.dispatchEvent("onupdate");
     },
     
     /**
-	 * 更新大小,子类可以通过同名方法覆盖;
-	 * 默认实现为使用参数的width和height赋值
-	 */
+     * 更新大小,子类可以通过同名方法覆盖;
+     * 默认实现为使用参数的width和height赋值
+     */
     //[Interface]
     _updateSize : function(){
-    	var me = this;
+        var me = this;
         baidu.dom.setStyles(me.getMain(), { width : me.width, height : me.height});
     },
-	/**
-	 * 更新位置,子类可以通过同名方法覆盖;
-	 * 默认实现为使用参数的top和left赋值
-	 */
+    /**
+     * 更新位置,子类可以通过同名方法覆盖;
+     * 默认实现为使用参数的top和left赋值
+     */
     //[Interface]
     _updatePosition : function(){
-    	var me = this;
+        var me = this;
         baidu.dom.setStyles(me.getMain(), { top : me.top, left : me.left});
     },
     /**
      * 销毁控件
-	 * @public
+     * @public
      */
     dispose : function(){
-    	var me = this;
-    	me.dispatchEvent("ondispose");
-    	baidu.dom.remove(me.getMain());
-    	baidu.lang.Class.prototype.dispose.call(me);
+        var me = this;
+        me.dispatchEvent("ondispose");
+        baidu.dom.remove(me.getMain());
+        baidu.lang.Class.prototype.dispose.call(me);
     }
 });

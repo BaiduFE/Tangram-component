@@ -2,12 +2,12 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  *
- * path: ui/menubar/Menubar$fx.js
+ * path: ui/Menubar/Menubar$fx.js
  * author: walter
  * version: 1.0.0
  * date: 2010-12-09
  */
-///import baidu.ui.menubar.Menubar;
+///import baidu.ui.Menubar;
 ///import baidu.fx.expand;
 ///import baidu.fx.collapse;
 
@@ -15,7 +15,7 @@
 /**
  * 为Menubar添加效果支持
  */
-baidu.object.extend(baidu.ui.menubar.Menubar.prototype,{
+baidu.ui.Menubar.extend({
 	showFx : baidu.fx.expand,
 	showFxOptions : {duration:200},
 	hideFx : baidu.fx.collapse,
@@ -23,10 +23,10 @@ baidu.object.extend(baidu.ui.menubar.Menubar.prototype,{
 });
 
 
-baidu.ui.menubar.Menubar.register(function(me){
+baidu.ui.Menubar.register(function(me){
     //TODO: 这砣代码比较乱，而且这里的错误捕获不应使用try-cache
 	me.addEventListener('onopen', function(){
-		!baidu.ui.menubar.showing && 'function' == typeof me.showFx && me.showFx(baidu.g(me.getId()),me.showFxOptions);
+		!baidu.ui.Menubar.showing && 'function' == typeof me.showFx && me.showFx(baidu.g(me.getId()),me.showFxOptions);
 	});
 	me.addEventListener('onbeforeclose',function(e){
 		try{

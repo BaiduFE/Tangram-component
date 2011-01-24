@@ -2,12 +2,12 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  *
- * path: ui/menubar/Menubar$icon.js
+ * path: ui/Menubar/Menubar$icon.js
  * author: walter
  * version: 1.0.0
  * date: 2010-12-09
  */
-///import baidu.ui.menubar.Menubar;
+///import baidu.ui.Menubar;
 ///import baidu.object.extend;
 ///import baidu.string.format;
 ///import baidu.object.each;
@@ -16,7 +16,7 @@
 /**
  * 菜单图标
  */
-baidu.object.extend(baidu.ui.menubar.Menubar.prototype, {
+baidu.ui.Menubar.extend({
     tplIcon : '<span class="#{icon}" style="#{iconStyle};"></span>',
     
     /**
@@ -35,6 +35,6 @@ baidu.object.extend(baidu.ui.menubar.Menubar.prototype, {
     }
 });
 
-baidu.ui.menubar.Menubar.register(function(me){
+baidu.ui.Menubar.register(function(me){
     me.addEventListener('onupdate', me.updateIcons);
 });
