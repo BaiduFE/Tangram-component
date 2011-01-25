@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/dialog/confirm.js
- * author: bergi,lixiaopeng
- * version: 1.0.0
- * date: 2010-05-18
  */
 
 ///import baidu.ui.dialog;
@@ -46,10 +41,8 @@
  * @config {Function}           ondrag                draggable模块支持，拖拽过程中触发
  * @config {Function}           ondragend             draggable模块支持，拖拽结束时触发
  * @config {Boolean}            [autoOpen]            是否一开始就打开，默认为true
- *
+ * @config {Boolean}            submitOnEnter         是否监听回车键
  */
-
-
 
 baidu.ui.dialog.confirm = function(content, options) {
     var dialogInstance;
@@ -73,7 +66,8 @@ baidu.ui.dialog.confirm = function(content, options) {
                     parent.dispatchEvent('oncancel') && parent.close();
                 }
             }
-        }
+        },
+        submitOnEnter: true
     },options || {});
     options.autoRender = true;
     if (baidu.isString(content)) {
@@ -97,7 +91,7 @@ baidu.ui.dialog.confirm = function(content, options) {
     }
 
     //注册ontener事件
-    dialogInstance.addEventListener('onenter', function(e) {
+    dialogInstance.submitOnEnter && dialogInstance.addEventListener('onenter', function(e) {
         this.buttonInstances['accept'].fire('click', e);
     });
     return dialogInstance;

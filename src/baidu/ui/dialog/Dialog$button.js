@@ -1,16 +1,10 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/dialog/Dialog$button.js
- * author: lixiaopeng
- * version: 1.0.0
- * date: 2010/11/18
  */
 
 /**
  * plugin button
- * 
  */
 
 ///import baidu.ui.dialog;
@@ -25,7 +19,7 @@
  * {
  *  name,{baidu.ui.button.Button相同的参数}
  * }
- * */
+ */
 baidu.extend(baidu.ui.dialog.Dialog.prototype,{
     
     /**
@@ -33,7 +27,7 @@ baidu.extend(baidu.ui.dialog.Dialog.prototype,{
      * @param {Object} option 创建按钮的options
      * @param {String} name 按钮的唯一标识符
      * @return void
-     * */
+     */
     createButton:function(option,name){
         var me = this;
         baidu.extend(option,{
@@ -51,7 +45,7 @@ baidu.extend(baidu.ui.dialog.Dialog.prototype,{
      * 删除底部按钮
      * @param {String} name 按钮的唯一标识符
      * @return void
-     * */
+     */
     removeButton:function(name){
         var me = this,
             button = me.buttonInstances[name];

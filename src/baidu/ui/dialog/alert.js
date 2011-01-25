@@ -1,13 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/dialog/alert.js
- * author: lxp, berg
- * version: 1.1.0
- * date: 2010-08-09
  */
-
  
 ///import baidu.ui.dialog;
 ///import baidu.ui.dialog.Dialog;
@@ -45,7 +39,7 @@
  * @config {Function}           ondrag                draggable模块支持，拖拽过程中触发
  * @config {Function}           ondragend             draggable模块支持，拖拽结束时触发
  * @config {Boolean}            [autoOpen]            是否一开始就打开，默认为true
- *
+ * @config {Boolean}            submitOnEnter         是否监听回车键
  */
 
 baidu.ui.dialog.alert = function(content, options) {
@@ -62,7 +56,8 @@ baidu.ui.dialog.alert = function(content, options) {
                     parent.dispatchEvent('onaccept') && parent.close();
                 }
             }
-        }
+        },
+        submitOnEnter: true
     },options || {});
     options.autoRender = true;
     if (baidu.isString(content)) {
@@ -84,7 +79,7 @@ baidu.ui.dialog.alert = function(content, options) {
     }
 
     //注册ontener事件
-    dialogInstance.addEventListener('onenter', function(e) {
+    dialogInstance.submitOnEnter && dialogInstance.addEventListener('onenter', function(e) {
         this.buttonInstances['accept'].fire('click', e);
     });
     return dialogInstance;

@@ -56,8 +56,9 @@ baidu.ui.slider.Slider.extend({
 	_adjustProgressbar : function(){
 	        var me = this,
 	            layout = me.layout,
-	            axis = me.axis[layout];
-	        me.progressBar.getBar().style[me.progressBar.axis[layout].size] = parseInt(baidu.dom.getStyle(me.getThumb(), axis.thumbPos), 10) +
+	            axis = me.axis[layout],
+	            thumbPos = parseInt(baidu.dom.getStyle(me.getThumb(), axis.thumbPos), 10);
+	        me.progressBar.getBar().style[me.progressBar.axis[layout].size] = (isNaN(thumbPos) ? 0 : thumbPos) +
                                                                                   me[axis._getThumbSize]() / 2 + "px";
 	}
 });

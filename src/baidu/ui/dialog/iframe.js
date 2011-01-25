@@ -37,7 +37,6 @@
  * @config {Function}           ondrag                draggable模块支持，拖拽过程中触发
  * @config {Function}           ondragend             draggable模块支持，拖拽结束时触发
  * @config {Boolean}            [autoOpen]            是否一开始就打开，默认为true
- *
  */
 
 ///import baidu.ui.dialog;
@@ -49,34 +48,44 @@
 baidu.ui.dialog.iframe = function(iframeSrc, options) {
     options = options || {};
     var dialog = new baidu.ui.dialog.Dialog(options),
-        iframe = 'iframe',
-        iframeElement;
-    dialog.contentText = baidu.format(
-        dialog.tplIframe,
-            iframeSrc,
-            dialog.getId(iframe),
-            dialog.getClass(iframe),
-            dialog.iframeName ? dialog.iframeName : dialog.getId(iframe)
-    );
+        iframeId = dialog.getId('iframe'),
+        iframeName = options.iframeName || iframeId,
+        iframeElement,
+        contentWindow;
+
+    dialog.contentText = baidu.format(dialog.tplIframe,{
+        name: iframeName,
+        id: iframeId,
+        'class': dialog.getClass('iframe')
+    });
     dialog.render();
-
-    //让IE强制rerender,否则iframe可能出不来
-    iframeElement = dialog.getContent().firstChild;
-    if (baidu.browser.ie) {
-        iframeElement.src = dialog.getContent().firstChild.src;
-    }
-
+    iframeElement = baidu.g(iframeId);
+    
     //解决iframe加载后无法准确定位dialog的问题
     baidu.on(iframeElement, 'onload', function() {
-        dialog.update(dialog);
+        //同域则获取被包含页的高度并赋予iframe
+        if(contentWindow = iframeElement.contentWindow){
+            iframeElement.height = Math.max(contentWindow.document.documentElement.scrollHeight,contentWindow.document.body.scrollHeight) + "px";   
+        }
+        dialog._updatePosition();
+        dialog.dispatchEvent('onupdate');
     });
+    iframeElement.src = iframeSrc;
 
     dialog.open();
     return dialog;
 };
 
 //通过extend方法扩展默认属性
-
 baidu.ui.dialog.Dialog.extend({
-    tplIframe: "<iframe width='100%' height='100%' frameborder='0' scrolling='no' src='#{0}' name='#{3}' id='#{1}' class='#{2}'></iframe>"
+    tplIframe: "<iframe width='100%' height='98%' frameborder='0' scrolling='no' name='#{name}' id='#{id}' class='#{class}'></iframe>",
+
+    /**
+     * 获取iframe
+     * @public
+     * @return {HTMLElement} iframe
+     */
+    getIframe: function(){
+        return baidu.g(this.getId('iframe'));
+    }
 });
