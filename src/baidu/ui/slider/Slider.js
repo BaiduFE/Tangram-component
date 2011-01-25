@@ -31,6 +31,8 @@
 
 ///import baidu.string.format;
 
+///import baidu.dom.contains;
+
 
 /**
  *
@@ -41,7 +43,7 @@
 baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
     var me = this;
     options = options || {};
-    me.layout = options.layout || "horizontal";
+    //me.layout = options.layout || "horizontal";
     //初始化range
     if(!options.range){
         me.range = [me.min, me.max];
@@ -96,19 +98,21 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
         var me = this,
             mousePos = baidu.page.getMousePosition(),
             mainPos = baidu.dom.getPosition(me.getMain()),
+            target = baidu.event.getTarget(e),
+            thumb = me.getThumb(),
 			len=0;
         
         //如果点在了滑块上面，就不移动
-        if(baidu.event.getTarget(e) == me.getThumb()){
+        if(target == thumb || baidu.dom.contains(thumb, target)){
             return ;
         }
 		len = mousePos[me.axis[me.layout].mousePos] - mainPos[me.axis[me.layout].mainPos] - me.getThumb()[me.axis[me.layout].thumbSize]/ 2;
         me._calcValue(len);
+        me.dispatchEvent("slideclick");
         //如果点击的地方在range之外，不发送stop事件
         if(me.update()){
             me.dispatchEvent("slidestop");
         }
-        me.dispatchEvent("slideclick");
     },
     
 	/**
@@ -160,21 +164,21 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
     _updateDragRange : function(){
         var me = this,
             range = me.range,
-			ratio = 0;
+			ratio = 0,
+			round = Math.round;
         me._dragOpt.range[2] = me._getHeight();
 		ratio =(me[me.axis[me.layout]._getSize]() - me[me.axis[me.layout]._getThumbSize]()) / ( me.max - me.min );
-
 		if(me.layout == "horizontal"){
 			if(typeof range != 'undefined'){
-				me._dragOpt.range[1] = range[1] * ratio + me._getThumbWidth();
-				me._dragOpt.range[3] = range[0] * ratio;
+				me._dragOpt.range[1] = round(range[1] * ratio) + me._getThumbWidth();
+				me._dragOpt.range[3] = round(range[0] * ratio);
 			}else{
 				me._dragOpt.range[1] = me._getWidth();
 				me._dragOpt.range[3] = 0;
 			}
 		} else {
 			if(typeof range != 'undefined'){
-				me._dragOpt.range[2] = range[1] * ratio + me._getThumbHeight();
+				me._dragOpt.range[2] = round(range[1] * ratio) + me._getThumbHeight();
 				me._dragOpt.range[1] = me._getThumbWidth();
 			}else{
 				me._dragOpt.range[1] = me._getWidth();
@@ -196,9 +200,12 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
             return ;
         }
         me._lastValue = me.value;
-		len = me[me.axis[me.layout]._getSize]()- me[me.axis[me.layout]._getThumbSize]();
-        baidu.dom.setStyle(me.getThumb(), me.axis[me.layout].thumbPos, me.value * (len) / ( me.max - me.min ) );
-		me.dispatchEvent("update");
+        //drop是否终止当次事件的触发
+        if(me.dispatchEvent("beforesliderto", {drop : options.drop})){
+			len = me[me.axis[me.layout]._getSize]()- me[me.axis[me.layout]._getThumbSize]();
+			baidu.dom.setStyle(me.getThumb(), me.axis[me.layout].thumbPos, me.value * (len) / ( me.max - me.min ) );
+			me.dispatchEvent("update");
+		}
     },
 
     /**
@@ -215,9 +222,9 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
      * @param {number} position
      */
     _calcValue : function(pos){
-        var me = this, len = me[me.axis[me.layout]._getSize]()-me[me.axis[me.layout]._getThumbSize]();
-        me.value = pos * (me.max - me.min) / (len);
-        me._adjustValue(); 
+        var me = this, len = me[me.axis[me.layout]._getSize]() - me[me.axis[me.layout]._getThumbSize]();
+        me.value = pos * (me.max - me.min) / len;
+        me._adjustValue();
     },
 
     /**
@@ -225,14 +232,16 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
      * todo: 考虑把两个函数放入基类
      */
     _getWidth : function(){
-        return parseInt(baidu.dom.getStyle(this.getBody(), "width"));
-    },
+    	//使用getStyle时，当宽度是100%时，ie取不到值
+        //return parseInt(baidu.dom.getStyle(this.getBody(), "width"));
+        return this.getBody().clientWidth;    },
 
     /**
      * 获得body元素的height
      */
     _getHeight : function(){
-        return parseInt(baidu.dom.getStyle(this.getBody(), "height"));
+        //return parseInt(baidu.dom.getStyle(this.getBody(), "height"));
+        return this.getBody().clientHeight;
     },
 
 
