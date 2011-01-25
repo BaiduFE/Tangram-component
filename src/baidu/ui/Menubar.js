@@ -221,7 +221,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         });
                        
         if (target) {
-            me.setPositionByElement(target, main, {
+            me.setPositionByElement(target, me.getMain(), {
                 position: me.position,
                 once: true
             });
