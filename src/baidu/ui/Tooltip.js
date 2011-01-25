@@ -18,8 +18,8 @@
 
 ///import baidu.string.format;
 
-///import baidu.ui.smartPosition.mouse;
-///import baidu.ui.smartPosition.element;
+///import baidu.ui.behavior.posable.setPositionByElement;
+///import baidu.ui.behavior.posable.setPositionByMouse;
 
  /**
  * 弹出tip层,类似鼠标划过含title属性元素的效果
@@ -61,6 +61,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(new Function).extend(
 	offsetPosition	: 'bottomRight',
 	offset			: [0,0],
 	tplBody			: '<div id="#{id}" class="#{class}"></div>',
+    posable: true,
 	/**
 	 * 开关函数,返回false时不显示
      * @private
@@ -182,7 +183,6 @@ baidu.ui.Tooltip = baidu.ui.createUI(new Function).extend(
 	
 	_setPosition : function(){
 		var me = this,
-			smartPosition = baidu.ui.smartPosition,
 			positionOptions = {
 				once : true,
 				offset : me.offset,
@@ -191,11 +191,10 @@ baidu.ui.Tooltip = baidu.ui.createUI(new Function).extend(
 			};
 		switch(me.positionBy){
 			case "element":
-				smartPosition.element(me.getMain(), me.getTarget(),positionOptions);
+				me.setPositionByElement(me.getTarget(), me.getMain(),positionOptions);
 				break;
 			case "mouse":
-				smartPosition.mouse(me.getMain(), positionOptions);
-				//smartPosition.set(me.getMain(), me.pos, {once : true});
+				me.setPositionByMouse(me.getMain(), positionOptions);
 				break;
 			default :
 				break;
