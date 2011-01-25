@@ -21,6 +21,7 @@ baidu.ui.table.Table.register(function(me){
 		if(me.withPager){
 			baidu.dom.insertHTML(me.getTarget(), "beforeEnd", "<div id='" + me.getId("-pager") + "' align='right'></div>");
 			me.pager = new baidu.ui.pager.Pager({
+				skin : me.skin ? me.skin + "-pager" : null,
 				endPage : me.getTotalPage() + 1,
 				ongotopage : function(evt){me.gotoPage(evt.page);}
 			});
