@@ -118,11 +118,11 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
         }
 		len = mousePos[me.axis[me.layout].mousePos] - mainPos[me.axis[me.layout].mainPos] - me.getThumb()[me.axis[me.layout].thumbSize]/ 2;
         me._calcValue(len);
+		me.dispatchEvent("slideclick");
         //如果点击的地方在range之外，不发送stop事件
         if(me.update()){
             me.dispatchEvent("slidestop");
         }
-        me.dispatchEvent("slideclick");
     },
     
 	/**
