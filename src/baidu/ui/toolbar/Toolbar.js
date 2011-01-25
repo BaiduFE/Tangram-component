@@ -3,7 +3,7 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-///import baidu.ui.toolbar._Item;
+///import baidu.ui.toolbar._itemBehavior;
 
 ///import baidu.object.extend;
 ///import baidu.string.format;
@@ -79,9 +79,9 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * tplMain
      * @private
      */
-    tplMain: '<div id="#{mainId}" class="#{mainClass}" onmousedown="javascript:return false;">' +
+    tplMain: '<div id="#{bodyId}" class="#{bodyClass}" onmousedown="javascript:return false;">' +
             '#{title}' +
-            '<div id="#{mainInner}" class="#{mainInnerClass}">' +
+            '<div id="#{bodyInner}" class="#{bodyInnerClass}">' +
                 '<table cellpadding="0" cellspacing="0" style="width:100%; height:100%" id="#{tableId}">' +
                     '<tr><td style="width:100%; height:100%" #{position}>' +
                         '<table cellpadding="0" cellspacing="0" id="#{tableInnerId}">#{content}</table>' +
@@ -123,10 +123,10 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
         var me = this;
 
         return baidu.format(me.tplMain, {
-            mainId : me.getId('main'),
-            mainClass : me.getClass('main'),
-            mainInner : me.getClass('mianInner'),
-            mainInnerClass : me.getClass('main-inner'),
+            bodyId : me.getId(),
+            bodyClass : me.getClass(),
+            bodyInner : me.getId('bodyInner'),
+            bodyInnerClass : me.getClass('body-inner'),
             title : me.title === '' ? '' : baidu.format(me.tplTitle, {
                                                     titleId : me.getId('title'),
                                                     titleClass : me.getClass('title'),
@@ -149,14 +149,14 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * @return void
      */
     render: function(container) {
-        var me = this, main;
+        var me = this, body;
         me.container = container = baidu.g(container || me.container);
 
         baidu.insertHTML(me.renderMain(container), 'beforeEnd', me.getString());
 
-        main = baidu.g(me.getId('main'));
-        me.width && baidu.setStyle(main, 'width', me.width);
-        me.height && baidu.setStyle(main, 'height', me.height);
+        body = baidu.g(me.getId());
+        me.width && baidu.setStyle(body, 'width', me.width);
+        me.height && baidu.setStyle(body, 'height', me.height);
 
         //创建item
         me._createItems();

@@ -24,24 +24,30 @@
 
 
 /**
- * Input基类，创建一个input实例
- * 
- * @config {String}                     text			input文本信息
- * @config {Boolean}                    disabled		控件是否有效，默认为false
- * @config {Function}                   onfocus			聚焦时触发
- * @config {Function}                   onblur			失去焦点时触发
- * @config {Function}                   onchage			input内容改变时触发
- * @config {Function}                   onkeydown		按下键盘时触发
- * @config {Function}                   onkeyup			释放键盘时触发
- * @config {Function}                   onmouseover		鼠标悬停在input上时触发
- * @config {Function}                   onmouseout		鼠标移出input时触发
- * @config {Function}                   ondisable		input失效时触发
- * @config {Function}                   onenable		input有效时触发
- * @config {Function}                   ondispose		input实例销毁时触发
- * @return {Input}                                      Input类
+ * Input基类，创建一个input实例。
+ * @class Input类
+ * @param     {String|HTMLElement}     target        存放input控件的元素，input控件会渲染到该元素内。
+ * @param     {Object}                 [options]     选项
+ * @config    {String}                 text          input文本信息
+ * @config    {Boolean}                disabled      控件是否有效，默认为false（有效）。
+ * @config    {Function}               onfocus       聚焦时触发
+ * @config    {Function}               onblur        失去焦点时触发
+ * @config    {Function}               onchage       input内容改变时触发
+ * @config    {Function}               onkeydown     按下键盘时触发
+ * @config    {Function}               onkeyup       释放键盘时触发
+ * @config    {Function}               onmouseover   鼠标悬停在input上时触发
+ * @config    {Function}               onmouseout    鼠标移出input时触发
+ * @config    {Function}               ondisable     当调用input的实例方法disable，使得input失效时触发。
+ * @config    {Function}               onenable      当调用input的实例方法enable，使得input有效时触发。
+ * @config    {Function}               ondispose     销毁实例时触发
+ * @returns   {Boolean} 是否有效，true(失效)/false(有效)。
  */
 
-baidu.ui.input.Input = baidu.ui.createUI(new Function).extend({
+baidu.ui.input.Input = baidu.ui.createUI(new Function).extend(
+	/**
+     *  @lends baidu.ui.input.Input.prototype
+     */
+{
     //ui控件的类型，传入给UIBase **必须**
     uiType            : "input",
     //ui控件的class样式前缀 可选
@@ -49,8 +55,10 @@ baidu.ui.input.Input = baidu.ui.createUI(new Function).extend({
     tplBody         : '<input id="#{id}" class="#{class}" value="#{text}" onfocus="#{onfocus}" onblur="#{onblur}" onchange="#{onchange}" onkeydown="#{onkeydown}" onkeyup="#{onkeyup}" onmouseover="#{onmouseover}" onmouseout="#{onmouseout}" />',
     disabled		: false,
  
-    /*
-     *  获得input的HTML字符串。
+    /**
+     * 获得input的HTML字符串。
+     * @private
+     * @returns {String} HTML字符串
      */
     getString : function(){
         var input = this;
@@ -68,8 +76,10 @@ baidu.ui.input.Input = baidu.ui.createUI(new Function).extend({
         });
     },
 
-    /*
+    /**
      *  将input绘制到DOM树中。target参数不可省，否则无法渲染。
+	 * @public
+	 * @param {String|HTMLElement} target 目标渲染对象
      */	
 	render : function(target){
 		if(!baidu.g(target)){
@@ -154,15 +164,19 @@ baidu.ui.input.Input = baidu.ui.createUI(new Function).extend({
 		baidu.addClass(body, input.getClass(style));
 	},
 
-    /*
+    /**
      *  判断input是否处于失效状态。
+	 * @public
+	 * @return {Boolean}    是否处于失效状态
      */ 	
 	isDisabled : function(){
 		return this.disabled;
 	},
 	
-	/*
-     *  获得input文本。
+	/**
+     *  获得input文字。
+	 * @public 
+	 * @return {String}    输入框的文字 
      */
 	getText : function(){
 		var text = this.getBody().value; 
@@ -179,22 +193,25 @@ baidu.ui.input.Input = baidu.ui.createUI(new Function).extend({
 		input.dispatchEvent(eventName);	
 	},
 	
-	/*
+	/**
      *  使input控件有效。
+	 * @public
      */ 
 	enable : function(){
 		this._able("onenable", false);
 	},
 
-    /* 
+    /**
      *  使input控件失效。
+	 * @public
      */
 	disable : function(){	
 		this._able("ondisable", true, "disable");
 	},
 	
-    /*
+    /**
      *  销毁实例。
+	 * @public
      */
 	dispose : function(){
 		var input = this;

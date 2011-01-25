@@ -1,5 +1,5 @@
 (function() {
-	UserAction.importsrc('baidu.ui.createUI');
+//	UserAction.importsrc('baidu.ui.createUI');
 	module("baidu.ui.behavior.draggable");
 	/**
 	 * Need draggable and create need time to load create.js and draggable.js
@@ -27,6 +27,7 @@
 	test("function test", function() {
 		stop();
 		/** need time to load create.js and draggable.js */
+		UserAction.importsrc('baidu.ui.createUI', function() {
 		setTimeout(function() {
 			var DraggableUI = baidu.ui.createUI(new Function).extend( {
 				draggable : true
@@ -74,7 +75,7 @@
 				UserAction.mouseup(main);
 			}, 100);
 		}, 100);
-
+		});
 	});
 
 	test('range', function() {

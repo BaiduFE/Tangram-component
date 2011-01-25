@@ -11,7 +11,6 @@
 ///import baidu.ui;
 
 /**
- * 定义名字空间
- * instances用于存放实例guid及其状态
+ * @namespace 可以创建一个能任意修改的弹出的容器控件。
  */
 baidu.ui.popup = baidu.ui.popup || {instances : {}};

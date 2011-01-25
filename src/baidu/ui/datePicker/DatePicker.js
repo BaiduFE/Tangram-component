@@ -26,19 +26,22 @@
 ///import baidu.ui.createPopup;
 
 ///import baidu.ui.datePicker;
-/**
+ 
+ /**
  * 日期选择输入控件
- * 
- *
- * @config  {JSON}      lang        语言包
- * @config  {String}    format      最后输出的日期格式字符串
- * @config  {Date}      minDate     可选的最小日期
- * @config  {Date}      maxDate     可选的最大日期
- * @config  {Array}     dateList    指定日期的列表
- * @config  {Number}    duration    动画效果的时长(单位：毫秒)
- * @config  {String}    position    指定日历显示的位置 top
- * @config  {Date}      appointedDate   指定日期
- * @config  {Array}     specificallyList特定的日期列表
+ * @class DatePicker类
+ * @param      {Object}      [options]       选项，用于创建DatePicker。
+ * @config     {String}      format          日期格式， 默认"yyyy-MM-dd"。
+ * @config     {Date}        minDate         日历最小日期，默认史前27万1千821年。
+ * @config     {Date}        maxDate         日历最大日期，默认公元27万5千760年。
+ * @config     {Number}      duration        效果持续时长，默认365毫秒。
+ * @config     {Date}        appointedDate   初始展示日期， 默认为当天。
+ * @config     {Array}       dateList        初始高亮的日期们，为Date类型的数组，默认为空。
+ * @config     {Object}      lang            语言包
+ * @config     {String}      prevHTML        向前翻页按钮的HTML字符串
+ * @config     {String}      nextHTML        向后翻页按钮的HTML字符串
+ * @config     {Function}    onpick          日期点击的回调函数，传入参数为json对象，其中target属性为选中的Date。
+ * @returns    {String}      year|month|date 被操作的层代号
  */
 baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
     var lang = {
@@ -110,8 +113,15 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
     ,duration : 365 // ms
     ,pauseTime : 240
     ,appointedDate : false
-},  className:"baidu.ui.datePicker.DatePicker"}).extend({
+},  className:"baidu.ui.datePicker.DatePicker"}).extend(
+    /**
+     *  @lends baidu.ui.datePicker.DatePicker.prototype
+     */
+{
 
+    /**
+     * @private
+     */
     render : function(){
         var me = this;
         me.dispatchEvent("onready");
@@ -144,7 +154,10 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
         baidu.dom.show(me.renderDate());
         me.title(baidu.date.format(me.currentDate, me.lang.titleYearMonth));
     }
-    // 渲染日期层
+    /**
+     * 渲染日期层
+     * @private
+     */
     ,renderDate : function(options, retractive) {
         var me      = this
             ,mcd    = me.currentDate
@@ -187,7 +200,10 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
 
         return (me.currentLayer = layer);
     }
-    // 渲染月份层(一月至十二月是固定的)
+    /**
+     * 渲染月份层(一月至十二月是固定的)
+     * @private
+     */
     ,renderMonth : function(retractive) {
         var me     = this
             ,mcd   = me.currentDate
@@ -209,7 +225,10 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
 
         return (me.currentLayer = layer);
     }
-    // 10年一屏，便于用户定位
+    /**
+     * 10年一屏，便于用户定位
+     * @private
+     */
     ,renderYear : function() {
         var me      = this, cn = ""
             ,cy     = me.currentDate.getFullYear()
@@ -231,7 +250,10 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
 
         return (me.currentLayer = layer);
     }
-    // 多年图层，100年一屏
+    /**
+     * 多年图层，100年一屏
+     * @private
+     */
     ,renderMultiyear : function(options, retractive) {
         var me      = this, cn = ""
             ,cy     = me.currentDate.getFullYear()
@@ -258,6 +280,7 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
     
     /**
      * 动画效果展现指定层
+     * @private
      * @param   {String}        command 动画效果名 zoomIn|zoomOut
      * @param   {HTMLElement}   layer   层
      * @param   {String}        text    current显示的文本
@@ -281,17 +304,20 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
 
     /**
      * 设置 title
+     * @private
      * @param   {String}    text    文本
      */
     ,title : function(text) {this.g("current").innerHTML =  text;}
 
     /**
      * popup.document.getElementById
+     * @private
      */
     ,g : function(id) {return this.Class.popup.document.getElementById(id);}
 
     /**
      * 显示日历层
+     * @private
      */
     ,show : function(){
         this.popup.bind(this.trigger, 178, 164, this.position);
@@ -299,6 +325,7 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
 
     /**
      * 选中某个日期作为返回值
+     * @private
      */
     ,pick : function(date) {
         if (!this.dispatchEvent(new baidu.lang.Event("onpick", date))) return;
@@ -314,6 +341,7 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
 
     /**
      * 得到被操作的层
+     * @private
      * @param   {String}    name    year|month|date 被操作的层代号
      */
     ,getWorkLayer : function(name) {
@@ -336,8 +364,10 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
         return layer;
     }
 
-    // [Interface method]
-    // 实现连续翻动的效果
+    /** [Interface method]
+     * 实现连续翻动的效果
+     * @private
+     */
     ,startPrev : function() {
         var me  = this
             ,n  = new Date().getTime();
@@ -349,9 +379,15 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
 
         me.startPrev.timer = setTimeout(function(){me.startPrev()}, me.duration + me.pauseTime);
     }
+    /**
+     * @private
+     */
     ,stopPrev : function(){clearTimeout(this.startPrev.timer);}
 
-    // 过去
+    /**
+     * 过去
+     * @private
+     */
     ,prev : function(){
         var me = this
             ,m = me.currentDate.getMonth()
@@ -387,7 +423,10 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
         }
     }
 
-    // 现在
+    /**
+     * 现在
+     * @private
+     */
     ,now : function(){
         var me = this
             ,y = me.currentDate.getFullYear()
@@ -417,7 +456,10 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
         }
     }
 
-    // 实现连续翻动的效果
+    /**
+     * 实现连续翻动的效果
+     * @private
+     */
     ,startNext : function() {
         var me  = this
             ,n  = new Date().getTime();
@@ -429,9 +471,15 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
 
         me.startNext.timer = setTimeout(function(){me.startNext()}, me.duration + me.pauseTime);
     }
+    /**
+     * @private
+     */
     ,stopNext : function(){clearTimeout(this.startNext.timer);}
 
-    // 将来
+    /**
+     * 将来
+     * @private
+     */
     ,next : function(){
         var me = this
             ,m = me.currentDate.getMonth()
@@ -467,7 +515,10 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
         }
     }
 
-    // 内容区单击
+    /**
+     * 内容区单击
+     * @private
+     */
     ,click: function(table, td){
         // 这个值若为空则表示超出用户设计的日期范围
         if (/^\s+$/.test(td.innerHTML)) return;
@@ -511,7 +562,10 @@ baidu.ui.datePicker.DatePicker = baidu.lang.createClass(function(options){
         }
     }
 
-    // 单击今天
+    /**
+     * 单击今天
+     * @private
+     */
     ,today: function(){this.pick(new Date());}
 });
 
