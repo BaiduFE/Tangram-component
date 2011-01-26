@@ -28,8 +28,6 @@
 ///import baidu.object.each;
 ///import baidu.object.extend;
 
-//存储所有的modal参数
-baidu.ui.Modal.collection = {};
 baidu.ui.Modal = baidu.ui.createUI(function (options){
     var me = this,container = (options && options.container) ? baidu.g(options.container) : null;
     !container && (container = document.body);
@@ -301,3 +299,6 @@ baidu.ui.Modal = baidu.ui.createUI(function (options){
         delete(me.styles["color"]);
     }
 });
+
+//存储所有的modal参数
+baidu.ui.Modal.collection = {};

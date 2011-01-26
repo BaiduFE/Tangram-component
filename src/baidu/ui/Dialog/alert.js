@@ -3,11 +3,10 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
  
-///import baidu.ui.dialog;
-///import baidu.ui.dialog.Dialog;
-///import baidu.ui.dialog.Dialog$button;
+///import baidu.ui.Dialog;
+///import baidu.ui.Dialog$button;
 ///import baidu.lang.isString;
-///import baidu.ui.dialog.Dialog$keyboard;
+///import baidu.ui.Dialog$keyboard;
 
 /**
  * 应用实现 alert
@@ -42,7 +41,7 @@
  * @config {Boolean}            submitOnEnter         是否监听回车键
  */
 
-baidu.ui.dialog.alert = function(content, options) {
+baidu.ui.Dialog.alert = function(content, options) {
     var dialogInstance;
 
     options = baidu.extend({
@@ -65,7 +64,7 @@ baidu.ui.dialog.alert = function(content, options) {
     } else {
         options.content = content;
     }
-    dialogInstance = baidu.ui.create(baidu.ui.dialog.Dialog, options);
+    dialogInstance = new baidu.ui.Dialog(options);
 
     //默认自动dispose
     if (typeof options.autoDispose == 'undefined' || options.autoDispose) {

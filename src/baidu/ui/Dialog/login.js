@@ -16,8 +16,7 @@
  */
 
 
-///import baidu.ui.dialog;
-///import baidu.ui.dialog.Dialog;
+///import baidu.ui.Dialog;
 
 ///import baidu.dom.addClass;
 ///import baidu.dom.removeClass;
@@ -71,7 +70,7 @@
  * @config {Function}           onRegisterFailure     注册失败回调函数
  *
  */
-baidu.ui.dialog.login = function(options) {
+baidu.ui.login = function(options) {
 	options = options || {};
 
 	options = baidu.extend({
@@ -137,7 +136,7 @@ baidu.ui.dialog.login = function(options) {
 	};
 
 
-    var dialogInstance = new baidu.ui.dialog.Dialog(options);
+    var dialogInstance = new baidu.ui.Dialog(options);
 
 
     dialogInstance.render();
@@ -169,7 +168,7 @@ baidu.ui.dialog.login = function(options) {
     	close: function() {
     		var me = this;
     		me.loginJson = me.regJson = null;
-    		baidu.ui.dialog.Dialog.prototype.close.call(me);
+    		baidu.ui.Dialog.prototype.close.call(me);
     	},
     	renderLogin: function() {
     		var me = this;
@@ -177,7 +176,7 @@ baidu.ui.dialog.login = function(options) {
 	    	baidu.sio.callByServer(me.loginURL, function(value) {
 	    		var json = me.loginJson = eval(value);
 		        baidu.sio.callByBrowser(json.jslink, function(value) {
-		        	baidu.ui.dialog.Dialog.prototype.open.call(me);
+		        	baidu.ui.Dialog.prototype.open.call(me);
 
 			        dialogInstance.loginDom = bdPass.LoginTemplate.render(json, options.loginContainerId/*dialogInstance.getContent()*/, {
 					   renderSafeflg: true,
@@ -196,7 +195,7 @@ baidu.ui.dialog.login = function(options) {
 	    	baidu.sio.callByServer(me.regURL, function(value) {
 	    		var json = me.regJson = eval(value);
 		        baidu.sio.callByBrowser(json.jslink, function(value) {
-		        	baidu.ui.dialog.Dialog.prototype.open.call(me);
+		        	baidu.ui.Dialog.prototype.open.call(me);
 
 			        dialogInstance.registerDom = bdPass.RegTemplate.render(json, options.regContainerId, {
 					   renderSafeflg: true,

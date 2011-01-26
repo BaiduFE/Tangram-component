@@ -34,14 +34,13 @@
  * @config {Boolean}            [autoOpen]            是否一开始就打开，默认为true
  */
 
-///import baidu.ui.dialog;
-///import baidu.ui.dialog.Dialog;
+///import baidu.ui.Dialog;
 ///import baidu.string.format;
 ///import baidu.browser.ie;
 
-baidu.ui.dialog.iframe = function(iframeSrc, options) {
+baidu.ui.Dialog.iframe = function(iframeSrc, options) {
     options = options || {};
-    var dialog = new baidu.ui.dialog.Dialog(options),
+    var dialog = new baidu.ui.Dialog(options),
         iframeId = dialog.getId('iframe'),
         iframeName = options.iframeName || iframeId,
         iframeElement,
@@ -72,7 +71,7 @@ baidu.ui.dialog.iframe = function(iframeSrc, options) {
 };
 
 //通过extend方法扩展默认属性
-baidu.ui.dialog.Dialog.extend({
+baidu.ui.Dialog.extend({
     tplIframe: "<iframe width='100%' height='98%' frameborder='0' scrolling='no' name='#{name}' id='#{id}' class='#{class}'></iframe>",
 
     /**

@@ -3,7 +3,7 @@
     <head>
         <title>dialog manual test - by berg</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.dialog.*' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*' ></script>
         
         <script src='../../../../src/import.php?f=baidu.ui.behavior.decorator' ></script>
         <!--页面依赖-->
@@ -138,7 +138,7 @@ h2{
             /*
              * 静态配置
              */
-            baidu.ui.dialog.Dialog.options = {
+            baidu.ui.Dialog.options = {
                 "titleText" : "default Title",
                 "contentText" : "default Content"
             };
@@ -190,7 +190,7 @@ h2{
              * 创建一个静态配置的dialog
              */
             function createStaticConfigDialog(){
-                var dialog = baidu.ui.dialog.create({
+                var dialog = new baidu.ui.Dialog({
                     "autoRender" : true
                 });
                 dialog.open();
@@ -199,7 +199,7 @@ h2{
              * 装饰器对话框
              */
             function createDecoratorDialog(){
-                var dialog = baidu.ui.dialog.create({
+                var dialog = new baidu.ui.Dialog({
                     //装饰器是可以嵌套的
                     decorator : [
                         'box', 
@@ -234,7 +234,7 @@ h2{
 
                 var dialogContent = [];
                 dialogContent.push("<h4>dialog"+nowIndex+" -- zIndex:"+options.zIndex+"</h4>");
-                dialogContent.push("<a href='#;' onclick='baidu.ui.dialog.create({autoRender: true, zIndex:"+ options.zIndex+1 +",closeOnEscape:false}).open();'>new dialog with closeOnEscape false</a>, ");
+                dialogContent.push("<a href='#;' onclick='new baidu.ui.Dialog({autoRender: true, zIndex:"+ options.zIndex+1 +",closeOnEscape:false}).open();'>new dialog with closeOnEscape false</a>, ");
                 dialogContent.push("<a href='#;' onclick='baidu.ui.get(this).close()'>close me</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:800, height: 800})'>big one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:200, height: 200})'>small one</a>, ");
@@ -243,7 +243,7 @@ h2{
 
                 if(!type){
                     options['contentText'] = dialogContent;
-                    var dialog = baidu.ui.dialog.create(options);
+                    var dialog = new baidu.ui.Dialog(options);
                     dialog.open();
                 }else if(type == 'iframe'){
                     var dialog = new baidu.ui.dialog.iframe("inner.html", options);
@@ -371,8 +371,8 @@ h2{
         <br />
         <br />
         <script>
-            //baidu.ui.smartCover.options.hideFlash = false;
-            /*
+            baidu.ui.smartCover.options.hideFlash = false;
+            
             baidu.swf.create({
 
                 id: "flash",
@@ -381,7 +381,7 @@ h2{
                 height:600
 
             }, "flashContainer");
-            */
+            
             //var d = baidu.ui.dialog.iframe("inner.html");
         </script>
     </body>
