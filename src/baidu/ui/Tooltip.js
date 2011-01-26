@@ -179,6 +179,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(new Function).extend(
         }
 		
         me._setPosition();
+        me.dispatchEvent("onupdate");
 	},
 	
 	_setPosition : function(){
