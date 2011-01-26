@@ -1,15 +1,8 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/button/Button.js
- * author: zhangyao,lixiaopeng
- * version: 1.0.0
- * date: 2010-08-05
  */
 
-
-//依赖包
 ///import baidu.ui.createUI;
 ///import baidu.ui.Base.setParent;
 ///import baidu.ui.Base.getParent;
@@ -20,7 +13,6 @@
 ///import baidu.dom.addClass;
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.remove;
-//声明包
 ///import baidu.ui.button;
 ///import baidu.ui.behavior.statable;
 

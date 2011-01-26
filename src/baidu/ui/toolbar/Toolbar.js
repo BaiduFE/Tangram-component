@@ -83,7 +83,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
             '#{title}' +
             '<div id="#{bodyInner}" class="#{bodyInnerClass}">' +
                 '<table cellpadding="0" cellspacing="0" style="width:100%; height:100%" id="#{tableId}">' +
-                    '<tr><td style="width:100%; height:100%" #{position}>' +
+                    '<tr><td style="width:100%; height:100%; font-size:0pt;" #{position}>' +
                         '<table cellpadding="0" cellspacing="0" id="#{tableInnerId}">#{content}</table>' +
                     '</td></tr>' +
                 '</table>' +
@@ -100,13 +100,13 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * tplHorizontalCell
      * @private
      */
-    tplHorizontalCell: '<td id="#{id}" valign="middle"></td>',
+    tplHorizontalCell: '<td id="#{id}" valign="middle" style="font-size:0pt;"></td>',
     
     /**
      * tplVerticalCell
      * @private
      */
-    tplVerticalCell: '<tr><td id="#{id}" valign="middle"></td></tr>',
+    tplVerticalCell: '<tr><td id="#{id}" valign="middle" style="font-size:0pt;"></td></tr>',
 
     /**
      * uiType
