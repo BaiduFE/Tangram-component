@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>baidu.url.suggestiont异常用法测试，保证函数不出错</title>
+		
+		<script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.0.js"></script>
+		<!-- suggestion js -->
+		<script src="../../../../src/baidu/ui.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Central.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Div.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Data.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Input.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/_Suggestion.js"></script>
+		<script src="../../../../src/baidu/ui/suggestion/create.js"></script>
+		<!-- suggestion js-->
+		<!-- test js -->
+		<!-- test js -->
+		<style>
+		    .tangram_sug_wpr{border:1px solid #817F82;position:absolute;top:28px;left:0}
+		    .tangram_sug_wpr table{width:100%;background:#fff;cursor:default}
+		    .tangram_sug_wpr td{font:14px verdana}
+		    .tangram_sug_mo{background-color:#36c;color:#fff}
+		    .tangram_sug_ml{background-color:#fff;color:#000}
+		    .tangram_sug_app{background-color:white;}
+		    .tangram_sug_pre{background-color:white;}
+		</style>
+	</head>
+	<body>
+		<p align=center style="font-size:120%">
+			<font color="#3333ee">This is inputElement属性并非是input test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<textarea name="aa" id="aa" rows="3" cols="20"></textarea>
+		<textarea name="ab" id="ab" rows="3" cols="20"></textarea>
+		<br />
+		<br />
+		<!-- =======================等价类分解符===================================================== -->
+		<!-- getData不给定的情况不予以测试，这个必须由使用者保证
+		<p align=center style="font-size:120%">
+			<font color="#3333ee">This is options中只含有"onhightlight"属性 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="ba" id="ba" />
+		<input type=text name="bb" id="bb" />
+		<br />
+		<br />
+		<!-- =======================等价类分解符===================================================== -->
+		<!-- getData不给定的情况不予以测试，这个必须由使用者保证
+		<p align=center style="font-size:120%">
+			<font color="#cc44cc">This is options中只含有"onhide"属性 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="ca" id="ca" />
+		<input type=text name="cb" id="cb" />
+		<input type="button" name="check" value="检查onHide是否被调用"
+			onclick="check_hide()" />
+		<div id="check_div"></div>
+		<br />
+		<br />
+		<!-- =======================等价类分解符===================================================== -->
+		<!-- getData不给定的情况不予以测试，这个必须由使用者保证
+		<p align=center style="font-size:120%">
+			<font color="#33cccc">This is options中只含有"onpick"属性 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="da" id="da" />
+		<input type=text name="db" id="db" />
+		<br />
+		<br />
+		<!-- =======================等价类分解符===================================================== -->
+		<!-- getData不给定的情况不予以测试，这个必须由使用者保证
+		<p align=center style="font-size:120%">
+			<font color="#33cc66">This is options中只含有"onconfirm"属性 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="ea" id="ea" />
+		<input type=text name="eb" id="eb" />
+		<br />
+		<br />
+		<!-- =======================等价类分解符===================================================== -->
+		<!-- getData不给定的情况不予以测试，这个必须由使用者保证
+		<p align=center style="font-size:120%">
+			<font color="#33FF66">This is options中只含有"view"属性 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="fa" id="fa" />
+		<input type=text name="fb" id="fb" />
+		<br />
+		<br />
+		<!-- =======================等价类分解符===================================================== -->
+		<!-- getData不给定的情况不予以测试，这个必须由使用者保证
+		<p align=center style="font-size:120%">
+			<font color="#99ccFF">This is options中只含有"prepend_html"属性 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="ga" id="ga" />
+		<input type=text name="gb" id="gb" />
+		<br />
+		<br />
+		<!-- =======================等价类分解符===================================================== -->
+		<!-- getData不给定的情况不予以测试，这个必须由使用者保证
+		<p align=center style="font-size:120%">
+			<font color="#FFCC77">This is options中只含有"append_html"属性 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="ha" id="ha" />
+		<input type=text name="hb" id="hb" />
+		<br />
+		<br />
+		<!-- =======================等价类分解符===================================================== -->
+		<!-- getData不给定的情况不予以测试，这个必须由使用者保证
+		<p align=center style="font-size:120%">
+			<font color="#9AEC77">This is options中除了getData属性外包含其他所有属性
+				test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="ia" id="ia" />
+		<input type=text name="ib" id="ib" />
+		<br />
+		<br />
+		<!-- =======================等价类分解符===================================================== -->
+		<p align=center style="font-size:120%">
+			<font color="#88FCF77">This is options中的getData属性返回空字符串 test</font>
+		</p>
+		<p>
+			备注：每一个测试点的第一个为根据input的id，第二个为根据input的element
+		</p>
+		<input type=text name="ja" id="ja" />
+		<input type=text name="jb" id="jb" />
+		<br />
+		<br />
+
+		<script type="text/javascript">
+	//回调函数
+	sab_call = function(){
+		sab.giveData("sab", raa);
+	};
+	sjb_call = function(){
+		sjb.giveData("sjb", rja);
+	};
+	//inputElement属性并非是input
+	var raa = ["开始", {"input":"i开始", "selection":"s开始"}, "", {"input":" ", "selection":" "}, "#", {"input":"*", "selection":"#"}, 
+					"1", {"input":"3", "selection":"1"}, "E", {"input":"P", "selection":"E"}, "a", {"input":"b", "selection":"a"}, "aA190$%^", 
+					{"input":"bB190$%^", "selection":"aA190$%^"}, "这是中文吗lll", "ａＢ２＠＃（\t 结束", 
+					{"input":"这是中文吗zzz", "selection":"这是中文吗lll"}, 
+					{"input":"ａＢｃＤ６９＠＃（\t 结束", "selection":"ａＢ２＠＃（\t 结束"},
+					{"input":"SAd12#$中文ａＢ１＃￥\t＊", "selection":"<b>SAd12#$中文ａＢ１＃￥\t＊&nbsp;aa</b>&gt;aa"}];
+	var options_1 = {
+		"onhighlight" : function(wd, idx, value, html){
+			if (parseInt(wd) == idx)
+        		alert("highlight"+ "-" + wd + "-" + idx +"-" + value + "-" + html);
+        },
+		"getData" : function(word){
+			saa.giveData("saa", raa);
+		}
+	};
+	var saa = baidu.suggestion.create("aa", options_1);
+	options_1.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sab_call);	};
+	var sab = baidu.suggestion.create(baidu.G("ab"), options_1);
+	saa.pick("aa");
+	sab.pick("ab");
+	
+/*	getData必须包含，代码中不做判断
+    //options中只含有"onhightlight"属性
+	var options_2 = {
+		"onhighlight" : function(wd, idx, value, html){
+			if (parseInt(wd) == idx)
+        		alert("highlight"+ "-" + wd + "-" + idx +"-" + value + "-" + html);
+        }
+	};
+	var sba = baidu.suggestion.create("ba", options_2);
+	var sbb = baidu.suggestion.create(baidu.G("bb"), options_2);
+	sba.pick("ba");
+	sbb.pick("bb");
+	
+//options中只含有"onhide"属性
+	var hide_str = "nothing";
+	var options_3 = {
+		"onhide" : function(){
+			hide_str = "only onhide";
+        }};
+	var sca = baidu.suggestion.create("ca", options_3);
+	var scb = baidu.suggestion.create(baidu.G("cb"), options_3);
+	sca.pick("ca");
+	scb.pick("cb");
+	
+	function check_hide(){
+		baidu.G("check_div").innerHTML = hide_str;
+	}
+	
+//options中只含有"onpick"属性
+	var options_4 = {
+		"onpick" : function(wd, idx, value, html){
+			alert("pick"+ "-" + wd + "-" + idx +"-" + value + "-" + html);
+        }};
+	var sda = baidu.suggestion.create("da", options_4);
+	var sdb = baidu.suggestion.create(baidu.G("db"), options_4);
+	sda.pick("da");
+	sdb.pick("db");
+//options中只含有"onconfirm"属性
+	var options_5 = {
+		"onconfirm" : function(wd, idx, value, html){
+			alert("confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html);
+        }};
+	var sea = baidu.suggestion.create("ea", options_5);
+	var seb = baidu.suggestion.create(baidu.G("eb"), options_5);
+	sea.pick("ea");
+	seb.pick("eb");
+//options中只含有"view"属性
+	var options_6 = {
+		"view" : function(){
+			return [100, 100, 80];
+        }};
+	var sfa = baidu.suggestion.create("fa", options_6);
+	var sfb = baidu.suggestion.create(baidu.G("fb"), options_6);
+	sfa.pick("fa");
+	sfb.pick("fb");
+//options中只含有"prepend_html"属性
+	var options_7 = {
+		"prepend_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sga = baidu.suggestion.create("ga", options_7);
+	var sgb = baidu.suggestion.create(baidu.G("gb"), options_7);
+	sga.pick("ga");
+	sgb.pick("gb");
+//options中只含有"append_html"属性
+	var options_8 = {
+		"append_html" : "<b>suggest here:</b>&gt;aa"
+	};
+	var sha = baidu.suggestion.create("ha", options_8);
+	var shb = baidu.suggestion.create(baidu.G("hb"), options_8);
+	sha.pick("ha");
+	shb.pick("hb");
+//options中除了getData属性外包含其他所有属性
+	var options_9 = {
+        "onpick" : function(wd, idx, value, html){
+				alert("pick"+ "-" + wd + "-" + idx +"-" + value + "-" + html);
+	     },
+        "onconfirm" : function(wd, idx, value, html){
+				alert("confirm"+ "-" + wd + "-" + idx +"-" + value + "-" + html);
+	     },
+        "onhighlight" : function(wd, idx, value, html){
+				if (parseInt(wd) == idx)
+	        		alert("highlight"+ "-" + wd + "-" + idx +"-" + value + "-" + html);
+	     },
+        "onhide" : function(){
+			hide_str = "all value except getData";
+        },
+        "view" : function(){
+        	return [400, 80, 400];
+        },
+        "append_html" : "<b>suggest here:</b>&gt;aa",
+        "prepend_html" : "<b>suggest here:</b>&gt;aa"
+    };
+	var sia = baidu.suggestion.create("ia", options_9);
+    var sib = baidu.suggestion.create(baidu.G("ib"), options_9);
+    sia.pick("ia");
+	sib.pick("ib");*/
+//options中的getData属性返回空字符串
+	var rja = ["", "   ", {"input":"   ", "selection":"   "}, "	", {"input":"		", "selection":"		"}
+				, {"input":"", "selection":""}];
+	var options_10 = {
+        "getData" : function(word){
+			sja.giveData("sja", rja);
+		}
+    };
+	var sja = baidu.suggestion.create("ja", options_10);
+	options_10.getData = function(word){	baidu.sio.callByBrowser("./php/suggestion.php", sjb_call);	};
+    var sjb = baidu.suggestion.create(baidu.G("jb"), options_10);
+    sja.pick("ja");
+	sjb.pick("jb");
+</script>
+
+
+	</body>
+</html>

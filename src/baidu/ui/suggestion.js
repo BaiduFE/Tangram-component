@@ -11,6 +11,6 @@
 ///import baidu.ui;
 
 /**
- * 定义名字空间
+ * @namespace suggestion，提供输入推荐功能。
  */
 baidu.suggestion = baidu.ui.suggestion = baidu.ui.suggestion || {} ;

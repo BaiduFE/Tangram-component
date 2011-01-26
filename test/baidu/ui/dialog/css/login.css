@@ -1,0 +1,132 @@
+.passport-content{
+	width:447px;
+	height:327px;
+}
+.passport-nav {
+	border-bottom: 1px solid #c7e8bc;
+	margin: 5px 0;
+	padding: 0 0 0 10px;
+}
+
+.passport-nav-tab li {
+	float: left;
+	width: 73px;
+	height: 26px;
+	overflow: hidden;
+	margin-right: 6px;
+	font: bold 14px/ 26px arial;
+	text-align: center;
+	background: url(http://img.baidu.com/img/iknow/bg_popbtn.gif) no-repeat
+		-78px -185px;
+	position: relative;
+	top: 1px;
+}
+
+.passport-nav-tab li.act a {
+	text-decoration: none;
+}
+
+.passport-nav-tab li a:link,UNUSEDli a:visited {
+	width: 100%;
+	padding-top: 2px;
+	color: #1d7a00;
+	display: block;
+}
+
+.passport-nav-tab li.act {
+	outline: none;
+	background-position: 0 -185px;
+}
+
+
+.passport-login-panel {
+	margin: 0 auto;
+	text-align: left;
+	width: 320px;
+}
+
+
+.clear {
+	height: 0;
+	overflow: hidden;
+	font-size: 0;
+	line-height: 0;
+	margin: 0;
+	padding: 0;
+	clear: both;
+}
+
+
+
+.reg {
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	padding: 10px 0;
+}
+
+.passport-reg-container p {
+	margin-bottom: 6px;
+	margin-top: 0;
+	clear: both;
+}
+
+.passport-reg-container {
+	width: 100%;
+	zoom: 1;
+}
+
+.passport-reg-container .pass-server-error {
+	margin: 0;
+}
+
+
+.pass-form{padding-left: 12px;}
+.pass-form legend{display:none;}
+.pass-form .pass-form-wapper-login,.pass-form .pass-form-wapper-reg{ 
+	font-size:14px; font-weight: bold;padding-top:18px;
+}
+.pass-form .pass-form-wapper-login label, .pass-form .pass-form-wapper-reg label{width:75px;display:inline-block;}
+.pass-form .pass-mem_pass label{width:120px; display:inline-block;}
+.pass-form .pass-form-wapper-login p,.pass-form .pass-form-wapper-reg p{margin: 8px 0px 0px 8px;}
+.pass-form .pass-submit{margin:8px 0 8px 7px;}
+.pass-safe-trigger{margin-left : 50px; font-size:14px;}
+#PassFormlogin {
+	padding-left: 12px;
+}
+
+#PassFormlogin button {
+	margin: 0 12px 0 54px;
+	padding: 0 10px;
+}
+
+#PassFormlogin .pass-server-error {
+	height: 18px;
+	margin-top: -18px;
+	float: left;
+	width: 100%;
+}
+
+.pass-form-wapper-login .pass-desc {
+	display: none;
+}
+
+#PassFormlogin .pass-verifycode {
+	margin-bottom: 0;
+}
+
+#PassFormlogin .pass-username input {
+	width: 136px;
+}
+
+#PassFormlogin .pass-password input {
+	width: 136px;
+}
+
+#PassFormlogin .pass-verifycode span {
+	display: none;
+}
+
+.pass-form p {
+	width: 100%;
+}

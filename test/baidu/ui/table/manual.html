@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>table manual test - by berg</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script type="text/javascript" src="http://img.baidu.com/js/tangram-1.3.1.js"></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.table.*' ></script>
+        <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+        <style>
+            #console{
+                z-index:1000;
+                position:absolute;
+                right:2em;
+                height:400px;
+            }
+            #table{
+                /*overflow-y: auto;*/
+            }
+            .tangram-table{
+                border:1px #333 solid;
+                background:#aaa;
+                width:100%;
+            }
+            .tangram-table-title {
+            	background:blue;
+            }
+            .tangram-table-title-col{
+            	color:white;
+            	font-weight:bold;
+            	border:black solid 2px;
+            }
+            
+            .tangram-table-row{
+                background-color:#fff;
+            }
+            .tangram-table-row-hover{
+                background-color:#fcd;
+            }
+            .tangram-table-row-press{
+                background-color:green;
+            }
+            .tangram-table-row-disabled{
+                background-color:#eee;
+            }
+            .tangram-table-row-selected{
+                background-color:silver;
+            }
+            .tangram-table-row-col{
+                border:1px #333 solid;
+                border-width:1px 1px 0 0;
+            }
+        </style>
+    </head>
+
+    
+    <body>
+
+        <div id="console"></div>
+        <br />
+        <div id="table"></div>
+        <input type="button" onclick="t.addRow({id : '', content : [1,2,'我是新来的','']}, 0)" value="add row" />
+		
+		
+		<h5>增加title的例子</h5>
+		<div id="table_0"></div>
+		<h5>增加columns的例子(设置第一列宽度为200，第三列宽度为20%)</h5>
+		<div id="table_1"></div>
+		<h5>增加翻页的例子</h5>
+		<div id="table_2"></div>
+		<h5>增加选择列的例子</h5>
+		<div id="table_3"></div>
+		
+		
+		
+		
+		
+        <script language="javascript">
+            var data = [];
+            for(var i = 0; i < 20; i ++){
+                data[i] = {id : "", content : [
+                    "<a onclick='baidu.ui.get(this).remove(); return false;' href='#'>删除</a>", 
+                    "<input type='checkbox' onclick='baidu.ui.get(this).toggle("+i+")' />", 
+                    "内容,我是内容,内容,我是内容,电容,我是内容" + i,
+                    "固定宽度" + i
+                ]};
+            }
+            //var start = new Date();
+            var t = new baidu.ui.table.Table({
+                data:data,
+                oncellclick : function(evt){}
+            });
+            t.render(baidu.dom.g("table"));
+            t.getRow(0).disable();
+            //var end = new Date();
+            
+            
+            //增加title的例子
+            var data0 = [];
+            for(var i=0;i<5;i++){
+            	data0.push({content:["TEXT-"+i, "TEXT-"+(i+10), "TEXT-"+(i+20)]});
+            }
+            baidu.ui.table.create({
+            	target : baidu.g("table_0"),
+            	data : data0,
+            	title : ["COLUMN-0", "COLUMN-1", "COLUMN-2"]
+            });
+            //增加columns的例子
+            var data1 = [];
+            for(var i=0;i<5;i++){
+            	data1.push({content:["TEXT-"+i, "TEXT-"+(i+10), "TEXT-"+(i+20)]});
+            }
+            baidu.ui.table.create({
+            	target : baidu.g("table_1"),
+            	data : data0,
+            	title : ["COLUMN-0", "COLUMN-1", "COLUMN-2"],
+            	columns : [{col:0, width:200}, {col:2, width:"20%"}]
+            });
+            //增加翻页的例子
+            var data2 = [];
+            for(var i=0;i<20;i++){
+            	data2.push({content:["TEXT-"+i, "TEXT-"+(i+10), "TEXT-"+(i+20)]});
+            }
+            var table = baidu.ui.table.create({
+            	target : baidu.g("table_2"),
+            	data : data2,
+            	title : ["COLUMN-0", "COLUMN-1", "COLUMN-2"],
+            	columns : [{col:0, width:200}, {col:2, width:"20%"}],
+            	pageSize : 3
+            });
+            
+            function updateInfo(){
+            	var info = baidu.g("info");
+            	info.innerHTML = "共"+table.getTotalCount()+"条，共"+table.getTotalPage()+"页，当前在第"+table.getCurrentPage()+"页";
+            }
+            
+            
+            baidu.dom.insertHTML(table.getMain(), "afterEnd",
+            "<div align='right'><span id='info'></span><input type='button' value='prev' onclick='table.prevPage(); updateInfo();'/><input type='button' value='next' onclick='table.nextPage(); updateInfo();'/><input id='txtPage' type='text' size='2' maxLength='2'/><input type='button' value='go' onclick='table.gotoPage(baidu.g(\"txtPage\").value); updateInfo();'/></div>");
+        	updateInfo();
+        	
+        	//增加选择列的例子
+        	var data3 = [];
+            for(var i=0;i<5;i++){
+            	data3.push({content:["TEXT-"+i, "TEXT-"+(i+10), "TEXT-"+(i+20)]});
+            }
+            baidu.ui.table.create({
+            	target : baidu.g("table_3"),
+            	data : data3,
+            	title : ["COLUMN-0", "COLUMN-1", "COLUMN-2"],
+            	withSelect : true,
+            	columnIndex : 1
+            });
+        </script>
+
+    </body>
+</html>

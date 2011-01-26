@@ -10,6 +10,7 @@
 
 ///import baidu.ui;
 ///import baidu.ui.Base;
+///import baidu.ui.create;
 ///import baidu.object.extend;
 
 /**
@@ -37,37 +38,42 @@ baidu.ui.createUI = function(constructor, options) {
             //扩展当前options中的项到this上
             baidu.object.extend(me, opt);
 
-
             me.classPrefix = me.classPrefix || "tangram-" + me.uiType.toLowerCase();
 
             //初始化行为
             //行为就是在控件实例上附加一些属性和方法
             for(i in baidu.ui.behavior){
                 //添加行为到控件上
-                if(typeof me[i] != 'undefined'){
+                if(typeof me[i] != 'undefined' && me[i]){
                     baidu.object.extend(me, baidu.ui.behavior[i]);
-                    baidu.ui.behavior[i].call(me);
+                    if(baidu.lang.isFunction(me[i])){
+                        me.addEventListener("onload", function(){
+                            baidu.ui.behavior[i].call(me[i].apply(me));
+                        });
+                    }else{
+                        baidu.ui.behavior[i].call(me);
+                    }
                 }
             }
 
             //执行控件自己的构造器
             constructor.apply(me, arguments);
 
-            //执行所有addons中的方法
-            for (i=0, n=ui.addons.length; i<n; i++) {
-                ui.addons[i](me);
+            //执行插件的构造器
+            for (i=0, n=ui._addons.length; i<n; i++) {
+                ui._addons[i](me);
             }
         },
         C = function(){};
 
     C.prototype = superClass.prototype;
 
-    // 继承父类的原型（prototype)链
-    var fp = ui.prototype = new C();
+    //继承父类的原型链
+    var proto = ui.prototype = new C();
 
     //继承Base中的方法到prototype中
     for (i in baidu.ui.Base) {
-        fp[i] = baidu.ui.Base[i];
+        proto[i] = baidu.ui.Base[i];
     }
 
     //给类扩展出一个静态方法，以代替 baidu.object.extend()
@@ -88,10 +94,10 @@ baidu.ui.createUI = function(constructor, options) {
     };
 
     //插件支持
-    ui.addons = [];
+    ui._addons = [];
     ui.register = function(f){
         if (typeof f == "function")
-            ui.addons.push(f);
+            ui._addons.push(f);
     };
     
     //静态配置支持

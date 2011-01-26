@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/smartCover.js
- * author: berg
- * version: 1.0.0
- * date: 2010-05-18
  */
 
 /*
@@ -29,13 +24,15 @@
 ///import baidu.dom.setStyles;
 ///import baidu.dom._styleFilter.px;
 ///import baidu.dom.getPosition;
-
+///import baidu.each;
 
 (function(){
     var smartCover = {
         show    : show,
         hide    : hide,
         update  : update,
+        shownIndex : 0,
+        hideElement:{},
         iframes : [],
         options : {
             hideSelect : false,
@@ -46,6 +43,13 @@
     baidu.ui.smartCover = baidu.ui.smartCover || smartCover;
     var me = baidu.ui.smartCover;
 
+    /**
+     * 获取当前需要被隐藏的元素
+     * @prviate
+     * @param {Array} 获取目标的nodeType
+     * @param {HTMLElement} 获取目标的容器
+     * @return {Array} 获取的目标数组
+     */
     function getElementsToHide(elementTags,container){
         var elements = [],
             i = elementTags.length-1,
@@ -57,7 +61,11 @@
             eachElement = con.getElementsByTagName(elementTags[i]);
 
             for(j = eachElement.length - 1; j>= 0; j--){
-                if(eachElement[j])
+                /**
+                 * 每次查找值查找当时还处于显示状态的元素
+                 * 实现分层的效果
+                 */
+                if(eachElement[j] && eachElement[j].style.visibility != "hidden")
                     elements.push([eachElement[j],null]);
             }
         }
@@ -65,7 +73,19 @@
     }
 
 
+    /**
+     * 显示smartCover
+     * @public
+     * @param {UI} baidu.ui对象
+     * @param {Object} options samrtCover配置参数
+     * @return void
+     * */
     function show(ui, options){
+        /*
+         * shownIndex递增
+         * 层级的唯一编号
+         */
+        me.shownIndex += 1;
         var elementTags = [],
             op = {
                 container : document
@@ -76,16 +96,14 @@
         op['hideFlash'] && elementTags.push("object");
         op['hideSelect'] && elementTags.push("select");
 
-        me.elementsToHide = getElementsToHide(elementTags,op.container);
-        var len = me.elementsToHide.length,
-            element,
-            i,
-            main = ui.getMain(),
+        //存入对应的层级
+        me.hideElement[me.shownIndex] = getElementsToHide(elementTags,op.container);
+        var main = ui.getMain(),
             pos = baidu.dom.getPosition(main),
             id = ui.getId(),
             shadeIframe = smartCover.iframes[id];
 
-        if(baidu.ie && !op['hideSelect']){
+        if(baidu.ie && op['hideSelect']){
             //用iframe遮select
             if(!shadeIframe){
                 shadeIframe = smartCover.iframes[id] = document.createElement('IFRAME');
@@ -110,19 +128,19 @@
                 filter : 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)'
             });
         }
-
-        if(!me.elementsToHide){
-            return ;
-        }
-        for(i = 0; i < len; i++) {
-            element = me.elementsToHide[i];
-            //不隐藏ui控件中的元素
+        baidu.each(me.hideElement[me.shownIndex],function(element){
             if(baidu.ui.get(element[0]) != ui){
                 hideElement(element);
             }
-        }
+        });
     }
 
+    /**
+     * 更新smartCover
+     * @public
+     * @param {UI} ui，baidu.ui对象
+     * @return void
+     * */
     function update(ui){
         if(baidu.ie){
             var main = ui.getMain(),
@@ -137,37 +155,49 @@
         }
     }
 
+    /**
+     * 隐藏smartCover
+     * @public 
+     * @param {UI} ui，baidu.ui对象
+     * @return void
+     */
     function hide(ui){
-        me.elementsToHide = me.elementsToHide || getElementsToHide(['object', 'select']);
+        if(me.shownIndex == 0)
+            return;
 
-        var len = me.elementsToHide.length,
-            element,
-            i,
-            shadeIframe = smartCover.iframes[ui.getId()];
+        var shadeIframe = smartCover.iframes[ui.getId()];
 
         if(baidu.ie && shadeIframe){
             shadeIframe.style.display = 'none';
         }
-        if(!me.elementsToHide){
-            return ;
-        }
-        for (i = 0; i < len; i++) {
-            element = me.elementsToHide[i];
+        baidu.each(me.hideElement[me.shownIndex],function(element){
             if(baidu.ui.get(element[0]) != ui)
-                restoreElement(element);
-
-            me.elementsToHide[i][0] = null;
-        }
-        delete(me.elementsToHide);
+            restoreElement(element);
+        });
+        //删除层级，shownIndex减一
+        delete(me.hideElement[me.shownIndex]);
+        me.shownIndex -= 1;
     }
 
+    /**
+     * 隐藏被选出的需要遮盖的元素
+     * @prviate
+     * @param {HTMLElement} element
+     * @return void
+     */
     function hideElement(element){
         if(element[1] === null){
             element[1] = element[0].style.visibility;
             element[0].style.visibility = "hidden";
         }
     }
-
+    
+    /**
+     * 还原被选出的需要遮盖的元素
+     * @prviate
+     * @param {HTMLElement} element
+     * @return void
+     */
     function restoreElement(element){
         if(element[1] !== null){
             element[0].style.visibility = element[1];

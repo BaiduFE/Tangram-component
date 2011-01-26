@@ -28,18 +28,18 @@
 ///import baidu.page.getScrollTop;
 ///import baidu.page.getScrollLeft;
 
+
 /**
- *
- *  智能定位，根据用户参数将元素定位到指定位置
- *  TODO: 1. 如果物件定位以后，滚动条出现或者消失，定位可能不准确
- *        2. 用surround做触边折返场景时, 折返的大小通常是原始高宽+另一元素的高宽
- * @param {Object}  [options]
- * @param {Boolean} [options.once = false] 是否默认 window resize
- * 
- * @usage:
- *
- *      baidu.ui.smartPosition(element, options);
- *
+ * 智能定位，根据用户参数将元素定位到指定位置.TODO: 1. 如果物件定位以后，滚动条出现或者消失，定位可能不准确. 2. 用surround做触边折返场景时, 折返的大小通常是原始高宽+另一元素的高宽
+ * @class
+ * @param     {Object}        [options]          选项
+ * @config    {String}        position           left/right和top/bottom的组合，确定定位方式。
+ * @config    {Boolean}       once               只定位一次
+ * @config    {Array|Object}  coordinate         定位的坐标
+ * @config    {Function}      onbeforeupdate     update之前触发此事件
+ * @config    {Function}      onupdate           update之后触发此事件
+ * @config    {string}        insideScreen       fix/surround/false 三种不同的定位方式。<br/>fix:当弹出层超出页面可视区域时，弹出层与页面可视区域边缘相邻的边将会与可视区域边缘重合，弹出层以改边为基准向可视区域内部绘制。<br/>surround:当弹出层超出页面可视区域时，弹出层与coordinate坐标点基准向可视区域内部绘制。<br/>false:当弹出层超出页面可视区域时，弹出层不做任何调整。<br/>
+ * @usage   baidu.ui.smartPosition(options);
  */
 
 baidu.ui.smartPosition.SmartPosition = baidu.ui.createUI(function(options){
@@ -57,7 +57,11 @@ baidu.ui.smartPosition.SmartPosition = baidu.ui.createUI(function(options){
             me.update();
         });
     }
-}).extend({
+}).extend(
+    /**
+     *  @lends baidu.ui.smartPosition.SmartPosition.prototype
+     */
+{
 
 
     //是否只设置一次（为true则不绑定window.resize）
@@ -71,16 +75,26 @@ baidu.ui.smartPosition.SmartPosition = baidu.ui.createUI(function(options){
     //onbeforeupdate : new Function,
     //onupdate : new Function,
 
-    /*
-     * update smartPosition 定位的元素
+    /**
+     * 修改smartPosition 定位的元素
+     * @public
+     * @param       {Object}          options            选项
+     * @config      {String}          position           left/right和top/bottom的组合，确定定位方式。
+     * @config      {Boolean}         once               只定位一次
+     * @config      {Array|Object}    coordinate         定位的坐标
+     * @config      {Function}        onbeforeupdate     update之前触发此事件
+     * @config      {Function}        onupdate           update之后触发此事件
+     * @config      {string}          insideScreen       fix/surround/false 三种不同的定位方式。<br/>fix:当弹出层超出页面可视区域时，弹出层与页面可视区域边缘相邻的边将会与可视区域边缘重合，弹出层以改边为基准向可视区域内部绘制。<br/>surround:当弹出层超出页面可视区域时，弹出层与coordinate坐标点基准向可视区域内部绘制。<br/>false:当弹出层超出页面可视区域时，弹出层不做任何调整。<br/>
+     * @param       {Boolean}         noFireEvent        是否不触发修改事件
      */
-
     update      : function(options, noFireEvent){
         var me = this,
             elementStyle = {},
             source = me.source,
             cH = baidu.page.getViewHeight(),
             cW = baidu.page.getViewWidth(),
+            scrollLeft = baidu.page.getScrollLeft(),
+            scrollTop  = baidu.page.getScrollTop(),
             sourceWidth = source.offsetWidth,
             sourceHeight = source.offsetHeight,
             offsetParent = source.offsetParent,
@@ -102,15 +116,10 @@ baidu.ui.smartPosition.SmartPosition = baidu.ui.createUI(function(options){
         elementStyle.top = me.coordinate.y + me.offset.y - parentPos.top - (me.position.indexOf("top") >= 0 ? sourceHeight : 0);
         switch (me.insideScreen){
             case "surround" :
-                elementStyle.left = me.coordinate['x'] - parentPos.left - (
-                    me.position.indexOf("left") >= 0 ? (me.coordinate["x"] - baidu.page.getScrollLeft() > sourceWidth ? sourceWidth : 0) :
-                                                       (cW - me.coordinate["x"] + baidu.page.getScrollLeft() > sourceWidth ? 0 : sourceWidth)
-                );
-                
-                elementStyle.top = me.coordinate['y'] - parentPos.top - (
-                    me.position.indexOf("top") >= 0 ? (me.coordinate["y"] - baidu.page.getScrollTop() > sourceHeight ? sourceHeight : 0) : 
-                                                      (cH - me.coordinate["y"] + baidu.page.getScrollTop() > sourceHeight ? 0 : sourceHeight)
-                );
+            	elementStyle.left += elementStyle.left < scrollLeft ? sourceWidth  : 
+            							((elementStyle.left + sourceWidth ) > (scrollLeft + cW) ? -sourceWidth : 0);
+            	elementStyle.top  += elementStyle.top  < scrollTop  ? sourceHeight :
+            							((elementStyle.top  + sourceHeight) > (scrollTop  + cH) ? -sourceHeight : 0);
                 break;
             case "fix" :
                 elementStyle.left = Math.max(

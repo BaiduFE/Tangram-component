@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/dialog/Dialog$closeButton.js
- * author: berg,lixiaopeng
- * version: 1.0.0
- * date: 2010-05-18
  */
 
 
@@ -17,7 +12,6 @@
 
 /**
  * addon
- *
  * 关闭按钮
  */
 
@@ -43,7 +37,7 @@ baidu.ui.dialog.Dialog.register(function(me){
         });
         me.closeButtonInstance = buttonInstance;
 
-        me.addEventListener("ondispose",function(e){
+        me.addEventListener("ondispose",function(){
             buttonInstance.dispose();
         });
     });

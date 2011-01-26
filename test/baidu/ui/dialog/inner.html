@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w2.org/TR/html4/loose.dtd">
+<!--STATUS OK-->
+<html>
+    <head>
+        <meta http-equiv=content-type content="text/html; charset=utf-8">
+        <title>百度知道-用户登录      </title>
+        <style type="text/css">
+body{margin:0 auto;background-color:#fff;font-size:14px;text-align:center;}ul,li,h5,h6,form,p{margin:0;padding:0;}h5{font-size:14px;margin:8px 0;}h6{font-size:12px;}ul,li{list-style:none;zoom:1;}a{color:#00c;}#nav{border-bottom:1px solid #c7e8bc;margin:5px 0;padding:0 0 0 10px;}#navTab li{float:left;width:73px;height:26px;overflow:hidden;margin-right:6px;font:bold 14px/26px arial;text-align:center;background:url(http://img.baidu.com/img/iknow/bg_popbtn.gif) no-repeat -78px -185px;position:relative;top:1px;}#navTab li.act a{text-decoration:none;}#navTab li a:link,li a:visited{width:100%;padding-top:2px;color:#1d7a00;display:block;}#navTab li.act{outline:none;background-position:0 -185px;}#main{padding:0 10px;margin-bottom:12px;background:#fff;margin:0 auto;text-align:center;}#loginPanel{margin:0 auto;text-align:left;width:320px;}#regIframe{border:0;height:500px;width:530px;overflow:hidden;}#errorInfo,#memInfo{font-size:12px;color:red;display:none;}.clear{height:0;overflow:hidden;font-size:0;line-height:0;margin:0;padding:0;clear:both;}.f14{font-size:14px;}.f12{font-size:12px;}.item{height:22px;margin-top:5px;}.item label{width:60px;float:left;display:block;}.item input{width:140px;}.buttons{text-align:left;padding-left:60px;}.buttons input{height:24px;padding:2px;width:60px;}.regButton{padding:2px;height:25px;width:140px;margin:10px 80px;}.regSuccButton{padding:2px;height:25px;}#loginIframe{width:320px;height:224px;overflow:hidden;}.reg{font-size:14px;font-weight:bold;text-align:center;padding:10px 0;}
+</style>
+        <script type="text/javascript">
+var _pop=parent.pop;function G(A){if(typeof (A)=="string"){return document.getElementById(A)}return A}function show(B){var A=G(B);if(A){A.style.display=""}}function hide(B){var A=G(B);if(A){A.style.display="none"}}function PSP_ik(A){if(A==0){if(parent.login){_pop.hide();parent.login.onLoginSuccess()}}else{loginFalse()}}function loginFalse(){loginIframeInit();changeTab(0,"loginPanel")}function userReg(){changeTab(1,"regPanel")}function regSuccess(){var localRequest=parent.baidu.ajax.get;localRequest("/q?ct=28&lm=1&t="+(new Date()).getTime(),function(req){if(!!eval("("+req.responseText+")")){PSP_ik(0)}else{changeTab(0,"loginPanel");loginIframeInit()}},function(){PSP_ik(0)})}var loginIframeInited=false;function loginIframeInit(){G("loginIframe").src="https://passport.baidu.com/?login&psp_tt=2&tpl=ik&fu="+escape("http://zhidao.baidu.com/loginok.html"+location.search)+"&u="+escape("http://zhidao.baidu.com/")}function changeTab(A,F){var E=G("navTab").getElementsByTagName("li");var C=[["loginPanel",400,400],["regPanel",550,500]];for(var D=0,B=E.length;D<B;D++){if(D==A){E[D].className="act";show(C[D][0])}else{E[D].className="";hide(C[D][0])}}if(A==1){G("regIframe").src="https://passport.baidu.com/?reg&regtype=1&regfrom=1&tpl=ik&u="+escape("http://zhidao.baidu.com/regok.html"+location.search)}if(A==0){G("loginIframe").focus()}popResize(C[A][1],C[A][2])}function popResize(A,B){try{_pop.resize(null,A,B)}catch(C){}};
+</script>
+</head>
+
+<body id="loginPage">
+    <div id="main">
+        <div id="normalBody">
+        <div id="nav">
+            <ul id="navTab">
+                <li class="act" ><a href="#login" onclick="changeTab(0,'loginPanel');loginIframeInit();return false;" >登录</a></li>
+                <li><a href="#reg" onclick="changeTab(1,'regPanel');return false;" >注册</a></li>
+            </ul>
+            <p class="clear"></p>
+        </div>
+        <div id="content">
+            <div id="loginPanel">
+            <iframe id="loginIframe" scrolling="no" src="about:blank" frameborder="0"></iframe>
+            <div id="regDiv">
+                    <hr size="0" style="border-top:1px solid #AAAAAA">
+                    <div class="reg">没有百度账号？<a href="javascript:void(0)" onclick="userReg()">立即注册百度账号</a></div>
+
+                </div>
+            </div>
+            <div id="regPanel" style="display:none">
+                <iframe id="regIframe" scrolling="no" src="about:blank" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+        <div id="regSuccess">
+
+        </div>
+    </div>
+    <form name="login" action="https://passport.baidu.com/?login" target="_blank">
+    <input name="u" type="hidden" />
+    <input name="tpl" value="ik" type="hidden" />
+</form>
+<form name="reg" action="https://passport.baidu.com/?reg" target="_blank">
+    <input name="reg" type="hidden" />
+    <input name="u" type="hidden" />
+    <input name="tpl" value="ik" type="hidden" />
+
+</form>
+<script type="text/javascript">
+if(location.search.match(/\?userreg/)){changeTab(1,"regPanel")}else{changeTab(0,"loginPanel");loginIframeInit()};
+</script>
+</body>
+</html>

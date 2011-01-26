@@ -25,11 +25,20 @@
 ///import baidu.ui.createUI;
 ///import baidu.ui.get;
 
-/**
- * Suggestion基类，建立一个Suggestion实例
- * 
- * @param  {Object}             options optional        选项参数
- * @config {DOMElement}                 target          input框
+ /**
+ * suggestion，提供输入推荐功能。
+ * @class
+ * @param      {Object}                 [options]          选项
+ * @config     {Function}               onshow             当显示时触发。
+ * @config     {Function}               onhide             当隐藏时触发，input或者整个window失去焦点，或者confirm以后会自动隐藏。
+ * @config     {Function}               onconfirm          当确认条目时触发，回车后，或者在条目上按鼠标会触发确认操作。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。。
+ * @config     {Function}               onbeforepick       使用方向键选中某一行，鼠标点击前触发。
+ * @config     {Function}               onpick             使用方向键选中某一行，鼠标点击时触发。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。
+ * @config     {Function}               onhighlight        当高亮时触发，使用方向键移过某一行，使用鼠标滑过某一行时会触发高亮。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。
+ * @config     {Function}               view               重新定位时，会调用这个方法来获取新的位置，传入的参数中会包括top、 left、width三个值。
+ * @config     {Function}               getData            在需要获取数据的时候会调用此函数来获取数据，传入的参数word是用户在input中输入的数据。
+ * @config     {String}                 prependHTML        写在下拉框列表前面的html
+ * @config     {String}                 appendHTML         写在下拉框列表后面的html
  */
 
 baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
@@ -63,7 +72,9 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * 计算view的函数
      */
     //view            : new Function(),
-   
+    /**
+     * @private
+     */
     getData         : function(){return []},
     prependHTML     : "",
     appendHTML      : "",
@@ -92,6 +103,8 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
 
     /**
      * 将suggestion渲染到dom树中
+     * @public
+     * @param     {String|HTMLElement}   target     将渲染到的元素或元素id
      */
     render : function(target){
         var suggestion = this,
@@ -123,9 +136,10 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
         return main && main.style.display != 'none';
     },
 
-    /*
+    /**
      * 把某个词放到input框中
      * @public
+     * @param     {String}    index    条目索引
      */
     pick : function(index){
         var suggestion = this,
@@ -142,12 +156,12 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
         }
     },
 
-    /*
+    /**
      * 绘制suggestion
      * @public
-     * @param {string} word 触发sug的字符串
-     * @param {object} data sug数据
-     * @param {boolean} showEmpty optional 如果sug数据为空是否依然显示 默认为false
+     * @param {String}  word               触发sug的字符串
+     * @param {Object}  data               suggestion数据
+     * @param {Boolean} showEmpty optional 如果sug数据为空是否依然显示 默认为false
      *
      */
     show : function(word, data, showEmpty){
@@ -175,9 +189,10 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
         }
     },
 
-    /*
+    /**
      * 高亮某个条目
      * @public
+     * @param    {String}   index    条目索引
      */
     highlight : function(index){
         var suggestion = this;
@@ -201,11 +216,11 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
         suggestion.dispatchEvent("onhide");
     },
 
-    /*
+    /**
      * confirm指定的条目
+     * @public
      * @param {number|string} index or item
      * @param {string} source 事件来源
-     * @public
      */
     confirm : function(index, source){
         var suggestion = this;
@@ -267,9 +282,10 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
 		}
 	},
 
-    /*
+    /**
      * 获得input框元素
      * @public
+     * @return {HTMLElement}   input    输入框元素
      */
     getTarget : function(){
         return baidu.g(this.targetId);
@@ -376,9 +392,10 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
         return function(e){
         	// todo : baidu.event.getTarget();
             e = e || window.event;
-            var element = e.target || e.srcElement;
+            var element = e.target || e.srcElement,
+                ui = baidu.ui.get(element);
             //如果在target上面或者suggestion内部
-            if(element == suggestion.getTarget() || baidu.ui.get(element)){
+            if(element == suggestion.getTarget() || (ui && ui.uiType == suggestion.uiType)){
                 return;
             }
             suggestion.hide();
@@ -410,4 +427,3 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
         baidu.lang.Class.prototype.dispose.call(this);
     }
 });
-

@@ -15,9 +15,10 @@
 ///import baidu.dom.getPosition;
 ///import baidu.dom.getStyle;
 ///import baidu.dom.setStyle;
+///import baidu.dom.setOuterWidth;
 ///import baidu.dom._styleFilter.px;
 
-///import baidu.ui.smartPosition.set;
+///import baidu.ui.behavior.posable;
 
 ///import baidu.event.on;
 ///import baidu.event.un;
@@ -26,6 +27,7 @@
  * 为Suggestion提供位置校准功能
  */
 baidu.extend(baidu.ui.suggestion.Suggestion.prototype, {
+    posable : true,
     fixWidth : true,
     getWindowResizeHandler : function(){
         var suggestion = this;
@@ -39,13 +41,13 @@ baidu.extend(baidu.ui.suggestion.Suggestion.prototype, {
      * @private
      */
     adjustPosition : function(onlyAdjustShown){
-        var suggestion = this,
-            target = suggestion.getTarget(),
+        var me = this,
+            target = me.getTarget(),
             targetPosition,
-            main = suggestion.getMain(),
+            main = me.getMain(),
             pos;
 
-        if(!suggestion.isShowing() && onlyAdjustShown){
+        if(!me.isShowing() && onlyAdjustShown){
             return ;
         }
         targetPosition = baidu.dom.getPosition(target),
@@ -55,15 +57,10 @@ baidu.extend(baidu.ui.suggestion.Suggestion.prototype, {
                 width   : target.offsetWidth
             };
         //交给用户的view函数计算
-        pos =  typeof suggestion.view == "function" ? suggestion.view(pos) : pos;
+        pos =  typeof me.view == "function" ? me.view(pos) : pos;
 
-        baidu.ui.smartPosition.set(main, [pos.left, pos.top], {once:true});
-        baidu.ui.smartPosition.setBorderBoxStyles(
-            main, 
-            {
-                width : pos.width
-            }
-        );
+        me.setPosition([pos.left, pos.top], null, {once:true});
+        baidu.dom.setOuterWidth(main, pos.width);
     }
 });
 baidu.ui.suggestion.Suggestion.register(function(suggestion){
@@ -75,8 +72,9 @@ baidu.ui.suggestion.Suggestion.register(function(suggestion){
         //监听搜索框与suggestion弹出层的宽度是否一致。
         if(suggestion.fixWidth){
             suggestion.fixWidthTimer = setInterval(function (){
-                var main = suggestion.getMain();
-                if(main.offsetWidth !=0 && suggestion.getTarget().offsetWidth != main.offsetWidth){
+                var main = suggestion.getMain(),
+                    target = suggestion.getTarget();
+                if(main.offsetWidth !=0 && target && target.offsetWidth != main.offsetWidth){
                     suggestion.adjustPosition();
                     main.style.display = 'block';
                 }

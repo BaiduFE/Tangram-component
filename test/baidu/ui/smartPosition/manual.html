@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>smartPosition manual test - by berg</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script src='../../../../src/loader.js' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.smartPosition.*' ></script>
+        <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+
+        <style>
+            .follower{
+                border:0 #333 solid;
+                border-width:1px 2px 3px 4px;
+                margin:2px 4px 6px 8px;
+                padding:3px 6px 9px 12px;
+                background-color:#aaa;
+                position:absolute;
+                width:100px;
+            }
+        </style>
+    </head>
+
+    
+    <body>
+
+        <div id="console"></div>
+        <br />
+        <select id="select1">
+            <option>I'm a select</option>
+        </select>
+        <br /> <br /> <br /> <br /> <br /> <br />
+        <br /> <br /> <br /> <br /> <br /> <br />
+        <br /> <br /> <br /> <br /> <br /> <br />
+
+
+        <input type="text" id="input2" value="" style="border:10px #333 solid;margin:3px;" />
+
+        <!--
+           -<div style="position:relative;top:-100px;left:-200px;">
+           -->
+        <div style="" id="wrapper">
+            <div style="border:3px #333 solid;width:100px;height:200px;margin:4px;padding:3px;float:right" id="target">
+                target
+            </div>
+        </div>
+        <!--
+           -</div>
+           -->
+
+        
+
+        <br />
+        <script>
+            var pos = [
+            'topleft',
+            'top',
+            'topright',
+            'right',
+            'rightbottom',
+            'bottom',
+            'leftbottom',
+            'left'
+            ];
+
+            for(var i = 0, l=pos.length; i<l; i ++){
+                document.write('<input type="button" onclick="baidu.ui.smartPosition.element(addFollower(), \'target\', {\'position\':\''+pos[i]+'\',insideScreen:"surround"});" value="'+pos[i]+"(inside screen)"+'" />');
+            }
+            document.write("<br />");
+            for(var i = 0, l=pos.length; i<l; i ++){
+                document.write('<input type="button" onclick="baidu.ui.smartPosition.element(addFollower(), \'target\', {\'position\':\''+pos[i]+'\'});" value="'+pos[i]+'" />');
+            }
+
+            var followerCount = 0, mouseHasFollower = false;
+
+            function addFollower(){
+                var d = document.createElement("DIV");
+                var dabs = document.createElement("DIV");
+
+                dabs.style.width = "20px";
+                dabs.style.height = "20px";
+                dabs.style.position = "absolute";
+                dabs.style.left = "20px";
+                dabs.style.top = "20px";
+
+                d.className = "follower";
+                d.innerHTML = "follower :"+followerCount;
+                followerCount ++;
+                dabs.appendChild(d);
+                document.getElementById("wrapper").appendChild(dabs);
+                return d;
+            }
+
+            baidu.ui.smartPosition.set(addFollower(), [200,200], {position:"leftTop"});
+
+            /*
+            baidu.on(document, "mousemove", function(){
+                if(!mouseHasFollower){
+                    baidu.ui.smartPosition.mouse(addFollower(), {
+                        position:"leftBottom",
+                        once: false,
+                        insideScreen : true
+                    });
+                    mouseHasFollower = true;
+                }
+            });
+            */
+        </script>
+        <br />
+        <input type="button" onclick='baidu.ui.smartPosition.mouse(addFollower(), {position:"leftTop", insideScreen:"surround"})' value="create a mouse relative div(insideScreen:surround)" />
+        <br />
+        <input type="button" onclick='baidu.ui.smartPosition.mouse(addFollower(), {position:"leftTop"})' value="create a mouse relative div(insideScreen:default)" />
+        <br /> <br /> <br /> <br /> <br /> <br />
+    </body>
+</html>

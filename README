@@ -21,6 +21,6 @@ For more information about Tangram, visit:
 http://tangram.baidu.com
 
 To developers:
-If you want to commit code, please folk dev branch.
+If you want to commit code, please fork dev branch.
 you can find unit test here:
 http://localhost/path/to/tangram/test/tools/br/list.php

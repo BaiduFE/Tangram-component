@@ -1,3 +1,5 @@
 ///import baidu.ui;
-//instances用于存放实例guid及其状态
+/**
+ * @namespace 可以创建出样式美观，功能丰富的下拉菜单控件
+ */
 baidu.ui.menubar = baidu.ui.menubar || {instances : {}};

@@ -24,6 +24,7 @@ baidu.object.extend(baidu.ui.menubar.Menubar.prototype,{
 
 
 baidu.ui.menubar.Menubar.register(function(me){
+    //TODO: 这砣代码比较乱，而且这里的错误捕获不应使用try-cache
 	me.addEventListener('onopen', function(){
 		!baidu.ui.menubar.showing && 'function' == typeof me.showFx && me.showFx(baidu.g(me.getId()),me.showFxOptions);
 	});
