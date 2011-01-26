@@ -29,8 +29,8 @@
 ///import baidu.browser;
 
 ///import baidu.lang.isNumber;
-///import setBorderBoxHeight;
-///import setBorderBoxWidth;
+///import baidu.dom.setBorderBoxHeight;
+///import baidu.dom.setBorderBoxWidth;
 
 ///import baidu.ui.dialog;
 
