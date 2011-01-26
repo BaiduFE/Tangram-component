@@ -20,7 +20,7 @@
 ///import baidu.dom.setStyles;
 ///import baidu.dom.addClass;
 ///import baidu.dom.removeClass;
-///import baidu.ui.smartPosition.element;
+///import baidu.ui.behavior.posable.setPositionByElement;
 
 ///import baidu.string.format;
 
@@ -58,6 +58,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     tplContent: '<span class="#{contentClass}">#{content}</span>',
     tplArrow: '<span class="#{arrow}"></span>',
     toggle: function(){return true},
+    posable: true,
     
     /**
      * 获取Menubar组件的HTML String
@@ -218,12 +219,13 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
                 });
             }
         });
-               
+                       
         if (target) {
-            baidu.ui.smartPosition.element(me.getMain(), target, {
-                position: me.position
+            me.setPositionByElement(target, me.getMain(), {
+                position: me.position,
+                once: true
             });
-        } 
+        }
     },
     
     /**
