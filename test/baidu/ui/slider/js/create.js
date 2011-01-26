@@ -8,7 +8,7 @@ test('init',function(){
 		var dd = s.getBody()!='object'&&s.getBody()!='undefined'
 		equal(s.getBody().className,"tangram-slider","check body class");
 		ok(dd,'check body');
-		start();
+		start(); 
 	},30)
 
 });
