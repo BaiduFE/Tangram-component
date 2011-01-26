@@ -2,7 +2,7 @@
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: baidu/ui/tab/setup.js
+ * path: baidu/Tab/setup.js
  * author: berg
  * version: 1.0.0
  * date:2010/07/29 
@@ -22,7 +22,7 @@
  * @config  {Function}               items              tab中的内容<pre> [{head : "label1",body : "<p>content1</p>"},{head : "label2",body : "<p>content2</p>"},{head : "label3",body : "<p>content3</p>"}]</pre>
  */
 
-baidu.ui.tab.setup = function(element, options){
+baidu.ui.Tab.setup = function(element, options){
     var tab = new baidu.ui.tab.Tab(options),
         labelArr = baidu.dom.children(element),
         labels;

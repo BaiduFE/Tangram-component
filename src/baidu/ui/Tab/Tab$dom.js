@@ -2,7 +2,7 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
- * path: ui/tab/Tab$dom.js
+ * path: ui/Tab$dom.js
  * author: berg
  * version: 1.0.0
  * date: 2010-06-28

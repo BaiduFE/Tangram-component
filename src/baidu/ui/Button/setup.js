@@ -25,7 +25,7 @@
  * @param {DOMElement} element 要渲染成button的元素
  */
 
-baidu.ui.button.setup = function(element, options){
+baidu.ui.Button.setup = function(element, options){
     var button = new baidu.ui.button.Button(options),
         main = baidu.dom.create("DIV", {
             "style" : "display:inline"
