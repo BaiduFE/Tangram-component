@@ -1,20 +1,13 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/modal/Modal.js
- * author: berg,lixiaopeng
- * version: 1.0.0
- * date: 2010/07/23 
  */
 
 /**
- *
  * 遮罩层，遮罩层为单例
  */
 
 ///import baidu.ui.createUI;
-///import baidu.ui.modal;
 ///import baidu.ui.smartCover;
 
 ///import baidu.dom.setAttr;
@@ -35,10 +28,9 @@
 ///import baidu.object.each;
 ///import baidu.object.extend;
 
-
 //存储所有的modal参数
-baidu.ui.modal.collection = {};
-baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
+baidu.ui.Modal.collection = {};
+baidu.ui.Modal = baidu.ui.createUI(function (options){
     var me = this,container = (options && options.container) ? baidu.g(options.container) : null;
     !container && (container = document.body);
     if(!container.id){
@@ -56,8 +48,9 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
 
     /**
      * 获取modal的Container
-     * @return {HTMLDom} container
-     * */
+     * @public
+     * @return {HTMLElement} container
+     */
     getContainer : function(){
         var me = this;
         return baidu.g(me.containerId);
@@ -65,7 +58,8 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
     
     /**
      * 渲染遮罩层
-     * @return void
+     * @public
+     * @return {NULL}
      * */
     render : function(){
         var me = this,
@@ -77,7 +71,7 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
         
         //当该container中已经存在modal时
         //将所需参数付给当前的modalInstance
-        if(modalInstance = baidu.ui.modal.collection[id]){
+        if(modalInstance = baidu.ui.Modal.collection[id]){
             me.mainId = modalInstance.mainId;
             main = me.getMain();
         }else{
@@ -87,7 +81,7 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
                 container.appendChild(main);
             }
             //将参数写入
-            baidu.ui.modal.collection[id] = {
+            baidu.ui.Modal.collection[id] = {
                 mainId:me.mainId,
                 instance:[]
             };   
@@ -95,18 +89,18 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
     },
    
     /**
-     *
      * 显示遮罩层
+     * @public
      * @param  {Object} options     显示选项,任何合法的style属性
-     * @return void
-     * */
+     * @return {NULL}
+     */
     show : function(options){
         var me = this,
             container = me.getContainer(),
             main = me.getMain(),
             smartCoverOptions = {},
             containerId = me.containerId,
-            modalInstanceOptions = baidu.ui.modal.collection[containerId],
+            modalInstanceOptions = baidu.ui.Modal.collection[containerId],
             length = modalInstanceOptions.instance.length,
             lastTop;
         
@@ -137,10 +131,11 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
     },
 
     /**
-     * 内部方法
+     * 更新遮罩层，绑定window.resize & window.scroll
+     * @private
      * @param {Object} styles
-     * @return void
-     * */
+     * @return {NULL}
+     */
     _show:function(styles){
         var me = this;
 
@@ -154,12 +149,13 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
 
     /**
      * 隐藏遮罩层
-     * @return void
+     * @public
+     * @return {NULL}
      */
     hide : function(){
         var me = this,
             containerId = me.containerId,
-            modalInstanceOptions = baidu.ui.modal.collection[containerId],
+            modalInstanceOptions = baidu.ui.Modal.collection[containerId],
             main = me.getMain(),
             length = modalInstanceOptions.instance.length,
             lastTop;
@@ -193,9 +189,10 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
     },
 
     /**
-     * 内部方法
-     * @return void
-     * */
+     * 接触window.resize和window.scroll上的事件绑定
+     * @private
+     * @return {NULL}
+     */
     _hide:function(){
         var me = this;
               
@@ -205,8 +202,9 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
     
     /**
      * window.resize & window.scroll 事件调用的function
-     * @return void
-     * */
+     * @public
+     * @return {NULL}
+     */
     getWindowHandle:function(){
         var me = this;
 
@@ -219,13 +217,15 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
     
     /**
      * 更新遮罩层
+     * @public
      * @param  {Object} options 显示选项，同show
-     * */
+     * @return {NULL}
+     */
     update : function(options){
         options = options || {};
         var me = this,
             main = me.getMain(),
-            modalInstanceOptions = baidu.ui.modal.collection[me.containerId];
+            modalInstanceOptions = baidu.ui.Modal.collection[me.containerId];
         
         options = options || {};
         baidu.extend(me, options);
@@ -239,9 +239,10 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
     },
 
     /**
-     * 内部方法，更新样式
-     * @return void
-     * */
+     * 更新样式
+     * @private
+     * @return {NULL}
+     */
     _update:function(){
         var me = this,main = me.getMain();
         baidu.dom.setStyles(main,me.styles);
@@ -249,8 +250,10 @@ baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
 
     /**
      * 获取遮罩层相对container左上角的top和left
+     * @private
      * @options {object} show传入的styles
-     * */
+     * @return {NULL}
+     */
     _getModalStyles:function(styles){
         var me = this,
             main = me.getMain(),

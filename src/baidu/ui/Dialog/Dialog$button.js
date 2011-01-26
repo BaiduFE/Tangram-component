@@ -1,21 +1,14 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/dialog/Dialog$button.js
- * author: lixiaopeng
- * version: 1.0.0
- * date: 2010/11/18
  */
 
 /**
  * plugin button
- * 
  */
 
-///import baidu.ui.dialog;
-///import baidu.ui.dialog.Dialog;
-///import baidu.ui.button.Button;
+///import baidu.ui.Dialog;
+///import baidu.ui.Button;
 ///import baidu.object.each;
 
 
@@ -25,15 +18,15 @@
  * {
  *  name,{baidu.ui.button.Button相同的参数}
  * }
- * */
-baidu.extend(baidu.ui.dialog.Dialog.prototype,{
+ */
+baidu.extend(baidu.ui.Dialog.prototype,{
     
     /**
      * 创建底部按钮
      * @param {Object} option 创建按钮的options
      * @param {String} name 按钮的唯一标识符
      * @return void
-     * */
+     */
     createButton:function(option,name){
         var me = this;
         baidu.extend(option,{
@@ -43,7 +36,7 @@ baidu.extend(baidu.ui.dialog.Dialog.prototype,{
             autoRender : true,
             parent : me
         });
-        var buttonInstance = baidu.ui.create(baidu.ui.button.Button, option);
+        var buttonInstance = new baidu.ui.Button(option);
         me.buttonInstances[name] = buttonInstance;
     },
    
@@ -51,7 +44,7 @@ baidu.extend(baidu.ui.dialog.Dialog.prototype,{
      * 删除底部按钮
      * @param {String} name 按钮的唯一标识符
      * @return void
-     * */
+     */
     removeButton:function(name){
         var me = this,
             button = me.buttonInstances[name];
@@ -62,7 +55,7 @@ baidu.extend(baidu.ui.dialog.Dialog.prototype,{
         }
     }
 });
-baidu.ui.dialog.Dialog.register(function(me){
+baidu.ui.Dialog.register(function(me){
     //存储button实例
     me.buttonInstances = {}; 
     

@@ -1,13 +1,7 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/dialog/Dialog.js
- * author: berg
- * version: 1.0.0
- * date: 2010-05-18
  */
-
 
 //依赖包
 ///import baidu.ui.createUI;
@@ -27,20 +21,16 @@
 ///import baidu.dom.getStyle;
 ///import baidu.dom._styleFilter.px;
 
-///import baidu.ui.smartPosition.setBorderBoxStyles;
-
 ///import baidu.array.each;
 ///import baidu.string.format;
 ///import baidu.browser;
 
 ///import baidu.lang.isNumber;
-
-//声明包
-///import baidu.ui.dialog;
-
+///import baidu.dom.setBorderBoxHeight;
+///import baidu.dom.setBorderBoxWidth;
 
 /**
- * dialog基类，建立一个dialog实例
+ * Dialog基类，建立一个dialog实例
  * @class Dialog类
  * @param     {Object}        options               选项
  * @config    {DOMElement}    content               要放到dialog中的元素，如果传此参数时同时传contentText，则忽略contentText。
@@ -75,36 +65,24 @@
  * @plugin    resizable       可以为Dialog添加缩放功能。
  */
 
-baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
-}).extend(
+baidu.ui.Dialog = baidu.ui.createUI(function (options){
+}).extend({
+
     /**
      *  @lends baidu.ui.dialog.Dialog.prototype
      */
-{
+
     //ui控件的类型，传入给UIBase **必须**
     uiType: 'dialog',
     //ui控件的class样式前缀 可选
     //classPrefix     : "tangram-dialog-",
 
-    width           : '',
-    height          : '',
+    width: '',
+    height: '',
 
     top: 'auto',
     left: 'auto',
     zIndex: 1000,//没有做层管理
-    titleText: '',
-    //content         : false,
-    contentText: '',
-
-    //onopen          : function(){},
-    /**
-     * @private
-     * */
-    onbeforeclose: function() { return true;},
-    //onclose         : function(){},
-    //onupdate        : function(){},
-
-
     //用style来保证其初始状态，不会占据屏幕的位置
     tplDOM: "<div id='#{id}' class='#{class}' style='position:relative'>#{title}#{content}#{footer}</div>",
     tplTitle: "<div id='#{id}' class='#{class}'><span id='#{inner-id}' class='#{inner-class}'>#{content}</span></div>",
@@ -113,13 +91,16 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
     /**
      * 查询当前窗口是否处于显示状态
+     * @public
      * @return {Boolean}  是否处于显示状态
      */
     isShown: function() {
         return baidu.ui.dialog.instances[this.guid] == 'show';
     },
     /**
+     * 获取dialog的HTML字符串
      * @private
+     * @return {String} DialogHtml
      */
     getString: function() {
         var me = this,
@@ -129,36 +110,35 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             content = 'content',
             footer = 'footer';
 
-        return baidu.format(
-                me.tplDOM, {
-                    id: me.getId(),
-                    'class' : me.getClass(),
-                    title: baidu.format(
-                        me.tplTitle, {
-                            id: me.getId(title),
-                            'class' : me.getClass(title),
-                            'inner-id' : me.getId(titleInner),
-                            'inner-class' : me.getClass(titleInner),
-                            content: me.titleText
-                        }),
-                    content: baidu.format(
-                        me.tplContent, {
-                            id: me.getId(content),
-                            'class' : me.getClass(content),
-                            content: me.contentText
-                        }),
-                    footer: baidu.format(
-                        me.tplFooter, {
-                            id: me.getId(footer),
-                            'class' : me.getClass(footer)
-                        })
-                }
-            );
+        return baidu.format(me.tplDOM, {
+            id: me.getId(),
+            'class' : me.getClass(),
+            title: baidu.format(
+                me.tplTitle, {
+                    id: me.getId(title),
+                    'class' : me.getClass(title),
+                    'inner-id' : me.getId(titleInner),
+                    'inner-class' : me.getClass(titleInner),
+                    content: me.titleText || ''
+                }),
+            content: baidu.format(
+                me.tplContent, {
+                    id: me.getId(content),
+                    'class' : me.getClass(content),
+                    content: me.contentText || ''
+                }),
+            footer: baidu.format(
+                me.tplFooter, {
+                    id: me.getId(footer),
+                    'class' : me.getClass(footer)
+            })
+        });
     },
 
     /**
-     * render dialog到DOM树
+     * 绘制dialog到页面
 	 * @public
+     * @return {HTMLElement} mainDiv
      */
     render: function() {
         var me = this,
@@ -173,8 +153,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
         //main.style.left =  '-10000em';
         main.innerHTML = me.getString();
-
-		me._update(me);
+        me._update();
+        me._updatePosition();
 
         baidu.dom.setStyles(me.getMain(), {
             position: 'absolute',
@@ -190,25 +170,61 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         return main;
     },
 
+    _update:function(options){
+        var me = this,
+            content = me.getContent(),
+            options = options || {};
+
+        
+        if(me.content && content.firstChild != me.content) {
+            //若存在me.content 并且该content和content里面的firstChlid不一样
+            content.innerHTML = '';
+            content.appendChild(me.content);
+        
+        }else if(options.content && options.content != me.content){
+            //若options.content存在，则认为用户向对content进行更新
+            //判断时候和原有content相同，不同则进行更新
+            content.innerHTML = '';
+            content.appendChild(options.content);
+        
+        }else if(options.contentText && options.contentText != me.contentText){
+            //若存在options.contentText，则认为用户相对contentText进行更新
+            //判断是否和原有contenText相同，不同则进行更新（包括原本不存在contentText）
+            content.innerHTML = options.contentText;
+        
+        }else if(me.contentText) {
+            //针对两种情况
+            //1.第一次new dialog时传入contentText，进行渲染
+            //2.new dialog时没有传入contentText的，之后使用dialogInstance.contentText = HTMLString；dialogInstance._update这样的情况进行更新
+            content.innerHTML == '' && (content.innerHTML = me.contentText);
+        }
+        baidu.extend(me,options || {});
+        
+        if(me.titleText){
+            me.getTitleInner('title-inner').innerHTML = me.titleText;
+        }
+    },
+
     /**
      * 获得resize事件绑定的函数
+     * @private
+     * @return {Function}
      */
     getWindowResizeHandler: function() {
         var me = this;
         return function() {
-            me.update();
+            me._updatePosition();
         };
     },
-
 
     /**
      * 显示当前dialog
 	 * @public
-	 * @param  {Object}       options     optional        选项参数
+     * @return void
      */
-    open: function(options) {
+    open: function() {
         var me = this;
-        me._update(options);
+        me._updatePosition();    
         me.getMain().style.marginLeft = 'auto';
         baidu.ui.dialog.instances[me.guid] = 'show';
         me.dispatchEvent('onopen');
@@ -217,6 +233,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
     /**
      * 隐藏当前dialog
 	 * @public
+     * @return void
      */
     close: function() {
         var me = this;
@@ -228,36 +245,6 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         }
     },
 
-    /**
-     * 更新dialog状态 
-     * @private
-     * @param  {Object}       options     optional        选项参数
-     *
-     */
-   _update: function(options) {
-        options = options || {};
-        var me = this, contentWrapper = me.getContent();
-
-        //扩展options属性
-        baidu.object.extend(me, options);
-
-        //更新内容
-        if (options.content) {
-            //content优先
-            if (contentWrapper.firstChild != options.content) {
-                contentWrapper.innerHTML = '';
-                contentWrapper.appendChild(options.content);
-            }
-        }else if (options.contentText) {
-            contentWrapper.innerHTML = options.contentText;
-        }
-
-        //更新标题
-        if (options.titleText)
-            me.getTitleInner('title-inner').innerHTML = options.titleText;
-
-        me._updatePosition();
-    },
 	/**
      * 更新dialog状态 
 	 * @public
@@ -288,13 +275,15 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
      */
     update: function(options) {
         var me = this;
-        options = options || {};
         me._update(options);
+        me._updatePosition();
         me.dispatchEvent('onupdate');
     },
 
     /**
-     * 获取body的寛高 
+     * 获取body的寛高
+     * @private
+     * @return {Object} {width,height}，名值对
      */
     _getBodyOffset: function() {
         var me = this,
@@ -311,7 +300,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
         //确定取值为数字
         function getStyleNum(d,style) {
-            var result = parseInt(baidu.getStyle(d, style));
+            var result = parseFloat(baidu.getStyle(d, style));
             result = isNaN(result) ? 0 : result;
             result = baidu.lang.isNumber(result) ? result : 0;
             return result;
@@ -333,6 +322,11 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         return bodyOffset;
     },
 
+    /**
+     * 更新dialog位置及内部元素styles
+     * @private
+     * @return void
+     * */
     _updatePosition: function() {
         var me = this,
         	bodyOffset,
@@ -343,13 +337,16 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             content = me.getContent(),
             body = me.getBody();
 
-
-       baidu.setStyles(content, {
-           'width' : me.width,
-           'height' : me.height
-       });
-       bodyOffset = me._getBodyOffset();
-       baidu.setStyles(body, bodyOffset);
+        /*
+         * 暂不支持百分比形式的寛高计算
+         * 在render或者window resize时保证content上的寛高必有值
+         */
+        me.width = parseFloat(me.width);
+        me.height = parseFloat(me.height);
+        baidu.lang.isNumber(me.width) && baidu.dom.setOuterWidth(content,me.width);
+        baidu.lang.isNumber(me.height) && baidu.dom.setOuterHeight(content,me.height);
+        bodyOffset = me._getBodyOffset();
+        baidu.setStyles(body, bodyOffset);
 
         if ((me.left && me.left != 'auto') || (me.right && me.right != 'auto')) {
             //按照用户的值来设置
@@ -357,29 +354,28 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             right = me.right || '';
         } else {
             //自动居中
-            left = Math.max((baidu.page.getViewWidth() - parseInt(me.getMain().offsetWidth)) / 2 + baidu.page.getScrollLeft(), 0);
+            left = Math.max((baidu.page.getViewWidth() - parseFloat(me.getMain().offsetWidth)) / 2 + baidu.page.getScrollLeft(), 0);
         }
         //下面的代码是上面代码的重复
         if ((me.top && me.top != 'auto') || (me.bottom && me.bottom != 'auto')) {
             top = me.top || '';
             bottom = me.bottom || '';
         } else {
-            top = Math.max((baidu.page.getViewHeight() - parseInt(me.getMain().offsetHeight)) / 2 + baidu.page.getScrollTop(), 0);
+            top = Math.max((baidu.page.getViewHeight() - parseFloat(me.getMain().offsetHeight)) / 2 + baidu.page.getScrollTop(), 0);
         }
 
-        baidu.dom.setStyles(
-            me.getMain(), {
-                top: top,
-                right: right,
-                bottom: bottom,
-                left: left
-            }
-        );
+        baidu.dom.setStyles(me.getMain(), {
+            top: top,
+            right: right,
+            bottom: bottom,
+            left: left
+        });
     },
 
     /**
      * 获得title对应的dom元素
-     * @private
+     * @public
+     * @return {HTMLElement} title
      */
     getTitle: function() {
         return baidu.g(this.getId('title'));
@@ -387,7 +383,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
     /**
      * 获得title文字对应的dom元素
-     * @private
+     * @public
+     * @return {HTMLElement} titleInner
      */
     getTitleInner: function() {
         return baidu.g(this.getId('title-inner'));
@@ -395,7 +392,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
     /**
      * 获得content对应的dom元素
-     * @private
+     * @public
+     * @return {HTMLElement} content
      */
     getContent: function() {
         return baidu.g(this.getId('content'));
@@ -403,7 +401,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
     /**
      * 获得footer对应的dom元素
-     * @private
+     * @public
+     * @return {HTMLElement} footer
      */
     getFooter: function() {
         return baidu.g(this.getId('footer'));
@@ -412,6 +411,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
     /**
      * 销毁dialog实例
 	 * @public
+     * @return void
      */
     dispose: function() {
         var me = this;

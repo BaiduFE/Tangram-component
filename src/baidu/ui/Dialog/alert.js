@@ -1,25 +1,18 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/dialog/confirm.js
- * author: bergi,lixiaopeng
- * version: 1.0.0
- * date: 2010-05-18
  */
-
+ 
 ///import baidu.ui.dialog;
 ///import baidu.ui.dialog.Dialog;
 ///import baidu.ui.dialog.Dialog$button;
+///import baidu.lang.isString;
 ///import baidu.ui.dialog.Dialog$keyboard;
 
-///import baidu.lang.isString;
-///import baidu.object.extend;
-
 /**
- * 应用实现 confirm
+ * 应用实现 alert
  * @function
- * @param  {String|DOMElement}  content               内容或者内容对应的元素
+ * @param  {String|DOMElement}	content               内容或者内容对应的元素
  * @param  {Object}             [options]             选项参数
  * @config {DOMElement}         content               要放到dialog中的元素，如果传此参数时同时传contentText，则忽略contentText。
  * @config {String}             contentText           dialog中的内容
@@ -46,16 +39,14 @@
  * @config {Function}           ondrag                draggable模块支持，拖拽过程中触发
  * @config {Function}           ondragend             draggable模块支持，拖拽结束时触发
  * @config {Boolean}            [autoOpen]            是否一开始就打开，默认为true
- *
+ * @config {Boolean}            submitOnEnter         是否监听回车键
  */
 
-
-
-baidu.ui.dialog.confirm = function(content, options) {
+baidu.ui.dialog.alert = function(content, options) {
     var dialogInstance;
 
     options = baidu.extend({
-        type: 'confirm',
+        type: 'alert',
         buttons: {
             'accept' : {
                 'content' : '确定',
@@ -64,16 +55,9 @@ baidu.ui.dialog.confirm = function(content, options) {
                         parent = me.getParent();
                     parent.dispatchEvent('onaccept') && parent.close();
                 }
-            },
-            'cancel' : {
-                'content' : '取消',
-                'onclick' : function() {
-                    var me = this,
-                        parent = me.getParent();
-                    parent.dispatchEvent('oncancel') && parent.close();
-                }
             }
-        }
+        },
+        submitOnEnter: true
     },options || {});
     options.autoRender = true;
     if (baidu.isString(content)) {
@@ -81,7 +65,6 @@ baidu.ui.dialog.confirm = function(content, options) {
     } else {
         options.content = content;
     }
-
     dialogInstance = baidu.ui.create(baidu.ui.dialog.Dialog, options);
 
     //默认自动dispose
@@ -90,14 +73,13 @@ baidu.ui.dialog.confirm = function(content, options) {
             this.dispose();
         });
     }
-
     //默认打开dialog
     if (typeof options.autoOpen == 'undefined' || options.autoOpen) {
         dialogInstance.open();
     }
 
     //注册ontener事件
-    dialogInstance.addEventListener('onenter', function(e) {
+    dialogInstance.submitOnEnter && dialogInstance.addEventListener('onenter', function(e) {
         this.buttonInstances['accept'].fire('click', e);
     });
     return dialogInstance;
