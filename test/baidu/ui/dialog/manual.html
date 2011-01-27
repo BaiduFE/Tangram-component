@@ -3,7 +3,7 @@
     <head>
         <title>dialog manual test - by berg</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*,baidu.ui.legacy' ></script>
         
         <script src='../../../../src/import.php?f=baidu.ui.behavior.decorator' ></script>
         <!--页面依赖-->
@@ -274,9 +274,9 @@ h2{
                     var dialog = new baidu.ui.Dialog(options);
                     dialog.open();
                 }else if(type == 'iframe'){
-                    var dialog = new baidu.ui.dialog.iframe("inner.html", options);
+                    var dialog = new baidu.ui.Dialog.iframe("inner.html", options);
                 }else{
-                    var dialog = new baidu.ui.dialog[type](dialogContent, options);
+                    var dialog = baidu.ui.Dialog[type](dialogContent, options);
                 }
                 var table = document.getElementById("dialog_instances");
                 dialogPool.push(dialog);
@@ -326,6 +326,7 @@ h2{
         <br />
         <input type="button" value ="dialog.create()" onclick="createDialog()" />
         <input type="button" value ="dialog.confirm()" onclick="createDialog('confirm')" />
+        <input type="button" value ="dialog.alert()" onclick="createDialog('alert')" />
         <input type="button" value ="dialog.iframe()" onclick="createDialog('iframe')" />
         <input type="button" value ="test" onclick="d.open()" />
 

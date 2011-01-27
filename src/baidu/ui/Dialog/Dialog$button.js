@@ -10,7 +10,7 @@
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Button;
 ///import baidu.object.each;
-
+///import baidu.ui.Dialog$autoDispose;
 
 /**
  * 根据this.buttons创建dialog下部的buttons
@@ -59,10 +59,45 @@ baidu.ui.Dialog.register(function(me){
     //存储button实例
     me.buttonInstances = {}; 
     
+    var accept,cancel,tmpButtons;
+    accept = {
+        'content' : '确定',
+        'onclick' : function() {
+            var me = this,
+                parent = me.getParent();
+            parent.dispatchEvent('onaccept') && parent.close();
+        }
+    };
+    cancel = {
+        'content' : '取消',
+        'onclick' : function() {
+            var me = this,
+                parent = me.getParent();
+            parent.dispatchEvent('oncancel') && parent.close();
+        }
+    };
+
     //在onLoad时创建buttons
     me.addEventListener("onload",function(){
+        switch(me.type){
+            case "alert":
+                me.submitOnEnter = me.submitOnEnter || true;
+                tmpButtons = {accept:accept};
+                break;
+            case "confirm":
+                me.submitOnEnter = me.submitOnEnter || true;
+                tmpButtons = {accept:accept,cancel:cancel};
+                break;
+            default:
+        }
+        me.buttons = baidu.extend(tmpButtons,me.buttons || {});
         baidu.object.each(me.buttons,function(opt, name){
             me.createButton(opt,name);
+        });
+
+        //注册ontener事件
+        me.submitOnEnter && me.addEventListener('onenter', function(e) {
+            me.buttonInstances['accept'].fire('click', e);
         });
     });
 
