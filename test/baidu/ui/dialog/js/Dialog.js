@@ -151,13 +151,27 @@ test('right&bottom',function(){
  * 测试：Firefox下窗口高度是根据内容自适应还是默认高度2010-12-17
  */
 test('default height',function(){
+	var content = "baidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialog" +
+			"baidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialog" +
+			"baidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialog\n" +
+			"baidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialog\n" +
+			"baidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialogbaidu.ui.dialog.Dialog";
 	var options = {
+		height:50,
+		width:50,
 		titleText : "title",
-		contentText : "content",
+		contentText : content,
 		modal : false
 	};
 	var d = new baidu.ui.dialog.Dialog(options);
 	d.render();
-	equals(baidu.dom.getStyle(d.getContent(),'height'),d.height+'px');
+	d.open();
+	stop();
+	setTimeout(function(){
+		equals(baidu.dom.getStyle(d.getContent(),'height'),d.height+'px',"check content height");
+		equal($(d.getContent()).css('width'),d.width+'px',"check content width");
+		d.dispose();
+		start();
+	},100)
 });
 
