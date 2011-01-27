@@ -7,6 +7,7 @@
  * version: 1.0.0
  * date: 2010-12-09
  */
+///improt baidu.ui.Menubar;
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.dom.g;
@@ -17,11 +18,6 @@
  *  鼠标hover触发menubar插件
  */
 baidu.ui.Menubar.extend({
-    /**
-     * 插件触发方式，默认为hover
-     * @param {String} [options.type = 'hover']
-     */
-    type: 'hover',
     
     /**
      * 菜单显示延迟时间
