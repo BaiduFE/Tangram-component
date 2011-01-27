@@ -321,7 +321,8 @@ h2{
         <select>
             <option>please cover me!</option>
         </select>
-        <div id="flashContainer"></div>
+        <div id="flashContainer1"></div>
+        <div id="flashContainer2"></div>
         <br />
         <br />
         <br />
@@ -371,18 +372,21 @@ h2{
         <br />
         <br />
         <script>
-            baidu.ui.smartCover.options.hideFlash = false;
-            
+            baidu.ui.smartCover.options.hideFlash = true;
+            baidu.ui.smartCover.options.hideSelect = true;
             baidu.swf.create({
-
-                id: "flash",
-                url: "http://fe.baidu.com/dev/tangram/assets/test.swf",
-                width:800,
-                height:600
-
-            }, "flashContainer");
+                    id: "flash",
+                    url: "test.swf",
+                    width:695,
+                    height:90
             
-            //var d = baidu.ui.dialog.iframe("inner.html");
+                }, "flashContainer1");
+            baidu.swf.create({
+                    id: "flash",
+                    url: "test.swf",
+                    width:695,
+                    height:90
+                }, "flashContainer2");
         </script>
     </body>
 </html>

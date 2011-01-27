@@ -25,7 +25,7 @@ baidu.ui.Dialog.register(function(me){
         me.addEventListener("onopen", function(){
             //防止一个dialog创建两个modal
             if(!me.modalInstance){
-                me.modalInstance = new baidu.ui.Modal();
+                me.modalInstance = new baidu.ui.Modal({autoRender:true});
             }
 
             me.modalInstance.show({

@@ -69,7 +69,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
 }).extend({
 
     /**
-     *  @lends baidu.ui.dialog.Dialog.prototype
+     *  @lends baidu.ui.Dialog.prototype
      */
 
     //ui控件的类型，传入给UIBase **必须**
@@ -95,7 +95,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
      * @return {Boolean}  是否处于显示状态
      */
     isShown: function() {
-        return baidu.ui.dialog.instances[this.guid] == 'show';
+        return baidu.ui.Dialog.instances[this.guid] == 'show';
     },
     /**
      * 获取dialog的HTML字符串
@@ -226,7 +226,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         var me = this;
         me._updatePosition();    
         me.getMain().style.marginLeft = 'auto';
-        baidu.ui.dialog.instances[me.guid] = 'show';
+        baidu.ui.Dialog.instances[me.guid] = 'show';
         me.dispatchEvent('onopen');
     },
 
@@ -239,7 +239,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         var me = this;
         if (me.dispatchEvent('onbeforeclose')) {
             me.getMain().style.marginLeft = '-100000px';
-            baidu.ui.dialog.instances[me.guid] = 'hide';
+            baidu.ui.Dialog.instances[me.guid] = 'hide';
 
             me.dispatchEvent('onclose');
         }
@@ -417,10 +417,12 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         var me = this;
 
         //删除实例引用
-        delete baidu.ui.dialog.instances[me.guid];
+        delete baidu.ui.Dialog.instances[me.guid];
         me.dispatchEvent('dispose');
         baidu.un(window, 'resize', me.windowResizeHandler);
         baidu.dom.remove(me.getMain());
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });
+
+baidu.ui.Dialog.instances = {};

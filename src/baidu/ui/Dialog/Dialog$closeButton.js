@@ -22,7 +22,7 @@ baidu.extend(baidu.ui.Dialog.prototype,{
 baidu.ui.Dialog.register(function(me){
     
     me.closeButton && me.addEventListener("onload", function(){
-        var buttonInstance = new baidu.ui.button({
+        var buttonInstance = new baidu.ui.Button({
             parent : me,
             classPrefix : me.classPrefix + "-close",
             skin : me.skin ? me.skin + "-close" : "",
