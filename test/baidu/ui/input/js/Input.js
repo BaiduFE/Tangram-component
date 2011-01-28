@@ -74,17 +74,17 @@ test("event", function() {
 		},
 		onmouseout : function() {
 			ok(true, 'on mouseout');
-			equals(inputEle.className, "tangram-input tangram-input",
+			equals(inputEle.className, "tangram-input",
 					"check input onmouseout style");
 		},
 		onenable : function() {
 			ok(true, 'on enable');
-			equals(inputEle.className, "tangram-input tangram-input tangram-input",
+			equals(inputEle.className, "tangram-input",
 					"check input onenable style");
 		},
 		ondisable : function() {
 			ok(true, 'on disable');
-			equals(inputEle.className, "tangram-input tangram-input tangram-input-disable",
+			equals(inputEle.className, "tangram-input tangram-input-disable",
 					"check input ondisable style");
 		}
 	};
