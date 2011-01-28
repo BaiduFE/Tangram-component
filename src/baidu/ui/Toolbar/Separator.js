@@ -3,23 +3,20 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-///import baidu.dom.insertHTML;
-///import baidu.string.format;
-///import baidu.object.extend;
 ///import baidu.ui.createUI;
 
 /**
- * @class Spacer类
+ * @class Toolbar类
  * @param   {Object}    options config参数.
  * @config  {String}    [name="ToolBar_item_xxx"]   ui控件的唯一标识符.
  * @config  {Object}    [options]   创建ui控件所需要的config参数.
  * @author  lixiaopeng
  */
-baidu.ui.toolbar.Spacer = baidu.ui.createUI(function(options) {
+baidu.ui.Toolbar.Separator = baidu.ui.createUI(function(options) {
 }).extend({
-
+  
     /*
-     * @lends baidu.ui.toolbar.Spacer.prototype
+     * @lends baidu.ui.Toolbar.Separator.prototype
      */
 
     /**
@@ -30,35 +27,30 @@ baidu.ui.toolbar.Spacer = baidu.ui.createUI(function(options) {
     /**
      * uiType
      */
-    uiType: 'toolbar-spacer',
+    uiType: 'toolbar-sepatator',
 
     /**
-     * 默认宽度
+     * 模板
      */
-    width: '10px',
+    tplMain: '<span id="#{id}" class="#{class}" style="display:block"></span>',
 
     /**
-     * html 模板
-     */
-    tplBody: '<div #{style} id="#{id}" class="#{class}"></div>',
-
-    /**
-     * 获取html字符串
+     * 获取HTML字符串
      * @private
-     * @return {String} str HTML字符串.
+     * @return {String} HTMLString.
      */
     getString: function() {
         var me = this;
-        return baidu.format(me.tplBody, {
-            style : 'style="' + (me.height ? 'height:' + me.height : 'width:' + me.width) + '"',
+
+        return baidu.format(me.tplMain, {
             id : me.getId(),
             'class' : me.getClass()
         });
     },
 
     /**
-     * 绘制item
-     * @param {String|HTMLDom} [container=this.container] Item容器.
+     * 绘制控件
+     * @return void.
      */
     render: function(container) {
         var me = this;

@@ -3,8 +3,6 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-///import baidu.ui.toolbar._itemBehavior;
-
 ///import baidu.object.extend;
 ///import baidu.string.format;
 ///import baidu.dom.getStyle;
@@ -15,6 +13,9 @@
 ///import baidu.array.each;
 ///import baidu.ui.createUI;
 ///import baidu.object.merge;
+///import baidu.browser;
+///import baidu.lang.isString;
+///import baidu.ui.getUI;
 
 /**
  * @class   toolBar基类，建立toolBar实例
@@ -33,7 +34,7 @@
  * @config  {Object}    [config]    创建ui控件所需要的config参数.
  * @author  lixiaopeng
  */
-baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
+baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     var me = this,
         positionCheck = false,
         positionPrefix = 'align="',
@@ -52,7 +53,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
 }).extend({
 
     /*
-     * @lends baidu.ui.toolbar.Toolbar.prototype
+     * @lends baidu.ui.Toolbar.prototype
      */
 
     /**
@@ -83,7 +84,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
             '#{title}' +
             '<div id="#{bodyInner}" class="#{bodyInnerClass}">' +
                 '<table cellpadding="0" cellspacing="0" style="width:100%; height:100%" id="#{tableId}">' +
-                    '<tr><td style="width:100%; height:100%" #{position}>' +
+                    '<tr><td style="width:100%; height:100%; font-size:0pt;" #{position}>' +
                         '<table cellpadding="0" cellspacing="0" id="#{tableInnerId}">#{content}</table>' +
                     '</td></tr>' +
                 '</table>' +
@@ -100,19 +101,19 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
      * tplHorizontalCell
      * @private
      */
-    tplHorizontalCell: '<td id="#{id}" valign="middle"></td>',
+    tplHorizontalCell: '<td id="#{id}" valign="middle" style="font-size:0pt;"></td>',
     
     /**
      * tplVerticalCell
      * @private
      */
-    tplVerticalCell: '<tr><td id="#{id}" valign="middle"></td></tr>',
+    tplVerticalCell: '<tr><td id="#{id}" valign="middle" style="font-size:0pt;"></td></tr>',
 
     /**
      * uiType
      * @private
      */
-    uiType: 'toolbar-toolbar',
+    uiType: 'toolbar',
 
     /**
      * 返回toolbar的html字符串
@@ -206,26 +207,8 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
         delete(options.config.statable);
         options.type = options.type.toLowerCase();
 
-        /*
-         * 用来查找对应的namespace并创建ui实例
-         * TODO:等baidu.ui.create修改完毕后替换掉
-         */
-        ns = options.type.split('-');
-        if (ns.length == 1) {
-            ns = ns.shift();
-            uiNS = baidu.ui[ns][ns.charAt(0).toUpperCase() + ns.slice(1)];
-        }else {
-            uiNS = baidu.ui[ns.shift()];
-            baidu.each(ns, function(item) {
-                ns.length == 1 && (item = item.charAt(0).toUpperCase() + item.slice(1));
-                uiNS = uiNS[item];
-            });
-        }
-        if(uiNS){
-            baidu.object.merge(uiNS,{statable:true},{overwrite:true,whiteList:["statable"]});
-            uiInstance = baidu.ui.create(uiNS,options.config);
-        }
-        //uiNS && (uiInstance = baidu.ui.create(uiNS, options.config));
+        uiNS = baidu.ui.getUI(options.type);
+        uiNS && (uiInstance = new uiNS(options.config));
         me.addRaw(uiInstance, container);
 
         return uiInstance;
@@ -243,7 +226,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
         if (!uiInstance)
             return;
 
-        baidu.extend(uiInstance, baidu.ui.toolbar._itemBehavior);
+        baidu.extend(uiInstance, baidu.ui.Toolbar._itemBehavior);
         uiInstance.setName(uiInstance.name);
 
         if (!container) {
@@ -398,3 +381,74 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
         return item;
     }
 });
+
+/**
+ * 全局唯一的toolbar_item id 索引
+ * 此对象不对外暴露
+ * @private
+ */
+baidu.ui.Toolbar._itemIndex = 0;
+
+/**
+ * @event onhighlight
+ * 当item被设置为高亮时触发
+ */
+
+/**
+ * @event oncancelhighlight
+ * 当item被取消高亮时触发
+ */
+
+baidu.ui.Toolbar._itemBehavior = {
+
+    /**
+     * item唯一标识符
+     * @private
+     */
+    _toolbar_item_name: '',
+
+    /**
+     * 为ui组创建自己的唯一的标识
+     * @param {String} [name] 若传入了name，则使用传入的name为标识符.
+     */
+    setName: function(name) {
+        var me = this;
+        if (baidu.lang.isString(name)) {
+            me._toolbar_item_name = name;
+        }else {
+            me._toolbar_item_name = 'tangram_toolbar_item_' + baidu.ui.Toolbar._itemIndex++;
+        }
+
+        //TODO:在更新name之后如自身已经被渲染到toolbar中
+        //则更新toolbar中自己的名值对
+    },
+
+    /**
+     * 返回toolbar item的唯一标识
+     * @return {String} name.
+     */
+    getName: function() {
+                 var me = this;
+                 return me._toolbar_item_name;
+             },
+
+    /**
+     * 设置高亮状态
+     * @return void.
+     */
+    setHighLight: function() {
+                      var me = this;
+                      me.setState('highlight');
+                      me.dispatchEvent('onhighlight');
+                  },
+
+    /**
+     * 取消高亮状态
+     * @return void.
+     */
+    cancelHighLight: function() {
+                         var me = this;
+                         me.removeState('highlight');
+                         me.dispatchEvent('oncancelhighlight');
+                     }
+};
