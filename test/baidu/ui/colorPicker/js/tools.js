@@ -9,6 +9,14 @@
 		b1.type = "button";
 		b1.value = "test";
 		div.appendChild(b1);
+		
+		var link = document.createElement('link');
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("type", "text/css");
+		link.setAttribute("href",
+				'../../baidu/ui/colorPicker/js/style.css');
+		document.getElementsByTagName("head")[0].appendChild(link);
+		
 		testingElement.dom.push(b1);
 		testingElement.dom.push(div);
 	}

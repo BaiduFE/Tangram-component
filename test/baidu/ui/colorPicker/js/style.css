@@ -1,0 +1,14 @@
+.tangram-colorpalette-slider-thumb {
+	background-color: blue;
+	height: 20px;
+	width: 6px;
+}
+.tangram-colorpalette-slider {
+	background-color: red;
+	height: 20px;
+	width: 200px;
+}
+.tangram-progressbar-bar {
+	background-color: yellow;
+	height: 20px;
+}
