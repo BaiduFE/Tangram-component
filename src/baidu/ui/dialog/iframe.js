@@ -51,14 +51,16 @@ baidu.ui.dialog.iframe = function(iframeSrc, options) {
         iframeId = dialog.getId('iframe'),
         iframeName = options.iframeName || iframeId,
         iframeElement,
-        contentWindow;
-
-    dialog.contentText = baidu.format(dialog.tplIframe,{
-        name: iframeName,
-        id: iframeId,
-        'class': dialog.getClass('iframe')
-    });
+        contentWindow,
+        contentText = baidu.format(dialog.tplIframe,{
+            name: iframeName,
+            id: iframeId,
+            'class': dialog.getClass('iframe')
+        });
+    
     dialog.render();
+    dialog._update({contentText:contentText});
+    dialog._updatePosition();
     iframeElement = baidu.g(iframeId);
     
     //解决iframe加载后无法准确定位dialog的问题

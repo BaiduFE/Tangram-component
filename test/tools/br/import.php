@@ -20,7 +20,7 @@ $DEBUG = false;
 //分析获取当前项目源码路径
 $ss = explode('/', substr($_SERVER['SCRIPT_NAME'], 1));
 $source_path = $_SERVER['DOCUMENT_ROOT'].'/'.$ss[0].'/src/';
-$base_path = $_SERVER['DOCUMENT_ROOT'].'/Tangram-base/src/';
+$base_path = $_SERVER['DOCUMENT_ROOT'].'/tangram/src/';
 $cached = array();
 
 $f = explode(',', $_GET['f']);

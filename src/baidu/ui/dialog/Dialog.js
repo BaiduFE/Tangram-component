@@ -29,8 +29,8 @@
 ///import baidu.browser;
 
 ///import baidu.lang.isNumber;
-///import setBorderBoxHeight;
-///import setBorderBoxWidth;
+///import baidu.dom.setBorderBoxHeight;
+///import baidu.dom.setBorderBoxWidth;
 
 ///import baidu.ui.dialog;
 
@@ -179,20 +179,29 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             content = me.getContent(),
             options = options || {};
 
-        if(me.content){
-            if (content.firstChild != me.content) {
-                content.innerHTML = '';
-                content.appendChild(me.content);
-            }else if(options.content && options.content != me.content){
-                content.innerHTML = '';
-                content.appendChild(options.content);
-            }
-        }else if (me.contentText) {
-            content.innerHTML == '' && (content.innerHTML = me.contentText);
-        }else if(options.contentText && options.contentText != me.contentText){
-            content.innerHTML = options.contentText;
-        }
         
+        if(me.content && content.firstChild != me.content) {
+            //若存在me.content 并且该content和content里面的firstChlid不一样
+            content.innerHTML = '';
+            content.appendChild(me.content);
+        
+        }else if(options.content && options.content != me.content){
+            //若options.content存在，则认为用户向对content进行更新
+            //判断时候和原有content相同，不同则进行更新
+            content.innerHTML = '';
+            content.appendChild(options.content);
+        
+        }else if(options.contentText && options.contentText != me.contentText){
+            //若存在options.contentText，则认为用户相对contentText进行更新
+            //判断是否和原有contenText相同，不同则进行更新（包括原本不存在contentText）
+            content.innerHTML = options.contentText;
+        
+        }else if(me.contentText) {
+            //针对两种情况
+            //1.第一次new dialog时传入contentText，进行渲染
+            //2.new dialog时没有传入contentText的，之后使用dialogInstance.contentText = HTMLString；dialogInstance._update这样的情况进行更新
+            content.innerHTML == '' && (content.innerHTML = me.contentText);
+        }
         baidu.extend(me,options || {});
         
         if(me.titleText){
