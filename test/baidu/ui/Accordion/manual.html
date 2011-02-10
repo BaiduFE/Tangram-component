@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>accordion by lly</title>
+<style type="text/css">
+    .tangram-accordion {
+        width : 100px;
+        height : 500px;
+        border : red solid 1px;
+    }
+    .tangram-accordion-head {
+        border : black solid 1px;
+    }
+    .tangram-accordion-body {
+        background : #eee;
+    }
+</style>
+<script src="../../../../src/import.php?f=baidu.ui.get,baidu.ui.Accordion,baidu.ui.Accordion.Accordion$fx"></script>
+</head>
+
+<body>
+    <div id="accordionId"></div>
+</body>
+<script language="javascript">
+var c = new baidu.ui.Accordion({
+    items : [
+        {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'},
+        {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'},
+        {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'},
+        {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'},
+        {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'}
+    ]
+});
+c.render('accordionId');
+</script>
+</html>

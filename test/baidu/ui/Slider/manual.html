@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>slider by lly</title>
+<style type="text/css">
+    .tangram-slider,.tangram-progressbar {
+        background : #eee;
+        width : 300px;
+        height : 20px;
+    }
+    .tangram-slider-thumb {
+        width : 15px;
+        height : 20px;
+        font-size : 0px;
+        background : red;
+    }
+    .tangram-progressbar-bar {
+        height : 20px;
+        background : yellow;
+    }
+</style>
+<script src="../../../../src/import.php?f=baidu.ui.get,baidu.ui.Slider,baidu.ui.Slider.Slider$progressBar"></script>
+</head>
+
+<body>
+    <div id="sliderId"></div>
+</body>
+<script language="javascript">
+    var slider = new baidu.ui.Slider();
+    slider.render('sliderId');
+</script>
+</html>

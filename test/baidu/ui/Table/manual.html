@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>table by lly</title>
+<style type="text/css">
+    .tangram-table {
+        width : 600px;
+        font-size : 12px;
+        border : #aaa solid 1px;
+    }
+    .tangram-table-row {
+        background-color: #fff;
+    }
+    .tangram-table-row-hover {
+        background-color: #fcd;
+    }
+    
+    .tangram-table-row-press {
+        background-color: green;
+    }
+    
+    .tangram-table-row-disabled {
+        background-color: #eee;
+    }
+    .tangram-table-row-selected {
+        background-color: silver;
+    }
+    
+    .tangram-table-row td{
+        cursor : pointer;
+        padding : 3px;
+        border: 1px #333 solid;
+    }
+    
+    .tangram-table-title {
+        font-size : 12px;
+        font-weight : bold;
+        color : white;
+        border : green solid 1px;
+    }
+    .tangram-table-title-row {
+        background : blue;
+    }
+    .tangram-table-title-row td{
+        padding : 3px;
+        border : white solid 1px;
+    }
+</style>
+<script src="../../../../src/import.php?f=baidu.ui.get,baidu.ui.Table,baidu.ui.Table.Row,baidu.ui.Table.Table$title,baidu.ui.Table.Table$page,baidu.ui.Table.Table$btn,baidu.ui.Table.Table$select,baidu.ui.Table.Table$edit"></script>
+</head>
+
+<body>
+    <h5>基础例子</h5>
+    <div id="tableId"></div>
+    <h5>增加title的例子</h5>
+    <div id="table_0"></div>
+    <h5>增加columns的例子(设置第一列宽度为200，第三列宽度为20%)</h5>
+    <div id="table_1"></div>
+    <h5>增加翻页的例子</h5>
+    <div id="table_2"></div>
+    <h5>增加选择列的例子</h5>
+    <div id="table_3"></div>
+</body>
+<script language="javascript">
+var myData = [],
+    i = 0,
+    size = 5;
+for(; i < size; i++){
+    myData.push({
+        id: '',
+        content : [
+            '<a onclick="baidu.ui.get(this).remove(); return false;" href="#">删除</a>',
+            'Text-0' + i,
+            'Text-1' + i,
+            'Text-2' + i,
+            'Text-3' + i,
+            'Text-4' + i,
+            'Text-5' + i
+        ]
+    });
+}
+var tab = new baidu.ui.Table({
+    data : myData
+});
+    tab.render('tableId');
+
+var table = new baidu.ui.Table({
+    title : ['删除', 'column-0', 'column-1', 'column-2', 'column-3', 'column-4', 'column-5'],
+    data : myData
+});
+    table.render('table_0');
+    
+    
+table = new baidu.ui.Table({
+    title : ['删除', 'column-0', 'column-1', 'column-2', 'column-3', 'column-4', 'column-5'],
+    columns : [{index : 1, width : 200}, {index : 3, width : '20%'}],
+    data : myData
+});
+table.render('table_1');
+
+for(i = 0; i < 50; i++){
+    myData.push({
+        id: '',
+        content : [
+            '<a onclick="baidu.ui.get(this).remove(); return false;" href="#">删除</a>',
+            'nText-0' + i,
+            'nText-1' + i,
+            'nText-2' + i,
+            'nText-3' + i,
+            'nText-4' + i,
+            'nText-5' + i
+        ]
+    });
+}
+table = new baidu.ui.Table({
+    pageSize : 5,
+    title : ['删除', 'column-0', 'column-1', 'column-2', 'column-3', 'column-4', 'column-5'],
+//    withPager : true,
+    data : myData
+});
+table.render('table_2');
+
+myData = [];
+for(i = 0; i < size; i++){
+    myData.push({
+        id : '',
+        content : [
+            '',
+            'text-0' + i,
+            'text-1' + i,
+            'text-2' + i,
+            'text-3' + i
+        ]
+    });
+}
+table = new baidu.ui.Table({
+    title : ['删除', 'column-0', 'column-1', 'column-2', 'column-3'],
+    columns : [{index : 0, type : 'checkbox'}, {index : 1, enableEdit : true}],
+    data : myData
+});
+table.render('table_3');
+</script>
+</html>
