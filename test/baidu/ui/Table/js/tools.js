@@ -13,7 +13,7 @@
 			".tangram-table-row-press{background:red; }"+
 			".tangram-table-row-disabled{background:gray; }"+
 			".tangram-table-row-selected{background:lightgreen; }"+
-			".tangram-table-row-col{border:green solid 1px; padding:5px;}";
+			".tangram-table-row td{border:green solid 1px; padding:5px;}";
 		document.body.appendChild(link);
 
 		testingElement.dom.push(div);
