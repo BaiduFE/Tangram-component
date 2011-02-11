@@ -9,6 +9,7 @@
 
 ///import baidu.ui.Carousel;
 ///import baidu.ui.Table;
+///import baidu.ui.Table.Row;
 ///import baidu.array.each;
 ///import baidu.dom.create;
 ///import baidu.lang.isArray;
@@ -71,7 +72,7 @@ baidu.object.extend(baidu.ui.Carousel.prototype, {
 			insert = baidu.lang.isNumber(index)? index : me.totalCount,
 			div;
 		if(dataArr.length > 0){
-			table = baidu.ui.table.create({data : dataArr[0]});
+			table = new baidu.ui.Table({data : dataArr[0]});
 			Array.prototype.splice.apply(me.data, [insert * me.gridLayout.row * me.gridLayout.col, 0].concat(data));//这时data的数据长度不是固定，me.data只记录有用的数据
 			me._tableList.splice(insert, 0, table);
 			div = baidu.dom.create("div");

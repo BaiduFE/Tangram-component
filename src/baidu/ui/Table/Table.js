@@ -239,4 +239,3 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
         baidu.dom.remove(me.getId());
     }
 });
-alert("AAAA");

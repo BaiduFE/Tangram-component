@@ -8,6 +8,7 @@
  * @date:2010-9-30
  */
 ///import baidu.ui.Table;
+///import baidu.ui.Table.Row;
 ///import baidu.array.each;
 ///import baidu.lang.isNumber;
 ///import baidu.dom.insertHTML;

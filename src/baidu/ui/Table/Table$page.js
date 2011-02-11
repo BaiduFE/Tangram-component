@@ -8,6 +8,7 @@
  * @date:2010-9-30
  */
 ///import baidu.ui.Table;
+///import baidu.ui.Table.Row;
 ///import baidu.lang.isNumber;
 ///import baidu.array.each;
 ///import baidu.dom.g;
@@ -119,7 +120,7 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 			index = baidu.lang.isNumber(index) ? index : me.getTotalCount(),
 			currPage = me.getCurrentPage(),
 			instPage = Math.ceil((index + 1) / me.pageSize),
-			data,
+			data = options,
 			rowId;
 		if(me.pageSize){
 			me.dataSet.splice(index, 0, data);
