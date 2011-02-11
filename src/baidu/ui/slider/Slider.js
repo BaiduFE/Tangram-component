@@ -118,11 +118,12 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
         }
 		len = mousePos[me.axis[me.layout].mousePos] - mainPos[me.axis[me.layout].mainPos] - me.getThumb()[me.axis[me.layout].thumbSize]/ 2;
         me._calcValue(len);
-		me.dispatchEvent("slideclick");
+		
         //如果点击的地方在range之外，不发送stop事件
         if(me.update()){
             me.dispatchEvent("slidestop");
         }
+		me.dispatchEvent("slideclick");//这句提前在update时会导致thumb在还没有更新位置时运算progressbar的宽度
     },
     
 	/**
@@ -221,9 +222,11 @@ baidu.ui.slider.Slider = baidu.ui.createUI(function(options){
             return ;
         }
         me._lastValue = me.value;
-		len = me[me.axis[me.layout]._getSize]()- me[me.axis[me.layout]._getThumbSize]();
-        baidu.dom.setStyle(me.getThumb(), me.axis[me.layout].thumbPos, me.value * (len) / ( me.max - me.min ) );
-		me.dispatchEvent("update");
+        if (me.dispatchEvent("beforesliderto", {drop: options.drop})) {
+            len = me[me.axis[me.layout]._getSize]()- me[me.axis[me.layout]._getThumbSize]();
+            baidu.dom.setStyle(me.getThumb(), me.axis[me.layout].thumbPos, me.value * (len) / ( me.max - me.min ) );
+            me.dispatchEvent("update");
+        }
     },
 
     /**
