@@ -1,8 +1,8 @@
-module('baidu.ui.progressBar.ProgressBar');
+module('baidu.ui.ProgressBar');
 
 test('initialize', function() {
 	expect(1);
-	var pb = new baidu.ui.progressBar.ProgressBar( {
+	var pb = new baidu.ui.ProgressBar( {
 		value : 20
 	});
 	pb.render(te.dom[0]);
@@ -14,7 +14,7 @@ test('dynamic', function() {
 	stop();
 	expect(22);
 	var progress = -10;
-	var pb = new baidu.ui.progressBar.ProgressBar( {
+	var pb = new baidu.ui.ProgressBar( {
 		onupdate : function() {
 			progress += 10;
 			/* getValue() */
@@ -38,7 +38,7 @@ test('dynamic', function() {
 
 test('dispose', function() {
 	expect(2);
-	var pb = new baidu.ui.progressBar.ProgressBar();
+	var pb = new baidu.ui.ProgressBar();
 	pb.render(te.dom[0]);
 	ok(baidu.dom.g(pb.getId()),'created');
 	pb.dispose();

@@ -35,7 +35,7 @@
 	test('horizontal', function() {
 		stop();
 		setTimeout(function() {
-			var carous = new baidu.ui.carousel.Carousel( {
+			var carous = new baidu.ui.Carousel( {
 				target : te.dom[0],
 				// orientation:'vertical',
 				showButton : true,
@@ -113,7 +113,7 @@
 					content : "item~5"
 				} ]
 			}
-			var carous = new baidu.ui.carousel.Carousel(options);
+			var carous = new baidu.ui.Carousel(options);
 			carous.render();
 			var offsetItem0 = document.getElementById(carous.getId("item0")).offsetLeft;
 			var item = document.getElementById(carous.getId("item0"));

@@ -1,4 +1,4 @@
-module('baidu.ui.carousel');
+module('baidu.ui.Carousel');
 function createCarousel(c, s) {
 
 	var op = {
@@ -104,7 +104,7 @@ test("focus, _blur", function() {
 });
 
 test('addItem,no options', function() {
-	var carou = new baidu.ui.carousel.Carousel( {
+	var carou = new baidu.ui.Carousel( {
 		target : te.dom[0]
 	});
 	carou.render();

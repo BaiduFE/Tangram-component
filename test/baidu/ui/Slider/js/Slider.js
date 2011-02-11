@@ -1,7 +1,7 @@
-module('baidu.ui.slider.Slider');
+module('baidu.ui.Slider');
 
 test('initi', function() {
-	var slider = new baidu.ui.slider.Slider();
+	var slider = new baidu.ui.Slider();
 	expect(5);
 	var div = te.dom[0];
 	slider.render(div);
@@ -49,7 +49,7 @@ test('update', function() {
 		}
 	}
 
-	var s = new baidu.ui.slider.Slider(options);
+	var s = new baidu.ui.Slider(options);
 	var id = "div_test";
 	var div = te.dom[0];
 	s.render(div);
@@ -94,7 +94,7 @@ test('onslide', function() {
 		}
 	}
 	stop();
-	var s = new baidu.ui.slider.Slider(options);
+	var s = new baidu.ui.Slider(options);
 	var div = te.dom[0];
 	s.render(div);
 	var thumb = s.getThumb();
@@ -129,7 +129,7 @@ test('range', function() {
 	var options = {
 		range : [ 0, 200 ]
 	}
-	var s = new baidu.ui.slider.Slider(options);
+	var s = new baidu.ui.Slider(options);
 	var div = te.dom[0];
 	s.render(div);
 	var thumb = s.getThumb();
@@ -166,7 +166,7 @@ test('set min max', function() {
 		min:0,
 		max:300
 	}
-	var s = new baidu.ui.slider.Slider(options);
+	var s = new baidu.ui.Slider(options);
 	var div = te.dom[0];
 	s.render(div);
 	var thumb = s.getThumb();
@@ -202,7 +202,7 @@ test('set min max', function() {
 
 test('dispose',function(){
 	expect(2);
-	var s = new baidu.ui.slider.Slider();
+	var s = new baidu.ui.Slider();
 	s.render(te.dom[0]);
 	ok(baidu.dom.g(s.getId()),'created');
 	s.dispose();

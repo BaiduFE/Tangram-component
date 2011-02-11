@@ -1,4 +1,4 @@
-module('baidu.ui.table.Table$page');
+module('baidu.ui.Table.Table$page');
 
 /**
  * addRow removeRow gotoPage prevPage nextPage
@@ -10,11 +10,10 @@ var checkCellData = function(cells, expectedData, msg) {
 				+ index);
 	}
 };
-
 /*检查分页*/
-test('createPage',function(){
+test('createPage', function(){
 	expect(5);
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		pageSize : 2,
 		data : [ {
 			content : [ "data1", "data2" ]
@@ -32,13 +31,12 @@ test('createPage',function(){
 	equal(table.data[0].content[1],"data2");
 	equal(table.data[1].content[0],"data3");
 	equal(table.data[1].content[1],"data4");
-	
 });
 
 /* nextPage,prevPage实际上调的就是gotoPage */
 test('gotoPage', function() {
 	expect(8);
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		pageSize : 2,
 		data : [ {
 			content : [ "data1", "data2" ]
@@ -65,7 +63,7 @@ test('gotoPage', function() {
 
 test('prev/next page', function() {
 	expect(16);
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		pageSize : 2,
 		data : [ {
 			content : [ "data1", "data2" ]
@@ -107,7 +105,7 @@ test('prev/next page', function() {
 /* 当前页面为1,需要插入的页面编号为2，因此必须滚动到插入页的时候才真正做插入动作,从而可以节约资源 */
 test('addRow---currpage<insertPage', function() {
 	expect(5);
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		pageSize : 2,
 		data : [ {
 			content : [ "data1", "data2" ]
@@ -130,10 +128,12 @@ test('addRow---currpage<insertPage', function() {
 	});
 });
 
+
+//
 /* 只有当插入的页面编号小于当前页面编码的时候，插入页面的内容会溢出到后面的页面 */
 test('addRow---currpage>=insertPage', function() {
 	expect(9);
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		pageSize : 2,
 		data : [ {
 			content : [ "data1", "data2" ]
@@ -163,9 +163,11 @@ test('addRow---currpage>=insertPage', function() {
 	checkCellData(rows[1].cells, [ "data1", "data2" ], 'add row data');
 });
 
+
+//
 test('removeRow--currPage<delePage', function() {
 	expect(9);
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		pageSize : 2,
 		data : [ {
 			content : [ "data1", "data2" ]
@@ -196,7 +198,7 @@ test('removeRow--currPage<delePage', function() {
 
 test('removeRow--currPage>=delePage', function() {
 	expect(7);
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		pageSize : 2,
 		data : [ {
 			content : [ "data1", "data2" ]
@@ -228,7 +230,7 @@ test('removeRow--currPage>=delePage', function() {
 test('add/remove Row with pageSize', function() {
 	expect(12);
 	var rows;
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		data : [ {
 			content : [ "data1", "data2" ]
 		}, {

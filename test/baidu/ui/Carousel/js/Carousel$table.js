@@ -15,7 +15,7 @@ test('addTableItem',function(){
 			target : te.dom[0]
 //			layout : {row:2,col:4}
 		}
-		var car = new baidu.ui.carousel.Carousel(options);
+		var car = new baidu.ui.Carousel(options);
 		
 		car.render();	
 		var count = car.totalCount;
@@ -53,7 +53,7 @@ test('addTableItem with index',function(){
 				content : "item-5"
 			} ]
 		}
-		var car = new baidu.ui.carousel.Carousel(options);
+		var car = new baidu.ui.Carousel(options);
 		car.render();
 		var count = car.totalCount;
 		var addData = new Array('add','add2');
@@ -86,7 +86,7 @@ test('removeTableItem',function(){
 				content : "item-5"
 			} ]
 		}
-		var car = new baidu.ui.carousel.Carousel(options);
+		var car = new baidu.ui.Carousel(options);
 		car.render();
 		var count = car.totalCount;
 		car.removeTableItem(1);

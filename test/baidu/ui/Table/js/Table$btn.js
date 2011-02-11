@@ -1,4 +1,4 @@
-module('baidu.ui.table.Table$btn');
+module('baidu.ui.Table$btn');
 
 /**
  * <li>resize
@@ -6,7 +6,7 @@ module('baidu.ui.table.Table$btn');
  */
 
 test('onload,resize', function() {
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table({
 		withPager : true,
 		data : [ {
 			content : [ "data1,data2" ]
@@ -25,7 +25,7 @@ test('onload,resize', function() {
  * onupdate(Table中的update)
  */
 test('onupdate', function() {
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		withPager : true,
 		pageSize : 1,
 		data : [ {
@@ -51,7 +51,7 @@ test('onupdate', function() {
 
 /* onaddrow,onremoverow调用btn自己的update函数 */
 test('update', function() {
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		withPager : true,
 		data : [ {
 			content : [ "data1", "data2" ]
@@ -83,7 +83,7 @@ test('update', function() {
 test('onresize', function() {
 	ua
 			.frameExt(function(w, f) {
-				var tb = new w.baidu.ui.table.Table( {
+				var tb = new w.baidu.ui.Table( {
 					withPager : true,
 					data : [ {
 						content : [ "data1", "data2" ]

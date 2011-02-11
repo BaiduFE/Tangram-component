@@ -1,7 +1,7 @@
 (function() {
 	module('baidu.ui.carousel.Carousel$scrollByPage');
 	test("prevPage, nextPage", function() {
-		var carousel = new baidu.ui.carousel.Carousel( {
+		var carousel = new baidu.ui.Carousel( {
 			target : te.dom[0],
 			contentText : [ {
 				content : "item~0"

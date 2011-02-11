@@ -1,4 +1,4 @@
-module('baidu.ui.table.Cell');
+module('baidu.ui.Table.Cell');
 
 /**
  * <li>getMain
@@ -10,7 +10,7 @@ module('baidu.ui.table.Cell');
  */
 
 test('getMain', function() {
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		data : [ {
 			content : [ "100", "200", "300" ]
 		}, {
@@ -26,7 +26,7 @@ test('getMain', function() {
 
 
 test("set/get HTML", function() {
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		data : [ {
 			content : [ "100", "200" ]
 		}, {
@@ -46,7 +46,7 @@ test("set/get HTML", function() {
 
 test('set/get Parent,_initialize',function(){
 	expect(3);
-	var table = new baidu.ui.table.Table( {
+	var table = new baidu.ui.Table( {
 		data : [ {
 			content : [ "100", "200" ]
 		}, {

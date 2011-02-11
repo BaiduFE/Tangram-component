@@ -1,4 +1,4 @@
-module('baidu.ui.slider.Slider$progressBar');
+module('baidu.ui.Slider.Slider$progressBar');
 /**
  * 由于考虑到滑块长度可能比进度条本身的宽度要大，因此滑块可能会溢出进度条以外
  */
@@ -30,7 +30,7 @@ var dragFunc = function(ele, x , pb, thumb) {
 };
 
 test('mouse within range',function(){
-	var sp = new baidu.ui.slider.Slider();
+	var sp = new baidu.ui.Slider();
 	var div = te.dom[0];
 	sp.render(div);
 	var thumb = sp.getThumb();
@@ -48,7 +48,7 @@ test('mouse within range',function(){
  * 边界值测试
  */
 test('mouse outof range', function() {
-	var sp = new baidu.ui.slider.Slider();
+	var sp = new baidu.ui.Slider();
 	var div = te.dom[0];
 	sp.render(div);
 	var thumb = sp.getThumb();

@@ -1,4 +1,4 @@
-module('baidu.ui.table.Table$edit');
+module('baidu.ui.Table.Table$edit');
 
 /**
  * 检测单元格是否可编辑
@@ -43,7 +43,7 @@ test('校验是否可编辑和非可编辑', function() {
 	/**
 	 * 初始化一个table，第1、2列不可以编辑，第3列可以编辑
 	 */
-	var tb = new baidu.ui.table.Table( {
+	var tb = new baidu.ui.Table( {
 		data : [ {
 			id : "row1",
 			content : [ "1", "2" ]
@@ -61,22 +61,22 @@ test('校验是否可编辑和非可编辑', function() {
 	 */
 	check(tb.getRow(0).getCell(1).getMain(), true);
 	check(tb.getRow(1).getCell(1).getMain(), true);
-
-	/**
-	 * 双击第1列，不应该进入编辑状态
-	 */
+//
+//	/**
+//	 * 双击第1列，不应该进入编辑状态
+//	 */
 	check(tb.getRow(0).getCell(0).getMain(), false);
-
-	/**
-	 * 更新非可编辑列为可编辑列
-	 */
+//
+//	/**
+//	 * 更新非可编辑列为可编辑列
+//	 */
 	columns[0].enableEdit = true;
 	tb.update(columns);
 	check(tb.getRow(0).getCell(0).getMain(), true);
-	
-	/**
-	 * 更新非可编辑列为不可编辑列
-	 */
+//	
+//	/**
+//	 * 更新非可编辑列为不可编辑列
+//	 */
 	columns[0].enableEdit = false;
 	tb.update(columns);
 	check(tb.getRow(0).getCell(0).getMain(), false);//PUBLICGE-216
