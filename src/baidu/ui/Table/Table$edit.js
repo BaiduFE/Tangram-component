@@ -8,6 +8,7 @@
  * @date:2010-11-05
  */
 ///import baidu.ui.Table;
+///import baidu.ui.Table.Row;
 ///import baidu.array.each;
 ///import baidu.ui.Input;
 ///import baidu.dom.hide;
@@ -35,10 +36,8 @@ baidu.ui.Table.register(function(me){
 				}
 			});
 			if(me._editArray.length > 0){
-                me._textField = baidu.ui.createUI({
-                    element : me.getMain(),
-                    autoRender : true
-                });
+                me._textField = new baidu.ui.Input();
+                me._textField.render(me.getMain());
 				me._textField.getBody().onblur = function(evt){me._cellBlur(evt);}//为了保持和_cellFocus参数一致，这里不使用控件的onblur
 				baidu.dom.hide(me._textField.getBody());
 //				baidu.dom.setStyle(me.getBody(), "tableLayout", "fixed");
