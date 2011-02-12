@@ -22,8 +22,14 @@ h2{
     margin:5px;
     width:300px;
 }
+
+.tangram-dialog-main{
+    border:2px solid red;
+}
+
 .tangram-dialog{
-    border:2px solid #a8b9eb;
+    border-top:2px solid #a8b9eb;
+    border-bottom:2px solid #a8b9eb;
     background:#dae4ff;
     color:#333;
     padding-bottom:18px;
@@ -168,7 +174,8 @@ h2{
              */
             baidu.ui.dialog.Dialog.options = {
                 "titleText" : "default Title",
-                "contentText" : "default Content"
+                "contentText" : "default Content",
+                direction: ['e', 's', 'se','n','w','nw','sw','ne']
             };
 
             baidu.dom.ready(function(){
@@ -237,7 +244,8 @@ h2{
                         }
                     ],
                     skin : "test",
-                    "autoRender" : true
+                    "autoRender" : true,
+                     direction: ['e', 's', 'se','n','w','nw']
                 });
                 dialog.open();
             }
@@ -267,6 +275,9 @@ h2{
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:800, height: 800})'>big one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:200, height: 200})'>small one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({top:\"auto\", left : \"auto\"})'>go middle</a>, <select> <option>im in dialog</option> </select> ");
+                dialogContent.push("<br/>");
+                dialogContent.push("<a href=# onclick='baidu.ui.get(this).resizeCancel();'>cancel resizable</a> ");
+                dialogContent.push("<a href=# onclick='baidu.ui.get(this).resizeEnable();'>enable resizable</a>");
                 dialogContent = dialogContent.join('');
 
                 if(!type){
@@ -278,10 +289,10 @@ h2{
                 }else{
                     var dialog = new baidu.ui.dialog[type](dialogContent, options);
                 }
-                var table = document.getElementById("dialog_instances");
+                /*var table = document.getElementById("dialog_instances");
                 dialogPool.push(dialog);
 
-                var dialogInstanceTR = table.insertRow(nowIndex+1);
+                var dialogInstanceTR = table.insertRow(-1);
 
                 var cell = dialogInstanceTR.insertCell(0);
                 cell.innerHTML =    "<input type=button value='open' onclick=dialogPool["+nowIndex+"].open() />" +
@@ -298,7 +309,7 @@ h2{
                 cell.innerHTML =    options.resizable;
 
                 cell = dialogInstanceTR.insertCell(4);
-                cell.innerHTML =    options.closeButton;
+                cell.innerHTML =    options.closeButton;*/
             }
 
         </script>
@@ -340,9 +351,9 @@ h2{
         <h2>dialog instances</h2>
         <table id="dialog_instances" border=1 cellspacing=0 cellpadding=5>
             <tr>
-                <th>operations</th>
-                <th>draggable</th>
-                <th>modal</th>
+                <td>operations</td>
+                <td>draggable</td>
+                <td>modal</td>
             </tr>
         </table>
         </div>

@@ -14,7 +14,7 @@
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.object.extend;
-
+///import baidu.dom.children;
 
 ///import baidu.dom.g;
 ///import baidu.dom.remove;
@@ -170,14 +170,22 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         baidu.on(window, 'resize', me.windowResizeHandler);
 
         me.dispatchEvent('onload');
+        //me.dispatchEvent('onafterload');
 
         return main;
     },
 
+    /**
+     * 更新title，和content内容函数
+     * @private
+     * @param {Object} options 传入参数
+     * @return null
+     */
     _update:function(options){
         var me = this,
             content = me.getContent(),
-            options = options || {};
+            options = options || {},
+            title = me.getTitleInner();
 
         
         if(me.content && content.firstChild != me.content) {
@@ -200,13 +208,15 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             //针对两种情况
             //1.第一次new dialog时传入contentText，进行渲染
             //2.new dialog时没有传入contentText的，之后使用dialogInstance.contentText = HTMLString；dialogInstance._update这样的情况进行更新
-            content.innerHTML == '' && (content.innerHTML = me.contentText);
+            baidu.dom.children(content).length == 0 && (content.innerHTML = me.contentText);
         }
-        baidu.extend(me,options || {});
         
-        if(me.titleText){
-            me.getTitleInner('title-inner').innerHTML = me.titleText;
+        if(options.titleText && options.titleText != me.titleText){
+            title.innerHTML = options.titleText;
+        }else if(me.titleText){
+            (me.titleText != title.innerHTML) &&  (title.innerHTML = me.titleText);
         }
+        baidu.extend(me,options);
     },
 
     /**
@@ -298,8 +308,8 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             footer = me.getFooter();
 
         bodyOffset = {
-            'width' : content.offsetWidth,
-            'height' : content.offsetHeight
+            'width' : 0,
+            'height' : 0
         };
 
         //确定取值为数字
@@ -316,13 +326,12 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
         bodyOffset['height'] += title.offsetHeight + getStyleNum(title, 'marginTop');
         bodyOffset['height'] += footer.offsetHeight + getStyleNum(footer, 'marginBottom');
-
+        
         //fix margin
         var mt = getStyleNum(content, 'marginTop'), md = getStyleNum(title, 'marginBottom');
         bodyOffset['height'] += mt >= md ? mt : md;
         mt = getStyleNum(footer, 'marginTop'), md = getStyleNum(content, 'marginBottom');
         bodyOffset['height'] += mt >= md ? mt : md;
-
         return bodyOffset;
     },
 
@@ -339,19 +348,44 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             bottom = '',
             left = '',
             content = me.getContent(),
-            body = me.getBody();
+            body = me.getBody(),
+            ow = content.offsetWidth,
+            oh = content.offsetHeight;
 
         /*
          * 暂不支持百分比形式的寛高计算
          * 在render或者window resize时保证content上的寛高必有值
+         * 
+         * 在webkit中，为保持dom的完整性，浏览器会自己计算一下css值
+         * 例如：
+         * content的属性为: 
+         *  width:100px
+         *  marginLeft:5px
+         *  marginRight:5px
+         *
+         * body的属性为：
+         *  width:110px
+         *
+         * 此时更改content的width值为90px
+         * 在webkit中，取content的marginLeft和marginRight值分别是5px，15px
+         * 而不是原有的5px，5px
+         *
+         * 针对这个问题，调成程序执行顺序，先取得所有相关的css属性值
+         * 之后更改content的寛高，再根据content当前的offset值与之前取得的属性值进行计算，获取body的寛高值
          */
         me.width = parseFloat(me.width);
         me.height = parseFloat(me.height);
+        
+        bodyOffset = me._getBodyOffset();
+        
         baidu.lang.isNumber(me.width) && baidu.dom.setOuterWidth(content,me.width);
         baidu.lang.isNumber(me.height) && baidu.dom.setOuterHeight(content,me.height);
-        bodyOffset = me._getBodyOffset();
+        
+        bodyOffset.width += content.offsetWidth;
+        bodyOffset.height += content.offsetHeight;
+        
         baidu.setStyles(body, bodyOffset);
-
+        
         if ((me.left && me.left != 'auto') || (me.right && me.right != 'auto')) {
             //按照用户的值来设置
             left = me.left || '';

@@ -29,7 +29,23 @@ baidu.ui.decorator.Decorator = baidu.ui.createUI(function(ui){
 
     //装饰器模板
     tpl : {
-        "box" : "<table cellspacing='0'><tr><td #{class}></td><td #{class}></td><td #{class}></td></tr><tr><td #{class}></td><td #{class} id='#{innerWrapId}'></td><td #{class}></td></tr><tr><td #{class}></td><td #{class}></td><td #{class}></td></tr></table>"
+        "box" : "<table cellspacing='0' cellpadding='0' border='0' id='#{id}'>" + 
+                "<tr>" + 
+                "<td #{class}></td>" + 
+                "<td #{class}></td>" + 
+                "<td #{class}></td>" +
+                "</tr>" + 
+                "<tr>" + 
+                "<td #{class}></td>" + 
+                "<td #{class} id='#{innerWrapId}' valign='top'></td>" + 
+                "<td #{class}></td>" + 
+                "</tr>" + 
+                "<tr>" + 
+                "<td #{class}></td>" + 
+                "<td #{class}></td>" + 
+                "<td #{class}></td>" + 
+                "</tr>" + 
+                "</table>"
     },
 
     //装饰器模板的Class填充列表
@@ -42,6 +58,10 @@ baidu.ui.decorator.Decorator = baidu.ui.createUI(function(ui){
      */
     getInner : function(){
         return baidu.g(this.innerId);
+    },
+
+    getBox:function(){
+        return baidu.g(this.getId('table'));
     },
 
     /**
@@ -71,6 +91,7 @@ baidu.ui.decorator.Decorator = baidu.ui.createUI(function(ui){
 
         decoratorMain.innerHTML = baidu.format(
             me.tpl[me.type], {
+                id : me.getId('table'),
                 'class' : function (value){
                     return "class='" + me.getClass(me.type + "-" + me.tplClass[me.type][ruleCount++]) + "'"
                 },
@@ -85,7 +106,6 @@ baidu.ui.decorator.Decorator = baidu.ui.createUI(function(ui){
 
         me.innerId = uiMain.id;
         uiMain.getBodyHolder = me._getBodyWrap();
-
     }
     
 });
