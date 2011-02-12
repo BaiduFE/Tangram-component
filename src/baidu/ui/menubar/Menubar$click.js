@@ -8,6 +8,7 @@
  * date: 2010-12-09
  */
 ///import baidu.ui.menubar;
+///import baidu.ui.menubar.Menubar;
 ///import baidu.ui.get;
 ///import baidu.event.on;
 ///import baidu.event.un;
