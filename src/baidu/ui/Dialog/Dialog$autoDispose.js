@@ -4,8 +4,6 @@
  */
 
 ///import baidu.ui.Dialog;
-///import baidu.ui.Dialog$button;
-///import baidu.ui.Dialog$keyboard;
 
 ///import baidu.lang.isString;
 ///import baidu.object.extend;

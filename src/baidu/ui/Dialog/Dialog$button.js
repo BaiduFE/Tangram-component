@@ -10,7 +10,7 @@
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Button;
 ///import baidu.object.each;
-///import baidu.ui.Dialog$autoDispose;
+///import baidu.ui.Dialog.Dialog$autoDispose;
 
 /**
  * 根据this.buttons创建dialog下部的buttons
