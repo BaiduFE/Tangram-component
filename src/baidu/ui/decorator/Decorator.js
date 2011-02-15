@@ -36,9 +36,10 @@ baidu.ui.decorator.Decorator = baidu.ui.createUI(function(ui){
                 "<td #{class}></td>" +
                 "</tr>" + 
                 "<tr>" + 
-                "<td #{class}></td>" + 
+                //在ie中若td为空，当内容缩小时，td高度缩不去
+                "<td #{class}><i style='visibility:hidden'>&nbsp;</i></td>" + 
                 "<td #{class} id='#{innerWrapId}' valign='top'></td>" + 
-                "<td #{class}></td>" + 
+                "<td #{class}><i style='visibility:hidden'>&nbsp;</i></td>" + 
                 "</tr>" + 
                 "<tr>" + 
                 "<td #{class}></td>" + 

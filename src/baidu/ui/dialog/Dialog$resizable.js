@@ -6,7 +6,6 @@
 ///import baidu.ui.dialog.Dialog;
 ///import baidu.event.on;
 ///import baidu.event.un;
-///import baidu.dom.resizable;
 ///import baidu.ui.behavior.resizable;
 
 /**
@@ -27,6 +26,7 @@ baidu.ui.dialog.Dialog.register(function(me) {
     if (me.resizable) {
         var body,
             content,
+            main,
             contentWidth, contentHeight,
             bodyWidth,bodyHeight;
 
