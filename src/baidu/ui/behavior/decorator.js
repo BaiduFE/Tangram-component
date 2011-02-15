@@ -10,9 +10,7 @@
 
 
 ///import baidu.ui.behavior;
-
-///import baidu.ui.decorator.create;
-
+///import baidu.ui.Decorator;
 ///import baidu.lang.isString;
 
 /**
@@ -30,7 +28,8 @@
                 }else{
                     baidu.extend(opt, decoratorName);
                 }
-                me._decoratorInstance[i] = baidu.ui.decorator.create(opt);
+                me._decoratorInstance[i] = new baidu.ui.Decorator(opt);
+                me._decoratorInstance[i].render();
             });
         });
 
