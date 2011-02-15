@@ -12,6 +12,7 @@
 ///import baidu.ui.behavior;
 ///import baidu.ui.Decorator;
 ///import baidu.lang.isString;
+///import baidu.array.each;
 
 /**
  * 为ui控件添加装饰器
