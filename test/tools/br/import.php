@@ -20,7 +20,7 @@ $DEBUG = false;
 //分析获取当前项目源码路径
 $ss = explode('/', substr($_SERVER['SCRIPT_NAME'], 1));
 $source_path = $_SERVER['DOCUMENT_ROOT'].'/'.$ss[0].'/src/';
-$base_path = $_SERVER['DOCUMENT_ROOT'].'/Tangram-base/src/';
+$base_path = $_SERVER['DOCUMENT_ROOT'].'/tangram/src/';
 $cached = array();
 
 $f = explode(',', $_GET['f']);
@@ -100,9 +100,9 @@ function get_src_cnt($domain){
 		preg_match_all('/\/\/\/import\s+([^;]+);?/ies', $cnt, $is, PREG_PATTERN_ORDER);
 		
 		//移除//，顺便移除空行
-		$cnt = preg_replace('/\/\/.*/m', '', $cnt);
+		//$cnt = preg_replace('/\/\/.*/m', '', $cnt);
 		//移除/**/
-		$cnt = preg_replace('/\/\*.*\*\//sU', '', $cnt);		
+		//$cnt = preg_replace('/\/\*.*\*\//sU', '', $cnt);		
 		
 		$cached[$domain] = array('c'=>$cnt, 'i'=>$is[1]);
 	}
