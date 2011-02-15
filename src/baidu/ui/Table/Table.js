@@ -10,7 +10,7 @@
 
 ///import baidu.ui.create;
 ///import baidu.ui.createUI;
-//import baidu.ui.Table.Row;
+///import baidu.ui.Table.Row;
 ///import baidu.dom.g;
 ///import baidu.dom.remove;
 ///import baidu.dom.insertHTML;
@@ -84,7 +84,6 @@ baidu.ui.table.Table = baidu.ui.createUI(function(options){
      * @param {HTMLElement} target       目标父级元素
 	 */
 	render : function(target){
-		debugger;
 		var me = this;
         if(!target){return;}
         baidu.dom.insertHTML(me.renderMain(target), "beforeEnd", me.getString());
