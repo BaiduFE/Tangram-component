@@ -213,9 +213,11 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
             return ;
         }
         me._lastValue = me.value;
-        len = me[me.axis[me.layout]._getSize]()- me[me.axis[me.layout]._getThumbSize]();
-        baidu.dom.setStyle(me.getThumb(), me.axis[me.layout].thumbPos, me.value * (len) / ( me.max - me.min ) );
-        me.dispatchEvent("update");
+        if (me.dispatchEvent("beforesliderto", {drop: options.drop})) {
+            len = me[me.axis[me.layout]._getSize]()- me[me.axis[me.layout]._getThumbSize]();
+            baidu.dom.setStyle(me.getThumb(), me.axis[me.layout].thumbPos, me.value * (len) / ( me.max - me.min ) );
+            me.dispatchEvent("update");
+        }
     },
 
     /**

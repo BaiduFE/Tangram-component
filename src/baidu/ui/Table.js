@@ -7,6 +7,7 @@
  * version: 1.0.0
  * date: 2010/09/04
  */
+
 ///import baidu.ui.create;
 ///import baidu.ui.createUI;
 ///import baidu.dom.g;
@@ -32,7 +33,9 @@ baidu.ui.Table = baidu.ui.createUI(function(options){
         me.data = me.data || [];        //数据
         me._rows = [];                  //所有的Row组件
 //      me.columns = me.columns || [];  //列的设置信息
-}).extend({
+});
+///import baidu.ui.Table.Row;
+baidu.ui.Table.extend({
     uiType          : "table",
     tplBody         : '<div><table cellpadding="0" cellspacing="0" border="0" id="#{id}" class="#{class}" #{stateHandler}>#{rows}</table></div>',
     /**
