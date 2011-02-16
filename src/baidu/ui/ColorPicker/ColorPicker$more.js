@@ -6,7 +6,8 @@
 ///import baidu.ui.ColorPicker;
 ///import baidu.ui.ColorPicker.ColorPalette;
 ///import baidu.ui.Button;
-///import baidu.ui.Dialog.confirm;
+///import baidu.ui.Dialog;
+///import baidu.ui.Dialog$button;
 ///import baidu.ui.create;
 
 ///import baidu.object.extend;
@@ -52,11 +53,12 @@ baidu.ui.ColorPicker.extend({
     _createColorPaletteDialog: function() {
         var me = this;
         me.colorPaletteDialog =
-            baidu.ui.Dialog.confirm('', baidu.object.extend({
+            baidu.ui.Dialog(baidu.object.extend({
                 titleText: me.titleText,
                 height: 180,
                 width: 360,
                 modal: true,
+                type: 'confirm',
                 onaccept: function() {
                     me.dispatchEvent('onchosen', {
                         color: me.colorPalette.hex

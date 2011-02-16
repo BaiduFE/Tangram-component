@@ -127,7 +127,7 @@ baidu.ui.ColorPicker = baidu.ui.createUI(function(options) {
         
         options = options || {};
         baidu.object.extend(me, options);
-        baidu.dom.insertHTML(main, 'beforeEnd', me.getString());
+        main.innerHTML = me.getString();
         me.setPositionByElement(target, main, {
             position: me.position,
             once: true

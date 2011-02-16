@@ -65,7 +65,11 @@
  */
 
 baidu.ui.Popup = baidu.ui.createUI(function (options){
-}).extend(
+});
+
+baidu.ui.Popup.instances = baidu.ui.Popup.instances || [];
+
+baidu.ui.Popup.extend(
     /**
      *  @lends baidu.ui.Popup.prototype
      */
