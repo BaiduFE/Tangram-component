@@ -120,10 +120,6 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
         baidu.dom.insertHTML(me.renderMain(target || me.target), "beforeEnd", me.getString());
         me._createMenu(); //创建下拉menu
         me._enterTipMode();
-        me.setPositionByElement(target, me.getMain(), {
-            position: me.position,
-            once: true
-        });
         me.dispatchEvent("onload");
     },
 
