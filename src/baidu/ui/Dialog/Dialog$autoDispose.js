@@ -16,11 +16,5 @@ baidu.ui.Dialog.register(function(me){
                 me.dispose();
             });
         }
-
-        //默认打开dialog
-        if (typeof me.autoOpen == 'undefined' || me.autoOpen) {
-            me.open();
-        }
-
     });
 });
