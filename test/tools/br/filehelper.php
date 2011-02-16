@@ -1,6 +1,6 @@
 <?php
 //获取两个目录下的相同路径的文件数
-function getSameFile($src, $test, $path='', $ext='js'){
+function getSameFile($src, $test, $path='', $ext=''){
 	$result = array();	
 	$as = listFile($src.$path);
 	foreach($as as $item){

@@ -4,8 +4,8 @@
         <title>toolbar manual test - by lixiaopeng</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <link type="text/css" rel="stylesheet" media="all" href="manual.css" />
-        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.Toolbar,baidu.ui.Toolbar.*'></script>
-        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.Button,baidu.ui.Menubar,baidu.ui.Combox'></script>
+        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.toolbar.*'></script>
+        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.button.Button,baidu.ui.menubar.Menubar,baidu.ui.combox.Combox'></script>
     </head>
     <body>
         <div id="toolBar-Container"></div>
@@ -47,7 +47,7 @@
                          * */
                     }
                 },{
-                    type:"toolbar",     
+                    type:"toolbar-toolbar",     
                     config:{
                         name:"ToolBar",
                              direction:"vertical",
@@ -83,12 +83,12 @@
                     }
                     
                 },{
-                    type:"toolbar",
+                    type:"toolbar-toolbar",
                     config:{
                         name:"toolbar2",
                         direction:"vertical",
                         items:[{
-                            type:"toolbar",
+                            type:"toolbar-toolbar",
                             config:{
                                 title:"toolbar",
                                 name:"toolbar2-1",
@@ -98,7 +98,7 @@
                                 ]
                             }
                         },{
-                            type:"toolbar",
+                            type:"toolbar-toolbar",
                             config:{
                                 name:"toolbar2-2",
                                 title:"toolbar",
@@ -112,7 +112,7 @@
                     }
                 }]
             };
-            var toolbar = new baidu.ui.Toolbar(options);
+            var toolbar = new baidu.ui.toolbar.Toolbar(options);
             toolbar.render("toolBar-Container");
         </script>
 

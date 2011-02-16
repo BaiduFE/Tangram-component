@@ -8,7 +8,6 @@
  * @date:2010-11-05
  */
 ///import baidu.ui.Table;
-///import baidu.ui.Table.Row;
 ///import baidu.array.each;
 ///import baidu.ui.Input;
 ///import baidu.dom.hide;

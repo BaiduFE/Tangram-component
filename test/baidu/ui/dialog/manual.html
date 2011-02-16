@@ -3,7 +3,7 @@
     <head>
         <title>dialog manual test - by berg</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*,baidu.ui.legacy' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.dialog.*' ></script>
         
         <script src='../../../../src/import.php?f=baidu.ui.behavior.decorator' ></script>
         <!--页面依赖-->
@@ -35,37 +35,9 @@ h2{
     padding-bottom:18px;
 }
 
-.tangram-dialog-resizable-se{
-    background-color:yellow;
-}
-
-.tangram-dialog-resizable-e{
-    background-color:black;
-}
-
-.tangram-dialog-resizable-s{
-    background-color:green;
-}
-
-.tangram-dialog-resizable-w{
-    background-color:purple;
-}
-
-.tangram-dialog-resizable-n{
-    background-color:gray;
-}
-
-.tangram-dialog-resizable-nw{
-    background-color:aqua;
-}
-
-.tangram-dialog-resizable-ne{
-    background-color:blue;
-}
-
-.tangram-dialog-resizable-sw{
-    background-color:teal;
-}
+  .tangram-dialog-resizable-se{
+	background:url(img/resize.gif);
+  }
 
 .tangram-dialog-title{
     background:url(img/bg1.gif) repeat-x;
@@ -172,7 +144,7 @@ h2{
             /*
              * 静态配置
              */
-            baidu.ui.Dialog.options = {
+            baidu.ui.dialog.Dialog.options = {
                 "titleText" : "default Title",
                 "contentText" : "default Content",
                 direction: ['e', 's', 'se','n','w','nw','sw','ne']
@@ -225,7 +197,7 @@ h2{
              * 创建一个静态配置的dialog
              */
             function createStaticConfigDialog(){
-                var dialog = new baidu.ui.Dialog({
+                var dialog = baidu.ui.dialog.create({
                     "autoRender" : true
                 });
                 dialog.open();
@@ -234,7 +206,7 @@ h2{
              * 装饰器对话框
              */
             function createDecoratorDialog(){
-                var dialog = new baidu.ui.Dialog({
+                var dialog = baidu.ui.dialog.create({
                     //装饰器是可以嵌套的
                     decorator : [
                         'box', 
@@ -270,7 +242,7 @@ h2{
 
                 var dialogContent = [];
                 dialogContent.push("<h4>dialog"+nowIndex+" -- zIndex:"+options.zIndex+"</h4>");
-                dialogContent.push("<a href='#;' onclick='new baidu.ui.Dialog({autoRender: true, zIndex:"+ options.zIndex+1 +",closeOnEscape:false}).open();'>new dialog with closeOnEscape false</a>, ");
+                dialogContent.push("<a href='#;' onclick='baidu.ui.dialog.create({autoRender: true, zIndex:"+ options.zIndex+1 +",closeOnEscape:false}).open();'>new dialog with closeOnEscape false</a>, ");
                 dialogContent.push("<a href='#;' onclick='baidu.ui.get(this).close()'>close me</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:800, height: 800})'>big one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:200, height: 200})'>small one</a>, ");
@@ -282,12 +254,12 @@ h2{
 
                 if(!type){
                     options['contentText'] = dialogContent;
-                    var dialog = new baidu.ui.Dialog(options);
+                    var dialog = baidu.ui.dialog.create(options);
                     dialog.open();
                 }else if(type == 'iframe'){
-                    var dialog = new baidu.ui.Dialog.iframe("inner.html", options);
+                    var dialog = new baidu.ui.dialog.iframe("inner.html", options);
                 }else{
-                    var dialog = baidu.ui.Dialog[type](dialogContent, options);
+                    var dialog = new baidu.ui.dialog[type](dialogContent, options);
                 }
                 /*var table = document.getElementById("dialog_instances");
                 dialogPool.push(dialog);
@@ -337,7 +309,6 @@ h2{
         <br />
         <input type="button" value ="dialog.create()" onclick="createDialog()" />
         <input type="button" value ="dialog.confirm()" onclick="createDialog('confirm')" />
-        <input type="button" value ="dialog.alert()" onclick="createDialog('alert')" />
         <input type="button" value ="dialog.iframe()" onclick="createDialog('iframe')" />
         <input type="button" value ="test" onclick="d.open()" />
 
@@ -361,8 +332,7 @@ h2{
         <select>
             <option>please cover me!</option>
         </select>
-        <div id="flashContainer1"></div>
-        <div id="flashContainer2"></div>
+        <div id="flashContainer"></div>
         <br />
         <br />
         <br />
@@ -412,21 +382,18 @@ h2{
         <br />
         <br />
         <script>
-            baidu.ui.smartCover.options.hideFlash = true;
-            baidu.ui.smartCover.options.hideSelect = true;
+            //baidu.ui.smartCover.options.hideFlash = false;
+            /*
             baidu.swf.create({
-                id: "flash",
-                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
-                width:695,
-                height:90
 
-            }, "flashContainer1");
-            baidu.swf.create({
                 id: "flash",
-                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
-                width:695,
-                height:90
-            }, "flashContainer2");
+                url: "http://fe.baidu.com/dev/tangram/assets/test.swf",
+                width:800,
+                height:600
+
+            }, "flashContainer");
+            */
+            //var d = baidu.ui.dialog.iframe("inner.html");
         </script>
     </body>
 </html>
