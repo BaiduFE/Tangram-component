@@ -63,6 +63,12 @@ baidu.ui.createUI = function(constructor, options) {
             for (i=0, n=ui._addons.length; i<n; i++) {
                 ui._addons[i](me);
             }
+            if(opt.parent && me.setParent){
+                me.setParent(opt.parent);
+            }
+            if(opt.autoRender){ 
+                me.render(opt.element);
+            }
         },
         C = function(){};
 
@@ -76,19 +82,16 @@ baidu.ui.createUI = function(constructor, options) {
         proto[i] = baidu.ui.Base[i];
     }
 
-    //给类扩展出一个静态方法，以代替 baidu.object.extend()
+    /**
+     * 扩展控件的prototype
+     * 
+     * @param {Object} json 要扩展进prototype的对象
+     *
+     * @return {Object} 扩展后的对象
+     */
     ui.extend = function(json){
         for (i in json) {
             ui.prototype[i] = json[i];
-        }
-        //将create方法扩展到静态方法中
-        var uiType = json.uiType,
-            uiNS = uiType ? baidu.ui[uiType] : "";
-
-        if(uiNS){
-            uiNS.create = function(options){
-                return baidu.ui.create(uiNS[uiType.charAt(0).toUpperCase() + uiType.slice(1)], options);
-            };
         }
         return ui;  // 这个静态方法也返回类对象本身
     };

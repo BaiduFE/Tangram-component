@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+.tangram-carousel {position:relative; overflow:hidden;}
+.tangram-carousel .tangram-carousel-scroll {position:absolute;}
+.tangram-carousel .tangram-carousel-scroll .tangram-carousel-item {position:relatiev; border:pink solid 1px;}
+.tangram-carousel .tangram-carousel-scroll .tangram-carousel-item-focus{border:red solid 1px; background:#eee;}
+.tangram-carousel-btn-prev {border:gray solid 1px;}
+.tangram-carousel-btn-next {border:gray solid 1px;}
+
+.myslide {border:green solid 1px;}
+.myslide .myslide-scroll {}
+.myslide .myslide-scroll .myslide-item {float:left; width:100px; height:30px;}

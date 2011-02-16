@@ -3,10 +3,7 @@
     <head>
         <title>suggestion manual test - by berg</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/loader.js' ></script>
-        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.suggestion.*&path=../../tangram/src/' ></script>
-        <!--script src="http://img.baidu.com/js/tangram-1.1.1.js"></script-->
-        <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.create,baidu.ui.Suggestion,baidu.ui.Suggestion.*,baidu.object.each,baidu.lang.isObject,baidu.dom.insertHTML&path=../../tangram/src/' ></script>
 <style>
 #console{background-color:black;color:white;width:400px;position:absolute;right:0;top:0;height:500px;overflow-y:scroll;}
 
@@ -63,7 +60,7 @@
                 baidu.dom.insertHTML("console", "afterBegin", html.join("<br />")+"<br />");
             }
             //静态配置
-            baidu.ui.suggestion.Suggestion.options = {
+            baidu.ui.Suggestion.options = {
                 "onconfirm" : function(event){
                     /*
                     this.getTarget().style.display = "none";
@@ -101,9 +98,17 @@
                 "ddt",
                 "ddx"
             ];
-            var sug1 = baidu.ui.suggestion.create(baidu.g("suggestion1"));
-            var sug2 = baidu.ui.suggestion.create(baidu.g("suggestion2"));
-            var sug3 = baidu.ui.suggestion.create(baidu.g("suggestion3"), {
+            var sug1 = baidu.ui.create('suggestion', {
+                autoRender: true,
+                element : baidu.g("suggestion1")
+            });
+            var sug2 = new baidu.ui.Suggestion({
+                autoRender: true,
+                element : baidu.g("suggestion2")
+            });
+            var sug3 = new baidu.ui.Suggestion({
+                autoRender: true,
+                element : baidu.g("suggestion3"),
                 view : function(pos){
                     pos.top -= baidu.g("suggestion3").offsetHeight;
                     pos.left += baidu.g("suggestion3").offsetWidth;

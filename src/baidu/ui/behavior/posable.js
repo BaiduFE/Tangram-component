@@ -65,6 +65,8 @@
             elementStyle = {},
             cH = baidu.page.getViewHeight(),
             cW = baidu.page.getViewWidth(),
+            scrollLeft = baidu.page.getScrollLeft(),
+            scrollTop  = baidu.page.getScrollTop(),
             sourceWidth = source.offsetWidth,
             sourceHeight = source.offsetHeight,
             offsetParent = source.offsetParent,
@@ -80,16 +82,11 @@
         elementStyle.top = coordinate.y + options.offset.y - parentPos.top - (options.position.indexOf('top') >= 0 ? sourceHeight : 0);
 
         switch (options.insideScreen) {
-            case 'surround' :
-                elementStyle.left = coordinate['x'] - parentPos.left - (
-                    options.position.indexOf('left') >= 0 ? (coordinate['x'] - baidu.page.getScrollLeft() > sourceWidth ? sourceWidth : 0) :
-                                                       (cW - coordinate['x'] + baidu.page.getScrollLeft() > sourceWidth ? 0 : sourceWidth)
-                );
-
-                elementStyle.top = coordinate['y'] - parentPos.top - (
-                    options.position.indexOf('top') >= 0 ? (coordinate['y'] - baidu.page.getScrollTop() > sourceHeight ? sourceHeight : 0) :
-                                                      (cH - coordinate['y'] + baidu.page.getScrollTop() > sourceHeight ? 0 : sourceHeight)
-                );
+           case "surround" :
+                elementStyle.left += elementStyle.left < scrollLeft ? sourceWidth  : 
+                                        ((elementStyle.left + sourceWidth ) > (scrollLeft + cW) ? -sourceWidth : 0);
+                elementStyle.top  += elementStyle.top  < scrollTop  ? sourceHeight :
+                                        ((elementStyle.top  + sourceHeight) > (scrollTop  + cH) ? -sourceHeight : 0);
                 break;
             case 'fix' :
                 elementStyle.left = Math.max(

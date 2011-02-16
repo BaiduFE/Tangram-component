@@ -35,37 +35,9 @@ h2{
     padding-bottom:18px;
 }
 
-.tangram-dialog-resizable-se{
-    background-color:yellow;
-}
-
-.tangram-dialog-resizable-e{
-    background-color:black;
-}
-
-.tangram-dialog-resizable-s{
-    background-color:green;
-}
-
-.tangram-dialog-resizable-w{
-    background-color:purple;
-}
-
-.tangram-dialog-resizable-n{
-    background-color:gray;
-}
-
-.tangram-dialog-resizable-nw{
-    background-color:aqua;
-}
-
-.tangram-dialog-resizable-ne{
-    background-color:blue;
-}
-
-.tangram-dialog-resizable-sw{
-    background-color:teal;
-}
+  .tangram-dialog-resizable-se{
+	background:url(img/resize.gif);
+  }
 
 .tangram-dialog-title{
     background:url(img/bg1.gif) repeat-x;
@@ -292,7 +264,7 @@ h2{
                 /*var table = document.getElementById("dialog_instances");
                 dialogPool.push(dialog);
 
-                var dialogInstanceTR = table.insertRow(-1);
+                var dialogInstanceTR = table.insertRow(nowIndex+1);
 
                 var cell = dialogInstanceTR.insertCell(0);
                 cell.innerHTML =    "<input type=button value='open' onclick=dialogPool["+nowIndex+"].open() />" +
@@ -351,17 +323,16 @@ h2{
         <h2>dialog instances</h2>
         <table id="dialog_instances" border=1 cellspacing=0 cellpadding=5>
             <tr>
-                <td>operations</td>
-                <td>draggable</td>
-                <td>modal</td>
+                <th>operations</th>
+                <th>draggable</th>
+                <th>modal</th>
             </tr>
         </table>
         </div>
         <select>
             <option>please cover me!</option>
         </select>
-        <div id="flashContainer1"></div>
-        <div id="flashContainer2"></div>
+        <div id="flashContainer"></div>
         <br />
         <br />
         <br />
@@ -411,21 +382,18 @@ h2{
         <br />
         <br />
         <script>
-            baidu.ui.smartCover.options.hideFlash = true;
-            baidu.ui.smartCover.options.hideSelect = true;
+            //baidu.ui.smartCover.options.hideFlash = false;
+            /*
             baidu.swf.create({
-                id: "flash",
-                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
-                width:695,
-                height:90
 
-            }, "flashContainer1");
-            baidu.swf.create({
                 id: "flash",
-                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
-                width:695,
-                height:90
-            }, "flashContainer2");
+                url: "http://fe.baidu.com/dev/tangram/assets/test.swf",
+                width:800,
+                height:600
+
+            }, "flashContainer");
+            */
+            //var d = baidu.ui.dialog.iframe("inner.html");
         </script>
     </body>
 </html>

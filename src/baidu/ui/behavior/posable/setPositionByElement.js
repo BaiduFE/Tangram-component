@@ -4,7 +4,6 @@
  */
 
 ///import baidu.ui.behavior.posable;
-
 ///import baidu.dom.getPosition;
 
 /**

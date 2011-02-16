@@ -24,7 +24,7 @@
 ///import baidu.dom.setStyles;
 ///import baidu.dom._styleFilter.px;
 ///import baidu.dom.getPosition;
-///import baidu.each;
+///import baidu.array.each;
 
 (function(){
     var smartCover = {

@@ -42,7 +42,7 @@ class Kiss{
 	 * @param string $projroot root of project
 	 * @param string $name namespace of case
 	 */
-	function __construct($projroot = '../../../', $name = 'baidu.ui.dialog.Dialog', $ext='js'){
+	function __construct($projroot = '../../../', $name = 'baidu.ui.dialog.Dialog', $ext=''){
 		$this->projroot = $projroot;
 		$this->name = $name;
 		$this->ext = $ext;
@@ -120,12 +120,10 @@ class Kiss{
 		print "<script src='import.php?f=$this->name' ></script>\n";
 
 		/* load case and case dependents*/
-		if(strlen($this->ext)>0){
 			$ps = explode('.', $this->name);
 			array_pop($ps);
-			array_push($ps, 'js' ,'tools');
+			array_push($ps, 'tools');
 			print '<script type="text/javascript" src="'.$this->projroot.'test/'.implode('/', $ps).'.js"></script>'."\n";
-		}
 		print '<script type="text/javascript" src="'.$this->path.'"></script>'."\n";
 	}
 

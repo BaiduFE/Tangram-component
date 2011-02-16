@@ -40,14 +40,14 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
     */ 
     _getHeadString : function(item, key) {
         var me = this, 
-            headId = me.getId('head' + key);	
+            headId = me.getId('head' + key);    
         me.headIds.push(headId);
         if(key == me.defaultIndex){
             me.addEventListener("onload", function(){
                 me.setCurrentHead(baidu.g(headId)); 
             });
         }
-        return 	baidu.format(me.tplHead, {
+        return  baidu.format(me.tplHead, {
                 id       :  headId, 
                 bodyId   :  me.getId('body' + key), 
                 "class"  :  key == me.defaultIndex ? me.getClass('head')  +  " "  +  me.getClass(me.currentClass)  :  me.getClass('head'), 
@@ -67,7 +67,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
         var me = this, 
             bodyId = me.getId('body' + key);
         me.bodyIds.push(bodyId);
-        return 	baidu.format(me.tplBody,  {
+        return  baidu.format(me.tplBody,  {
                 id       :  bodyId, 
                 "class"  :  me.getClass('body'), 
                 body  :  item['body'], 
@@ -214,8 +214,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
     *dispose
     */
     dispose :  function() {
-        this.dispatchEvent("ondispose");	
+        this.dispatchEvent("ondispose");    
     }
-	
-})
-
+    
+});

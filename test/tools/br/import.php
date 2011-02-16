@@ -100,9 +100,9 @@ function get_src_cnt($domain){
 		preg_match_all('/\/\/\/import\s+([^;]+);?/ies', $cnt, $is, PREG_PATTERN_ORDER);
 		
 		//移除//，顺便移除空行
-		$cnt = preg_replace('/\/\/.*/m', '', $cnt);
+		//$cnt = preg_replace('/\/\/.*/m', '', $cnt);
 		//移除/**/
-		$cnt = preg_replace('/\/\*.*\*\//sU', '', $cnt);		
+		//$cnt = preg_replace('/\/\*.*\*\//sU', '', $cnt);		
 		
 		$cached[$domain] = array('c'=>$cnt, 'i'=>$is[1]);
 	}

@@ -13,7 +13,6 @@
 
 ///import baidu.dom.drag;
 ///import baidu.dom.getStyle;
-///import baidu.event.preventDefault;
 
 
 /**
@@ -64,9 +63,8 @@
         me._dragOption.handler = me._lastDragHandler = me.dragHandler || me.getMain();
 
         if (me.dragHandler) {
-            baidu.event.on(me.dragHandler, "onmousedown", me._dragFn = function(e) {
+            baidu.event.on(me.dragHandler, "onmousedown", me._dragFn = function() {
                 baidu.dom.drag(me.dragTarget || me.getMain(), me._dragOption);
-                baidu.event.preventDefault(window.event || e);
             });
         }
     };
