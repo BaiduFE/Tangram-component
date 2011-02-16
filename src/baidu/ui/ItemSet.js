@@ -28,7 +28,8 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
     tplBody          :  "", 
     headIds          :  [], 
     bodyIds          :  [], 
-    switchType       : "click",    
+    switchType       : "click",
+    defaultIndex     : 0,   
     /**
     *protect方法
     *做为子类getString()使用
@@ -41,7 +42,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
         var me = this, 
             headId = me.getId('head' + key);	
         me.headIds.push(headId);
-        if(key == 0){
+        if(key == me.defaultIndex){
             me.addEventListener("onload", function(){
                 me.setCurrentHead(baidu.g(headId)); 
             });
@@ -49,7 +50,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
         return 	baidu.format(me.tplHead, {
                 id       :  headId, 
                 bodyId   :  me.getId('body' + key), 
-                "class"  :  key == 0 ? me.getClass('head')  +  " "  +  me.getClass(me.currentClass)  :  me.getClass('head'), 
+                "class"  :  key == me.defaultIndex ? me.getClass('head')  +  " "  +  me.getClass(me.currentClass)  :  me.getClass('head'), 
                 head     :  item['head'], 
                 tangram  :  "name : " + me.getId('body' + key)
             });
@@ -70,7 +71,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
                 id       :  bodyId, 
                 "class"  :  me.getClass('body'), 
                 body  :  item['body'], 
-                display  :  key == 0 ? "block"  :  "none"
+                display  :  key == me.defaultIndex ? "block"  :  "none"
             });
     }, 
 
@@ -106,6 +107,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
         baidu.dom.insertHTML(me.renderMain(main),  "beforeEnd",  me.getString());
         baidu.each(me.getHeads(), function(head, key) {
             me._addSwitchEvent(head);
+            key == 0 && me.setCurrentHead(head);
         });
         me.dispatchEvent("onload");
     },
@@ -179,14 +181,10 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
         baidu.array.remove(this.headIds, headId);
         baidu.array.remove(this.bodyIds, bodyId);
         
-    }, 
-    /**
-    *通过head元素选择item
-    * @param {HTMLObject} head
-    */
-    switchByHead :  function(head) {
-        var me = this,
-            oldHead = me.getCurrentHead();
+    },
+    
+    _switch : function(head){
+        var me = this, oldHead = me.getCurrentHead();
         if(oldHead){
             me.getBodyByHead(oldHead).style.display = "none";
             baidu.dom.removeClass(oldHead,  me.getClass(me.currentClass));
@@ -194,7 +192,17 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
         me.setCurrentHead(head);
         me.getBodyByHead(head).style.display = "block";
         baidu.dom.addClass(head,  me.getClass(me.currentClass));
-    }, 
+    },
+    /**
+    *通过head元素选择item
+    * @param {HTMLObject} head
+    */
+    switchByHead :  function(head) {
+        var me = this;
+        if(me.dispatchEvent("beforeswitchbyhead", {element:head}) ){
+            me._switch(head);
+        }
+    },
     /**
     *通过索引选择item
     *@param {int} index
