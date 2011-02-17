@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>menuBar  manual test - by walter</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.create,baidu.ui.ColorPicker.*,baidu.ui.Dialog.*'>
+        </script>
+        <link rel="stylesheet" href="css/colorpicker.css" type="text/css"/>
+    </head>
+    <body>
+        <div>
+            <input type="button" value="ColorButton" id='button'/>
+            <div style="width:200px;height:200px;" id="testdiv">
+            </div>
+        </div>
+    </body>
+    <script language="javascript">
+        var options = {
+            element: 'button',
+            autoRender: true,
+            coverImgSrc: 'css/img/colorpicker_overlay.png',
+            onchosen: function(data){
+                baidu.dom.setStyle('testdiv', 'background-color', data.color);
+            }
+        }
+        
+        var colorPicker = baidu.ui.create(baidu.ui.ColorPicker, options);
+    </script>
+</html>

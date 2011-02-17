@@ -12,14 +12,16 @@
 (function() {
     var Resizable = baidu.ui.behavior.resizable = function() {};
 
+    Resizable.resizeableHandle = null;
+    
     /**
      * 更新reiszable设置
      * 创建resize handle
      * @param {Object} options
      * @see baidu.dom.resizable
-     * @return void.
+     * @return baidu.dom.resizable
      */
-    Resizable.resizeUpdate = function(options) {
+    Resizable.resizeCreate = function(options) {
         var me = this, target;
         options = options || {};
         if (!me.resizable) {
@@ -45,6 +47,34 @@
         me._resizeOption.classPrefix = options.classPrefix || me.classPrefix;
         target = options.target || me.getBody();
         me.direction && (me._resizeOption.direction = me.direction);
-        baidu.dom.resizable(target, me._resizeOption);
+        me.resizeableHandle = baidu.dom.resizable(target, me._resizeOption);
+    };
+
+    /**
+     * 更新resizeable handle
+     * @public
+     * @param {Object} options
+     * @return null
+     */
+    Resizable.resizeUpdate = function(options){
+        this.resizeableHandle.update(options); 
+    };
+
+    /**
+     * 取消resizeable功能
+     * @public
+     * @return null
+     */
+    Resizable.resizeCancel = function(){
+        this.resizeableHandle.cancel();
+    };
+
+    /**
+     * 激活resizeable
+     * @public 
+     * @return null
+     */
+    Resizable.resizeEnable = function(){
+        this.resizeableHandle.enable();
     };
 })();
