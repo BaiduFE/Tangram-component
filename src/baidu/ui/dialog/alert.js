@@ -26,7 +26,7 @@
  * @config {Object}             buttons               配置button选项。
  * @config {Function}           onopen                dialog打开时触发
  * @config {Function}           onclose               dialog关闭时触发
- * @config {Function}           onbeforeclose         dialog关闭前触发，如果此函数返回false，则组织dialog关闭。
+ * @config {Function}           onbeforeclose         dialog关闭前触发，如果此函数返回false，则阻止dialog关闭。
  * @config {Function}           onupdate              dialog更新内容时触发
  * @config {Boolean}            closeOnEscape         keyboardSupport模块提供支持，当esc键按下时关闭dialog。
  * @config {String}             closeText             closeButton模块提供支持，关闭按钮上的title。
