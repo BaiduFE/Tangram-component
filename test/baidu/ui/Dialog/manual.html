@@ -1,0 +1,421 @@
+<!doctype html>
+<html>
+    <head>
+        <title>dialog manual test - by berg</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*,baidu.ui.legacy' ></script>
+        
+        <script src='../../../../src/import.php?f=baidu.ui.behavior.decorator' ></script>
+        <!--页面依赖-->
+        <script src='../../../../src/import.php?f=baidu.dom.ready,baidu.dom.query,baidu.object.extend,baidu.swf.create,baidu.array.each' type="text/javascript" ></script>
+        <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
+<style>
+body{
+    margin:5px;
+}
+h2{
+    margin:0.3em 0;
+}
+.case{
+    border:1px #333 solid;
+    padding:5px;
+    margin:5px;
+    width:300px;
+}
+.tangram-dialog{
+    border:2px solid #a8b9eb;
+    background:#dae4ff;
+    color:#333;
+    padding-bottom:18px;
+}
+
+.tangram-dialog-resizable-se{
+    background-color:yellow;
+}
+
+.tangram-dialog-resizable-e{
+    background-color:black;
+}
+
+.tangram-dialog-resizable-s{
+    background-color:green;
+}
+
+.tangram-dialog-resizable-w{
+    background-color:purple;
+}
+
+.tangram-dialog-resizable-n{
+    background-color:gray;
+}
+
+.tangram-dialog-resizable-nw{
+    background-color:aqua;
+}
+
+.tangram-dialog-resizable-ne{
+    background-color:blue;
+}
+
+.tangram-dialog-resizable-sw{
+    background-color:teal;
+}
+
+.tangram-dialog-title{
+    background:url(img/bg1.gif) repeat-x;
+    cursor:move;
+    -moz-user-select:none;
+    line-height:24px;
+    font-size:14px;
+    font-weight:bold;
+    padding-top:10px;
+    padding-left:5px;
+    padding-bottom:5px;
+}
+.tangram-dialog-titletext{
+    margin: 0 10px;
+    line-height:24px;
+}
+.tangram-dialog-close{
+    width:19px;
+    height:19px;
+    right: 8px;
+    top:8px;
+    position:absolute;
+    background:url(img/close.gif);
+    cursor:pointer;
+}
+.tangram-dialog-content{
+    margin:5px;
+    border:1px solid #c3cff2;
+    background:#FFF;
+    padding:6px;
+}
+/*confirm*/
+.tangram-dialog-footer{
+    text-align:right;
+}
+.tangram-dialog-accept{
+    width:80px;
+    padding:5px;
+    margin:5px;
+    border:1px solid green;
+    background:#FFF;
+    cursor:pointer;
+}
+.tangram-dialog-cancel{
+    width:80px;
+    padding:5px;
+    margin:5px;
+    border:1px solid red;
+    background:#FFF;
+    cursor:pointer;
+}
+/*
+    decorator-box
+*/
+.tangram-decorator-box-main{
+    padding:10px;
+}
+.tangram-decorator-box-main table{
+    width:100%;
+    height:100%;
+}
+.tangram-decorator-box-lc, .tangram-decorator-box-rc, .tangram-decorator-box-ct, .tangram-decorator-box-cb{
+    background: none repeat scroll 0 0 #91D550
+}
+.tangram-decorator-box-lt, .tangram-decorator-box-rt, .tangram-decorator-box-lb, .tangram-decorator-box-rb{
+    background:url("http://img.baidu.com/img/iknow/home/bg.gif") no-repeat scroll 0 0 transparent;
+    height:3px;
+    width:3px;
+}
+.tangram-decorator-box-lt{
+    background-position:-4px -57px;
+}
+.tangram-decorator-box-rt{
+    background-position:-7px -57px;
+}
+.tangram-decorator-box-lb{
+    background-position:-4px -60px;
+}
+.tangram-decorator-box-rb{
+    background-position:-7px -60px;
+}
+</style>
+
+    </head>
+    <body>
+        <script>
+
+            /*
+                testDialog = baidu.ui.dialog.create({
+                    content: baidu.g("sdaffdsaadsf")
+                });
+
+                testDialog.open();
+            */
+            var eventsArray = ['onopen', 'onclose', 'onupdate', 'onbeforeclose', 'onaccept', 'oncancel', 'ondragstart', 'ondrag', 'ondragend'],
+                dialogPool = [];
+
+            /*
+            自定义Decorator默认属性
+            baidu.ui.decorator.Decorator.options = {
+                "classPrefix" : "test"
+            },
+            */
+            /*
+             * 静态配置
+             */
+            baidu.ui.Dialog.options = {
+                "titleText" : "default Title",
+                "contentText" : "default Content"
+            };
+
+            baidu.dom.ready(function(){
+                baidu.each(eventsArray, function(item){ 
+                    baidu.g("dialog-events").innerHTML += '<div id="'+item+'" style="width:100px;height:20px;border:1px #333 solid">'+item+'</div>';
+                });
+            });
+
+            /*
+             * 清空event方块的颜色
+             */
+            function resetEventBlockColor(){
+                baidu.each(eventsArray, function(item, key){
+                    document.getElementById(item).style.backgroundColor = "transparent";
+                });
+            }
+
+            /*
+             * 返回一个包含所有事件的Object
+             */
+            function getEventsObject(){
+                var options = {};
+                baidu.each(eventsArray, function(item, key){
+                    options[item] = function(){
+                        document.getElementById(item).style.backgroundColor = '#0f0';
+                       // console && console.log(item);
+                    }
+                });
+                return options;
+            }
+
+            /*
+             * 从页面的Input框中获取配置Object
+             */
+            function getConfigureObject(){
+                var options = {};
+                baidu.each(baidu.dom.query("input[type=text]"), function(item){
+                    options[item.id] = item.value;
+                });
+                baidu.each(baidu.dom.query("input[type=checkbox]"), function(item){
+                    options[item.id] = item.checked;
+                });
+                return options;
+            };
+
+            /*
+             * 创建一个静态配置的dialog
+             */
+            function createStaticConfigDialog(){
+                var dialog = new baidu.ui.Dialog({
+                    "autoRender" : true
+                });
+                dialog.open();
+            }
+            /**
+             * 装饰器对话框
+             */
+            function createDecoratorDialog(){
+                var dialog = new baidu.ui.Dialog({
+                    //装饰器是可以嵌套的
+                    decorator : [
+                        'box', 
+                        { //如果是object，就是装饰器创建时的参数
+                            type : 'box',
+                            classPrefix :  "box"
+                        }
+                    ],
+                    skin : "test",
+                    "autoRender" : true
+                });
+                dialog.open();
+            }
+
+
+            //按照配置创建
+            function createDialog(type){
+                var nowIndex = dialogPool.length;
+                var options = {
+                    autoRender : true
+                };
+
+                baidu.object.extend(options, getConfigureObject());
+                baidu.object.extend(options, getEventsObject());
+
+                options.zIndex = 1000 + nowIndex*2;
+                options.modalZIndex = 1000 + nowIndex*2 -1;
+
+                resetEventBlockColor();
+
+
+
+                var dialogContent = [];
+                dialogContent.push("<h4>dialog"+nowIndex+" -- zIndex:"+options.zIndex+"</h4>");
+                dialogContent.push("<a href='#;' onclick='new baidu.ui.Dialog({autoRender: true, zIndex:"+ options.zIndex+1 +",closeOnEscape:false}).open();'>new dialog with closeOnEscape false</a>, ");
+                dialogContent.push("<a href='#;' onclick='baidu.ui.get(this).close()'>close me</a>, ");
+                dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:800, height: 800})'>big one</a>, ");
+                dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:200, height: 200})'>small one</a>, ");
+                dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({top:\"auto\", left : \"auto\"})'>go middle</a>, <select> <option>im in dialog</option> </select> ");
+                dialogContent = dialogContent.join('');
+
+                if(!type){
+                    options['contentText'] = dialogContent;
+                    var dialog = new baidu.ui.Dialog(options);
+                    dialog.open();
+                }else if(type == 'iframe'){
+                    var dialog = new baidu.ui.Dialog.iframe("inner.html", options);
+                }else{
+                    var dialog = baidu.ui.Dialog[type](dialogContent, options);
+                }
+                var table = document.getElementById("dialog_instances");
+                dialogPool.push(dialog);
+
+                var dialogInstanceTR = table.insertRow(nowIndex+1);
+
+                var cell = dialogInstanceTR.insertCell(0);
+                cell.innerHTML =    "<input type=button value='open' onclick=dialogPool["+nowIndex+"].open() />" +
+                                    "<input type=button value='close' onclick=dialogPool["+nowIndex+"].close() />" + 
+                                    "<input type=button value='dispose' onclick=dialogPool["+nowIndex+"].dispose() />";
+
+                cell = dialogInstanceTR.insertCell(1);
+                cell.innerHTML =    options.draggable;
+
+                cell = dialogInstanceTR.insertCell(2);
+                cell.innerHTML =    options.modal;
+                
+                cell = dialogInstanceTR.insertCell(3);
+                cell.innerHTML =    options.resizable;
+
+                cell = dialogInstanceTR.insertCell(4);
+                cell.innerHTML =    options.closeButton;
+            }
+
+        </script>
+
+        <div class="case">
+            <input type="button" onclick="createStaticConfigDialog();" value="静态配置的dialog" />
+            <input type="button" onclick="createDecoratorDialog();" value="带装饰器的dialog" />
+        </div>
+
+        <div class="case">
+        
+        <h2>按照选项配置的dialog</h2>
+
+        width: <input type="text" id="width" value="368px" /><br />
+        height: <input type="text" id="height" value="344px" /><br />
+        top: <input type="text" id="top" value="auto" /><br />
+        left: <input type="text" id="left" value="auto" /><br />
+
+        titleText: <input type="text" id="titleText" value="Untitled" /><br />
+        draggable: <input type="checkbox" id="draggable" checked="checked" />
+        modal: <input type="checkbox" id="modal" checked="checked" />
+        risizable: <input type="checkbox" id="resizable" checked="checked" />
+        closeButton: <input type="checkbox" id="closeButton" checked="checked" />
+        
+        <br />
+        <input type="button" value ="dialog.create()" onclick="createDialog()" />
+        <input type="button" value ="dialog.confirm()" onclick="createDialog('confirm')" />
+        <input type="button" value ="dialog.alert()" onclick="createDialog('alert')" />
+        <input type="button" value ="dialog.iframe()" onclick="createDialog('iframe')" />
+        <input type="button" value ="test" onclick="d.open()" />
+
+        <br />
+        <br />
+        <br />
+
+        <h2>dialog Events <small><a href="#;" onclick="return resetEventBlockColor();">clear</a></small></h2>
+
+        <div id="dialog-events"></div>
+
+        <h2>dialog instances</h2>
+        <table id="dialog_instances" border=1 cellspacing=0 cellpadding=5>
+            <tr>
+                <th>operations</th>
+                <th>draggable</th>
+                <th>modal</th>
+            </tr>
+        </table>
+        </div>
+        <select>
+            <option>please cover me!</option>
+        </select>
+        <div id="flashContainer1"></div>
+        <div id="flashContainer2"></div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <script>
+            baidu.ui.smartCover.options.hideFlash = true;
+            baidu.ui.smartCover.options.hideSelect = true;
+            baidu.swf.create({
+                id: "flash",
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90
+
+            }, "flashContainer1");
+            baidu.swf.create({
+                id: "flash",
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90
+            }, "flashContainer2");
+        </script>
+    </body>
+</html>
