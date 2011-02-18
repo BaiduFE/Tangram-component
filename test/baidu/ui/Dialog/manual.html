@@ -3,10 +3,10 @@
     <head>
         <title>dialog manual test - by berg</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*,baidu.ui.legacy' ></script>
         
         <script src='../../../../src/import.php?f=baidu.ui.behavior.decorator' ></script>
-        <!--é¡µé¢ä¾èµ–-->
+        <!--Ò³ÃæÒÀÀµ-->
         <script src='../../../../src/import.php?f=baidu.dom.ready,baidu.dom.query,baidu.object.extend,baidu.swf.create,baidu.array.each' type="text/javascript" ></script>
         <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
 <style>
@@ -22,22 +22,44 @@ h2{
     margin:5px;
     width:300px;
 }
-
-.tangram-dialog-main{
-    border:2px solid red;
-}
-
 .tangram-dialog{
-    border-top:2px solid #a8b9eb;
-    border-bottom:2px solid #a8b9eb;
+    border:2px solid #a8b9eb;
     background:#dae4ff;
     color:#333;
     padding-bottom:18px;
 }
 
-  .tangram-dialog-resizable-se{
-	background:url(img/resize.gif);
-  }
+.tangram-dialog-resizable-se{
+    background-color:yellow;
+}
+
+.tangram-dialog-resizable-e{
+    background-color:black;
+}
+
+.tangram-dialog-resizable-s{
+    background-color:green;
+}
+
+.tangram-dialog-resizable-w{
+    background-color:purple;
+}
+
+.tangram-dialog-resizable-n{
+    background-color:gray;
+}
+
+.tangram-dialog-resizable-nw{
+    background-color:aqua;
+}
+
+.tangram-dialog-resizable-ne{
+    background-color:blue;
+}
+
+.tangram-dialog-resizable-sw{
+    background-color:teal;
+}
 
 .tangram-dialog-title{
     background:url(img/bg1.gif) repeat-x;
@@ -136,18 +158,17 @@ h2{
                 dialogPool = [];
 
             /*
-            è‡ªå®šä¹‰Decoratoré»˜è®¤å±æ€§
+            ×Ô¶¨ÒåDecoratorÄ¬ÈÏÊôĞÔ
             baidu.ui.decorator.Decorator.options = {
                 "classPrefix" : "test"
             },
             */
             /*
-             * é™æ€é…ç½®
+             * ¾²Ì¬ÅäÖÃ
              */
             baidu.ui.Dialog.options = {
                 "titleText" : "default Title",
-                "contentText" : "default Content",
-                direction: ['e', 's', 'se','n','w','nw','sw','ne']
+                "contentText" : "default Content"
             };
 
             baidu.dom.ready(function(){
@@ -157,7 +178,7 @@ h2{
             });
 
             /*
-             * æ¸…ç©ºeventæ–¹å—çš„é¢œè‰²
+             * Çå¿Õevent·½¿éµÄÑÕÉ«
              */
             function resetEventBlockColor(){
                 baidu.each(eventsArray, function(item, key){
@@ -166,7 +187,7 @@ h2{
             }
 
             /*
-             * è¿”å›ä¸€ä¸ªåŒ…å«æ‰€æœ‰äº‹ä»¶çš„Object
+             * ·µ»ØÒ»¸ö°üº¬ËùÓĞÊÂ¼şµÄObject
              */
             function getEventsObject(){
                 var options = {};
@@ -180,7 +201,7 @@ h2{
             }
 
             /*
-             * ä»é¡µé¢çš„Inputæ¡†ä¸­è·å–é…ç½®Object
+             * ´ÓÒ³ÃæµÄInput¿òÖĞ»ñÈ¡ÅäÖÃObject
              */
             function getConfigureObject(){
                 var options = {};
@@ -194,36 +215,35 @@ h2{
             };
 
             /*
-             * åˆ›å»ºä¸€ä¸ªé™æ€é…ç½®çš„dialog
+             * ´´½¨Ò»¸ö¾²Ì¬ÅäÖÃµÄdialog
              */
             function createStaticConfigDialog(){
-                var dialog = baidu.ui.dialog.create({
+                var dialog = new baidu.ui.Dialog({
                     "autoRender" : true
                 });
                 dialog.open();
             }
             /**
-             * è£…é¥°å™¨å¯¹è¯æ¡†
+             * ×°ÊÎÆ÷¶Ô»°¿ò
              */
             function createDecoratorDialog(){
-                var dialog = baidu.ui.dialog.create({
-                    //è£…é¥°å™¨æ˜¯å¯ä»¥åµŒå¥—çš„
+                var dialog = new baidu.ui.Dialog({
+                    //×°ÊÎÆ÷ÊÇ¿ÉÒÔÇ¶Ì×µÄ
                     decorator : [
                         'box', 
-                        { //å¦‚æœæ˜¯objectï¼Œå°±æ˜¯è£…é¥°å™¨åˆ›å»ºæ—¶çš„å‚æ•°
+                        { //Èç¹ûÊÇobject£¬¾ÍÊÇ×°ÊÎÆ÷´´½¨Ê±µÄ²ÎÊı
                             type : 'box',
                             classPrefix :  "box"
                         }
                     ],
                     skin : "test",
-                    "autoRender" : true,
-                     direction: ['e', 's', 'se','n','w','nw']
+                    "autoRender" : true
                 });
                 dialog.open();
             }
 
 
-            //æŒ‰ç…§é…ç½®åˆ›å»º
+            //°´ÕÕÅäÖÃ´´½¨
             function createDialog(type){
                 var nowIndex = dialogPool.length;
                 var options = {
@@ -242,26 +262,23 @@ h2{
 
                 var dialogContent = [];
                 dialogContent.push("<h4>dialog"+nowIndex+" -- zIndex:"+options.zIndex+"</h4>");
-                dialogContent.push("<a href='#;' onclick='baidu.ui.dialog.create({autoRender: true, zIndex:"+ options.zIndex+1 +",closeOnEscape:false}).open();'>new dialog with closeOnEscape false</a>, ");
+                dialogContent.push("<a href='#;' onclick='new baidu.ui.Dialog({autoRender: true, zIndex:"+ options.zIndex+1 +",closeOnEscape:false}).open();'>new dialog with closeOnEscape false</a>, ");
                 dialogContent.push("<a href='#;' onclick='baidu.ui.get(this).close()'>close me</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:800, height: 800})'>big one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:200, height: 200})'>small one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({top:\"auto\", left : \"auto\"})'>go middle</a>, <select> <option>im in dialog</option> </select> ");
-                dialogContent.push("<br/>");
-                dialogContent.push("<a href=# onclick='baidu.ui.get(this).resizeCancel();'>cancel resizable</a> ");
-                dialogContent.push("<a href=# onclick='baidu.ui.get(this).resizeEnable();'>enable resizable</a>");
                 dialogContent = dialogContent.join('');
 
                 if(!type){
                     options['contentText'] = dialogContent;
-                    var dialog = baidu.ui.dialog.create(options);
+                    var dialog = new baidu.ui.Dialog(options);
                     dialog.open();
                 }else if(type == 'iframe'){
-                    var dialog = new baidu.ui.dialog.iframe("inner.html", options);
+                    var dialog = new baidu.ui.Dialog.iframe("inner.html", options);
                 }else{
-                    var dialog = new baidu.ui.dialog[type](dialogContent, options);
+                    var dialog = baidu.ui.Dialog[type](dialogContent, options);
                 }
-                /*var table = document.getElementById("dialog_instances");
+                var table = document.getElementById("dialog_instances");
                 dialogPool.push(dialog);
 
                 var dialogInstanceTR = table.insertRow(nowIndex+1);
@@ -281,19 +298,19 @@ h2{
                 cell.innerHTML =    options.resizable;
 
                 cell = dialogInstanceTR.insertCell(4);
-                cell.innerHTML =    options.closeButton;*/
+                cell.innerHTML =    options.closeButton;
             }
 
         </script>
 
         <div class="case">
-            <input type="button" onclick="createStaticConfigDialog();" value="é™æ€é…ç½®çš„dialog" />
-            <input type="button" onclick="createDecoratorDialog();" value="å¸¦è£…é¥°å™¨çš„dialog" />
+            <input type="button" onclick="createStaticConfigDialog();" value="¾²Ì¬ÅäÖÃµÄdialog" />
+            <input type="button" onclick="createDecoratorDialog();" value="´ø×°ÊÎÆ÷µÄdialog" />
         </div>
 
         <div class="case">
         
-        <h2>æŒ‰ç…§é€‰é¡¹é…ç½®çš„dialog</h2>
+        <h2>°´ÕÕÑ¡ÏîÅäÖÃµÄdialog</h2>
 
         width: <input type="text" id="width" value="368px" /><br />
         height: <input type="text" id="height" value="344px" /><br />
@@ -309,6 +326,7 @@ h2{
         <br />
         <input type="button" value ="dialog.create()" onclick="createDialog()" />
         <input type="button" value ="dialog.confirm()" onclick="createDialog('confirm')" />
+        <input type="button" value ="dialog.alert()" onclick="createDialog('alert')" />
         <input type="button" value ="dialog.iframe()" onclick="createDialog('iframe')" />
         <input type="button" value ="test" onclick="d.open()" />
 
@@ -332,7 +350,8 @@ h2{
         <select>
             <option>please cover me!</option>
         </select>
-        <div id="flashContainer"></div>
+        <div id="flashContainer1"></div>
+        <div id="flashContainer2"></div>
         <br />
         <br />
         <br />
@@ -382,18 +401,21 @@ h2{
         <br />
         <br />
         <script>
-            //baidu.ui.smartCover.options.hideFlash = false;
-            /*
+            baidu.ui.smartCover.options.hideFlash = true;
+            baidu.ui.smartCover.options.hideSelect = true;
             baidu.swf.create({
-
                 id: "flash",
-                url: "http://fe.baidu.com/dev/tangram/assets/test.swf",
-                width:800,
-                height:600
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90
 
-            }, "flashContainer");
-            */
-            //var d = baidu.ui.dialog.iframe("inner.html");
+            }, "flashContainer1");
+            baidu.swf.create({
+                id: "flash",
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90
+            }, "flashContainer2");
         </script>
     </body>
 </html>

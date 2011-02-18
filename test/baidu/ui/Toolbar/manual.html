@@ -4,8 +4,8 @@
         <title>toolbar manual test - by lixiaopeng</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <link type="text/css" rel="stylesheet" media="all" href="manual.css" />
-        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.toolbar.*'></script>
-        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.button.Button,baidu.ui.menubar.Menubar,baidu.ui.combox.Combox'></script>
+        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.Toolbar,baidu.ui.Toolbar.*'></script>
+        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.Button,baidu.ui.Menubar,baidu.ui.Combox'></script>
     </head>
     <body>
         <div id="toolBar-Container"></div>
@@ -15,7 +15,7 @@
                 items:[{
                     config:{
                         name:"cut_button",
-                        content:"<span class='in' style='width: 60px;'><strong>æŒ‰é’®</strong></span>"        
+                        content:"<span class='in' style='width: 60px;'><strong>°´Å¥</strong></span>"        
                     }
                 },{
                     type:"toolbar-spacer",
@@ -25,14 +25,14 @@
                 },{
                     config:{
                         name:"paste_button",
-                        content:"<span class='in' style='width: 60px;'><strong>æŒ‰é’®</strong></span>"     
+                        content:"<span class='in' style='width: 60px;'><strong>°´Å¥</strong></span>"     
                     }
                 },{
                     type:"menubar",
                     config:{
                         name:"menu",
-                        target:"<li id='menulist'>è¿™é‡Œæ˜¯èœå•</li>",
-                        data:[{content:"å¤åˆ¶"},{content:"ç²˜è´´"}]
+                        target:"<li id='menulist'>ÕâÀïÊÇ²Ëµ¥</li>",
+                        data:[{content:"¸´ÖÆ"},{content:"Õ³Ìù"}]
                         /**
                          * width
                          * height
@@ -47,7 +47,7 @@
                          * */
                     }
                 },{
-                    type:"toolbar-toolbar",     
+                    type:"toolbar",     
                     config:{
                         name:"ToolBar",
                              direction:"vertical",
@@ -55,7 +55,7 @@
                              items:[{
                              config:{
                                 name:"cut_button2",
-                                content:"<span class='in' style='width: 60px;'><strong>æŒ‰é’®</strong></span>"        
+                                content:"<span class='in' style='width: 60px;'><strong>°´Å¥</strong></span>"        
                             }
                         },{
                             type:"toolbar-spacer",
@@ -65,7 +65,7 @@
                         },{
                             config:{
                                 name:"paste_button2",
-                                content:"<span class='in' style='width: 60px;'><strong>æŒ‰é’®</strong></span>"     
+                                content:"<span class='in' style='width: 60px;'><strong>°´Å¥</strong></span>"     
                             }
                         }/*,{
                             type:"combox",
@@ -83,36 +83,36 @@
                     }
                     
                 },{
-                    type:"toolbar-toolbar",
+                    type:"toolbar",
                     config:{
                         name:"toolbar2",
                         direction:"vertical",
                         items:[{
-                            type:"toolbar-toolbar",
+                            type:"toolbar",
                             config:{
                                 title:"toolbar",
                                 name:"toolbar2-1",
                                 items:[
-                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>æŒ‰é’®</strong></span>"}},
-                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>æŒ‰é’®</strong></span>"}}
+                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>°´Å¥</strong></span>"}},
+                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>°´Å¥</strong></span>"}}
                                 ]
                             }
                         },{
-                            type:"toolbar-toolbar",
+                            type:"toolbar",
                             config:{
                                 name:"toolbar2-2",
                                 title:"toolbar",
                                 items:[
-                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>æŒ‰é’®</strong></span>"}},
-                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>æŒ‰é’®</strong></span>"}},
-                                    {config:{name:"button7",content:"<span class='in' style='width: 60px;'><strong>æŒ‰é’®</strong></span>"}}
+                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>°´Å¥</strong></span>"}},
+                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>°´Å¥</strong></span>"}},
+                                    {config:{name:"button7",content:"<span class='in' style='width: 60px;'><strong>°´Å¥</strong></span>"}}
                                 ]
                             }       
                         }]
                     }
                 }]
             };
-            var toolbar = new baidu.ui.toolbar.Toolbar(options);
+            var toolbar = new baidu.ui.Toolbar(options);
             toolbar.render("toolBar-Container");
         </script>
 
