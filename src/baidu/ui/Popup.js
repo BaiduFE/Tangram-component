@@ -65,11 +65,7 @@
  */
 
 baidu.ui.Popup = baidu.ui.createUI(function (options){
-});
-
-baidu.ui.Popup.instances = baidu.ui.Popup.instances || [];
-
-baidu.ui.Popup.extend(
+}).extend(
     /**
      *  @lends baidu.ui.Popup.prototype
      */
@@ -283,3 +279,6 @@ baidu.ui.Popup.extend(
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });
+
+baidu.ui.Popup.instances = baidu.ui.Popup.instances || [];
+

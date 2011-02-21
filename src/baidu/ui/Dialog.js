@@ -457,4 +457,4 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     }
 });
 
-baidu.ui.Dialog.instances = {};
+baidu.ui.Dialog.instances = baidu.ui.Dialog.instances || {};
