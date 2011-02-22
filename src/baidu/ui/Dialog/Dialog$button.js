@@ -3,10 +3,6 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-/**
- * plugin button
- */
-
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Button;
 ///import baidu.object.each;
