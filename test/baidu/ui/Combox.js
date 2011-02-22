@@ -55,17 +55,6 @@ function myTeardown() {
 	}
 }
 
-function myModuleStart(name) {
-
-}
-
-function myModuleEnd(name) {
-
-}
-
-function myDone() {
-
-}
 
 (function() {
 	var s = QUnit.testStart, e = QUnit.testDone, ms = QUnit.moduleStart, me = QUnit.moduleEnd, d = QUnit.done;
@@ -76,17 +65,6 @@ function myDone() {
 	QUnit.testDone = function() {
 		e.call(this, arguments);
 		myTeardown();
-	}
-	QUnit.moduleStart = function() {
-		myModuleStart(arguments[0]);
-		ms.apply(this, arguments);;
-	}
-	QUnit.moduleEnd = function() {
-		me.call(this, arguments);
-		myModuleEnd(arguments[0]);
-	}
-	QUnit.done = function() {
-		d.call(this, arguments);
 	}
 })();
 
@@ -101,9 +79,6 @@ test("createMenu", function() {
 		} ],
 		onitemclick : function(data) {
 			equal(data.value.content, 'a-content-1');
-		},
-		oninit : function() {
-			ok(true, 'init');
 		},
 		onopen : function() {
 			ok(true, 'open');
@@ -141,23 +116,64 @@ test("events", function() {
 			content : 'file',
 			value : 'file1'
 		}, {
-			content : 'new',
-			value : 'new2'
+			content : 'A-a',
+			value : 'A-a'
 		}, {
 			content : 'close',
 			value : 'close3'
 		} ],
+		statable: true,
+		autoRender : true,
+		editable : true,
 		onitemclick : function(data) {
 			ok(true, 'item clicked');
+		},
+		onmouseover : function() {
+			ok(true, 'onmouseover');
+			ok(cb.getBody().className.match('hover'),'mouseover body add class hover');
+		},
+		onmouseout : function() {
+			ok(true, 'onmouseout');
+			ok(!cb.getBody().className.match('hover'),'mouseout body remove class hover');
+		},
+		onmousedown : function() {
+			ok(true, 'onmousedown');
+			ok(cb.getBody().className.match('press'),'mousedown body add class press');
+		},
+		onmouseup : function() {
+			ok(true, 'onmouseup');
+			ok(!cb.getBody().className.match('press'),'mouseup body remove class press');
+		},
+		onkeyup : function() {
+			ok(true, 'onkeyup');
 		}
 	};
 	var div = document.body.appendChild(document.createElement("div"));
-	var cb = new baidu.ui.Combox();
+	var cb = new baidu.ui.Combox(options);
 	cb.render(div);
+	var input = cb.getInput();
+	var arrow = cb.getArrow();
+	ua.mouseover(input);
+	ua.mouseout(input);
+    ua.mousedown(arrow);
+    ua.mouseup(arrow);
+    stop();
+//	ua.keydown(input, {
+//		keyCode : 65
+//	});
+//    ua.keyup(input);
+    input.value = 'A';
+    $(input).focus();
+	setTimeout(function() {
+		$(cb.menu.getItem('0-0')).click();
+		equal(input.value, 'A-a');
+		start();
+	}, 100);
 
 });
 
 test("dispose", function() {
+	expect(5);
 	var options = {
 		data : [ {
 			content : 'file',
@@ -168,10 +184,24 @@ test("dispose", function() {
 		}, {
 			content : 'close',
 			value : 'close3'
-		} ]
+		} ],
+		editable : true,
+		onopen : function() {
+			ok(true, 'open');
+		}
 	};
 	var div = document.body.appendChild(document.createElement("div"));
-	var cb = new baidu.ui.Combox();
+	var cb = new baidu.ui.Combox(options);
 	cb.render(div);
-
+    var input = cb.getInput();
+	var arrow = cb.getArrow();
+	$(input).focus();
+	ua.keyup(input);
+    ua.click(arrow);
+    cb.dispose();
+    ok(cb.getBody()==null,"element is removed");
+    $(input).focus();
+	ua.keyup(input);
+    ua.click(arrow);
+    ok(true,'event is lose');
 })
