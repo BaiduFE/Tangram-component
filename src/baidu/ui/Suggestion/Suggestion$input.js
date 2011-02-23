@@ -181,7 +181,7 @@ baidu.ui.Suggestion.extend({
                 case 13:    //回车，默认为表单提交
                     baidu.event.preventDefault(e);
                     index = suggestion.getHighlightIndex();
-                    suggestion.confirm(index < 0 ? suggestion.getTarget().value : index, "keyboard");
+                    suggestion.confirm(suggestion.getTarget().value, index, "keyboard");
                     break;
                 case 38:    //向上，在firefox下，按上会出现光标左移的现象
                     up = true;
