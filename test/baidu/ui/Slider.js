@@ -35,15 +35,20 @@ module('baidu.ui.Slider');
 })();
 
 test('initi', function() {
-	var slider = new baidu.ui.Slider();
 	expect(5);
-	var div = te.dom[0];
-	slider.render(div);
-	equal(slider.min, 0, 'check range min');
-	equal(slider.max, 100, 'check range max');
-	equal(slider.uiType, 'slider', 'check ui type');
-	equal(slider.value, 0, 'check value');
-	ok(!slider.disabled, 'check enable');
+	stop();
+	setTimeout(function(){
+		var slider = new baidu.ui.Slider();
+		var div = te.dom[0];
+		slider.render(div);
+		equal(slider.min, 0, 'check range min');
+		equal(slider.max, 100, 'check range max');
+		equal(slider.uiType, 'slider', 'check ui type');
+		equal(slider.value, 0, 'check value');
+		ok(!slider.disabled, 'check enable');
+		start();
+	},100);
+
 })
 
 test('update', function() {
