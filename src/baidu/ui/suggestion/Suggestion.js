@@ -219,15 +219,16 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
     /**
      * confirm指定的条目
      * @public
+     * @param {Object} data
      * @param {number|string} index or item
      * @param {string} source 事件来源
      */
-    confirm : function(index, source){
+    confirm : function(data, index, source){
         var suggestion = this;
         
         suggestion.pick(index);
         suggestion.dispatchEvent("onconfirm", {
-            data : suggestion.getDataByIndex(index),
+            data : data,
             source : source
         });
         suggestion.hide();
@@ -374,12 +375,13 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function (options){
      * @private
      */
     itemClick : function(index){
-        var suggestion = this;
+        var suggestion = this,
+            data = suggestion.getDataByIndex(index);
 
         suggestion.dispatchEvent("onitemclick", {
-            data : this.getDataByIndex(index)
+            data : data
         });
-        suggestion.confirm(index, "mouse");
+        suggestion.confirm(data, index, "mouse");
     },
 
 
