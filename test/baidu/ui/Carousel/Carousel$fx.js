@@ -33,8 +33,8 @@
 	module('baidu.ui.Carousel.Carousel$fx');
 
 	test('horizontal', function() {
-		stop();
-		setTimeout(function() {
+	    stop();
+	    ua.loadcss(upath+'style.css',function(){
 			var carous = new baidu.ui.Carousel( {
 				target : te.dom[0],
 				// orientation:'vertical',
@@ -69,7 +69,7 @@
 			var item = document.getElementById(carous.getId("item0"));
 			carous.focus(0);
 			carous.scrollTo(2);
-		}, 500);
+		});
 
 	});
 

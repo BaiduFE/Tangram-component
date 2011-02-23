@@ -9,6 +9,10 @@
 	width: 200px;
 }
 .tangram-progressbar-bar {
-	background-color: yellow;
-	height: 20px;
+	background-color : yellow;
+	height : 20px;
+}
+.cssloaded {
+	background-color : red;
+    width : 20px;
 }

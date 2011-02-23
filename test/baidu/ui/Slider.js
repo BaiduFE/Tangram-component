@@ -16,20 +16,13 @@ module('baidu.ui.Slider');
 		div.id = id;
 		$(div).css('width', '200px').css('height', '20px').css('border', 'solid')
 		.css('color', 'black');
-		var link = document.createElement('link');
-		link.setAttribute("rel", "stylesheet");
-		link.setAttribute("type", "text/css");
-		link.setAttribute("href",
-				'../../baidu/ui/Slider/style.css');
-		document.getElementsByTagName("head")[0].appendChild(link);
 		document.body.appendChild(div);
 		te.dom.push(div);
-		te.dom.push(link);
 	}
 
 	var s = QUnit.testStart;
 	QUnit.testStart = function() {
-		s.apply(this, arguments);;
+		s.apply(this, arguments);
 		_testStart();
 	}
 })();
@@ -37,7 +30,7 @@ module('baidu.ui.Slider');
 test('initi', function() {
 	expect(5);
 	stop();
-	setTimeout(function(){
+	ua.loadcss(upath+'Slider/style.css',function(){
 		var slider = new baidu.ui.Slider();
 		var div = te.dom[0];
 		slider.render(div);
@@ -47,8 +40,7 @@ test('initi', function() {
 		equal(slider.value, 0, 'check value');
 		ok(!slider.disabled, 'check enable');
 		start();
-	},100);
-
+	}); 
 })
 
 test('update', function() {
@@ -212,7 +204,6 @@ test('set min max', function() {
 	var body = s.getBody();
 	var thumbX = parseInt(baidu.dom.getPosition(thumb)['left']);
 	var thumbY = parseInt(baidu.dom.getPosition(thumb)['top']);
-//	alert(document.body.outerHTML);
 	var divwidth =  parseInt($(body).css('width'));
 	ua.mousemove(thumb, {
 		clientX : thumbX,
