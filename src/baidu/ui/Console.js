@@ -41,7 +41,8 @@ baidu.ui.Console = baidu.ui.createUI(function(options){
     //目前的设想是使用和dialog相似的样式，在顶部放有closebutton和draggable的title
     //下面时可点击的目录，用来分别显示log，error，info，warn，以及all
     //可以使用快捷键进行呼出与隐藏
-
+    tpl: ‘’,
+    
     /**
      * @private
      * 获取console的html代码

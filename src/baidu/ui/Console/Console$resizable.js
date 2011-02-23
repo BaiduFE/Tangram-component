@@ -7,6 +7,8 @@
 ///import baidu.ui.Console;
 ///import baidu.ui.behavior.resizable;
 
+//对Console window 提供resizable支持
+
 baidu.extend(baidu.ui.Console.prototype, {
     resizable: true,
     minWidth: 100,
@@ -16,6 +18,6 @@ baidu.extend(baidu.ui.Console.prototype, {
 
 baidu.ui.Dialog.register(function(me){
     if(me.resizable){
-        //对Console window 提供resizable支持
+    
     }
 });
