@@ -22,17 +22,19 @@
 ///import baidu.dom.getPosition;
 ///import baidu.object.extend;
 
-//sortable : 组件公共行为，用来完成dom元素位置的交换.
-//可以用于树的节点的排序，列表的排序等等。
 //2011-2-23做了以下优化，在初始化的时候生成一个坐标与对象的键值对集合。
 //再判断拖拽元素的坐标是否在键值对范围内，如果是就做排序操作。
 (function() {
 
     var Sortable = baidu.ui.behavior.sortable = function() {
-
+        this.addEventListener("dispose", function(){
+            baidu.event.un(me.element, 'onmousedown', handlerMouseDown);
+        });
     };
 
     /**
+     * sortable : 组件公共行为，用来完成dom元素位置的交换.
+     * 可以用于树的节点的排序，列表的排序等等.
      *
      *
      * @param {Array}  sortElements 被排序的元素数组.
@@ -89,87 +91,89 @@
             me._sortPosition = baidu.dom.getStyle(me.sortElements[0], 'position');
         }
         //设置range 上右下左
-        me.sortRange = me.sortRange || [rangeElementPostion.top, rangeElementPostion.left + me.sortRangeElement.offsetWidth,
-                rangeElementPostion.top + me.sortRangeElement.offsetHeight, rangeElementPostion.left];
-
-        baidu.event.on(me.element, 'onmousedown', handlerMouseDown);
-
-        function isInElements(elements, element) {
-            var len = elements.length,
-                i = 0;
-            for (; i < len; i++) {
-                if (elements[i] == element) {
-                    return true;
-                }
-            }
-            return false;
+        if(!me.sortRange){
+            me.sortRange = [
+                rangeElementPostion.top,
+                rangeElementPostion.left + me.sortRangeElement.offsetWidth,
+                rangeElementPostion.top + me.sortRangeElement.offsetHeight,
+                rangeElementPostion.left
+            ];
         }
 
-
-
-        function dispose() {
-            baidu.event.un(me.element, 'onmousedown', handlerMouseDown);
-        }
-
-        //处理mousedown的句柄。
-        function handlerMouseDown(event) {
-            var element = baidu.event.getTarget(event),
-                position = baidu.dom.getPosition(element),
-                parent = element.offsetParent,
-                parentPosition = (parent.tagName == 'BODY') ? {left: 0, top: 0} : baidu.dom.getPosition(parent);
-                if (!isInElements(me.sortElements, element)) {
-                    return false;
-                }
-                baidu.dom.setStyles(element, {
-                    left: (position.left - parentPosition.left) + 'px',
-                    top: (position.top - parentPosition.top) + 'px',
-                    //如果position为relative,拖动元素，还会占有位置空间，所以在这里将
-                    //position设置为'absolute'
-                    position: 'absolute'
-                });
-                me._sortBlankDivId = me._sortBlankDivId || _createBlankDiv(element, me).id;
-                baidu.dom.drag(element, {range: me.sortRange,
-                    ondragstart: function(trigger) {
-                        me.sortElementsMap = _getElementsPosition(me.sortHandlers);
-                        me.dispatchEvent('sortstart', {trigger: trigger});
-                    },
-                    /**
-                     *
-                     */
-                    ondrag: function(trigger) {
-                        var elements = me.sortHandlers,
-                            i = 0,
-                            len = elements.length,
-                            target,
-                            position = baidu.dom.getPosition(trigger);
-                        target = getTarget(position.left, position.top, trigger.offsetWidth,
-                                 trigger.offsetHeight, me.sortElementsMap);
-                        if (target != null) {
-                            me._sortTarget = target;
-                            baidu.dom.insertAfter(_getBlankDiv(me), target);
-                        }
-                        me.dispatchEvent('sort', {trigger: trigger});
-
-                    },
-
-                    ondragend: function(trigger) {
-                        if (me._sortTarget) {
-                            baidu.dom.insertAfter(trigger, me._sortTarget);
-                            me.dispatchEvent('sortend', {trigger: trigger, reciever: me._sortTarget});
-                        }
-                        baidu.dom.remove(_getBlankDiv(me));
-                        me._sortBlankDivId = null;
-                        baidu.dom.setStyles(trigger, {position: me._sortPosition, left: '0px', top: '0px'});
-
-                    }
-                });
-
-        }
+        baidu.event.on(me.element, 'onmousedown', mouseDownHandler);
 
     };
 
+    function isInElements(elements, element) {
+        var len = elements.length,
+            i = 0;
+        for (; i < len; i++) {
+            if (elements[i] == element) {
+                return true;
+            }
+        }
+    }
+    
+    /*
+     * 事件代理，放在sortElement的父元素上
+     */
+    function mouseDownHandler(event) {
+        var element = baidu.event.getTarget(event),
+            position = baidu.dom.getPosition(element),
+            parent = element.offsetParent,
+            parentPosition = (parent.tagName == 'BODY') ? {left: 0, top: 0} : baidu.dom.getPosition(parent);
+            if (!isInElements(me.sortElements, element)) {
+                return false;
+            }
+            baidu.dom.setStyles(element, {
+                left: (position.left - parentPosition.left) + 'px',
+                top: (position.top - parentPosition.top) + 'px',
+                //如果position为relative,拖动元素，还会占有位置空间，所以在这里将
+                //position设置为'absolute'
+                position: 'absolute'
+            });
+            me._sortBlankDivId = me._sortBlankDivId || _createBlankDiv(element, me).id;
+            baidu.dom.drag(element, {range: me.sortRange,
+                ondragstart: function(trigger) {
+                    me.sortElementsMap = _getElementsPosition(me.sortHandlers);
+                    me.dispatchEvent('sortstart', {trigger: trigger});
+                },
+                ondrag: function(trigger) {
+                    var elements = me.sortHandlers,
+                        i = 0,
+                        len = elements.length,
+                        target,
+                        position = baidu.dom.getPosition(trigger);
+                    target = getTarget(
+                            position.left,
+                            position.top,
+                            trigger.offsetWidth,
+                            trigger.offsetHeight,
+                            me.sortElementsMap
+                        );
+                    if (target != null) {
+                        me._sortTarget = target;
+                        baidu.dom.insertAfter(_getBlankDiv(me), target);
+                    }
+                    me.dispatchEvent('sort', {trigger: trigger});
+                },
+
+                ondragend: function(trigger) {
+                    if (me._sortTarget) {
+                        baidu.dom.insertAfter(trigger, me._sortTarget);
+                        me.dispatchEvent('sortend', {trigger: trigger, reciever: me._sortTarget});
+                    }
+                    baidu.dom.remove(_getBlankDiv(me));
+                    me._sortBlankDivId = null;
+                    baidu.dom.setStyles(trigger, {position: me._sortPosition, left: '0px', top: '0px'});
+
+                }
+            });
+
+    }
+
     //通过拖拽的元素的x,y坐标和宽高来定位到目标元素。
-    function getTarget(left,top,width,height, map) {
+    function getTarget(left, top, width, height, map) {
         var i,
             _height,
             _width,
