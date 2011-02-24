@@ -16,16 +16,9 @@ module('baidu.ui.ProgressBar');
 		div.id = id;
 		$(div).css('width', '200px').css('height', '20px').css('border', 'solid')
 		.css('color', 'black').css('position', 'absolute');
-		var link = document.createElement('link');
-		link.setAttribute("rel", "stylesheet");
-		link.setAttribute("type", "text/css");
-		link.setAttribute("href",
-				'../../baidu/ui/ProgressBar/style.css');
-		document.getElementsByTagName("head")[0].appendChild(link);
 		document.body.appendChild(div);
 		div.style.position = 'absolute';
 		te.dom.push(div);
-		te.dom.push(link);
 	}
 
 	var s = QUnit.testStart;
@@ -37,12 +30,16 @@ module('baidu.ui.ProgressBar');
 
 test('initialize', function() {
 	expect(1);
-	var pb = new baidu.ui.ProgressBar( {
-		value : 20
-	});
-	pb.render(te.dom[0]);
-	equal(pb.getValue(), 20);
-	pb.dispose();
+	stop();
+	ua.loadcss(upath+'ProgressBar/style.css',function(){
+		var pb = new baidu.ui.ProgressBar( {
+			value : 20
+		});
+		pb.render(te.dom[0]);
+		equal(pb.getValue(), 20);
+		pb.dispose();
+		start();
+	})
 });
 
 test('dynamic', function() {

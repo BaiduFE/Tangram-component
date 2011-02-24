@@ -7,12 +7,6 @@ function mySetup() {
 	testingElement.obj = [];
 	testingElement.evt = [];
 
-	var link = document.createElement('link');
-	link.setAttribute('rel','stylesheet');
-	link.setAttribute('type','text/css');
-	link.setAttribute('href','../../baidu/ui/Combox/style.css');
-	
-	document.getElementsByTagName("head")[0].appendChild(link);
 	var select = document.createElement('select');
 	select.id = "select_test";
 	document.body.appendChild(select);
@@ -94,19 +88,21 @@ test("createMenu", function() {
 		}
 
 	};
-	stop();
-	var div = document.body.appendChild(document.createElement("div"));
-	var cb = new baidu.ui.Combox(options);
-	cb.render(div);
-	var input = cb.getInput();
-	var arrow = cb.getArrow();
-	input.focus();
-	$(arrow).click();
-	setTimeout(function() {
-		$(cb.menu.getItem('0-0')).click();
-		equal(input.value, 'a-content-1');
-		start();
-	}, 30);
+    stop();
+	ua.loadcss(upath+'Combox/style.css',function(){
+		var div = document.body.appendChild(document.createElement("div"));
+		var cb = new baidu.ui.Combox(options);
+		cb.render(div);
+		var input = cb.getInput();
+		var arrow = cb.getArrow();
+		input.focus();
+		$(arrow).click();
+		setTimeout(function() {
+			$(cb.menu.getItem('0-0')).click();
+			equal(input.value, 'a-content-1');
+			start();
+		}, 30);
+	})
 
 });
 

@@ -30,18 +30,22 @@ var dragFunc = function(ele, x , pb, thumb) {
 };
 
 test('mouse within range',function(){
-	var sp = new baidu.ui.Slider();
-	var div = te.dom[0];
-	sp.render(div);
-	var thumb = sp.getThumb();
-	var pb = sp.progressBar;
-	var progress = pb.getValue()*200/100;//200 is width of div
-	var body = sp.getBody();
-	var x = parseInt(baidu.dom.getPosition(body)['left']);
-	var left = parseInt($(thumb).css('left'));
-	ok(pb, 'progress bar is created');
-	x += progress;/*滑动在范围以内*/
-	dragFunc(body,x+100,pb,thumb);
+	stop();
+	ua.loadcss(upath+'style.css',function(){
+		var sp = new baidu.ui.Slider();
+		var div = te.dom[0];
+		sp.render(div);
+		var thumb = sp.getThumb();
+		var pb = sp.progressBar;
+		var progress = pb.getValue()*200/100;//200 is width of div
+		var body = sp.getBody();
+		var x = parseInt(baidu.dom.getPosition(body)['left']);
+		var left = parseInt($(thumb).css('left'));
+		ok(pb, 'progress bar is created');
+		x += progress;/*滑动在范围以内*/
+		dragFunc(body,x+100,pb,thumb);
+	    start();
+	}); 
 
 });
 /**

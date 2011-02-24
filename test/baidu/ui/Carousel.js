@@ -15,13 +15,6 @@ module('baidu.ui.Carousel');
 		m1.innerHTML = 'm1';
 		m.appendChild(m1);
 
-		 var link = document.createElement("link");
-		 link.setAttribute("rel", "stylesheet");
-		 link.setAttribute("type", "text/css");
-		 link.setAttribute("href",
-		 '../../baidu/ui/Carousel/style.css');
-		 document.getElementsByTagName("head")[0].appendChild(link);
-
 //		var sheet = document.createElement("div");
 //		document.getElementsByTagName("head")[0].appendChild(sheet);
 //		var str = "<syle>"+
@@ -77,7 +70,7 @@ function createCarousel(c, s) {
 //TODO
 test("carousel width",function(){
 	stop();
-	setTimeout(function(){
+	ua.loadcss(upath+'Carousel/style.css',function(){
 	    var c = te.dom[0];
 		var carousel = createCarousel(c);
 		carousel.render();
@@ -85,7 +78,7 @@ test("carousel width",function(){
 		equals(carousel.getBody().style.width, item.offsetWidth*(carousel.pageSize)+'px',
 				"check carousel width");
 		start();		
-	},100);
+	});
 
 });
 
