@@ -63,6 +63,18 @@ baidu.ui.Accordion = baidu.ui.createUI(function (options){
         var me = this;
         baidu.dom.insertHTML(me.getMain(), "beforeEnd", me._getHeadString(item,index));
         baidu.dom.insertHTML(me.getMain(), "beforeEnd", me._getBodyString(item,index));
-    }
+    },
     
+    /**
+     * 关闭当前打开的项
+     */
+    collapse: function(){
+        var me = this;
+        if(me.dispatchEvent('beforecollapse')){
+            if(me.getCurrentHead()){
+                me._switch(null);
+                me.setCurrentHead(null);
+            }
+        }
+    }
 });
