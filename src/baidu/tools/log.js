@@ -3,16 +3,36 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
+baidu.tools.log = function(){};
+
+baidu.tools.log.error = function(){};
+
+baidu.tools.log.info = function(){};
+
+baidu.tools.log.warn = function(){};
+
 baidu.ui.Console = baidu.ui.createUI(function(options){
+  
+    var me = this;
+
+    //console对象，使用浏览器内置对象或者baidu.ui.console生成的对象
+    me._console = null;
+
+    //用来存储需要输出的内容，格式为{type:[content[,content,...]]} 
+    me._log = [];
+
+    //存储time handler
+    me._timeHandler = {};
+
+    me.._getConsole();
+
 }).extend(
     /**
      *  @lends baidu.ui.Console.prototype
      */
 {
 
-    //console对象，使用浏览器内置对象或者baidu.ui.console生成的对象
-    _console: null,
-
+    
     //是否默认使用浏览器中已经存在的console对象
     useNatvie: true,
 
@@ -28,12 +48,7 @@ baidu.ui.Console = baidu.ui.createUI(function(options){
     //使用该变量记录index，当console被呼出，从该index开始向console进行输出
     _index: 0,
 
-    //用来存储需要输出的内容，格式为{type:[content[,content,...]]} 
-    _log: [],
-
-    //存储time handler
-    _timeHandler: {},
-
+    
     //是否以显示console的标志位
     _isShown: false, 
 
@@ -42,7 +57,13 @@ baidu.ui.Console = baidu.ui.createUI(function(options){
     //下面时可点击的目录，用来分别显示log，error，info，warn，以及all
     //可以使用快捷键进行呼出与隐藏
     tpl: ‘’,
-    
+   
+    _getConsole: function(){
+        var me = this;
+
+        
+    },
+
     /**
      * @private
      * 获取console的html代码
@@ -105,7 +126,17 @@ baidu.ui.Console = baidu.ui.createUI(function(options){
      * @param {String} name 计时器的handler name，若传入的name已经存在，则自动停止并重新创建
      * @return {Null}
      */
-    time: function(name){},
+    time: function(name){
+        var me = this,
+            newHandler = new Data().getTime(),
+            extHandler = me._timeHandler[name];
+
+        if(extHandler){
+            me.info(newHandler - extHandler); 
+        }
+
+        me._timeHandler[name] = newHandler;
+    },
 
     /**
      * @public
@@ -113,7 +144,18 @@ baidu.ui.Console = baidu.ui.createUI(function(options){
      * @param {String} name 计时器的handler name，若传入的name存在，则停止并输出时间，不存在则输出error
      * @return {Null}
      */
-    timeEnd: function(name){},
+    timeEnd: function(name){
+        var me = this,
+            newHandler = new Data().getTime(),
+            extHandler = me._timeHandler[name];
+
+        if(extHandler){
+            me.info(newHandler - extHandler); 
+            delete(me._timeHandler[name]);
+        }else{
+            me.error('timer is not exist!');
+        }
+    },
 
     /**
      * @public
