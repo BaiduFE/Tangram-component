@@ -35,7 +35,7 @@ echo $cnt;
 //var_dump($IGNORE);
 function importSrc($d){
 	global $IGNORE;
-	if(array_search($d, $IGNORE)!=NULL)
+	if(in_array($d, $IGNORE))
 	return "";
 	array_push($IGNORE, $d);
 	$ccnt = Analysis::get_src_cnt($d);
