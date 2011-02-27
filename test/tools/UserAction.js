@@ -727,7 +727,8 @@ var UserAction = {
 		 */
 		if (window.execScript) {
 			$.get(srcpath.split('?')[0], {
-				f : srcpath.split('f=')[1]
+				f : src,
+				e : exclude
 			}, function(data) {
 				window.execScript(data);
 			});
