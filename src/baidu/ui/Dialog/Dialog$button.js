@@ -55,7 +55,7 @@ baidu.ui.Dialog.register(function(me){
     //存储button实例
     me.buttonInstances = {}; 
     
-    var accept,cancel,tmpButtons;
+    var accept,cancel,tmpButtons = {};
     accept = {
         'content' : '确定',
         'onclick' : function() {
