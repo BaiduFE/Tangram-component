@@ -34,3 +34,9 @@ td{
 	border:solid 1px red;
 	
 }
+
+/*测试样式验证css是否加载完毕*/
+.cssloaded {
+	background-color : red;
+    width : 20px;
+}

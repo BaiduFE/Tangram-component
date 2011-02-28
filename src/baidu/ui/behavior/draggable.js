@@ -62,7 +62,7 @@
         me._dragOption.range = me.dragRange || [];
         me._dragOption.handler = me._lastDragHandler = me.dragHandler || me.getMain();
 
-        if (me.dragHandler) {
+        if (me._dragOption.handler) {
             baidu.event.on(me.dragHandler, "onmousedown", me._dragFn = function() {
                 baidu.dom.drag(me.dragTarget || me.getMain(), me._dragOption);
             });

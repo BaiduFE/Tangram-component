@@ -113,45 +113,59 @@ test('close on multi instance', function() {
 test('left&top',function(){
 	var options = {
 		left : '120px',
-		top : 100
+		top : 100,
+		onopen : function(){
+			equal(d.getMain().style.left,'120px');
+			equal(d.getMain().style.top,'100px');
+			equal(d.getMain().style.right,'','check right');
+			equal(d.getMain().style.bottom,'','check bottom');
+		}
 	};
 	var d = new baidu.ui.Dialog(options);
-	stop();
+	//stop();
 	d.render();
 	d.open();
-	setTimeout(function(){
-		equal(d.getMain().style.left,'120px');
-		equal(d.getMain().style.top,'100px');
-		equal(d.getMain().style.right,'','check right');
-		equal(d.getMain().style.bottom,'','check bottom');
-		te.obj.push(d);
-		start();
-	},100);
-	
+//	setTimeout(function(){
+//		equal(d.getMain().style.left,'120px');
+//		equal(d.getMain().style.top,'100px');
+//		equal(d.getMain().style.right,'','check right');
+//		equal(d.getMain().style.bottom,'','check bottom');
+//		te.obj.push(d);
+//		start();
+//	},100);
+	te.obj.push(d);
 });
 
 test('right&bottom',function(){
 		var options = {
 		bottom : '100px',
-		right : 200
+		right : 200,
+		onopen : function(){
+			equal(d.getMain().style.left,'auto');
+			equal(d.getMain().style.top,'auto');
+			equal(d.getMain().style.right,'200px','check right');
+			equal(d.getMain().style.bottom,'100px','check bottom');
+		}
 	};
 	var d = new baidu.ui.Dialog(options);
 	d.render();
 	d.open();
-	stop();
-	setTimeout(function(){
-		equal(d.getMain().style.left,'auto');
-		equal(d.getMain().style.top,'auto');
-		equal(d.getMain().style.right,'200px','check right');
-		equal(d.getMain().style.bottom,'100px','check bottom');
-		start();
-	},100);
+//	stop();
+//	setTimeout(function(){
+//		equal(d.getMain().style.left,'auto');
+//		equal(d.getMain().style.top,'auto');
+//		equal(d.getMain().style.right,'200px','check right');
+//		equal(d.getMain().style.bottom,'100px','check bottom');
+//		start();
+//	},100);
+    te.obj.push(d);
 });
 /**
  * 测试：Firefox下窗口高度是根据内容自适应还是默认高度2010-12-17
  */
 test('default height',function(){
 	var options = {
+		height : 100,
 		titleText : "title",
 		contentText : "content",
 		modal : false
