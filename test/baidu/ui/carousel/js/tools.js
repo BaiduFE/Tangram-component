@@ -12,6 +12,7 @@
 		m1.innerHTML = 'm1';
 		m.appendChild(m1);
 
+		//FIXME css的载入异步问题导致用例执行时校验失败，另，css的载入仅一个test需求，并不需要为每个test添加该步骤。
 		 var link = document.createElement("link");
 		 link.setAttribute("rel", "stylesheet");
 		 link.setAttribute("type", "text/css");
