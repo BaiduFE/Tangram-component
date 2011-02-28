@@ -9,7 +9,7 @@ html {
 }
 
 body {
-	font: 12px/ 1.5 Lucida Grande, Helvetica, Arial, sans-serif;
+	font: 12px/1.5 Lucida Grande, Helvetica, Arial, sans-serif;
 	background: #F3F1F1;
 	color: #41464D;
 }
@@ -45,7 +45,7 @@ a:hover,a:active {
 
 #title h1 {
 	height: 30px;
-	font: 25px/ 1.1 Arial, sans-serif;
+	font: 25px/1.1 Arial, sans-serif;
 	font-weight: bolder;
 	float: left;
 	margin: 1px 0 2px 20px;
@@ -91,6 +91,19 @@ h3 {
 	float: left;
 }
 
+.showSrcOnly a {
+	display: block;
+	width: 150px;
+	color: #657528;
+	background: #d5dea7;
+	border: 1px solid #c8dc7b;
+	margin: 5px 0 0 5px;
+	text-indent: 5px;
+	line-height: 24px;
+	font-size: 14px;
+	float: left;
+}
+
 .testlist a:link {
 	
 }
@@ -119,7 +132,7 @@ h3 {
 	color: green;
 }
 
-.runningarea {	
+.runningarea {
 	height: 60%;
 }
 
@@ -139,7 +152,7 @@ h3 {
 }
 
 .reportarea {
-	padding:10px;
+	padding: 10px;
 	border: 10px blue;
 	height: 50%;
 }

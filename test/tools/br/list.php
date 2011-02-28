@@ -24,14 +24,15 @@ if(!$quirk){?>
 	value="清除用例状态"
 	onclick="$('.testlist a').removeClass('running_case pass_case fail_case');" /></div>
 <div id="id_testlist_status" class="testliststatus"
-	onclick="$('#id_showSrcOnly').slideToggle('slow');"
-	style="float: left; clear: both">遗漏用例</div>
-<div id="id_showSrcOnly" style="clear: both;"><?php
+	onclick="$('#id_showSrcOnly').slideToggle('slow');" style="float: left">遗漏用例</div>
+<div style="clear: both"></div>
+<div id="id_showSrcOnly" class="showSrcOnly"><?php
 require_once "case.class.php";
-$str = $_SERVER['QUERY_STRING'];
-if(preg_match("/showsrconly/i",$str))
-var_dump(Kiss::listSrcOnly());
-?></div>
+if(array_key_exists("showsrconly", $_GET))
+Kiss::listSrcOnly();
+?>
+<div style="clear: both; overflow: hidden"></div>
+</div>
 <div class="testliststatusbar">
 <div id="id_testlist_status" class="testliststatus"
 	onclick="$('#id_testlist').slideToggle('slow');" style="float: left">用例目录</div>

@@ -160,16 +160,16 @@ class Kiss{
 		$srcpath = $projroot.'src/';
 		$testpath = $projroot.'test/';
 		require_once 'filehelper.php';
-		$caselist = getSrcOnlyFile($srcpath, $testpath, '');
+		$caselist = getSameFile($srcpath, $testpath, '');
+		$srclist = getSrcOnlyFile($srcpath, $testpath, '');
 		$srcList = array();
-		foreach($caselist as $case){
-			$c = array();
-			$c = explode('/',$case);
-			if(count($c) >= 4)
-			array_push($srcList,$case);
+		foreach($srclist as $case){
+			if(in_array($case, $caselist))
+			continue;
+			$name = str_replace('/','.',substr($case,0, -3));
+			echo "<a class=\"jsframe_qunit\" title=\"$name\">".(strlen($name)>20?(substr($name,0,18)."..."):$name)."</a>";
 		}
 		return $srcList;
-
 	}
 }
 ?>
