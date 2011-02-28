@@ -3,12 +3,9 @@ function generateXML($post, $server) {
 	$dom = new DOMDocument('1.0', 'utf-8');
 	$report = $dom->appendChild($dom->createElement('report'));
 
-	require_once 'lib/Request.php';
 	require_once 'config.php';
 	$config = $_POST['config'];
-	$r = new Request($config);
-
-	$b = $r->get('browser');
+	$b = $_POST['browser'];
 	foreach ($post as $kiss => $info) {
 		if ($kiss == 'config')
 		continue;
@@ -47,7 +44,7 @@ function interXML() {
 	foreach ($fs as $f) {
 		if (substr($f, 0, 1) == '.')
 		continue;
-		$xmlFile = simpleXML_load_file("report\\$f");
+		$xmlFile = simpleXML_load_file("report/$f");
 		foreach ($xmlFile as $testResult) {
 			$browser = $testResult['browserInfo'];
 			$host = $testResult['hostInfo'];
@@ -88,7 +85,7 @@ function interXML() {
 			}
 
 		}
-		unlink("report\\$f");
+		unlink("report/$f");
 	}
 	rmdir("report");
 	return $caseList;

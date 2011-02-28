@@ -18,21 +18,17 @@ function run($b, $filter='*', $debug = false){
 	$result = Staf::process_start($path, $url, $host);
 }
 
-require 'lib/Request.php';
-$r = new Request($_SERVER);
-
 if(file_exists('report')){
-//	rmdir('report');
 	$reports = scandir('report');
 	print 'on batch run, please waiting : '. (sizeof($reports)-2);
-	return;	
+	return;
 }else{
 	mkdir('report');
 }
 
 /*记录运行时信息*/
-$b = $r->contain('browser') ? $r->get('browser') : 'all';
-if($b !='all'){	
+$b = in_array("browser", $_GET) ? $_GET['browser'] : 'all';
+if($b !='all'){
 	run($b);
 }else{
 	foreach(Config::$BROWSERS as $b=>$i){

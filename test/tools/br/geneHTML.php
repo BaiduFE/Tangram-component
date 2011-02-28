@@ -24,6 +24,8 @@
 function geneHTML($caseList){
 	date_default_timezone_set('PRC');
 	$url = (isset ($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . $_SERVER['PHP_SELF'];
+	require_once 'config.php';
+	$report_path = CONFIG::$HISTORY_REPORT_PATH.'/ui';
 	$html = "<!DOCTYPE HTML>
 	<head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /></head>
 	<frame>
@@ -36,7 +38,7 @@ function geneHTML($caseList){
 	 "</table>
 	 </div>
 	 <br><br>
-	<a href='http://$url/../../../../../component-history/' style='font:normal bolder 12pt Arial'>详情请点击这里</a>
+	<a href='$report_path' style='font:normal bolder 12pt Arial'>详情请点击这里</a>
 	 </frame></HTML>";
 	$html = formatHTML($html);
 	return $html;

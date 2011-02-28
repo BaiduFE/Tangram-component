@@ -14,5 +14,7 @@ class Config{
 //	'chrome'=>array('localhost', "C:\\Users\\yangbo\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe")
 //	'ie8'=>array('localhost', "C:\\Program Files\\Internet Explorer\\iexplore.exe")//,
 	);
+	
+	public static $HISTORY_REPORT_PATH = '/report';
 }
 ?>

@@ -1,8 +1,6 @@
 <?php
-require_once 'lib/Request.php';
-$r = new Request($_SERVER);
-$filter = $r->contain('filter') ? $r->get('filter') : '*';
-$quirk = $r->get('quirk') || false;
+$filter = array_key_exists('filter', $_GET) ? $_GET['filter'] : '*';
+$quirk = array_key_exists('quirk', $_GET) ? $_GET['quirk'] : 0;
 if(!$quirk){?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <?php }?>
@@ -28,7 +26,7 @@ if(!$quirk){?>
 <div id="id_testlist_status" class="testliststatus"
 	onclick="$('#id_showSrcOnly').slideToggle('slow');"
 	style="float: left; clear: both">遗漏用例</div>
-<div id="id_showSrcOnly" style="clear: both;"><?php 
+<div id="id_showSrcOnly" style="clear: both;"><?php
 require_once "case.class.php";
 $str = $_SERVER['QUERY_STRING'];
 if(preg_match("/showsrconly/i",$str))
