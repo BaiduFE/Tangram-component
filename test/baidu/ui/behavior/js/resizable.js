@@ -1,60 +1,54 @@
-(function() {
-	module("baidu.ui.behavior.resizable");
-	ua.importsrc("baidu.ui.createUI");
-	
-	test("resizable function",function(){ 
-	//	ua.importsrc("baidu.ui.createUI", function() {
-	       var div = document.body.appendChild(document.createElement("div"));
-	        $(div).css("width", 40).css("height", 40).css("position", "absolute").css(
-			        "left", 0).css("top", 0).css("backgroundColor", "red");
-		    var resizableUI = baidu.ui.createUI(new Function).extend( {
-					resizable : true
-			});
-			var options = {
-				target : div,
-				onresizestart : function(){
-					ok(true,"execute event onresizestart");
-				},
-				onresize : function(){
-					ok(true,"execute event onresize");
-				},
-				onresizeend : function(){
-					ok(true,"execute event onresizeend");
-				}
-			}
-			var instance = new resizableUI();
-			instance.resizeUpdate(options);
-			stop();
-			ua.mousemove(document.body, {
-				clientX : 40,
-				clientY : 40
-			});
-			var ehandle = div.lastChild;
-			setTimeout(function() {
-				ua.mousedown(ehandle, {
-					clientX : 40,
-					clientY : 40
+module("baidu.ui.behavior.resizable");
+//logic of resizable should be testing in 	
+test("create & events", function() {
+	stop();
+	$(te.dom[0]).css('top', 50).css('left', 50).css('width', 100).css('height',
+			100).css('border', 1);
+	ua.importsrc('baidu.ui.button.Button', function() {
+		var btn = new baidu.ui.button.Button({
+			resizable : true,
+			onload : function() {
+				this.resizeCreate({
+					target : btn.getBody()
 				});
-				setTimeout(function() {
-					ua.mousemove(ehandle, {
-						clientX : 50,
-						clientY : 50
-					});
-					setTimeout(function() {				
-						ua.mouseup(ehandle, {
-							clientX : 50,
-							clientY : 50
-					    });
-						setTimeout(function(){
-							equals(parseInt($(div).css("width")), 50, "se拖动后，宽度变化");
-							equals(parseInt($(div).css("height")), 50, "se拖动后，宽度变化");
-							$(div).remove();
-							start();					
-						}, 40);
-					}, 40);
-				}, 40);
-			}, 40);
+			}
 		});
-//	});
-	
-})()
+		btn.render(te.dom[0]);
+
+		var rzbtn = $('.tangram-button-resizable-e');
+		ok(rzbtn.length = 1, 'resizable button is create');
+		te.obj.push(btn);
+		start();
+	}, 0, 'baidu.ui.behavior.resizable');
+});
+
+test('method resizeUpdate', function(){
+	//FIXME add case
+//	stop();
+//	$(te.dom[0]).css('top', 50).css('left', 50).css('width', 100).css('height',
+//			100).css('border', 1);
+//	ua.importsrc('baidu.ui.button.Button', function() {
+//		var btn = new baidu.ui.button.Button({
+//			resizable : true,
+//			onload : function() {
+//				this.resizeCreate({
+//					target : btn.getBody()
+//				});
+//			}
+//		});
+//		btn.render(te.dom[0]);
+//
+//		var rzbtn = $('.tangram-button-resizable-e');
+//		ok(rzbtn.length = 1, 'resizable button is create');
+//		te.obj.push(btn);
+//		start();
+//	}, 0, 'baidu.ui.behavior.resizable');
+});
+
+test('method resizeCancel', function(){
+	//FIXME add case
+});
+
+test('method resizeEnable', function(){
+	//FIXME add case
+});
