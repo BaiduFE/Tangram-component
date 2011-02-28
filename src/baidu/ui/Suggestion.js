@@ -206,7 +206,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function (options){
         
         suggestion.pick(index);
         suggestion.dispatchEvent("onconfirm", {
-            data : data
+            data : data,
             source : source
         });
         suggestion.hide();
