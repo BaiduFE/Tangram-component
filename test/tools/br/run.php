@@ -15,11 +15,9 @@ $title = $c->name;
 <?php $c->print_js(); ?>
 </head>
 <body>
-<?php if($c->js_frame){?>
 <h1 id="qunit-header"><?php print($c->name);?></h1>
 <h2 id="qunit-banner"></h2>
 <h2 id="qunit-userAgent"></h2>
 <ol id="qunit-tests"></ol>
-<?php }?>
 </body>
 </html>
