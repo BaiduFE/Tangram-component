@@ -16,5 +16,18 @@ class Config{
 	);
 	
 	public static $HISTORY_REPORT_PATH = '/report';
+	
+	public static function StopAll(){
+		$hostarr = array();
+		foreach (Config::$BROWSERS as $b->$h){
+			$host = $h[0];
+			if(in_array($host, $hostar))
+			continue;
+			array_push($hostarr, $host);
+			require_once 'lib/Staf.php';
+			Staf::process_stop('', $host, true);
+			Staf::process("free all");
+		}
+	}
 }
 ?>

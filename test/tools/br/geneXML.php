@@ -1,12 +1,18 @@
-<?php 
+<?php
+$DEBUG = false;
 function generateXML($post, $server) {
+	global $DEBUG;
+	if($DEBUG)
+	echo "start generate xml\n";
 	$dom = new DOMDocument('1.0', 'utf-8');
 	$report = $dom->appendChild($dom->createElement('report'));
 
 	require_once 'config.php';
 	$config = $_POST['config'];
 	$b = $_POST['browser'];
+	if($DEBUG)echo "browser : $b\n";
 	foreach ($post as $kiss => $info) {
+		if($DEBUG)echo "analysis kiss info : $kiss $info\n";
 		if ($kiss == 'config')
 		continue;
 		$testResult = $report->appendChild($dom->createElement('testResult'));
@@ -28,7 +34,7 @@ function generateXML($post, $server) {
 	if (!file_exists('report')) {
 		mkdir('report');
 	}
-	$dom->save('./report/' . $b . '.xml');
+	$dom->save('report/' . $b . '.xml');
 }
 
 function interXML() {
