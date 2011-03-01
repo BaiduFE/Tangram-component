@@ -1,5 +1,5 @@
 ﻿<?php
-$debug = true;
+//$debug = true;
 //$debug = false;
 /*非批量运行*/
 if (!file_exists('report')) {
