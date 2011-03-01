@@ -24,14 +24,14 @@ if(file_exists('report')){
 }else{
 	mkdir('report');
 }
-
+$filter = array_key_exists('filter', $_GET) ? $_GET['filter'] : '*';
 /*记录运行时信息*/
 $b = in_array("browser", $_GET) ? $_GET['browser'] : 'all';
 if($b !='all'){
 	run($b);
 }else{
 	foreach(Config::$BROWSERS as $b=>$i){
-		run($b);
+		run($b, $filter);
 	}
 }
 ?>
