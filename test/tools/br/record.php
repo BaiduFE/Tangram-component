@@ -1,5 +1,5 @@
 ﻿<?php
-//$debug = true;
+$debug = true;
 //$debug = false;
 /*非批量运行*/
 if (!file_exists('report')) {
@@ -8,8 +8,7 @@ if (!file_exists('report')) {
 	else
 	mkdir('report');
 }
-//if ($debug)
-//print "browser : $b \r\n";
+
 require_once 'geneXML.php';
 generateXML($_POST, $_SERVER);
 

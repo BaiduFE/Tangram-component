@@ -13,7 +13,7 @@ function run($b, $filter='*', $debug = false){
 	$url .= "&quirk=true";
 
 	require_once 'lib/Staf.php';
-	echo 'host : '.$host."\npath : ".$path."\nurl  :".$url;
+	echo 'host : '.$host."\npath : ".$path."\nurl  :".$url."\n";
 	$result = Staf::process_start($path, $url, $host);
 }
 //干掉其他运行环境

@@ -3,16 +3,26 @@ $DEBUG = false;
 function generateXML($post, $server) {
 	global $DEBUG;
 	if($DEBUG)
-	echo "start generate xml\n";
+	echo "start generate xml<br />";
 	$dom = new DOMDocument('1.0', 'utf-8');
 	$report = $dom->appendChild($dom->createElement('report'));
 
 	require_once 'config.php';
-	$config = $_POST['config'];
-	$b = $_POST['browser'];
-	if($DEBUG)echo "browser : $b\n";
+	$cfg = preg_split('/[&=]/', $_POST['config']);
+	$b = '';
+	foreach($cfg as $key=>$item){
+		if($item == 'browser'){
+			$b = $cfg[$key + 1];
+			break;
+		}
+	}
+	if($b == ''){
+		if($DEBUG) echo "Fail get browser info from config<br />";
+		return;
+	}
+	if($DEBUG)echo "browser : $b<br />";
 	foreach ($post as $kiss => $info) {
-		if($DEBUG)echo "analysis kiss info : $kiss $info\n";
+		if($DEBUG)echo "analysis kiss info : $kiss $info<br />";
 		if ($kiss == 'config')
 		continue;
 		$testResult = $report->appendChild($dom->createElement('testResult'));
