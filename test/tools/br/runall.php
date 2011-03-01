@@ -16,7 +16,8 @@ function run($b, $filter='*', $debug = false){
 	echo 'host : '.$host."\npath : ".$path."\nurl  :".$url;
 	$result = Staf::process_start($path, $url, $host);
 }
-
+//干掉其他运行环境
+Config::StopAll();
 if(file_exists('report')){
 	$reports = scandir('report');
 	echo 'on batch run, please waiting : '. (sizeof($reports)-2);
