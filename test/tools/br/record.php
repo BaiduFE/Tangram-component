@@ -17,14 +17,12 @@ $kissList = interXML();
 require_once 'geneHTML.php';
 if(sizeof($kissList)>0){
 	$html =	geneHTML($kissList);
-	if(in_array('config', $_POST)){
-		$config = $_POST['config'];
-		if(sizeof(explode('mail=true', $config))>1){
-			require_once 'geneHistory.php';
-			geneHistory($html);
-			require_once 'smail.php';
-			sendmail($html, true);
-		}
+	$config = $_POST['config'];
+	if(sizeof(explode('mail=true', $config))>1){
+		require_once 'geneHistory.php';
+		geneHistory($html);
+		require_once 'smail.php';
+		sendmail($html, true);
 	}
 
 	if(!$debug){
