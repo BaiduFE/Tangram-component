@@ -11,15 +11,15 @@ class Config{
 	'safari'=>array('10.81.23.220', "C:\\Program Files\\Safari\\Safari.exe"),
 	'360'=>array('10.81.23.220', "C:\\Program Files\\360\\360se3\\360SE.exe")
 
-//	'chrome'=>array('localhost', "C:\\Users\\yangbo\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe")
-//	'ie8'=>array('localhost', "C:\\Program Files\\Internet Explorer\\iexplore.exe")//,
+	//	'chrome'=>array('localhost', "C:\\Users\\yangbo\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe")
+	//	'ie8'=>array('localhost', "C:\\Program Files\\Internet Explorer\\iexplore.exe")//,
 	);
-	
+
 	public static $HISTORY_REPORT_PATH = '/report';
-	
+
 	public static function StopAll(){
 		$hostarr = array();
-		foreach (Config::$BROWSERS as $b->$h){
+		foreach (Config::$BROWSERS as $b=>$h){
 			$host = $h[0];
 			if(in_array($host, $hostar))
 			continue;
