@@ -13,12 +13,13 @@ function run($b, $filter='*', $debug = false){
 	$url .= "&quirk=true";
 
 	require_once 'lib/Staf.php';
+	echo 'host : '.$host."\npath : ".$path."\nurl  :".$url;
 	$result = Staf::process_start($path, $url, $host);
 }
 
 if(file_exists('report')){
 	$reports = scandir('report');
-	print 'on batch run, please waiting : '. (sizeof($reports)-2);
+	echo 'on batch run, please waiting : '. (sizeof($reports)-2);
 	return;
 }else{
 	mkdir('report');
