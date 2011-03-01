@@ -9,7 +9,7 @@ class Config{
 	'opera'=>array('10.81.23.219', "C:\\Program Files\\Opera\\opera.exe"),
 	'ie8'=>array('10.81.23.220', "C:\\Program Files\\Internet Explorer\\iexplore.exe"),
 	'safari'=>array('10.81.23.220', "C:\\Program Files\\Safari\\Safari.exe"),
-	'360'=>array('10.81.23.220', "C:\\Program Files\\360\\360se3\\360SE.exe")
+	//'360'=>array('10.81.23.220', "C:\\Program Files\\360\\360se3\\360SE.exe")
 
 	//	'chrome'=>array('localhost', "C:\\Users\\yangbo\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe")
 	//	'ie8'=>array('localhost', "C:\\Program Files\\Internet Explorer\\iexplore.exe")//,

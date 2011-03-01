@@ -13,7 +13,7 @@ require_once 'geneXML.php';
 generateXML($_POST, $_SERVER);
 
 /*如果全部运行完毕，发送邮件*/
-$kissList = interXML();
+$kissList = interXML(true);
 require_once 'geneHTML.php';
 if(sizeof($kissList)>0){
 	$html =	geneHTML($kissList);
