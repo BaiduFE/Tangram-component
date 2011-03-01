@@ -8,7 +8,7 @@ function run($b, $filter='*', $debug = false){
 	$filter = $debug ? 'baidu.ajax' : $filter;
 
 	$url = "http://".$_SERVER['SERVER_ADDR'].":8000".substr($_SERVER['PHP_SELF'], 0, -11)."/list.php?batchrun=true";
-	$url .= "&browser=$b&filter=$filter&mail=true&showsrconly=true";
+	$url .= "^&browser=$b^&filter=$filter^&mail=true^&showsrconly=true";//FIXME 命令行启动，此处所有&必须进行转义，可以考虑在STAF中解决
 	if(array_key_exists('quirk', $_GET))
 	$url .= "&quirk=true";
 
