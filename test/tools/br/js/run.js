@@ -89,7 +89,7 @@ function run(kiss, runnext) {
 						/**
 						 * 启动时间，结束时间，校验点失败数，校验点总数
 						 */
-						$.ajax( {
+						$.ajax( {//FIXME 需要追加一个无用例的接口列表
 							url : 'record.php',
 							type : 'post',
 							data : wb.kisses,

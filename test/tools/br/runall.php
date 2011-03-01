@@ -8,7 +8,7 @@ function run($b, $filter='*', $debug = false){
 	$filter = $debug ? 'baidu.ajax' : $filter;
 
 	$url = "http://".$_SERVER['SERVER_ADDR'].":8000".substr($_SERVER['PHP_SELF'], 0, -11)."/list.php?batchrun=true";
-	$url .= "&browser=$b&filter=$filter&mail=true";
+	$url .= "&browser=$b&filter=$filter&mail=true&showsrconly=true";
 	if(array_key_exists('quirk', $_GET))
 	$url .= "&quirk=true";
 
