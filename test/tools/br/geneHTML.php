@@ -29,8 +29,9 @@ function geneHTML($caseList, $name=''){
 	$style_table = "border: 1px solid black;
 		 color: #fff; background-color: #0d3349;
 		 text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px; text-align: center; ";
-	//<style>td, th {border: 1px solid white;}</style>
+	//
 	$html = "<!DOCTYPE><html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+		<style>td, th {border: 1px solid white;}</style>
 		</head><body><div>
 		<h2 align='center'>测试结果".date('Y-m-d H:i:s')."</h2>
 		<a href='http://$url' style='font:normal bolder 12pt Arial; ' title='效果应该比邮件好'>网页版</a>
