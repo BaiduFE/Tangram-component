@@ -26,8 +26,8 @@
         });
         this.addEventListener("ondispose", function(){
             var me  = this;
-            baidu.un(me.dragHandler, "mousedown", me._dragFn);
-            me.dragHandler = me._lastDragHandler = null;
+            baidu.un(me._dragOption.handler, "mousedown", me._dragFn);
+            me._dragOption.handler = me.dragHandler = me._lastDragHandler = null;
         });
     };
     /**
@@ -63,7 +63,7 @@
         me._dragOption.handler = me._lastDragHandler = me.dragHandler || me.getMain();
 
         if (me._dragOption.handler) {
-            baidu.event.on(me.dragHandler, "onmousedown", me._dragFn = function() {
+            baidu.event.on(me._dragOption.handler, "onmousedown", me._dragFn = function() {
                 baidu.dom.drag(me.dragTarget || me.getMain(), me._dragOption);
             });
         }
