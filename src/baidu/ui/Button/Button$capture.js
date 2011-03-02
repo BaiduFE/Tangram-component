@@ -30,13 +30,11 @@ baidu.ui.Button.register(function(me) {
                         && !baidu.dom.contains(body, target)
                         && me.getState()['press']) {
                     me.fire('mouseout', evt);
-//                    onMouseOut();
                 }
             }),
             mouseOutHandler = function(evt) {
                 if (!me.getState()['press']) {
                     me.fire('mouseout', evt);
-//                    onMouseOut();
                 }
             };
         body.onmouseout = null;
