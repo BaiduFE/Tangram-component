@@ -187,7 +187,6 @@ baidu.ui.Login = baidu.ui.createUI(function(options){ },{superClass:baidu.ui.Dia
 
         return main;
     },
-
     changeTab: function(type) {
         	var me = this,
 		 panelIds = [me.loginPanelId, me.regPanelId],
@@ -210,7 +209,13 @@ baidu.ui.Login = baidu.ui.createUI(function(options){ },{superClass:baidu.ui.Dia
    close: function() {
     		var me = this;
     		me.loginJson = me.regJson = null;
-    		baidu.ui.Login.prototype.close.call(me);
+        if (me.dispatchEvent('onbeforeclose')) {
+            me.getMain().style.marginLeft = '-100000px';
+            baidu.ui.Dialog.instances[me.guid] = 'hide';
+
+            me.dispatchEvent('onclose');
+        }
+
     	},
    renderLogin: function() {
     		var me = this;
