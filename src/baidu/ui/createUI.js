@@ -4,9 +4,7 @@
  *
  * path: baidu/ui/createUI.js
  * author: berg
- * version: 1.1.0
- * date: 2010/12/02
- */
+ * version: 1.1.0 * date: 2010/12/02 */
 
 ///import baidu.ui;
 ///import baidu.ui.Base;

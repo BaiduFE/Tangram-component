@@ -18,7 +18,10 @@
 
 ///import baidu.ui.Dialog;
 
-///import baidu.dom.addClass; ///import baidu.dom.removeClass; ///import baidu.dom.g; ///import baidu.dom.children;
+///import baidu.dom.addClass; 
+///import baidu.dom.removeClass; 
+///import baidu.dom.g; 
+///import baidu.dom.children;
 
 ///import baidu.object.extend;
 
@@ -42,9 +45,7 @@
  * @config {Function}           onopen                dialog打开时触发
  * @config {Function}           onclose               dialog关闭时触发
  * @config {Function}           onbeforeclose         dialog关闭前触发，如果此函数返回false，则组织dialog关闭。
- * @config {Function}           onupdate              dialog更新内容时触发
- * @config {Boolean}            closeOnEscape         keyboardSupport模块提供支持，当esc键按下时关闭dialog。
- * @config {String}             closeText             closeButton模块提供支持，关闭按钮上的title。
+ * @config {Function}           onupdate              dialog更新内容时触发 * @config {Boolean}            closeOnEscape         keyboardSupport模块提供支持，当esc键按下时关闭dialog。 * @config {String}             closeText             closeButton模块提供支持，关闭按钮上的title。
  * @config {Boolean}            modal                 modal模块支持，是否显示遮罩
  * @config {String}             modalColor            modal模块支持，遮罩的颜色
  * @config {Number}             modalOpacity          modal模块支持，遮罩的透明度

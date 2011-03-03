@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
 	<script src='../../../../src/import.php?f=baidu.ui.Dialog.*,baidu.ui.Login'></script> 
         <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
 <style>
@@ -130,18 +131,13 @@ h2{
         <link type="text/css" rel="stylesheet" media="all" href="css/passport.css" />
     </head>
     <body>
-		<h1>login dialog testing page</h1>
+		<h1>登录弹出窗口测试页面</h1>
 <script src='../../../../src/import.php?f=baidu.sio.callByServer,baidu.sio.callByBrowser'></script>  	
-        <script type="text/javascript" src="pass_api_source.js"></script>
+        <script type="text/javascript" src="https://passport.baidu.com/js/pass_api.js"></script>
+        <!--script type="text/javascript" src="pass_api_source.js"></script-->
         <script>    
-            //baidu.dom.ready(function(){
-		//alert(baidu.ui.Dialog);
-	        var loginDialog = new baidu.ui.Login({"autoRender":true,"draggable":true,"titleText":"hi,loginwindow"});
-	        //var loginDialog = new baidu.ui.Login();
+	        var loginDialog = new baidu.ui.Login({"autoRender":true,"titleText":"登录窗口"});
 	        loginDialog.open();
-	        //var Dialog = new baidu.ui.dialog.alert({"autoRender":true,"draggable":true,"titleText":"hi,loginwindow","closeButton":true});
-		   //Dialog.open();
-           //});
 	
         </script>
     </body>

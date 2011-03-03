@@ -75,8 +75,8 @@ baidu.ui.login = function(options) {
 
 	options = baidu.extend({
 		titleText: '登录',
-		loginURL: 'http://passport.rdtest.baidu.com/api/?login&time=&token=&tpl=pp',
-		regURL: 'http://passport.rdtest.baidu.com/api/?reg&time=&token=&tpl=pp',
+		loginURL: 'http://passport.baidu.com/api/?login&time=&token=&tpl=pp',
+		regURL: 'http://passport.baidu.com/api/?reg&time=&token=&tpl=pp',
 		loginJumpURL: window.location.href,
 		regJumpURL: window.location.href,
 		//弹出时初始状态(登录或注册),取值 ['login','reg'],默认为 login
