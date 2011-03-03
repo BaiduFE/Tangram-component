@@ -1,216 +1,182 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
+ * 
+ * path: tools/log.js
+ * author: lixiaopeng
+ * version: 1.0.0
+ * date: 2011/2/28
  */
 
-baidu.tools.log = function(){};
+///import baidu.object.extend;
 
-baidu.tools.error = baidu.tools.log.error = function(){};
+///import baidu.tools;
 
-baidu.tools.info = baidu.tools.log.info = function(){};
+/**
+ * 打印log
+ * @public
+ * @param {String} log 需要打印的内容
+ * @return {Null}
+ * */
+baidu.tools.log = function(log){
+    this._log(log,'log');
+};
 
-baidu.tools.warn = baidu.tools.log.warn = function(){};
-nopen
-onclose
-onupdate
-onbeforeclose
-onaccept
+/**
+ * 打印error
+ * @public
+ * @param {String} log 需要打印的内容
+ * @return {Null}
+ * */
+baidu.tools.log.error = function(log){
+    this._log(log,'error');
+};
 
+/**
+ * 打印info
+ * @public
+ * @param {String} log 需要打印的内容
+ * @return {Null}
+ * */
+baidu.tools.log.info = function(log){
+    this._log(log,'info');
+};
 
-baidu.ui.Console = baidu.ui.createUI(function(options){
-  
-    var me = this;
+/**
+ * 打印warn
+ * @public
+ * @param {String} log 需要打印的内容
+ * @return {Null}
+ * */
+baidu.tools.log.warn = function(log){
+    this._log(log,'warn');
+};
 
-    //console对象，使用浏览器内置对象或者baidu.ui.console生成的对象
-    me._console = null;
-
-    //用来存储需要输出的内容，格式为{type:[content[,content,...]]} 
-    me._log = [];
-
-    //存储time handler
-    me._timeHandler = {};
-
-    me.._getConsole();
-
-}).extend(
-    /**
-     *  @lends baidu.ui.Console.prototype
-     */
-{
-
+/**
+ * 设置timer
+ * @public
+ * @param {String} name timer的标识名称
+ * @return {Null}
+ */
+baidu.tools.log.time = function(name){
+    var me = this,
+        timeOld = me._timeObject[name],
+        timeNew = new Date().getTime();
     
-    //是否默认使用浏览器中已经存在的console对象
-    useNatvie: true,
+    if(timeOld){
+        me._log(timeNew - timeOld, 'info');
+    }else{
+        me._timeObject[name] = timeNew;
+    }
+};
 
-    //message type的枚举类型
-    _type: {
-        log: 'log',
-        info: 'info',
-        error: 'error',
-        warn: 'warn'
-    },
+/**
+ * 终止timer,并打印
+ * @public
+ * @param {String} name timer的标识名称
+ * @return {Null}
+ */
+baidu.tools.log.timeEnd = function(name){
+    var me = this,
+        timeOld = me._timeObject[name],
+        timeNew = new Date().getTime();
 
-    //当console处于隐藏状态时，并不向console输出内容，而是只记录在_log数组中
-    //使用该变量记录index，当console被呼出，从该index开始向console进行输出
-    _index: 0,
+    if(timeOld){
+        me._log(timeNew - timeOld, 'info');
+        delete(me._timeObject[name]);
+    }else{
+        me._log('timer not exist', 'error');
+    }
+};
 
-    
-    //是否以显示console的标志位
-    _isShown: false, 
-
-    //html模板
-    //目前的设想是使用和dialog相似的样式，在顶部放有closebutton和draggable的title
-    //下面时可点击的目录，用来分别显示log，error，info，warn，以及all
-    //可以使用快捷键进行呼出与隐藏
-    tpl: ‘’,
-   
-    _getConsole: function(){
-        var me = this;
-
-        
-    },
-
-    /**
-     * @private
-     * 获取console的html代码
-     */
-    getString: function() {},
-
-    /**
-     * @public
-     * 绘制console到页面
-     */
-    render: function() {},
-
-    /**
-     * @public
-     * 打印log到console
-     * @param {Object[,Object,...]} content 需要输出的内容,支持多参数
-     * @return {Null}
-     */
-    log: function(content) {
-        var me = this;
-        me._write(me._type.log,arguments);
-    },
+baidu.extend(baidu.tools.log,{
     
     /**
+     * 输出log
      * @public
-     * 打印error到console
-     * @param {Object[,Object,...]} content 需要输出的内容,支持多参数
+     * @param {String} log 需要打印的内容
      * @return {Null}
      */
-    error: function(content) {
+    _log: function(log,type){
         var me = this;
-        me._write(me._type.error,arguments);      
-    },
-    
-    /**
-     * @public
-     * 打印warn到console
-     * @param {Object[,Object,...]} content 需要输出的内容,支持多参数
-     * @return {Null}
-     */
-    warn: function(content) {
-        var me = this;
-        me._write(me._type.warn,arguments);     
-    },
+      
+        if(me._logLevel[type] >= me.logLevel){
+            
+            //log 压栈
+            me._logStack.push({type:log});
 
-    /**
-     * @public
-     * 打印log到console
-     * @param {Object[,Object,...]} content 需要输出的内容,支持多参数
-     * @return {NULL}
-     */
-    info: function(content) {
-        var me = this;
-        me._write(me._type.info,arguments);     
-    },
+            if(me.timeStep == 0){
+                //如果这是time为0，则立即调用_push方法
+                me._push(); 
+            }else{
+                //如果timeStep > 0
+                if(!me._timeHandler){
 
-    /**
-     * @public
-     * 创建计时器
-     * @param {String} name 计时器的handler name，若传入的name已经存在，则自动停止并重新创建
-     * @return {Null}
-     */
-    time: function(name){
-        var me = this,
-            newHandler = new Data().getTime(),
-            extHandler = me._timeHandler[name];
-
-        if(extHandler){
-            me.info(newHandler - extHandler); 
-        }
-
-        me._timeHandler[name] = newHandler;
-    },
-
-    /**
-     * @public
-     * 停止计时器并输出时间
-     * @param {String} name 计时器的handler name，若传入的name存在，则停止并输出时间，不存在则输出error
-     * @return {Null}
-     */
-    timeEnd: function(name){
-        var me = this,
-            newHandler = new Data().getTime(),
-            extHandler = me._timeHandler[name];
-
-        if(extHandler){
-            me.info(newHandler - extHandler); 
-            delete(me._timeHandler[name]);
-        }else{
-            me.error('timer is not exist!');
+                    me._timeHandler = setInterval(_p,me.timeStep * 1000);
+                    function _p(){
+                        me._push();
+                    }
+                }
+            }
         }
     },
 
     /**
-     * @public
-     * 清除log日志
-     * @return {Null}
-     */
-    clear: function() {},
-
-    /**
+     * 推送log,并调用回调函数
      * @private
-     * 将文本输出值console
-     * @param {String} type 文本的输出类型
-     * @param {Object} content 输出美容@param {Object} 需要输出的内容
-     * @return {Null}
-     */
-    _write: function(type,content) {
-        /**
-         * 目前的设想时这样的：
-         * 1.支持String format，即当传入的第一个参数为带有带有format标识的字符串时，将之后传入的参数与其进行format计算，并输出
-         * 2.支持传入Object对象，遍历其所有的子对象，并输出
-         * */
-    },
-
-    /**
-     * @public
-     * 显示console
-     * @return {Null}
-     */
-    show: function(){
-        //若此时使用的时浏览器内置的console，需要运行特定的commandline API
-        //不知是否可行，需调研
-    },
-
-    /**
-     * @public
-     * 隐藏console
-     * @return {Null}
-     */
-    hide: function(){
-        //若此时使用的时浏览器内置的console，需要运行特定的commandline API
-        //不知是否可行，需调研
-    },
-
-    /**
-     * @private
-     * 将未输出到console的数据输入输出
      * @return {Null}
      */
     _push: function(){
+        var me = this,
+            log = me._logStack;
+
+        //清空栈
+        me._logStack = [];
+
+        baidu.tools.log.DInstance && baidu.tools.log.DInstance.push(log);
+        me.callBack(log);
+    },
+
+    _logStack: [],
+    _timeObject: {},
+
+    callBack: new Function(),
+    timeStep: 0,
     
+    _logLevel: {
+        'log': 0,
+        'info': 1,
+        'warn': 2,
+        'error': 3
+    },
+
+    logLevel: 0,
+
+
+    /**
+     * 设置的push数据时使用的timeHandler
+     * 若timeStep为零，则立即输出数据
+     **/
+    _timeHandler: null,
+
+    /**
+     * 传入log配置
+     * @public {Object} log配置
+     * @config {Function} callBack 当log向外push数据时，同时调用的函数，并井数据以参数形式传入
+     * @config {Number} timeStep 设置log输出时间间隔，默认为0，即只要有数据就立即输出
+     * @config {String} logLevel 所需记录的log的等级,枚举值['log','error','info','warn']
+     */
+    config: function(cfg){
+        var me = this,
+            cfg = cfg || {}; 
+
+        (cfg.logLevel && me._logLevel[cfg.logLevel]) &&(cfg.logLevel = me._logLevel[cfg.logLevel]);
+        baidu.extend(me,cfg);
+        
+        //停止当前的计时
+        if(me._timeHandler && me.timeStep == 0){
+            clearInterval(me._timeHandler);
+            me._timeHandler = null;
+        }
     }
 });
