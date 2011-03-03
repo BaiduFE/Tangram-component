@@ -8,24 +8,21 @@ if (!file_exists('report')) {
 	else
 	mkdir('report');
 }
-//if ($debug)
-//print "browser : $b \r\n";
+
 require_once 'geneXML.php';
 generateXML($_POST, $_SERVER);
 
 /*如果全部运行完毕，发送邮件*/
-$kissList = interXML();
+$kissList = interXML(true);
 require_once 'geneHTML.php';
 if(sizeof($kissList)>0){
 	$html =	geneHTML($kissList);
-	if(in_array('config', $_POST)){
-		$config = $_POST['config'];
-		if(sizeof(explode('mail=true', $config))>1){
-			require_once 'geneHistory.php';
-			geneHistory($html);
-			require_once 'smail.php';
-			sendmail($html, true);
-		}
+	$config = $_POST['config'];
+	if(sizeof(explode('mail=true', $config))>1){
+		require_once 'geneHistory.php';
+		geneHistory($html);
+		require_once 'smail.php';
+		sendmail($html, true);
 	}
 
 	if(!$debug){

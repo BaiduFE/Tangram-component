@@ -6,7 +6,6 @@ module('baidu.ui.Dialog.Dialog$button');
  */
 test('create/remove buttons', function() {
 	expect(4);
-	debugger
 	var dialog = new baidu.ui.Dialog( {
 		buttons : {
 			"testButton" : {
