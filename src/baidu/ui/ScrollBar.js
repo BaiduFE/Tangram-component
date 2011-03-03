@@ -13,14 +13,12 @@
 
 /**
  * 创建一个简单的滚动条
- * @name baidu.ui.ScrollBar
- * @grammar baidu.ui.ScrollBar(options)
- * @param {Object} options 创建scrollBar的自定义参数.
- * @param {String} options.orientation 设置横向或是竖向滚动条，默认值：vertical,可取值：horizontal.
- * @param {Number} options.value 滚动条滚动的百分比值，定义域(0, 100)
- * @param {Number} options.dimension 滚动条滑块占全部内容的百分比，定义域(0, 100)
- * @param {Number} options.step 用户自定义当点击滚动按钮时每次滚动百分比距离，定义域(0, 100)
- * @return {baidu.ui.ScrollBar} ScrollBar类.
+ * @class ScrollBar基类
+ * @param   {Object}    options config参数
+ * @config  {String}    orientation 设置横向或是竖向滚动条，默认值：vertical,可取值：horizontal.
+ * @config  {Number}    value       滚动条滚动的百分比值，定义域(0, 100)
+ * @config  {Number}    dimension   滚动条滑块占全部内容的百分比，定义域(0, 100)
+ * @config  {Number}    step        用户自定义当点击滚动按钮时每次滚动百分比距离，定义域(0, 100)
  * @author linlingyu
  */
 baidu.ui.ScrollBar = baidu.ui.createUI(function(options){
@@ -32,7 +30,6 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options){
     tplThumb: '<div class="#{prev}"></div><div class="#{track}"></div><div class="#{next}"></div>',
     value: 0,//描述滑块初始值停留的百分比，定义域(0, 100)
     dimension: 10,//描述滑块占整个可滚动区域的百分比，定义域(0, 100)
-    
     orientation: 'vertical',//横竖向的排列方式，取值 horizontal,vertical
     step: 5,//单步移动5%
     _axis: {
@@ -65,6 +62,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options){
     
     /**
      * 将scrollBar的body渲染到用户给出的target
+     * @param {String|HTMLElement} target 一个dom的id字符串或是dom对象
      */
     render: function(target){
         if(!target){return;}
@@ -197,7 +195,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options){
     
     /**
      * 注册一个滚轮事件
-     * @param {htmlElement} target 需要注册的目标dom
+     * @param {HTMLElement} target 需要注册的目标dom
      */
     _registMouseWheelEvt: function(target){
 //        if(this.orientation != 'vertical'){return;}
@@ -233,7 +231,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options){
     },
     
     /**
-     * 取得当是隐藏或是显示状态
+     * 取得当前是隐藏或是显示状态
      * @return {Boolean} true:显示, false:隐藏
      */
     isVisible: function(){

@@ -1,7 +1,9 @@
-/**
- * @author linlingyu
+/*
+ * Tangram
+ * Copyright 2009 Baidu Inc. All rights reserved.
  */
 ///import baidu.ui.ScrollBar;
+///import baidu.ui.ScrollBar.ScrollBar$container;
 ///import baidu.dom.g;
 ///import baidu.dom.insertHTML;
 ///import baidu.string.format;
@@ -10,39 +12,35 @@
 
 /**
  * 创建一个panel来作为滚动条的容器
- * @name baidu.ui.ScrollPanel
- * @grammar baidu.ui.ScrollPanel(options)
- * @param {Object} options 创建ScrollPanel的自定义参数.
- * @param {String} options.overflow 取得'overflow-y':创建竖向滚动, 'overflow-x':创建横向滚动条, 'auto':创建滚动条(默认)
- * @param {Number} options.container 需要被滚动条管理的容器对象
-* @return {baidu.ui.ScrollPanel} ScrollPanel类.
+ * @class ScrollPanel基类
+ * @param   {Object}                options config参数
+ * @config  {String}                overflow 取值'overflow-y':创建竖向滚动, 'overflow-x':创建横向滚动条, 'auto':创建滚动条(默认)
+ * @config  {String|HTMLElement}    container 需要被滚动条管理的容器对象
  * @author linlingyu
  */
 baidu.ui.ScrollPanel = baidu.ui.createUI(function(options){
-    var me = this;
-//    me._oriValues = {};//用来保存target的初始值，在dispose时再还原给target
-//    me._yScrollbar = null;
-//    me._xScrollbar = null;
+    
 }).extend({
     uiType: 'scrollpanel',
     tplDOM: '<div id="#{id}" class="#{class}">#{body}</div>',
     overflow: 'auto',
+    _scrollBarSize: 0,//滚动条尺寸
     _yVisible: true,//用来标示竖向滚动条的隐藏显示状态
     _xVisible: true,//用来标示横向滚动条的隐藏显示状态
     _axis: {
         y: {
+            size: 'height',
             unSize: 'width',
-            scrollSize: 'scrollHeight',
-            clientSize: 'clientHeight',
+            unScrollSize: 'scrollWidth',
             unClientSize: 'clientWidth',
-            unOffsetSize: 'offsetWidth'
+            offsetSize: 'offsetHeight'
         },
         x: {
+            size: 'width',
             unSize: 'height',
-            scrollSize: 'scrollWidth',
-            clientSize: 'clientWidth',
+            unScrollSize: 'scrollHeight',
             unClientSize: 'clientHeight',
-            unOffsetSize: 'offsetHeight'
+            offsetSize: 'offsetWidth'
         }
     },
     
@@ -69,7 +67,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options){
     
     /**
      * 渲染ScrollPanel到页面中
-     * @param {htmlElement|String} target ScrollPanel依附于target来渲染
+     * @param {String|HTMLElement} target ScrollPanel依附于target来渲染
      */
     render: function(target){
         this.target = target;
@@ -93,7 +91,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options){
         main.style.width = target.offsetWidth + 'px';
         main.style.height = target.offsetHeight + 'px';
         panel.appendChild(target);
-        function scrollbar(pos){
+        function getScrollbar(pos){
             var track = me.getId('overflow-' + pos),
                 axis = me._axis[pos],
                 panel = me.getPanel(),
@@ -119,15 +117,16 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options){
                 autoRender: true
             });
             track.style[axis.unSize] = bar.getSize()[axis.unSize] + 'px';
+            me._scrollBarSize = bar.getSize()[axis.unSize];
             bar.setVisible(false);
         }
         if(me.overflow == 'overflow-y'
             || me.overflow == 'auto'){
-            scrollbar('y');
+            getScrollbar('y');
         }
         if(me.overflow == 'overflow-x'
             || me.overflow == 'auto'){
-            scrollbar('x');
+            getScrollbar('x');
         }
         me._smartVisible();
     },
@@ -136,74 +135,63 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options){
      * 根据内容智能运算容器是需要显示滚动条还是隐藏滚动条
      */
     _smartVisible: function(){
-//        var me = this,
-//            target = me.getTarget(),
-//            container = me.getContainer(),
-//            ybar = me._yScrollbar,
-//            xbar = me._xScrollbar,
-//            yVisible = me._yVisible,
-//            xVisible = me._xVisible,
-//            yshow = false,//是否显示yscrollbar
-//            xshow = false;//是否显示xscrollbar
-//        if(!container){return;}
-//        //
-//        function isShow(pos){
-//            var bar = me['_' + pos + 'Scrollbar'],
-//                axis = me._axis[pos],
-//                show = container[axis.scrollSize] > container[axis.clientSize];
-//            if(show){
-//                container.style[axis.unSize] = container[axis.unClientSize]
-//                    - bar.getSize()[axis.unSize] + 'px';
-//            }
-//            return show;
-//        }
-//        //
-//        function visible(pos){
-//            var axis = me._axis[pos],
-//                bar = me['_' + pos + 'Scrollbar'],
-//                val = false;
-//            if(bar && me['_' + pos + 'Visible']){
-//                bar.isVisible() && (container.style[axis.unSize] = parseInt(container.style[axis.unSize])
-//                    + bar.getMain()[axis.unOffsetSize] + 'px');
-//                bar.setVisible(true);
-//                val = isShow(pos);
-//            }
-//            return val;
-//        }
-//        yshow = visible('y');
-//        xshow = visible('x');
-//        //当存在两个滚动条时，需要再次较正值
-//        if(me.overflow == 'auto' && yshow != xshow && yVisible && xVisible){
-//            if(yshow){
-//                xshow = isShow('x');
-//            }
-//            if(xshow){
-//                yshow = isShow('y');
-//            }
-//        }
-//        //调整scrollbar
-//        if(ybar && yVisible){
-//            yshow && (ybar.getMain().style.height = container.offsetHeight + 'px');
-//            ybar.setVisible(yshow);
-//            ybar.update();
-//        }
-//        if(xbar && xVisible){
-//            xshow && (xbar.getMain().style.width = container.offsetWidth + 'px');
-//            xbar.setVisible(xshow);
-//            xbar.update();
-//        }
         var me = this,
-            container = me.getContainer(),
-            yScrollbar = me._yScrollbar,
-            xScrollbar = me._xScrollbar;
-            
-        if(!container){return};
-        
-        
-        
-        
-        
-        
+            size = {yshow: false, xshow: false};
+        if(!me.getContainer()){return};
+        function getSize(orie){//取得邦定容器的最小尺寸和内容尺寸
+            var axis = me._axis[orie],
+                bar = me['_' + orie + 'Scrollbar'],
+                container = me.getContainer(),
+                size = {};
+            if(!bar || !bar.isVisible()){
+                container.style[axis.unSize] = container[axis.unClientSize]
+                    - me._scrollBarSize + 'px';
+            }
+            size[axis.unSize] = container[axis.unClientSize];
+            size['scroll' + axis.unSize] = container[axis.unScrollSize];
+            return size;
+        }
+        function setContainerSize(orie, size){//根据是否显示滚动条设置邦定容器的尺寸
+            var axis = me._axis[orie],
+                container = me.getContainer();
+            if(!me['_' + orie + 'Visible']
+                || !size[orie + 'show']
+                || !me['_' + orie + 'Scrollbar']){
+                container.style[axis.unSize] = container[axis.unClientSize]
+                    + me._scrollBarSize + 'px';
+            }
+        }
+        function setScrollBarVisible(orie, size){//设置滚动条的显示或隐藏
+            var axis = me._axis[orie],
+                container = me.getContainer(),
+                scrollbar = me['_' + orie + 'Scrollbar'],
+                isShow = size[orie + 'show'];
+            if(scrollbar){
+                scrollbar.getMain().style[axis.size] = container[axis.offsetSize] + 'px';
+                scrollbar.setVisible(me['_' + orie + 'Visible'] ? isShow : false);
+                scrollbar.update();
+            }
+        }
+        baidu.object.extend(size, getSize('y'));
+        baidu.object.extend(size, getSize('x'));
+        if(size.scrollwidth <= size.width + me._scrollBarSize
+            && size.scrollheight <= size.height + me._scrollBarSize){//两个都不显示
+            size.yshow = size.xshow = false;
+        }else if(size.scrollwidth <= size.width
+            && size.scrollheight > size.height + me._scrollBarSize){//只显示竖
+            size.yshow = true;
+            size.xshow = false;
+        }else if(size.scrollwidth > size.width + me._scrollBarSize
+            && size.scrollheight <= size.height){//只显示横
+            size.yshow = false;
+            size.xshow = true;
+        }else{//两个都显示
+            size.yshow = size.xshow = true;
+        }
+        setContainerSize('y', size);
+        setContainerSize('x', size);
+        setScrollBarVisible('y', size);
+        setScrollBarVisible('x', size);
     },
     
     /**
@@ -212,17 +200,13 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options){
      * @param {String} pos 可选，当有两个滚动条时可以指定只隐藏其中之一，取值'x'或'y'，不传该参数隐藏或显示全部
      */
     setVisible: function(val, pos){
-        var me = this,
-            bar = pos ? [me['_' + pos + 'Scrollbar']] : me.getScrollBar(),
-            key = pos ? [pos] : ['y', 'x'];
-            size = bar.length,
-            i = 0;
-        for(; i < size; i++){
-            if(bar[i]){
-                bar[i].setVisible(val);
-                me['_' + pos + 'Visible'] = val;
-            }
+        var me = this;
+        if(pos){
+            me['_' + pos + 'Visible'] = val;
+        }else{
+            me._yVisible = me._xVisible = val;
         }
+        me._smartVisible();
     },
     
     /**
@@ -257,7 +241,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options){
     
     /**
      * 取得panel的dom节点
-     * @return {htmlElement}
+     * @return {HTMLElement}
      */
     getPanel: function(){
         return baidu.dom.g(this.getId('panel'));
@@ -265,7 +249,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options){
     
     /**
      * 取得用户传入的目标对象
-     * @return {htmlElement}
+     * @return {HTMLElement}
      */
     getTarget: function(){
         return baidu.dom.g(this.target);
@@ -273,7 +257,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options){
     
     /**
      * 取得用户传入的container对象
-     * @return {htmlElement}
+     * @return {HTMLElement}
      */
     getContainer: function(){
         return baidu.dom.g(this.container);
