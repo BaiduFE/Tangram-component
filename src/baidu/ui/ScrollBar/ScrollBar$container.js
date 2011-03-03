@@ -1,15 +1,15 @@
-/**
- * @author linlingyu
+/*
+ * Tangram
+ * Copyright 2009 Baidu Inc. All rights reserved.
  */
+
 ///import baidu.ui.ScrollBar;
 ///import baidu.dom.g;
 ///import baidu.lang.Class.addEventListeners;
 /**
  * 让滚动条邦定一个容器
- * @name baidu.ui.ScrollBar
- * @grammar baidu.ui.ScrollBar(options)
- * @param {Object} options 创建scrollBar的自定义参数.
- * @param {htmlElement|string} options.container 一个容器的dom或是id的字符串
+ * @param   {Object}                options config参数
+ * @config  {String|HTMLElement}    container 一个容器的dom或是id的字符串
  * @author linlingyu
  */
 baidu.ui.ScrollBar.register(function(me){
@@ -45,7 +45,7 @@ baidu.ui.ScrollBar.register(function(me){
 baidu.object.extend(baidu.ui.ScrollBar.prototype, {
     /**
      * 取得用户传入的需要被滚动条管理的对象
-     * @return {htmlElement}
+     * @return {HTMLElement}
      */
     getContainer: function(){
         return baidu.dom.g(this.container);
