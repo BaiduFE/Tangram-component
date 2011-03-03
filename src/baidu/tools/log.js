@@ -12,98 +12,127 @@
 
 ///import baidu.tools;
 
-/**
- * 打印log
- * @public
- * @param {String} log 需要打印的内容
- * @return {Null}
- * */
-baidu.tools.log = function(log){
-    this._log(log,'log');
+baidu.tools.log = function(){
+    var me = this;
+
+    me._logStack = [];
+    me._timeObject = {};
+
+    me.callBack = new Function();
+    me.timeStep = 0;
+    
+    me._logLevel = {
+        'log': 0,
+        'info': 1,
+        'warn': 2,
+        'error': 3
+    };
+
+    me.logLevel = 0;
+
+
+    /**
+     * 设置的push数据时使用的timeHandler
+     * 若timeStep为零，则立即输出数据
+     **/
+    me._timeHandler = null;
+
 };
 
-/**
- * 打印error
- * @public
- * @param {String} log 需要打印的内容
- * @return {Null}
- * */
-baidu.tools.log.error = function(log){
-    this._log(log,'error');
-};
 
-/**
- * 打印info
- * @public
- * @param {String} log 需要打印的内容
- * @return {Null}
- * */
-baidu.tools.log.info = function(log){
-    this._log(log,'info');
-};
 
-/**
- * 打印warn
- * @public
- * @param {String} log 需要打印的内容
- * @return {Null}
- * */
-baidu.tools.log.warn = function(log){
-    this._log(log,'warn');
-};
+baidu.extend(baidu.tools.log.prototype,{
 
-/**
- * 设置timer
- * @public
- * @param {String} name timer的标识名称
- * @return {Null}
- */
-baidu.tools.log.time = function(name){
-    var me = this,
+    /**
+     * 打印log
+     * @public
+     * @param {Object} data 需要打印的内容
+     * @return {Null}
+     * */
+    log: function(data){
+        this._log(data,'log');
+    },
+
+    /**
+     * 打印error
+     * @public
+     * @param {Object} data 需要打印的内容
+     * @return {Null}
+     * */
+    error: function(data){
+        this._log(data,'error');
+    },
+
+    /**
+     * 打印info
+     * @public
+     * @param {Object} data 需要打印的内容
+     * @return {Null}
+     * */
+    info: function(data){
+        this._log(data,'info');
+    },
+
+    /**
+     * 打印warn
+     * @public
+     * @param {Object} data 需要打印的内容
+     * @return {Null}
+     * */
+    warn: function(data){
+        this._log(data,'warn');
+    },
+
+    /**
+     * 设置timer
+     * @public
+     * @param {String} name timer的标识名称
+     * @return {Null}
+     */
+    time: function(name){
+        var me = this,
         timeOld = me._timeObject[name],
         timeNew = new Date().getTime();
-    
-    if(timeOld){
-        me._log(timeNew - timeOld, 'info');
-    }else{
-        me._timeObject[name] = timeNew;
-    }
-};
 
-/**
- * 终止timer,并打印
- * @public
- * @param {String} name timer的标识名称
- * @return {Null}
- */
-baidu.tools.log.timeEnd = function(name){
-    var me = this,
+        if(timeOld){
+            me._log(timeNew - timeOld, 'info');
+        }else{
+            me._timeObject[name] = timeNew;
+        }
+    },
+
+    /**
+     * 终止timer,并打印
+     * @public
+     * @param {String} name timer的标识名称
+     * @return {Null}
+     */
+    timeEnd: function(name){
+        var me = this,
         timeOld = me._timeObject[name],
         timeNew = new Date().getTime();
 
-    if(timeOld){
-        me._log(timeNew - timeOld, 'info');
-        delete(me._timeObject[name]);
-    }else{
-        me._log('timer not exist', 'error');
-    }
-};
+        if(timeOld){
+            me._log(timeNew - timeOld, 'info');
+            delete(me._timeObject[name]);
+        }else{
+            me._log('timer not exist', 'error');
+        }
+    },
 
-baidu.extend(baidu.tools.log,{
-    
     /**
      * 输出log
      * @public
-     * @param {String} log 需要打印的内容
+     * @param {String} data 需要打印的内容
      * @return {Null}
      */
-    _log: function(log,type){
+    _log: function(data,type){
         var me = this;
       
         if(me._logLevel[type] >= me.logLevel){
             
             //log 压栈
-            me._logStack.push({type:log});
+            me._logStack.push({type:type,data:data});
 
             if(me.timeStep == 0){
                 //如果这是time为0，则立即调用_push方法
@@ -128,36 +157,17 @@ baidu.extend(baidu.tools.log,{
      */
     _push: function(){
         var me = this,
-            log = me._logStack;
+            data = me._logStack;
 
         //清空栈
         me._logStack = [];
 
-        baidu.tools.log.DInstance && baidu.tools.log.DInstance.push(log);
-        me.callBack(log);
+        baidu.tools.log.DInstance && baidu.tools.log.DInstance.push(data);
+        me.callBack(data);
     },
 
-    _logStack: [],
-    _timeObject: {},
-
-    callBack: new Function(),
-    timeStep: 0,
     
-    _logLevel: {
-        'log': 0,
-        'info': 1,
-        'warn': 2,
-        'error': 3
-    },
-
-    logLevel: 0,
-
-
-    /**
-     * 设置的push数据时使用的timeHandler
-     * 若timeStep为零，则立即输出数据
-     **/
-    _timeHandler: null,
+    
 
     /**
      * 传入log配置
@@ -180,3 +190,7 @@ baidu.extend(baidu.tools.log,{
         }
     }
 });
+
+baidu.logger = function(){
+    return new baidu.tools.log();
+}();

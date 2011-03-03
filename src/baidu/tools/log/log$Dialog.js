@@ -23,6 +23,8 @@
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Dialog.Dialog$resizable;
 ///import baidu.ui.Dialog.Dialog$draggable;
+///import baidu.ui.Dialog.Dialog$smartCover;
+///import baidu.ui.Dialog.Dialog$closeButton;
 
 ///import baidu.tools;
 ///import baidu.tools.log;
@@ -32,7 +34,8 @@ baidu.tools.log.Dialog = function(){
 
     me.dialog = new baidu.ui.Dialog({
         width: '500',
-        height: '500'
+        height: '500',
+        titleText: 'tangram debug window'
     });
     me.dialog.render();
     me.dialog.open();
@@ -55,8 +58,16 @@ baidu.tools.log.Dialog = function(){
         error: 'red'
     };
 };
-baidu.extend(baidu.tools.log.Dialog,{
-    
+baidu.extend(baidu.tools.log.Dialog.prototype,{
+   
+    _verifyFunction:[
+        [baidu.lang.isString,'String'],
+        [baidu.lang.isNumber,'Number'],
+        [baidu.lang.isDate,'Date'],
+        [baidu.lang.isArray,'Array'],
+        [baidu.lang.isObject,'Object']
+    ],
+
     /**
      * 打开dialog
      * @public
@@ -90,6 +101,8 @@ baidu.extend(baidu.tools.log.Dialog,{
             dataString.push(me._getString(d));
         });
 
+        console.log(dataString);
+
         me.tmpContent.innerHTM = dataString.join('');
         tmpChild = baidu.dom.children(me.tmpContent);
         (tmpChild.legth > 0) && baidu.each(tmpChild, function(d,i){
@@ -112,9 +125,9 @@ baidu.extend(baidu.tools.log.Dialog,{
             contentData = data.content;
 
         return baidu.format(me.logTpl['data'],{
-            title: baidu.format(me.logTpl['title'],{
+            type: baidu.format(me.logTpl['type'],{
                 color: me.color[typeStr],
-                title: typeStr
+                type: typeStr
             }),
             content: baidu.format(me.logTpl['content'],{
                 content: me._getContentString(contentData)
@@ -135,12 +148,14 @@ baidu.extend(baidu.tools.log.Dialog,{
         //判断数据类型
         //目前支持数据类型：
         //Array,Object,Boolean,Date,String,Number
-        if(baidu.lang.isArray(data)) str = me._echoArray(data);
-        else if(baidu.lang.isDate) str = me._echoDate(data);
-        else if(baidu.lang.isObject) str = me._echoObject(data);
-        else if(baidu.lang.isString) str = me._echoString(data);
-        else if(baidu.lang.isNumber) str = me._echoNumber(data);
-
+        baidu.each(me._verifyFunction,function(fun,index){
+            
+            if(fun[0](data)){
+                str = me['_echo' + fun[1]](data);
+                return false;
+            }
+        }); 
+        
         return str;
     },
 
