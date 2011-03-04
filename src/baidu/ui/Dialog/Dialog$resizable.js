@@ -17,7 +17,7 @@
  * @direction {Array} direction 可已经resize的方向，默认为["s","e","se"]3方向
  */
 baidu.extend(baidu.ui.Dialog.prototype, {
-    resizable: true,
+    resizable: false,
     minWidth: 100,
     minHeight: 100,
     direction: ['s', 'e', 'se']

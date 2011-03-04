@@ -1,11 +1,11 @@
 /*
  * Tangram
- * Copyright 2009 Baidu Inc. All rights reserved.
+ * Copyright 2011 Baidu Inc. All rights reserved.
  *
- * path: ui/dialog/login.js
- * author: berg
+ * path: ui/Login.js
+ * author:tianhua 
  * version: 1.0.0
- * date: 2010-05-18
+ * date: 2011-02-24
  */
 
 
@@ -18,17 +18,15 @@
 
 ///import baidu.ui.Dialog;
 
-///import baidu.dom.addClass;
-///import baidu.dom.removeClass;
-///import baidu.dom.g;
+///import baidu.dom.addClass; 
+///import baidu.dom.removeClass; 
+///import baidu.dom.g; 
 ///import baidu.dom.children;
 
 ///import baidu.object.extend;
 
-
 ///import baidu.sio.callByBrowser;
 ///import baidu.sio.callByServer;
-
 
 /**
  * 应用实现 login
@@ -47,9 +45,7 @@
  * @config {Function}           onopen                dialog打开时触发
  * @config {Function}           onclose               dialog关闭时触发
  * @config {Function}           onbeforeclose         dialog关闭前触发，如果此函数返回false，则组织dialog关闭。
- * @config {Function}           onupdate              dialog更新内容时触发
- * @config {Boolean}            closeOnEscape         keyboardSupport模块提供支持，当esc键按下时关闭dialog。
- * @config {String}             closeText             closeButton模块提供支持，关闭按钮上的title。
+ * @config {Function}           onupdate              dialog更新内容时触发 * @config {Boolean}            closeOnEscape         keyboardSupport模块提供支持，当esc键按下时关闭dialog。 * @config {String}             closeText             closeButton模块提供支持，关闭按钮上的title。
  * @config {Boolean}            modal                 modal模块支持，是否显示遮罩
  * @config {String}             modalColor            modal模块支持，遮罩的颜色
  * @config {Number}             modalOpacity          modal模块支持，遮罩的透明度
@@ -70,11 +66,14 @@
  * @config {Function}           onRegisterFailure     注册失败回调函数
  *
  */
-baidu.ui.login = function(options) {
-	options = options || {};
 
-	options = baidu.extend({
-		titleText: '登录',
+baidu.ui.Login = baidu.ui.createUI(function(options){ },{superClass:baidu.ui.Dialog}).extend(
+{
+    		//ui控件的类型，传入给UIBase **必须**
+		uiType: 'login',
+    		//ui控件的class样式前缀 可选
+    		classPrefix     : "tangram-dialog",
+		//titleText: '登录',
 		loginURL: 'http://passport.baidu.com/api/?login&time=&token=&tpl=pp',
 		regURL: 'http://passport.baidu.com/api/?reg&time=&token=&tpl=pp',
 		loginJumpURL: window.location.href,
@@ -115,81 +114,131 @@ baidu.ui.login = function(options) {
                 <div id="#{idRegContainer}" class="passport-reg-container"></div>\
             </div>\
         </div>\
-'
-	},options);
+' ,
 
-	options.changeTab = options.changeTab || function(type) {
-		var panelIds = [options.loginPanelId, options.regPanelId],
-			tabs = baidu.dom.children(options.tabId),
-			className = options.currentTabClass,
-			curIndex = type == 'login' ? 0 : 1;
+    getString: function() {
+       var me = this,
+            html,
+            title = 'title',
+            titleInner = 'title-inner',
+            content = 'content',
+            footer = 'footer';
+	me.contentText = me.contentText || baidu.string.format(me.tplContainer, {
+    		clickTabLogin: me.getCallRef() + ".changeTab('login')",
+    		clickTabReg: me.getCallRef() + ".changeTab('reg')",
+    		idLoginContainer: me.loginContainerId,
+    		idRegContainer: me.regContainerId,
+    		idLoginPanel: me.loginPanelId,
+    		idRegPanel: me.regPanelId,
+    		tabId: me.tabId,
+    		currentTabClass: me.currentTabClass
+    	});
+
+	 return baidu.format(me.tplDOM, {
+            id: me.getId(),
+            'class' : me.getClass(),
+            title: baidu.format(
+                me.tplTitle, {
+                    id: me.getId(title),
+                    'class' : me.getClass(title),
+                    'inner-id' : me.getId(titleInner),
+                    'inner-class' : me.getClass(titleInner),
+                    content: me.titleText || ''
+                }),
+            content: baidu.format(
+                me.tplContent, {
+                    id: me.getId(content),
+                    'class' : me.getClass(content),
+                    content: me.contentText || ''
+                }),
+            footer: baidu.format(
+                me.tplFooter, {
+                    id: me.getId(footer),
+                    'class' : me.getClass(footer)
+            })
+        });
+
+},
+ render: function() {
+        var me = this,
+            main;
+
+        //避免重复render
+        if (me.getMain()) {
+            return;
+        }
+
+        main = me.renderMain();
+
+        //main.style.left =  '-10000em';
+        main.innerHTML = me.getString();
+        me._update();
+        me._updatePosition();
+
+        baidu.dom.setStyles(me.getMain(), {
+            position: 'absolute',
+            zIndex: this.zIndex,
+            marginLeft: '-100000px'
+        });
+        //当居中时，窗口改变大小时候要重新计算位置
+        me.windowResizeHandler = me.getWindowResizeHandler();
+        baidu.on(window, 'resize', me.windowResizeHandler);
+
+        me.dispatchEvent('onload');
+
+        return main;
+    },
+    changeTab: function(type) {
+        	var me = this,
+		 panelIds = [me.loginPanelId, me.regPanelId],
+			tabs = baidu.dom.children(me.tabId),
+	         className = me.currentTabClass,
+			curIndex = (type == 'login') ? 0 : 1;
 		for (var i = 0; i < panelIds.length; ++i) {
-			baidu.dom.removeClass(tabs[i], className);
-			baidu.g(panelIds[i]).style.display = 'none';
+			baidu.dom.removeClass(tabs[i], className); baidu.g(panelIds[i]).style.display = 'none';
 		}
 		baidu.dom.addClass(tabs[curIndex], className);
-		baidu.g(panelIds[curIndex]).style.display = '';
-		(type == 'reg') ?
-			this.renderReg()
-		:
-			this.renderLogin();
-	};
-
-
-    var dialogInstance = new baidu.ui.Dialog(options);
-
-
-    dialogInstance.render();
-
-    dialogInstance.update({
-    	contentText: options.contentText || baidu.string.format(options.tplContainer, {
-    		clickTabLogin: dialogInstance.getCallRef() + ".changeTab('login')",
-    		clickTabReg: dialogInstance.getCallRef() + ".changeTab('reg')",
-    		idLoginContainer: options.loginContainerId,
-    		idRegContainer: options.regContainerId,
-    		idLoginPanel: options.loginPanelId,
-    		idRegPanel: options.regPanelId,
-    		tabId: options.tabId,
-    		currentTabClass: options.currentTabClass
-    	})
-    });
-
-    baidu.extend(dialogInstance, {
-    	open: function() {
+		baidu.g(panelIds[curIndex]).style.display = ''; 
+		(type == 'reg') ?  me.renderReg() : me.renderLogin();
+	},
+   open: function() {
     		var me = this;
-    		(me.initialStatus == 'login') ?
-	    		me.renderLogin()
-    		:
-    			me.changeTab('reg');
+    		(me.initialStatus == 'login') ?  me.renderLogin() : me.changeTab('reg');
     		me.dispatchEvent('onopen');
-    		//baidu.ui.dialog.Dialog.prototype.open.call(me);
 
     	},
-    	close: function() {
+   close: function() {
     		var me = this;
     		me.loginJson = me.regJson = null;
-    		baidu.ui.Dialog.prototype.close.call(me);
+        if (me.dispatchEvent('onbeforeclose')) {
+            me.getMain().style.marginLeft = '-100000px';
+            baidu.ui.Dialog.instances[me.guid] = 'hide';
+
+            me.dispatchEvent('onclose');
+        }
+
     	},
-    	renderLogin: function() {
+   renderLogin: function() {
     		var me = this;
     		if (me.loginJson) return;
 	    	baidu.sio.callByServer(me.loginURL, function(value) {
 	    		var json = me.loginJson = eval(value);
+//alert(me.loginJson);
 		        baidu.sio.callByBrowser(json.jslink, function(value) {
 		        	baidu.ui.Dialog.prototype.open.call(me);
 
-			        dialogInstance.loginDom = bdPass.LoginTemplate.render(json, options.loginContainerId/*dialogInstance.getContent()*/, {
+			        me.loginDom = bdPass.LoginTemplate.render(json, me.loginContainerId, {
 					   renderSafeflg: true,
-					   onSuccess: options.onLoginSuccess,
-					   jumpUrl: options.loginJumpURL,
-					   onFailure: options.onLoginFailure
+					   onSuccess: me.onLoginSuccess,
+					   jumpUrl: me.loginJumpURL,
+					   onFailure: me.onLoginFailure
 			        });
-			        dialogInstance.update();
+			        me.update();
 		        });
 	    	});
     	},
 
-    	renderReg: function() {
+    renderReg: function() {
     		var me = this;
     		if (me.regJson) return;
 	    	baidu.sio.callByServer(me.regURL, function(value) {
@@ -197,17 +246,24 @@ baidu.ui.login = function(options) {
 		        baidu.sio.callByBrowser(json.jslink, function(value) {
 		        	baidu.ui.Dialog.prototype.open.call(me);
 
-			        dialogInstance.registerDom = bdPass.RegTemplate.render(json, options.regContainerId, {
+			        me.registerDom = bdPass.RegTemplate.render(json, me.regContainerId, {
 					   renderSafeflg: true,
-					   onSuccess: options.onRegisterSuccess,
-					   jumpUrl: options.regJumpURL,
-					   onFailure: options.onRegisterFailure
+					   onSuccess: me.onRegisterSuccess,
+					   jumpUrl: me.regJumpURL,
+					   onFailure: me.onRegisterFailure
 			        });
-			        dialogInstance.update();
+			        me.update();
 		        });
 	    	});
-    	}
-    });
-
-    return dialogInstance;
-};
+    	},
+     dispose: function() {
+		 var me = this;
+		 //删除实例引用
+		 delete baidu.ui.Login.instances[me.guid];
+		 me.dispatchEvent('dispose');
+		 baidu.un(window, 'resize', me.windowResizeHandler);
+		 baidu.dom.remove(me.getMain());
+		 baidu.lang.Class.prototype.dispose.call(me);
+	 }
+});
+baidu.ui.Login.instances = baidu.ui.Login.instances || {};
