@@ -67,14 +67,11 @@ test('update', function() {
 				 * 在slider中点击鼠标，滑块中心位置而不是滑块最左边会滑动到鼠标的坐标处，
 				 * 因此需要补足滑块的一半长度
 				 */
-				var left = parseInt($(s.getThumb()).css('left'));
-				if (left > 190) {
-					v -= s.offsetWidth;// 滑块不会超出slider外面去，left为200-滑块的宽度
+				var left = baidu.dom.getPosition(s.getThumb())['left'];//parseInt($(s.getThumb()).css('left'));
+				if (x > 200&&x<220) {// 滑块不会超出slider外面去，left为200-滑块的宽度
+					equal(left,x-parseInt($(s.getThumb()).css('width')),'check thumb position' + left);
 				}
-				
-				ok(left,v,
-						'check thumb position' + left);
-				v += 20;
+				else if(x<200)equal(left,x,'check thumb position' + left);
 			}
 
 		}
@@ -87,7 +84,6 @@ test('update', function() {
 	var body = s.getBody();
 	stop();
 	var x = parseInt(baidu.dom.getPosition(body)['left']);
-	v = 20-parseInt($(s.getThumb()).css('width'))/2;
 	var handle = setInterval(function() {
 		if (s.value == 100) {
 			clearInterval(handle);

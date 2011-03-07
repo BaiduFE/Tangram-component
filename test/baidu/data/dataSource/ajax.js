@@ -69,7 +69,7 @@ test('ajaxOption', function() {
 			ajaxOption : {
 				'method' : 'get',
 				'onsuccess' : function(xhr, text) {
-					console.log("test");
+					//console.log("test");
 					ok(/\d+/.test(text), 'reponse matched \\d+: '
 							+ text);
 					cache = text;

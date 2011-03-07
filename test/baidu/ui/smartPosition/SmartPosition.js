@@ -64,8 +64,8 @@ test('update insideScreen', function() {
 		coordinate : {
 			x : 3000,
 			y : 3000
-		}
-//		insideScreen : 'surround'
+		},
+		//insideScreen : 'surround'
 	});
 	xy = baidu.dom.getPosition(t);	
 	equals(xy.left, baidu.page.getViewWidth() - t.clientWidth, 'check left');
@@ -130,9 +130,27 @@ test(
 				}
 			}, 20);
 		});
+		
 test("offset",function(){
-	ok(false, "TODO: options.offset test case needed.")
-});
-test("insideScreen",function(){
-	ok(false, "TODO: options.insideScreen test case needed.")
+	var t, sp, xy, step = 0;
+	t = testingElement.dom[0];
+	var options = {
+		source : t,
+		coordinate : [ 100, 100 ],
+		offset : [-50,-50],
+	};
+	sp = new baidu.ui.smartPosition.SmartPosition(options);
+	sp.update();
+	xy = baidu.dom.getPosition(t);
+	equals(xy.left, options.coordinate[0]+options.offset[0], 'check left');
+	equals(xy.top, options.coordinate[1]+options.offset[1], 'check top');
+	sp.update( {
+		coordinate : {
+			x : 0,
+			y : 0
+		}
+	});
+	xy = baidu.dom.getPosition(t);
+	equals(xy.left, options.offset[0], 'check left');
+	equals(xy.top, options.offset[1], 'check top');
 });

@@ -1,4 +1,4 @@
-module("baidu.ui.Suggestion$input");
+module("baidu.ui.Suggestion.Suggestion$input");
 
 /**
  * <li>在第一条时上
@@ -107,6 +107,34 @@ test('type enter', function() {
 					start();
 				}, 0);
 			}
+		}
+	};
+	sugg = new baidu.ui.Suggestion(options);
+	sugg.render(input);
+	te.obj.push(sugg);
+	input.focus();
+	input.value = 'a';
+	sugg.show('a', [ 'aa', 'ab' ]);
+});
+
+test('itemOver enter', function() {
+	stop();
+	var te = testingElement, input = te.dom[0], sugg;
+	var check = function(callback) {
+		setTimeout(callback, 0);
+	};
+	var options = {
+		onshow : function() {
+			this.itemOver(1);
+			UserAction.keydown(input, {
+				keyCode : 13
+			});
+		},
+		onhide : function() {
+			setTimeout(function() {
+				equals(input.value, 'ab', 'type enter with select 0');
+				start();
+			}, 0);
 		}
 	};
 	sugg = new baidu.ui.Suggestion(options);

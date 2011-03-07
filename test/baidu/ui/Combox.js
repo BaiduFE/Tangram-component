@@ -27,7 +27,7 @@ function myTeardown() {
 		}
 		if (testingElement.obj && testingElement.obj.length) {
 			for ( var i = 0; i < testingElement.obj.length; i++) {
-				console.log(typeof testingElement.obj[i]);
+			//	console.log(typeof testingElement.obj[i]);
 				if (testingElement.obj[i] && testingElement.obj[i].dispose)
 					testingElement.obj[i].dispose();
 			}
