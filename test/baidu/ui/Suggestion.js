@@ -24,9 +24,8 @@ module("baidu.ui.Suggestion");
 	var s = QUnit.testStart;
 	QUnit.testStart = function() {
 		s.apply(this, arguments);
-		;
 		_testStart();
-	}
+	};
 })();
 
 /**
@@ -267,19 +266,3 @@ test(
 			te.obj.push(sugg);
 			sugg.show('a', [ 'ab', 'ac' ]);
 		});
-
-test('position absolute', function() {
-	stop();
-	var options = {
-		onshow : function() {
-			equals(parseInt($(sugg.getItem(0)).css('left')), 10, 'check left');
-			equals(parseInt($(sugg.getItem(0)).css('top')), 30, 'check left');
-			start();
-		}
-	};
-	var sugg = new baidu.ui.Suggestion(options);
-	$(te.dom[0]).css('position', 'absolute').css('left', 10).css('top',
-			10).css('height', 20);
-	sugg.render(te.dom[0]);
-	sugg.show('a', [ 'ab', 'ac' ]);
-});
