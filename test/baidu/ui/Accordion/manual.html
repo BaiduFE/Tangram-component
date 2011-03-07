@@ -14,12 +14,15 @@
     }
     .tangram-accordion-body {
         background : #eee;
+        height:200px;
+        overflow:auto;
     }
 </style>
-<script src="../../../../src/import.php?f=baidu.ui.get,baidu.ui.Accordion,baidu.ui.Accordion.Accordion$fx"></script>
+<script src="../../../../src/import.php?f=baidu.ui.get,baidu.ui.Accordion.Accordion$collapse,baidu.ui.Accordion.Accordion$fx"></script>
 </head>
 
 <body>
+    <input type="button" value="ok" onclick="c.collapse();"/>
     <div id="accordionId"></div>
 </body>
 <script language="javascript">
