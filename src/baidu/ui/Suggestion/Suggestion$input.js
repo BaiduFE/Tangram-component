@@ -121,7 +121,7 @@ baidu.ui.Suggestion.register(function(me) {
 
 baidu.ui.Suggestion.extend({
     //鼠标上下移动时
-    selectIndexByKeybord: 0,
+    selectIndexByKeybord: -1,
 
 
     /*
