@@ -56,6 +56,8 @@
 			$(main).css('top', '200px').css('left', '100px');
 			var div_drag = te.dom[0];
 			baidu.dom.draggable(div_drag);
+			
+			//FIXME 启动之前需要setTimeout，以使当前的计算鼠标，具体参看drag相关用例，位置变化至0、0
 			ua.mousemove(document, {
 				clientX : 0,
 				clientY : 0
@@ -73,7 +75,7 @@
 								'mouseup check left');
 						equal(parseInt($(ele).css('top')), 312,
 								'mouseup check top');
-						instance._theDroppable.cancel()
+						instance._theDroppable.cancel();
 						document.body.removeChild(main);
 						start();
 					}, 60);

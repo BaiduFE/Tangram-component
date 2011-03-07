@@ -119,7 +119,7 @@ baidu.object.extend(baidu.ui.table.Table.prototype, {
 			index = baidu.lang.isNumber(index) ? index : me.getTotalCount(),
 			currPage = me.getCurrentPage(),
 			instPage = Math.ceil((index + 1) / me.pageSize),
-			data,
+			data = options,
 			rowId;
 		if(me.pageSize){
 			me.dataSet.splice(index, 0, data);

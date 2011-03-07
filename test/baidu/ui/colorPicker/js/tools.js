@@ -17,5 +17,5 @@
 	QUnit.testStart = function() {
 		s.apply(this, arguments);;
 		mySetup();
-	}
+	};
 })();
