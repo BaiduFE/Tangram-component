@@ -90,14 +90,25 @@
     <body>
         <script>
             function test1(){
-                /*var data = {
-                    'array': [1,2,3],
-                    'string': 'this is a string.',
-                    'data': new Date()
-                };*/
-                var data = 'this is a string';
+                var data = [
+                    {
+                        'array': [1,2,3],
+                        'string': 'this is a string.',
+                        'data': new Date()
+                    },
+                    'this is a string',
+                    new Date(),
+                    123.123,
+                    [1,2,3]
+                ];
+                baidu.logger.log(data);
 
-                baidu.logger.log(data);    
+                baidu.logger.time('test');
+                setTimeout(endTime,500);
+
+                function endTime(){
+                    baidu.logger.time('test');   
+                }
             }
             
         </script> 
