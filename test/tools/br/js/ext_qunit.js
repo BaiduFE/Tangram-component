@@ -1,3 +1,7 @@
+
+/**
+ * 重载QUnit部分接口实现批量执行控制功能
+ */
 (function() {
 	if (!QUnit)
 		return;
@@ -9,15 +13,21 @@
 
 	function _d(args /* failures, total */) {
 		if (parent && parent.brtest) {
-			var wbkiss = parent.brtest.kisses[parent.brtest.kiss];
-			parent.$(wbkiss).trigger('done', [ new Date().getTime(), args ]);
+			var pKiss = parent.brtest.kiss;
+			var wbkiss = parent.brtest.kisses[pKiss];
+			var kissPath = pKiss.split('.').join('/') + '.js';
+			var KissCov;
+			if (!!window._$jscoverage)//如果参数里有cov=true
+				KissCov = window._$jscoverage[kissPath];
+			parent.$(wbkiss).trigger('done',
+					[ new Date().getTime(), args, KissCov ]);
 		}
 	}
 
 	var s = QUnit.testStart, e = QUnit.testDone, ms = QUnit.moduleStart, me = QUnit.moduleEnd, d = QUnit.done;
 	QUnit.testStart = function() {
 		// mySetup();
-		s.apply(this, arguments);;
+		s.apply(this, arguments);
 	};
 	QUnit.testDone = function() {
 		e.apply(this, arguments);
@@ -25,11 +35,11 @@
 	};
 	QUnit.moduleStart = function() {
 
-		if(window && window['baidu'])
+		if (window && window['baidu'])
 			return;
 		/* 为批量执行等待import.php正确返回 */
-		var h = setInterval(function(){
-			if(window && window['baidu']){
+		var h = setInterval(function() {
+			if (window && window['baidu']) {
 				clearInterval(h);
 
 				_ms(arguments);

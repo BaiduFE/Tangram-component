@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>scrollpanel by lly</title>
+<style type="text/css">
+/*public*/
+/*ScrollPanel*/
+.tangram-scrollpanel-main{
+    border: green solid 1px;
+}
+/*public*/
+.tangram-scrollbar{
+    width:100%;/*初始值必要*/
+    height:100%;/*初始值必要*/
+}
+.tangram-scrollbar-track{
+    overflow:hidden;/*必要*/
+    width:100%;/*初始值必要*/
+    height:100%;/*初始值必要*/
+}
+.tangram-slider{
+    width:100%;/*初始值必要*/
+    height:100%;/*初始值必要*/
+}
+.tangram-slider-thumb{
+    width:100%;/*初始值必要*/
+    height:100%;/*初始值必要*/
+}
+.tangram-button{font-size:0px;}
+/**/
+/*scrollbar-a start*/
+.scrollbar-y{
+    background:url(../ScrollBar/imgs/scrollbar-v.gif) repeat-y -105px 0;
+}
+.scrollbar-y-prev{
+    width: 15px;
+    height: 15px;
+    background: url(../ScrollBar/imgs/scrollbar-v.gif) no-repeat 0 0;
+}
+.scrollbar-y-prev-hover{
+    background-position:-15px 0;
+}
+.scrollbar-y-prev-press{
+    background-position:-30px 0;
+}
+.scrollbar-y-next{
+    width: 15px;
+    height: 15px;
+    background: url(../ScrollBar/imgs/scrollbar-v.gif) no-repeat 0 -15px;
+}
+.scrollbar-y-next-hover{
+    background-position:-15px -15px;
+}
+.scrollbar-y-next-press{
+    background-position:-30px -15px;
+}
+.scrollbar-y-thumb-btn{
+    position:relative;
+    width:100%;
+    height:100%;
+    background:url(../ScrollBar/imgs/scrollbar-v.gif) repeat-y -60px 0;
+}
+.scrollbar-y-thumb-prev{
+    position:absolute;
+    top:0px;
+    width:100%;
+    height:5px;
+    font-size:0px;
+    background:url(../ScrollBar/imgs/scrollbar-v.gif) -45px 0;
+}
+.scrollbar-y-thumb-next{
+    position:absolute;
+    bottom:0px!important;
+    bottom:-1px;
+    width:100%;
+    height:5px;
+    font-size:0px;
+    background:url(../ScrollBar/imgs/scrollbar-v.gif) -45px -5px;
+}
+.scrollbar-y-thumb-btn-hover{
+    background-position:-75px 0px;
+}
+.scrollbar-y-thumb-btn-hover .scrollbar-y-thumb-prev{
+    background-position:-45px -10px;
+}
+.scrollbar-y-thumb-btn-hover .scrollbar-y-thumb-next{
+    background-position:-45px -15px;
+}
+.scrollbar-y-thumb-btn-press{
+    background-position:-90px 0px;
+}
+.scrollbar-y-thumb-btn-press .scrollbar-y-thumb-prev{
+    background-position:-45px -20px;
+}
+.scrollbar-y-thumb-btn-press .scrollbar-y-thumb-next{
+    background-position:-45px -25px;
+}
+/*scrollbar-a end*/
+
+
+
+/*scrollbar-b start*/
+.scrollbar-x{
+    background:url(../ScrollBar/imgs/scrollbar-h.gif) repeat-x 0 -75px;
+}
+.scrollbar-x-track{
+    float:left;
+}
+.scrollbar-x-prev{
+    float:left;
+    width: 15px;
+    height: 15px;
+    background: url(../ScrollBar/imgs/scrollbar-h.gif) no-repeat 0 0;
+}
+.scrollbar-x-prev-hover{
+    background-position:-15px 0;
+}
+.scrollbar-x-prev-press{
+    background-position:-30px 0;
+}
+.scrollbar-x-next{
+    float:left;
+    width: 15px;
+    height: 15px;
+    background: url(../ScrollBar/imgs/scrollbar-h.gif) no-repeat 0 -15px;
+}
+.scrollbar-x-next-hover{
+    background-position:-15px -15px;
+}
+.scrollbar-x-next-press{
+    background-position:-30px -15px;
+}
+.scrollbar-x-thumb-btn{
+    position:relative;
+    width:100%;
+    height:100%;
+    background:url(../ScrollBar/imgs/scrollbar-h.gif) repeat-x 0 -30px;
+}
+.scrollbar-x-thumb-prev{
+    position:absolute;
+    left:0px;
+    width:5px;
+    height:100%;
+    font-size:0px;
+    background:url(../ScrollBar/imgs/scrollbar-h.gif) -45px 0;
+}
+.scrollbar-x-thumb-next{
+    position:absolute;
+    right:0px!important;
+    right:-1px;
+    width:5px;
+    height:100%;
+    font-size:0px;
+    background:url(../ScrollBar/imgs/scrollbar-h.gif) -50px 0;
+}
+.scrollbar-x-thumb-btn-hover{
+    background-position:0 -45px;
+}
+.scrollbar-x-thumb-btn-hover .scrollbar-x-thumb-prev{
+    background-position:-45px -15px;
+}
+.scrollbar-x-thumb-btn-hover .scrollbar-x-thumb-next{
+    background-position:-50px -15px;
+}
+.scrollbar-x-thumb-btn-press{
+    background-position:0 -60px;
+}
+.scrollbar-x-thumb-btn-press .scrollbar-x-thumb-prev{
+    background-position:-55px 0;
+}
+.scrollbar-x-thumb-btn-press .scrollbar-x-thumb-next{
+    background-position:-60px 0;
+}
+/*scrollbar-b end*/
+</style>
+<script src="../../../../src/import.php?f=baidu.dom.create,baidu.ui.get,baidu.ui.ScrollPanel"></script>
+</head>
+
+<body>
+创建单个竖向滚动条
+<div id='panel_a' style='width:200px; height:200px; border:black solid 1px; overflow:hidden;'>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+</div>
+创建单个横向滚动条
+<div id='panel_b' style='width:200px; height:200px; border:black solid 1px; overflow:hidden;'>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+</div>
+
+<br/>
+创建滚动条<br/>
+点击按钮来插入一个大的div：<input type='button' value='insert' onclick='insert();'/>，
+点击按钮来清除所有内容：<input type='button' value='clear' onclick='del();'/>，
+插入一个只有竖向滚动条的内容：<input type='button' value='click me' onclick='insertV();'/>，
+扩大容器到300*300：<input type='button' value='zoomIn' onclick='zoomIn();'/>
+<div id='panel_c' style='width:200px; height:200px; border:black solid 1px; overflow:hidden;'>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+    ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+</div>
+</body>
+<script language="javascript">
+var panel_a = new baidu.ui.ScrollPanel({
+    overflow: 'overflow-y',
+    container: 'panel_a',
+    element: 'panel_a',
+    autoRender: true
+});
+
+var panel_b = new baidu.ui.ScrollPanel({
+    overflow: 'overflow-x',
+    container: 'panel_b',
+    element: 'panel_b',
+    autoRender: true
+});
+
+
+var panel_c = new baidu.ui.ScrollPanel({
+    container: 'panel_c',
+    element: 'panel_c',
+    autoRender: true
+});
+
+function insert(){
+    var div = baidu.dom.create('div', {
+        style: 'width:400px; height:800px; border:red solid 1px'
+    });
+    div.innerHTML = '我就是插入的大DIV';
+    baidu.dom.g('panel_c').appendChild(div);
+    panel_c.update();
+}
+function del(){
+    baidu.g('panel_c').innerHTML = '';
+    panel_c.update();
+}
+function insertV(){
+    baidu.g('panel_c').innerHTML = '<div style="width:50px; height:800px; border:red solid 1px">我就是竖向撑开的DIV</div>';
+    panel_c.update();
+}
+function zoomIn(){
+    panel_c.setVisible(false);
+    var main = panel_c.getMain();
+    main.style.width = '302px';
+    main.style.height = '302px';
+    var div = baidu.g('panel_c');
+    div.style.width = '300px';
+    div.style.height = '300px';
+    panel_c.setVisible(true);
+}
+</script>
+</html>

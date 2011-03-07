@@ -9,7 +9,6 @@ test('events',
 					start();
 				}
 			};
-			debugger
 			var popup = new baidu.ui.Popup(options);
 			te.obj.push(popup);
 			popup.render();

@@ -29,7 +29,7 @@ if($DEBUG)var_dump($IGNORE);
 
 $cnt = "";
 foreach($f as $d){
-	$cnt.=importSrc($d);
+	$cnt.="\n".importSrc($d);
 }
 echo $cnt;
 function importSrc($d){

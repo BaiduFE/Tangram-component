@@ -2,60 +2,45 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
-
+///import baidu.ui.createUI;
 ///import baidu.string.format;
-///import baidu.dom.g;
 ///import baidu.dom.insertHTML;
-///import baidu.fn.bind;
-///import baidu.dom.setStyles;
-///import baidu.dom._styleFilter.px;
-///import baidu.ui.Button;
-///import baidu.ui.Button$capture;
+///import baidu.ui.Button.Button$capture;
+///import baidu.ui.Button.Button$poll;
 ///import baidu.ui.Slider;
-///import baidu.event.on;
-///import baidu.event.un;
-///import baidu.object.extend;
-///import baidu.event.preventDefault;
-///import baidu.dom.remove;
+///import baidu.dom.hide;
+///import baidu.dom.show;
 
 /**
- * 为容器创建一个自定义的滚动条
- * @name baidu.ui.scrollBar.ScrollBar
- * @grammar baidu.ui.scrollBar.create(options)
- * @param {Object} options 创建scrollBar的自定义参数.
- * @param {String} options.orientation 设置横向或是竖向滚动条，默认值：vertical,可取值：horizontal.
- * @param {Number} options.dimension 用户自定义滚动容积的大小.
- * @param {Number} options.step 用户自定义当点击滚动按钮时每次滚动距离.
- * @return {baidu.ui.scrollBar.ScrollBar} ScrollBar类.
+ * 创建一个简单的滚动条
+ * @class ScrollBar基类
+ * @param   {Object}    options config参数.
+ * @config  {String}    orientation 设置横向或是竖向滚动条，默认值：vertical,可取值：horizontal.
+ * @config  {Number}    value       滚动条滚动的百分比值，定义域(0, 100)
+ * @config  {Number}    dimension   滚动条滑块占全部内容的百分比，定义域(0, 100)
+ * @config  {Number}    step        用户自定义当点击滚动按钮时每次滚动百分比距离，定义域(0, 100)
  * @author linlingyu
  */
-
 baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     var me = this;
-    me._oriValues = {};//用来保存target的初始值，在dispose时再还原给target
+        me._arrowSize = {width: 0, height: 0};//用来存入prev按钮的宽度和高度
 }).extend({
-    tplDOM: '<div id="#{id}" class="#{class}">#{content}</div>',
-
-    uiType: 'scrollBar',
-    orientation: 'vertical',//横竖向的排列方式，取值horizontal,vertical,auto
-    step: 20,//单步移动20象素
+    uiType: 'scrollbar',
+    tplDOM: '<div id="#{id}" class="#{class}"></div>',
+    tplThumb: '<div class="#{prev}"></div><div class="#{track}"></div><div class="#{next}"></div>',
+    value: 0,//描述滑块初始值停留的百分比，定义域(0, 100)
+    dimension: 10,//描述滑块占整个可滚动区域的百分比，定义域(0, 100)
+    orientation: 'vertical',//横竖向的排列方式，取值 horizontal,vertical
+    step: 5,//单步移动5%
     _axis: {
         horizontal: {
-            tarSize: 'height',
-            tarClientSize: 'clientHeight',
-            pos: 'bottom',
             size: 'width',
-            offsetSize: 'offsetWidth',
             clientSize: 'clientWidth',
             scrollPos: 'scrollLeft',
             scrollSize: 'scrollWidth'
         },
         vertical: {
-            tarSize: 'width',
-            tarClientSize: 'clientWidth',
-            pos: 'right',
             size: 'height',
-            offsetSize: 'offsetHeight',
             clientSize: 'clientHeight',
             scrollPos: 'scrollTop',
             scrollSize: 'scrollHeight'
@@ -63,237 +48,136 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     },
 
     /**
-     * 依据tplDOM的内容生成滚动条布局
-     * @param
-     * @return
+     * 生成滑块的内容字符串
+     * @return {String}
      */
-    getString: function() {
-        var me = this,
-            str = [],
-            track;
-        str.push(baidu.string.format(me.tplDOM, {
-            id: me.getId('prev'),
-            'class' : me.getClass('prev')
-        }));
-        str.push(baidu.string.format(me.tplDOM, {
-            id: me.getId('track'),
-            'class' : me.getClass('track')
-        }));
-        str.push(baidu.string.format(me.tplDOM, {
-            id: me.getId('next'),
-            'class' : me.getClass('next')
-        }));
-        track = baidu.string.format(me.tplDOM, {
-            id: me.getId(),
-            'class' : me.getClass(),
-            content: str.join('')
-        });
-        return baidu.string.format(me.tplDOM, {
-            id: me.getId('panel'),
-            'class' : me.getClass('panel'),
-            content: track
+    getThumbString: function() {
+        var me = this;
+        return baidu.string.format(me.tplThumb, {
+            prev: me.getClass('thumb-prev'),
+            track: me.getClass('thumb-track'),
+            next: me.getClass('thumb-next')
         });
     },
-    
+
     /**
-     * 
-     */
-    _renderUI : function(){
-        var me = this,
-            target = me.target,
-            axis = me._axis[me.orientation],
-            panel = me.getPanel(),
-            body = me.getBody(),
-            trackSize = me._trackSize = body[axis.tarClientSize],
-            skin = me.skin || '',
-            options,
-            entry;
-        //设置panel和target一样的大小
-        baidu.dom.setStyles(panel, {
-            position: 'relative',
-            width: target.offsetWidth,
-            height: target.offsetHeight
-        });
-        //初始化target位置
-        me._oriValues = {
-            position: target.style.position,
-            left: target.style.left,
-            top: target.style.top
-        };
-        options = {
-            position: 'absolute',
-            left: 0,
-            top: 0
-        };
-        options[axis.tarSize] = target[axis.tarClientSize] - trackSize;
-        baidu.dom.setStyles(target, options);
-        //设置track的宽度
-        options = {position: 'absolute'};
-        options[axis.size] = target[axis.offsetSize];
-        options[axis.pos] = '0px';
-        baidu.dom.setStyles(body, options);
-        
-        
-        //生成其它UI
-        function createOpt(pos) {
-            function stopHandler(){
-                me._mouseIdent = -1;
-            };
-            return {
-                skin: skin + pos,
-                onmousedown: function() {me._onMouseHandler(pos);},
-                onmouseup: stopHandler,
-                onmouseout: stopHandler
-            };
-        };
-        me._prev = new baidu.ui.Button(createOpt('prev'));
-        me._next = new baidu.ui.Button(createOpt('next'));
-        me._prev.render(me.getId('prev'));
-        me._next.render(me.getId('next'));
-        function sliderHandler(evt) {
-            var target = me.target,
-                dimension = me.dimension || target[axis.scrollSize];
-            me._scrollTo((dimension - target[axis.clientSize]) * evt.target.getValue() / 100);
-        };
-        me._slider = new baidu.ui.Slider({
-            skin: skin + 'track',
-            layout: me.orientation,
-            onslide: sliderHandler,
-            onslideclick: sliderHandler
-        });
-        me._slider.render(me.getId('track'));
-        new baidu.ui.Button({
-            skin: skin + 'thumb',
-            capture: true,
-            tplBody: '<div id="#{id}" #{statable} class="#{class}"><div class="#{class}-thumbPrev"></div>' +
-                '#{content}<div class="#{class}-thumbNext"></div></div>'
-        }).render(me._slider.getThumb());
-        if (me.orientation.toLowerCase() == 'vertical') {//只有竖向滚动条有鼠标事件
-            entry = {
-                target: panel,
-                evtName: me._getEvtName(),
-                handler: baidu.fn.bind('_onMouseWheelHandler', me)
-            };
-            baidu.event.on(entry.target, entry.evtName, entry.handler);
-            me.addEventListener('dispose', function() {
-                baidu.event.un(entry.target, entry.evtName, entry.handler);
-            });
-        };
-        me._slider.getBody().style[axis.size] = target[axis.offsetSize]
-            - me._prev.getBody()[axis.offsetSize]
-            - me._next.getBody()[axis.offsetSize] + 'px';
-        me._smartThumb();
-    },
-    /**
-     * 将布局渲染成到指定容器中
-     * @param {HTMLElement} target 被渲染的容器.
+     * 将scrollBar的body渲染到用户给出的target
+     * @param {String|HTMLElement} target 一个dom的id字符串或是dom对象.
      */
     render: function(target) {
-        var me = this,
-            target = me.target = baidu.g(target);
-        baidu.dom.insertHTML(target, 'afterEnd', me.getString());
-        me.renderMain(me.getPanel());
-        me.getMain().insertBefore(target, me.getBody());
+        if (!target) {return;}
+        var me = this;
+        baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd',
+            baidu.string.format(me.tplDOM, {
+            id: me.getId(),
+            'class': me.getClass()
+        }));
         me._renderUI();
         me.dispatchEvent('load');
     },
 
     /**
-     * 智能运算滑块容器大小
+     * 将Button和Slider渲染到body中
      */
-    _smartThumb: function() {
-        var me = this;
-            target = me.target,
-            slider = me._slider,
-            axis = me._axis[me.orientation],
-            dimension = me.dimension || target[axis.scrollSize];
-        slider.getThumb().style[axis.size] = Math.round(slider.getBody()[axis.clientSize]
-            * target[axis.clientSize] / dimension) + 'px';
-        slider._updateDragRange();
-        me.scrollTo(target[axis.scrollPos]);
-        me.setVisible(target[axis.scrollSize] != target[axis.clientSize]);
-    },
-
-    /**
-     * 滚动条的更新方法
-     * @param {options}
-     */
-    update: function(options) {
-        var me = this;
-        baidu.object.extend(me, options || {});
-        me._smartThumb();
-        me.dispatchEvent('update');
-    },
-
-    /**
-     * 取得存放target和滚动条布局的最外层容器
-     */
-    getPanel: function() {
-        return baidu.g(this.getId('panel'));
-    },
-
-    /**
-     * 滚动内容到参数指定的像素位置
-     * @param {Number} 一个像素值.
-     */
-    _scrollTo: function(pos) {
-        var me = this;
-        me.target[me._axis[me.orientation].scrollPos] = pos;
-    },
-
-    /**
-     * 滚动内容到参数指定的像素位置并更新滚动到对应位置
-     * @param {Number} 一个像素值.
-     */
-    scrollTo: function(pos) {
+    _renderUI: function() {
         var me = this,
-            target = me.target,
             axis = me._axis[me.orientation],
-            dimension = me.dimension || target[axis.scrollSize];
-        me._scrollTo(pos);
-        me._slider.update({
-            value: (pos == 0 ? 0 : pos / (dimension - target[axis.clientSize]) * 100)
+            body = me.getBody(),
+            skin = me.skin || '',
+            prev,
+            slider,
+            next;
+        function options(type) {
+            return {
+                skin: (skin ? skin + '-' + type : skin + type),
+                poll: {time: 4},
+                onmousedown: function() {me._basicScroll(type);},
+                element: body,
+                autoRender: true
+            };
+        }
+        prev = me._prev = new baidu.ui.Button(options('prev'));
+        baidu.dom.insertHTML(body, 'beforeEnd', baidu.string.format(me.tplDOM, {
+            id: me.getId('track'),
+            'class': me.getClass('track')
+        }));
+        next = me._next = new baidu.ui.Button(options('next'));
+        function handler(evt) {
+            me.dispatchEvent('scroll', {value: Math.round(evt.target.getValue())});
+        }
+        slider = me._slider = new baidu.ui.Slider({
+            skin: skin + '-slider',
+            layout: me.orientation,
+            onslide: handler,
+            onslideclick: handler,
+            element: baidu.dom.g(me.getId('track')),
+            autoRender: true
         });
+        me._arrowSize = {
+            width: next.getBody().offsetWidth,
+            height: next.getBody().offsetHeight
+        };
+        me._thumb = new baidu.ui.Button({
+            skin: skin + '-thumb-btn',
+            content: me.getThumbString(),
+            capture: true,
+            element: slider.getThumb(),
+            autoRender: true
+        });
+        me.flushUI(me.value, me.dimension);
+        //注册滚轮事件
+        me._registMouseWheelEvt(me.getMain());
+    },
+
+    /**
+     * 更新组件的外观，通过传入的value来使滚动滑块滚动到指定的百分比位置，通过dimension来更新滑块所占整个内容的百分比宽度
+     * @param {Number} value 滑块滑动的百分比，定义域(0, 100).
+     * @param {Number} dimension 滑块的宽点占内容的百分比，定义域(0, 100).
+     */
+    flushUI: function(value, dimension) {
+        var me = this,
+            axis = me._axis[me.orientation],
+            body = me.getBody(),
+            slider = me._slider,
+            thumb = slider.getThumb(),
+            arrowSize = me.getSize(),
+            val;
+        //当外观改变大小时
+        baidu.dom.hide(body);
+        val = me.getMain()[axis.clientSize]
+            - arrowSize[axis.size] - arrowSize[axis.size];
+        slider.getMain().style[axis.size] = (val < 0 ? 0 : val) + 'px';//容错处理
+        thumb.style[axis.size] = Math.max(Math.min(dimension, 100), 0) + '%';
+        baidu.dom.show(body);
+        me._scrollTo(value);//slider-update
+    },
+
+    /**
+     * 滚动内容到参数指定的百分比位置
+     * @param {Number} val 一个百分比值.
+     */
+    _scrollTo: function(val) {
+        //slider有容错处理
+        this._slider.update({value: val});
+    },
+
+    /**
+     * 滚动内容到参数指定的百分比位置
+     * @param {Number} val 一个百分比值.
+     */
+    scrollTo: function(val) {
+        var me = this;
+        me._scrollTo(val);
+        me.dispatchEvent('scroll', {value: val});
     },
 
     /**
      *根据参数实现prev和next按钮的基础滚动
-     * @param {Boolean} val true:next的滚动方向, false:prev的滚动方向.
+     * @param {String} pos 取值prev|next.
      */
-    _basicScroll: function(val) {
+    _basicScroll: function(pos) {
         var me = this;
-        me.scrollTo(me.target[me._axis[me.orientation].scrollPos] - (val ? -me.step : me.step));
-    },
-    /**
-     * 后退一步滚动
-     */
-    prevScroll: function() {
-        this._basicScroll(0);
-    },
-
-    /**
-     * 前进一步滚动
-     */
-    nextScroll: function() {
-        this._basicScroll(1);
-    },
-
-    /**
-     * 鼠标点击或是点击不放的轮询滚动
-     * @param {String} pos 取值 "prev":后退滚动, "next":前进滚动.
-     */
-    _onMouseHandler: function(pos) {
-        var me = this,
-            handler = me[pos.toLowerCase() + 'Scroll'];
-        me._mouseIdent = 0;
-        handler.call(me);
-        function timer() {
-            if (me._mouseIdent > -1) {
-                4 < me._mouseIdent++ && handler.call(me);
-                setTimeout(timer, 100);
-            }
-        }
-        timer();
+        me.scrollTo(Math.round(me._slider.getValue()) + (pos == 'prev' ? -me.step : me.step));
     },
 
     /**
@@ -304,60 +188,86 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
         var me = this,
             target = me.target,
             evt = evt || window.event,
-            detail = evt.detail || -evt.wheelDelta,
-            pos = detail > 0 ? 'next' : 'prev';
+            detail = evt.detail || -evt.wheelDelta;
         baidu.event.preventDefault(evt);
-        me[pos + 'Scroll'].call(me);
+        me._basicScroll(detail > 0 ? 'next' : 'prev');
     },
 
     /**
-     * 设置滚动条的隐藏或显示
-     * @param {Boolean} val 取值true:显示, false:隐藏.
+     * 注册一个滚轮事件
+     * @param {HTMLElement} target 需要注册的目标dom.
      */
-    setVisible: function(val) {
+    _registMouseWheelEvt: function(target) {
+//        if(this.orientation != 'vertical'){return;}
         var me = this,
-            target = me.target,
-            body = me.getBody(),
-            statu = body.style.display != 'none' ? true : false,
-            axis = me._axis[me.orientation];
-        if (val != statu) {
-            target.style[axis.tarSize] = target[axis.tarClientSize]
-                - (val ? me._trackSize : -me._trackSize) + 'px';
-        }
-        body.style.display = val ? '' : 'none';
-    },
-
-    /**
-     * 对各种不同浏览器选择不同的滑轮事件名称
-     */
-    _getEvtName: function() {
-        var me = this,
-            ua = navigator.userAgent.toLowerCase(),
-            //代码出处jQuery
-            matcher = /(webkit)/.exec(ua)
+            getEvtName = function() {
+                var ua = navigator.userAgent.toLowerCase(),
+                    //代码出处jQuery
+                    matcher = /(webkit)/.exec(ua)
                         || /(opera)/.exec(ua)
                         || /(msie)/.exec(ua)
                         || ua.indexOf('compatible') < 0
                         && /(mozilla)/.exec(ua)
                         || [];
-        return matcher[1] == 'mozilla' ? 'DOMMouseScroll' : 'mousewheel';
+                return matcher[1] == 'mozilla' ? 'DOMMouseScroll' : 'mousewheel';
+            },
+            entry = {
+                target: target,
+                evtName: getEvtName(),
+                handler: baidu.fn.bind('_onMouseWheelHandler', me)
+            };
+        baidu.event.on(entry.target, entry.evtName, entry.handler);
+        me.addEventListener('dispose', function() {
+            baidu.event.un(entry.target, entry.evtName, entry.handler);
+        });
+    },
+
+    /**
+     * 设置滚动条的隐藏或显示
+     * @param {Boolean} val 布尔值 true:显示, false:隐藏.
+     */
+    setVisible: function(val) {
+        this.getMain().style.display = val ? '' : 'none';
+    },
+
+    /**
+     * 取得当前是隐藏或是显示状态
+     * @return {Boolean} true:显示, false:隐藏.
+     */
+    isVisible: function() {
+        return this.getMain().style.display != 'none';
+    },
+
+    /**
+     * 取得滚动条的宽度和高度
+     * @return {Object} 一个json，有width和height属性.
+     */
+    getSize: function() {
+        return this._arrowSize;
+    },
+
+    /**
+     * 更新滚动条的外观
+     * @param {Object} options 参考构造函数参数.
+     */
+    update: function(options) {
+        var me = this;
+        me.dispatchEvent('beforeupdate');//该事件是用于和插件container结合使用，不对外开放
+        baidu.object.extend(me, options);
+        me.flushUI(me.value, me.dimension);
+        me.dispatchEvent('update');
     },
 
     /**
      * 销毁对象
      */
     dispose: function() {
-        var me = this,
-            target = me.target,
-            main = me.getMain(),
-            i;
+        var me = this;
         me.dispatchEvent('dispose');
-        me.setVisible(false);
-        for (i in me._oriValues) {
-            target.style[i] = me._oriValues[i];
-        }
-        main.parentNode.insertBefore(target, main);
-        baidu.dom.remove(main);
+        me._prev.dispose();
+        me._slider.dispose();
+        me._next.dispose();
+        baidu.dom.remove(me.getMain());
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });
