@@ -124,7 +124,7 @@ baidu.ui.suggestion.Suggestion.register(function(me) {
 });
 baidu.object.extend(baidu.ui.me.Suggestion.prototype, {
 
-    selectIndexByKeybord: 0,
+    selectIndexByKeybord: -1,
 
     /*
      * IE和M$输入法打架的问题
