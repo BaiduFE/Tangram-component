@@ -16,172 +16,178 @@
 ///import baidu.event.on;
 ///import baidu.event.un;
 
-baidu.ui.Suggestion.register(function(suggestion){
-    var     target,
-            //每次轮询获得的value
-            oldValue = '',
-            //一打开页面就有的input value
-            keyValue,
+baidu.ui.Suggestion.register(function(me) {
+    var target,
+        
+        //每次轮询获得的value
+        oldValue = '',
 
-            //使用pick方法上框的input value
-            pickValue,
-            mousedownView = false,
-            stopCircleTemporary = false;
+        //一打开页面就有的input value
+        keyValue,
 
-    suggestion.addEventListener("onload", function(){
+        //使用pick方法上框的input value
+        pickValue,
+        mousedownView = false,
+        stopCircleTemporary = false;
+
+
+    me.addEventListener('onload', function() {
         target = this.getTarget();
 
         keyValue = target.value;
 
         //生成dom事件函数
-        suggestion.targetKeydownHandler = suggestion.getTargetKeydownHandler();
+        me.targetKeydownHandler = me.getTargetKeydownHandler();
 
         //加入dom事件
-        baidu.on(target, 'keydown', suggestion.targetKeydownHandler);
+        baidu.on(target, 'keydown', me.targetKeydownHandler);
 
         target.setAttribute('autocomplete', 'off');
 
-        /*
-         * 轮询计时器
-         */
-        suggestion.circleTimer = setInterval(function (){
-            if(stopCircleTemporary){
-                return ;
+        //轮询计时器
+        me.circleTimer = setInterval(function() {
+            if (stopCircleTemporary) {
+                return;
             }
 
-            if(baidu.g(target) == null){
-                suggestion.dispose();
+            if (baidu.g(target) == null) {
+                me.dispose();
             }
 
             var nowValue = target.value;
             //todo,这里的流程可以再简化一点
-            if(
-                nowValue == oldValue && 
-                nowValue != '' && 
-                nowValue != keyValue && 
+            if (
+                nowValue == oldValue &&
+                nowValue != '' &&
+                nowValue != keyValue &&
                 nowValue != pickValue
-              ){
-                if(suggestion.requestTimer == 0){
-                    suggestion.requestTimer = setTimeout(function(){
-                        suggestion.dispatchEvent('onneeddata', nowValue);
+              ) {
+                if (me.requestTimer == 0) {
+                    me.requestTimer = setTimeout(function() {
+                        me.dispatchEvent('onneeddata', nowValue);
                     }, 100);
                 }
-            }else{
-                clearTimeout(suggestion.requestTimer);
-                suggestion.requestTimer = 0;
-                if(nowValue == '' && oldValue != ''){
-                    pickValue = "";
-                    suggestion.hide();
+            }else {
+                clearTimeout(me.requestTimer);
+                me.requestTimer = 0;
+                if (nowValue == '' && oldValue != '') {
+                    pickValue = '';
+                    me.hide();
                 }
                 oldValue = nowValue;
-                if(nowValue != pickValue){
-                    suggestion.defaultIptValue  = nowValue;
+                if (nowValue != pickValue) {
+                    me.defaultIptValue = nowValue;
                 }
-                if(keyValue != target.value){
+                if (keyValue != target.value) {
                     keyValue = '';
                 }
             }
         }, 10);
 
-        baidu.on(target, 'beforedeactivate', suggestion.beforedeactivateHandler);
+        baidu.on(target, 'beforedeactivate', me.beforedeactivateHandler);
     });
 
-    suggestion.addEventListener("onitemclick", function(){
+    me.addEventListener('onitemclick', function() {
         stopCircleTemporary = false;
         //更新oldValue，否则circle的时候会再次出现suggestion
-        suggestion.defaultIptValue = oldValue = suggestion.getTargetValue();
+        me.defaultIptValue = oldValue = me.getTargetValue();
     });
 
-    suggestion.addEventListener("onpick", function(event) {
+    me.addEventListener('onpick', function(event) {
         //firefox2.0和搜狗输入法的冲突
-        if(mousedownView)
+        if (mousedownView)
             target.blur();
         target.value = pickValue = event.data.item.value;
-        if(mousedownView)
+        if (mousedownView)
             target.focus();
     });
 
-    suggestion.addEventListener("onmousedownitem", function(e) {
+    me.addEventListener('onmousedownitem', function(e) {
         mousedownView = true;
         //chrome和搜狗输入法冲突的问题
         //在chrome下面，输入到一半的字会进框，如果这个时候点击一下suggestion，就会清空里面的东西，导致suggestion重新被刷新
         stopCircleTemporary = true;
-        setTimeout(function(){
+        setTimeout(function() {
             stopCircleTemporary = false;
             mousedownView = false;
         },500);
     });
-    suggestion.addEventListener("ondispose", function(){
-        baidu.un(target, 'keydown', suggestion.targetKeydownHandler);
-        baidu.un(target, 'beforedeactivate', suggestion.beforedeactivateHandler);
-        clearInterval(suggestion.circleTimer);
+    me.addEventListener('ondispose', function() {
+        baidu.un(target, 'keydown', me.targetKeydownHandler);
+        baidu.un(target, 'beforedeactivate', me.beforedeactivateHandler);
+        clearInterval(me.circleTimer);
     });
 });
+
 baidu.ui.Suggestion.extend({
+    //鼠标上下移动时
+    selectIndexByKeybord: -1,
+
+
     /*
      * IE和M$输入法打架的问题
      * 在失去焦点的时候，如果是点击在了suggestion上面，那就取消其默认动作(默认动作会把字上屏)
      */
-    beforedeactivateHandler : function(){
-        return function(){
-            if(mousedownView){
+    beforedeactivateHandler: function() {
+        return function() {
+            if (mousedownView) {
                 window.event.cancelBubble = true;
                 window.event.returnValue = false;
             }
         };
     },
 
-    getTargetKeydownHandler : function(){
-        var suggestion = this;
+    getTargetKeydownHandler: function() {
+        var me = this;
 
         /*
          * 上下键对suggestion的处理
          */
-        function keyUpDown(up){
-            var currentData = suggestion.currentData,
+        function keyUpDown(up) {
+            var currentData = me.currentData,
                 selected;
             //如果当前没有显示，就重新去获取一次数据
-            if(!suggestion.isShowing()){
-                suggestion.dispatchEvent('onneeddata', suggestion.getTargetValue());
-                return ;
+            if (!me.isShowing()) {
+                me.dispatchEvent('onneeddata', me.getTargetValue());
+                return;
             }
-            selected = suggestion.getHighlightIndex();
-            suggestion.clearHighlight();
-            if(up){
+            selected = me.getHighlightIndex();
+            me.clearHighlight();
+            if (up) {
                 //最上面再按上
-                if(selected == 0){
+                if (selected == 0) {
                     //把原始的内容放上去
-                    suggestion.pick(suggestion.defaultIptValue);
+                    me.pick(me.defaultIptValue);
                     selected--;
-                    return ;
+                    return;
                 }
-                if(selected == -1)
+                if (selected == -1)
                     selected = currentData.length;
                 selected--;
-            }else{
+            }else {
                 //最下面再按下
-                if(selected == currentData.length - 1){
-                    suggestion.pick(suggestion.defaultIptValue);
+                if (selected == currentData.length - 1) {
+                    me.pick(me.defaultIptValue);
                     selected = -1;
-                    return ;
-                } 
+                    return;
+                }
                 selected++;
             }
-            suggestion.highlight(selected);
-            suggestion.pick(selected);
+            me.highlight(selected);
+            me.pick(selected);
+            me.selectIndexByKeybord = selected;
         }
-        return function (e){
+        return function(e) {
             var up = false, index;
             e = e || window.event;
-            switch(e.keyCode){
+            switch (e.keyCode) {
                 case 9:     //tab
                 case 27:    //esc
-                    suggestion.hide();
+                    me.hide();
                     break;
                 case 13:    //回车，默认为表单提交
                     baidu.event.preventDefault(e);
-                    index = suggestion.getHighlightIndex();
-                    suggestion.confirm(suggestion.getTarget().value, index, "keyboard");
+                    me.confirm(me.selectIndexByKeybord < 0 ? me.getTarget().value : me.selectIndexByKeybord, 'keyboard');
                     break;
                 case 38:    //向上，在firefox下，按上会出现光标左移的现象
                     up = true;
@@ -196,6 +202,6 @@ baidu.ui.Suggestion.extend({
     /*
      * pick选择之外的oldValue
      */
-    defaultIptValue : ""
-    
+    defaultIptValue: ''
+
 });

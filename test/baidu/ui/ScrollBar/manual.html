@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>scrollbar by lly</title>
+<style type="text/css">
+/*public*/
+.tangram-scrollbar{
+    width:100%;/*初始值必要*/
+    height:100%;/*初始值必要*/
+}
+.tangram-scrollbar-track{
+    overflow:hidden;/*必要*/
+    width:100%;/*初始值必要*/
+    height:100%;/*初始值必要*/
+}
+.tangram-slider{
+    width:100%;/*初始值必要*/
+    height:100%;/*初始值必要*/
+}
+.tangram-slider-thumb{
+    width:100%;/*初始值必要*/
+    height:100%;/*初始值必要*/
+}
+.tangram-button{font-size:0px;}
+/**/
+/*scrollbar-a start*/
+.scrollbar-a{
+    background:url(imgs/scrollbar-v.gif) repeat-y -105px 0;
+}
+.scrollbar-a-prev{
+    width: 15px;
+    height: 15px;
+    background: url(imgs/scrollbar-v.gif) no-repeat 0 0;
+}
+.scrollbar-a-prev-hover{
+    background-position:-15px 0;
+}
+.scrollbar-a-prev-press{
+    background-position:-30px 0;
+}
+.scrollbar-a-next{
+    width: 15px;
+    height: 15px;
+    background: url(imgs/scrollbar-v.gif) no-repeat 0 -15px;
+}
+.scrollbar-a-next-hover{
+    background-position:-15px -15px;
+}
+.scrollbar-a-next-press{
+    background-position:-30px -15px;
+}
+.scrollbar-a-thumb-btn{
+    position:relative;
+    width:100%;
+    height:100%;
+    background:url(imgs/scrollbar-v.gif) repeat-y -60px 0;
+}
+.scrollbar-a-thumb-prev{
+    position:absolute;
+    top:0px;
+    width:100%;
+    height:5px;
+    font-size:0px;
+    background:url(imgs/scrollbar-v.gif) -45px 0;
+}
+.scrollbar-a-thumb-next{
+    position:absolute;
+    bottom:0px!important;
+    bottom:-1px;
+    width:100%;
+    height:5px;
+    font-size:0px;
+    background:url(imgs/scrollbar-v.gif) -45px -5px;
+}
+.scrollbar-a-thumb-btn-hover{
+    background-position:-75px 0px;
+}
+.scrollbar-a-thumb-btn-hover .scrollbar-a-thumb-prev{
+    background-position:-45px -10px;
+}
+.scrollbar-a-thumb-btn-hover .scrollbar-a-thumb-next{
+    background-position:-45px -15px;
+}
+.scrollbar-a-thumb-btn-press{
+    background-position:-90px 0px;
+}
+.scrollbar-a-thumb-btn-press .scrollbar-a-thumb-prev{
+    background-position:-45px -20px;
+}
+.scrollbar-a-thumb-btn-press .scrollbar-a-thumb-next{
+    background-position:-45px -25px;
+}
+/*scrollbar-a end*/
+
+/*scrollbar-b start*/
+.scrollbar-b{
+    background:url(imgs/scrollbar-h.gif) repeat-x 0 -75px;
+}
+.scrollbar-b-track{
+    float:left;
+}
+.scrollbar-b-prev{
+    float:left;
+    width: 15px;
+    height: 15px;
+    background: url(imgs/scrollbar-h.gif) no-repeat 0 0;
+}
+.scrollbar-b-prev-hover{
+    background-position:-15px 0;
+}
+.scrollbar-b-prev-press{
+    background-position:-30px 0;
+}
+.scrollbar-b-next{
+    float:left;
+    width: 15px;
+    height: 15px;
+    background: url(imgs/scrollbar-h.gif) no-repeat 0 -15px;
+}
+.scrollbar-b-next-hover{
+    background-position:-15px -15px;
+}
+.scrollbar-b-next-press{
+    background-position:-30px -15px;
+}
+.scrollbar-b-thumb-btn{
+    position:relative;
+    width:100%;
+    height:100%;
+    background:url(imgs/scrollbar-h.gif) repeat-x 0 -30px;
+}
+.scrollbar-b-thumb-prev{
+    position:absolute;
+    left:0px;
+    width:5px;
+    height:100%;
+    font-size:0px;
+    background:url(imgs/scrollbar-h.gif) -45px 0;
+}
+.scrollbar-b-thumb-next{
+    position:absolute;
+    right:0px!important;
+    right:-1px;
+    width:5px;
+    height:100%;
+    font-size:0px;
+    background:url(imgs/scrollbar-h.gif) -50px 0;
+}
+.scrollbar-b-thumb-btn-hover{
+    background-position:0 -45px;
+}
+.scrollbar-b-thumb-btn-hover .scrollbar-b-thumb-prev{
+    background-position:-45px -15px;
+}
+.scrollbar-b-thumb-btn-hover .scrollbar-b-thumb-next{
+    background-position:-50px -15px;
+}
+.scrollbar-b-thumb-btn-press{
+    background-position:0 -60px;
+}
+.scrollbar-b-thumb-btn-press .scrollbar-b-thumb-prev{
+    background-position:-55px 0;
+}
+.scrollbar-b-thumb-btn-press .scrollbar-b-thumb-next{
+    background-position:-60px 0;
+}
+/*scrollbar-b end*/
+</style>
+<script src="../../../../src/import.php?f=baidu.ui.get,baidu.ui.ScrollBar.*"></script>
+</head>
+
+<body>
+创建一个竖向滚动条，试着改变容器高度吧 <input id='myHeight' type="text" value='300'/>&nbsp;<input type="button" value='确定' onclick='main_a()'/>
+<div id='scrollbar_a_id' style='width:15px; height:200px; border:black solid 1px;'></div>
+创建一个横向滚动条，
+将滑块移动到<input id='hValue' type='text' value='20' maxlength='3' size='3'/>%<input type='button' value='确定' onclick='main_b();'/>，
+滑块宽度所占的百分比<input id='hDimension' type='text' size='3' maxlength='3' value='10'/>%<input type='button' value='确定' onclick='main_c()'/>
+<div id='scrollbar_b_id' style='width:200px; height:15px; border:black solid 1px;'></div>
+创建一个结合容器的横竖滚动条
+<div style="border:black solid 1px; height:210px; clear:both;">
+    <div id='mydiv' style='float:left; width:200px; height:200px; border:red solid 1px; overflow:hidden'>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    </div>
+    <div id='vScrollbarId' style='float:left; width:15px; height:200px; border:green solid 1px;'></div>
+</div>
+<div id='hScrollbarId' style='width:300px; height:15px; border:green solid 1px;'></div>
+
+
+
+<div id='defaultScrollbar' style='width:20px; height:100px; border:blue solid 1px;'></div>
+</body>
+<script language="javascript">
+var bar_a = new baidu.ui.ScrollBar({
+    skin: 'scrollbar-a',
+    element: 'scrollbar_a_id',
+    autoRender: true
+});
+
+var bar_b = new baidu.ui.ScrollBar({
+    skin: 'scrollbar-b',
+    orientation: 'horizontal',
+    value : 50,
+    dimension: 50,
+    element: 'scrollbar_b_id',
+    autoRender: true
+});
+
+var bar_c = new baidu.ui.ScrollBar({
+    skin: 'scrollbar-a',
+    container: 'mydiv',
+    element: 'vScrollbarId',
+    autoRender: true
+});
+var bar_d = new baidu.ui.ScrollBar({
+    skin: 'scrollbar-b',
+    orientation: 'horizontal',
+    container: 'mydiv',
+    element: 'hScrollbarId',
+    autoRender: true
+});
+
+
+function main_a(){
+    baidu.dom.g('scrollbar_a_id').style.height = baidu.dom.g('myHeight').value + 'px';
+    bar_a.update();
+}
+
+function main_b(){
+    var c = baidu.g('hValue');
+    bar_b.update({value: c.value});
+}
+function main_c(){
+    var c = baidu.g('hDimension');
+    bar_b.update({dimension: c.value});
+}
+
+
+new baidu.ui.ScrollBar({
+    
+    element : 'defaultScrollbar',
+    autoRender : true
+});
+</script>
+</html>

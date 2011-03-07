@@ -6,15 +6,15 @@
 ///import baidu.ui;
 
 /**
- * Õ®π˝uiType’“µΩUI¿‡
- * ≤È’“πÊ‘Ú£∫
+ * ÈÄöËøáuiTypeÊâæÂà∞UIÁ±ª
+ * Êü•ÊâæËßÑÂàôÔºö
  * suggestion -> baidu.ui.Suggestion
  * toolbar-spacer -> baidu.ui.Toolbar.Spacer.
  *
  * @author berg
  *
  * @param {String} uiType
- * @return {object} UI¿‡
+ * @return {object} UIÁ±ª
  */
 baidu.ui.getUI = function(uiType){
     var uiType = uiType.split('-'),
