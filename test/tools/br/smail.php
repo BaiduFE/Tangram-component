@@ -2,7 +2,7 @@
 function sendmail($body, $debug = false){
 	include('Mail.php');
 //	$recipients         = 'shenlixia@baidu.com';
-	$headers['From']    = 'shenlixia@baidu.com';
+	$headers['From']    = 'yangbo@baidu.com';
 	$headers['To']      = 'yangbo <yangbo@baidu.com>';
 	$headers['Subject'] = '批量运行结果——tangram component';
 	$params['host'] = 'hotswap-c.baidu.com';//email.baidu.com';

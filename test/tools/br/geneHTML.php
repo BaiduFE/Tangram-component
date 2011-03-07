@@ -20,75 +20,95 @@
  * 不直接使用<style type ="text/css">来设置css是因为有的邮件客户端会过滤这样的信息
  *
  * ***/
-
-function geneHTML($caseList){
+function geneHTML($caseList, $name=''){
 	date_default_timezone_set('PRC');
-	$url = (isset ($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . $_SERVER['PHP_SELF'];
-	$html = "<!DOCTYPE HTML>
-	<head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /></head>
-	<frame>
-	<div>
-	 <h2 align='center'>自动化用例测试结果".date('Y-m-d H:i:s')."</h2>
-	 <table>
-	  <thead>
-	    <th  bgcolor='#5E740B' style='color:#fff;horizontal-align: right;font-weight: bold;align: center;font-size: 18px;background-color: #0d3349;margin:0;padding:0.5em 0 0.5em 1em;text-shadow: rgba(0, 0, 0, 0.5) 4px 4px 1px;'>用例名称</th>".getThBrowser($caseList).
-	   "</thead>".getTrCase($caseList).
-	 "</table>
-	 </div>
-	 <br><br>
-	<a href='http://$url/../../../../../component-history/' style='font:normal bolder 12pt Arial'>详情请点击这里</a>
-	 </frame></HTML>";
-	$html = formatHTML($html);
-	return $html;
+	//	$url = (isset ($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . $_SERVER['PHP_SELF'];
+	$url = "http://{$_SERVER['HTTP_HOST']}/report/ui/$name";
+	$thead = getThBrowser($caseList);
+	$tcase = getTrCase($caseList);
+	$style_table = "border: 1px solid black;
+		 color: #fff; background-color: #0d3349;
+		 text-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px; text-align: center; ";
+	//
+	$html = "<!DOCTYPE><html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+		<style>td, th {border: 1px solid white;}</style>
+		</head><body><div>
+		<h2 align='center'>测试结果".date('Y-m-d H:i:s')."</h2>
+		<a href='http://$url' style='font:normal bolder 12pt Arial; ' title='效果应该比邮件好'>网页版</a>
+		<table cellspacing='0' style='$style_table'>
+			<thead><tr><th rowspan='2'>用例名称</th><th rowspan='2'>总覆盖率</th>$thead</tr></thead>
+			$tcase
+		</table></div></body></html>";
+			return $html;
 }
 
-function formatHTML($html){
-	$tablePattern = "<table color='#ffffff' style='color:#ffffff;border-collapse: separate;border-spacing: 1pt;border-right: 1px dashed black;align:center'>";
-	$thPattern = "<th colspan='3' bgcolor='#0d3349' style='color:#fff;horizontal-align: right;font-weight: bold;align: center;font-size: 18px;background-color:#0d3349;margin:0;padding:0.5em 0 0.5em 1em;".
-	"text-shadow: rgba(0, 0, 0, 0.5) 4px 4px 1px;' ";
-	$trPattern = "<tr style='border:solid 1pt;horizontal-align:right;font-size:15px;align:center;font-family:Calibri,Helvetica,Arial;text-align:center;'>";
-	$tdPattern = "<td bgcolor='#0d3349'>";
-	//	$tdPattern = "<td style='background-color:#0d3349;border-top-left-radius:5px'>";
-	$html = str_replace("<table>",$tablePattern,$html);
-	$html = str_replace("<th colspan='3'",$thPattern,$html);
-	$html = str_replace("<tr>",$trPattern,$html);
-	$html = str_replace("<td>",$tdPattern,$html);
-	return $html;
-}
-
+/**
+ *
+ * 根据实际浏览器书目确认生成表头
+ * @param unknown_type $caseList
+ */
 function getThBrowser($caseList){//创建浏览器相关单元格
 	$thBrowser = '';
+	$count = 0;
 	foreach ($caseList as $casename => $casedetail) { //每一个用例
 		foreach ($casedetail as $b => $info) {
 			$thBrowser .= "<th colspan='3'>$b</th>";
+			$count++;
 		}
-		break;
+		$thBrowser .="</tr><tr>";
+		break;//遍历一次就知道所有浏览器的信息
 	}
+	for($index = 0; $index < $count; $index++) {
+		$thBrowser .= "<td>cov</td><td>fail</td><td>total</td>";
+	}
+
 	return $thBrowser;
 }
 
-
+/**
+ *
+ * 根据执行结果生成单元格信息
+ * @param unknown_type $caseList
+ */
 function getTrCase($caseList){//创建case名对应的单元格
 	$trCase = '';
+	require_once 'config.php';
+	$style_case = "";
+	$numBro = count(Config::$BROWSERS);
 	foreach ($caseList as $casename => $caseDetail) { //每一个用例
-		$trCase .= "<tr><td>$casename</td>";
+		$cnurl = implode('.', explode('_', $casename));
+		$trCase .= "<tr><td><a href='http://{$_SERVER['HTTP_HOST']}/{$_SERVER['PHP_SELF']}/../run.php?case=$cnurl'>
+			$casename</a></td>";
+		$totalCov = calTotalCov($caseDetail,$numBro);
+		$trCase .= "<td title='所有覆盖率的均值'>$totalCov</td>";
 		foreach ($caseDetail as $br => $infos) { //$b为browser名字,$info为详细信息
 			$fail = $infos['fail'];
 			$total = $infos['total'];
-			$path = '';
-
-			if ($fail > 0) {
-				$trCase .= "<td bgcolor='#710909' style='background-color:#710909;'>主机: {$infos['hostInfo']}</td>";
-				$path .= str_replace('_', '.', $casename);
-				$url_this = "http://" . $host = isset ($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : (isset ($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . $_SERVER['PHP_SELF'];
-				$trCase .= "<td bgcolor='#710909'><a href='$url_this/../run.php?case=$path'>失败用例数:$fail</a></td><td bgcolor='#710909'>用例总数: {$fail}</td>";
-			} else
-			$trCase .= "<td bgcolor='#5E740B' style='background-color:#5E740B;'>主机: {$infos['hostInfo']}</td><td bgcolor='#5E740B' style='background-color:#5E740B;'>失败用例数:$fail</td><td bgcolor='#5E740B'>用例总数: {$total}</td>";
+			$cov = $infos['cov'];
+			$color = $fail == 0 ? '#5E740B' : '#710909';
+			$trCase .= "<td style='background-color:$color'>$cov%</td>
+			<td style='background-color:$color; '>$fail</td>
+			<td style='background-color:$color; '>$total</td>";
 		}
 
 		$trCase .= "</tr>";
 	}
 	return $trCase;
+}
+
+/**
+ *
+ * 计算总覆盖率信息
+ * @param unknown_type $caseDetail
+ * @param unknown_type $brcount
+ */
+function calTotalCov($caseDetail,$brcount){
+	$totalCov = 0;
+	foreach ($caseDetail as $infos){
+		$totalCov += $infos['cov'];
+	}
+	$aveCov = ceil($totalCov/$brcount);/*php默认原函数ceil，小数取整*/
+	return $aveCov.'%';
 }
 
 ?>

@@ -66,30 +66,11 @@ function run(kiss, runnext) {
 						/* 隐藏执行区 */
 						$('div#id_runningarea').toggle();
 
-						/**
-						 * 提取参数中的信息
-						 * 
-						 * @param param
-						 * @return
-						 */
-						var br__search = function(param) {
-							var params = location.search.substring(1)
-									.split(',');
-							for ( var i = 0; i < params.length; i++) {
-								var p = params[i];
-								if (p.split('=')[0] == param)
-									return p.split('=')[1];
-							}
-							return '';
-						};
-
-						/* ending 提交数据到后台 */
-						var browser = br__search('browser');
 						wb.kisses['config'] = location.search.substring(1);
 						/**
 						 * 启动时间，结束时间，校验点失败数，校验点总数
 						 */
-						$.ajax( {
+						$.ajax( {//FIXME 需要追加一个无用例的接口列表
 							url : 'record.php',
 							type : 'post',
 							data : wb.kisses,
