@@ -1,0 +1,270 @@
+<!-- -->
+<!doctype html>
+<html>
+    <head>
+        <title>tree manual test - by fx</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.Base.*,baidu.ui.get,baidu.ui.Tree.*,baidu.ui.behavior.*' ></script>
+	
+<style>
+	.tangram-tree {
+		font-size:12px;
+		width:300px;
+		border:1px solid red;
+	}
+	
+	.tangram-tree dl,dt,dd{
+		margin: 0;
+		padding: 0;
+	}
+
+	.tangram-tree a {
+		text-decoration : none;
+		cursor:default;
+	}
+
+	.tangram-tree span{
+		cursor:default;
+	}
+	.tangram-tree-node-blank,  .tangram-tree-node-Tplus, 
+	.tangram-tree-node-Lplus, .tangram-tree-node-Tminus,.tangram-tree-node-Lminus,.tangram-tree-node-open-trunk,
+	.tangram-tree-node-L,.tangram-tree-node-I,.tangram-tree-node-T
+	
+	{
+		background-position:center center;
+		background-repeat:no-repeat;
+		border:0 none;
+		height:18px;
+		margin:0;
+		padding:0;
+		vertical-align:top;
+		width:16px;
+		display:inline-block;
+	}
+
+.tangram-tree-node-leaf, .tangram-tree-node-trunk,.tangram-tree-node-checkbox,.tangram-tree-node-checkbox-check,.tangram-tree-node-checkbox-halfcheck{
+		background-position:center center;
+		background-repeat:no-repeat;
+		border:0 none;
+		height:18px;
+		margin:0;
+		padding:0;
+		vertical-align:top;
+		background-position:center;
+		width:16px;
+		display:inline-block;
+	
+}
+
+	.tangram-tree-node-blank {
+		background-image:url("extimage/blank.png");
+
+	}
+	.tangram-tree-node-T {
+		background-image:url("extimage/elbow.gif");
+
+	}
+	.tangram-tree-node-L {
+		background-image:url("extimage/elbow-end.gif");
+
+	}
+	.tangram-tree-node-I {
+		background-image:url("extimage/elbow-line.gif");
+
+	}
+	.tangram-tree-node-leaf {
+		background-image:url(extimage/leaf.gif);
+	}
+	.tangram-tree-node-trunk {
+		background-image:url(extimage/folder.gif);
+	}
+	.tangram-tree-node-open-trunk {
+		background-image:url(extimage/folder-open.gif);
+	}
+	.tangram-tree-node-Tplus {
+		background-image:url(extimage/elbow-plus.gif);
+	}
+	.tangram-tree-node-Lplus {
+		background-image:url(extimage/elbow-end-plus.gif);
+	}
+	.tangram-tree-node-Tminus {
+		background-image:url(extimage/elbow-minus.gif);
+	}
+	.tangram-tree-node-Lminus {
+		background-image:url(extimage/elbow-end-minus.gif);
+	}
+	.tangram-tree-node-checkbox {
+		background-image:url(extimage/checkbox.gif);
+	}
+	.tangram-tree-node-checkbox-check {
+		background-image:url(extimage/checkbox-check.gif);
+	}
+	.tangram-tree-node-checkbox-halfcheck {
+		background-image:url(extimage/checkbox-halfcheck.gif);
+	}
+	.tangram-tree-node-current{
+		color:white;
+		background-color:#2B4FDD;
+	}
+	.tangram-tree-node-over{
+		background-color:#ABB9F1;
+	}
+	.tangram-tree-node-text{
+		display:inline;
+		cursor:default;
+	}
+
+	.tangram-tree-proxy {
+		font-size : 12px;
+		position :absolute;
+		width: 18px;
+		height:12px;
+		border: 2px dotted black;
+	}
+	.tangram-tree-node-node{
+		zoom : 1;
+	}
+	.tangram-tree-node-input{
+		height:18px;
+	}
+
+	.tangram-tree-sort {
+		font-size:5px;
+		height:6px;
+		background-color:black;
+
+	}
+	.tangram-tree-sort-transparent {
+		font-size:5px;
+		height:6px;
+	}
+</style>
+    </head>
+
+    
+    <body>
+	<h1>时间总共消耗<span id="div1" style="color:red"></span>毫秒
+	</h1>
+	<div id="treetest" >fdsafdsa</div>
+	
+	
+	<input type="button" onclick="test()" value="加载节点"></input>
+	
+	<input type="button" onclick="del()" value="删除当前节点"></input>
+		
+	<input type="button" onclick="addTrunk()" value="新增一个文件夹节点"></input>
+
+	<input type="button" onclick="addLeaf()" value="新增一个叶子节点"></input>
+
+        <script type="text/javascript" >
+			/***********测试数据***********************/
+	var json = {
+		id: 'noderoot',
+		text: '根节点',
+		children:[
+			{   
+			    id: 'node1',
+				text: '节点1',
+				type: 'trunk',
+				children:[
+				   {	
+				      id: 'node11',
+					  text: '节点1.1',
+					  type: 'trunk',
+					  children:[
+						 {
+						   id: 'node111',
+						   text: '节点1.11',
+						   type: 'leaf'
+						 },
+                         {
+						   id: 'node112',
+						   text: '节点1.12',
+						   type: 'trunk',
+							children:[
+								 {
+								   id: 'node1121',
+								   text: '节点1.121',
+								   type: 'leaf'
+								 },
+								 {
+								   id: 'node1122',
+								   text: '节点1.122',
+								   type: 'trunk'
+
+								 }
+							]
+						 }
+					  ]
+				   },
+				   {
+					  id: 'node12',
+					  text: '节点1.2',
+					  type: 'leaf'
+				   },
+				   {  
+				      id: 'node13',
+					  text: '节点1.3',
+					  type: 'leaf'
+				   },
+				   {
+				      id: 'node14',
+					  text: '节点1.4',
+					  type: 'leaf'
+				   }
+				]
+			},
+			{
+			    id: 'node2',
+				text: '节点2',
+				type: 'trunk',
+				children:[
+				   {
+				      id: 'node21',
+					  text: '节点2.1',
+					  type: 'leaf'
+				   },
+				   {
+				      id: 'node22',
+					  text: '节点2.2',
+					  type: 'leaf'
+				   }
+				]
+			},
+			{
+				id: 'node3',
+				text: '节点3',
+				type: 'trunk'
+			}
+		]
+	}
+	
+	var data = {text:'根节点'};
+	var tree = new baidu.ui.Tree({data:data});
+	//var startTime = new Date().getTime();
+	tree.render("treetest");
+	//document.title = new Date().getTime() - startTime;
+	function test(){
+		tree.getRootNode().appendData(json.children);
+	}
+
+	function del(){
+		var node = tree.getCurrentNode();
+		node.getParentNode().removeChild(node);
+	}
+
+	function addTrunk(){
+		var node = tree.getCurrentNode();
+		node.appendChild(new baidu.ui.Tree.TreeNode({text:'测试节点',type:'trunk'}));
+	}
+
+	function addLeaf(){
+		var node = tree.getCurrentNode();
+		node.appendChild(new baidu.ui.Tree.TreeNode({text:'测试节点',type:'leaf'}));
+	}
+	//test();
+		</script>
+
+	
+    </body>
+</html>
