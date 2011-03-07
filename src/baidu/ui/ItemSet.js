@@ -21,13 +21,14 @@
 ///import baidu.fn.bind;
 
 baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
+    var me = this;
+    me.headIds = [];
+    me.bodyIds = [];
     
 }).extend( {
     currentClass     :  "current", 
     tplHead          :  "", 
     tplBody          :  "", 
-    headIds          :  [], 
-    bodyIds          :  [], 
     switchType       : "click",
     defaultIndex     : 0,   
     /**
