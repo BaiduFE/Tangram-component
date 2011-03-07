@@ -1,14 +1,4 @@
-﻿<?php
-//$debug = true;
-//$debug = false;
-/*非批量运行*/
-if (!file_exists('report')) {
-	if (!$debug)
-	return;
-	else
-	mkdir('report');
-}
-
+<?php
 require_once 'geneXML.php';
 generateXML($_POST, $_SERVER);
 
@@ -16,26 +6,21 @@ generateXML($_POST, $_SERVER);
 $kissList = interXML(true);
 require_once 'geneHTML.php';
 if(sizeof($kissList)>0){
-	$html =	geneHTML($kissList);
-	$config = $_POST['config'];
-	if(sizeof(explode('mail=true', $config))>1){
-		require_once 'geneHistory.php';
-		geneHistory($html);
-		require_once 'smail.php';
-		sendmail($html, true);
-	}
+	//针对kissList过滤，移除全部正确用例
 
-	if(!$debug){
-		require_once 'lib/Staf.php';
-		$host = array();
-		foreach(Config::$BROWSERS as $b=>$f){
-			$h = $f[0];
-			if(!in_array($f[0], $host)){
-				Staf::process('stop all confirm', $h);
-				Staf::process('free all', $h);
-			}
-			array_push($host, $f[0]);
+	$html =	geneHTML($kissList);
+	echo $html;
+	require_once 'geneHistory.php';
+	geneHistory($html);
+
+	if(!Config::$DEBUG){
+		$_mails = explode('mail=', $_POST['config']);
+		if(sizeof($_mails)==2){
+			require_once 'smail.php';
+			sendmail($html, true);
 		}
+		require_once 'config.php';
+		Config::StopAll();
 	}
 }
 ?>

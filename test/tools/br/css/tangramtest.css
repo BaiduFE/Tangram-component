@@ -19,8 +19,14 @@ body,#container {
 	height: 100%;
 }
 
+.clear { /* generic container (i.e. div) for floating buttons */
+	overflow: hidden;
+	width: 100%;
+}
+
 a {
 	text-decoration: none;
+	overflow: hidden;
 }
 
 #title {
@@ -62,20 +68,10 @@ h3 {
 	width: 99%;
 }
 
-.testliststatusbar {
-	width: 99%;
-	color: #657528;
-	background: #d5dea7;
-}
-
-.testliststatus {
-	width: 80px;
-	padding: 2px;
-	background: #AAA;
-}
-
-.testliststatus:hover {
-	background: #f5fea7;
+.testlist {
+	max-height: 200px;
+	overflow-y: scroll;
+	border-style: double;
 }
 
 .testlist a {
@@ -91,17 +87,35 @@ h3 {
 	float: left;
 }
 
-.showSrcOnly a {
+a.button {
+	background: transparent url('bg_button_a.gif') no-repeat scroll top
+		right;
+	color: #444;
 	display: block;
-	width: 150px;
-	color: #657528;
-	background: #d5dea7;
-	border: 1px solid #c8dc7b;
-	margin: 5px 0 0 5px;
-	text-indent: 5px;
-	line-height: 24px;
-	font-size: 14px;
 	float: left;
+	font: normal 12px arial, sans-serif;
+	height: 24px;
+	margin-right: 6px;
+	padding-right: 18px; /* sliding doors padding */
+	text-decoration: none;
+}
+
+a.button span {
+	background: transparent url('bg_button_span.gif') no-repeat;
+	display: block;
+	line-height: 14px;
+	padding: 5px 0 5px 18px;
+}
+
+a.button:active {
+	background-position: bottom right;
+	color: #000;
+	outline: none; /* hide dotted outline in Firefox */
+}
+
+a.button:active span {
+	background-position: bottom left;
+	padding: 6px 0 4px 18px; /* push text down 1px */
 }
 
 .testlist a:link {

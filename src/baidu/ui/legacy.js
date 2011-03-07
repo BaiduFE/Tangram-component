@@ -1,3 +1,4 @@
+///import baidu.ui.Dialog;
 /**
  * 应用实现 confirm
  * @function
