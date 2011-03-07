@@ -15,7 +15,7 @@
 ///import baidu.dom.getPosition;
 ///import baidu.dom.getStyle;
 ///import baidu.dom.setStyle;
-///import baidu.dom.setOuterWidth;
+///import baidu.dom.setBorderBoxWidth;
 ///import baidu.dom._styleFilter.px;
 
 ///import baidu.ui.behavior.posable;
