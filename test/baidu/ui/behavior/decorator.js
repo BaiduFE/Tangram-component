@@ -2,27 +2,34 @@ module('baidu.ui.behavior.decorator');
 
 (function() {
 	te.getUI = function(options) {
-//		var div = document.body.appendChild(document.createElement('div'));
-//		div.id = 'id_decorator';
-//		te.dom.push(div);
-		
 		var ui = baidu.ui.createUI(function(options) {
 		}).extend({
 			uiType : 'testType',
-			decorator : true,
+			decorator : [],
 			render : function(target) {
-				this.renderMain();
-				this.body = target;
-				this.getMain().appendChild(this.body);
+				if (target) {
+					this.renderMain();
+					this.body = target;
+					this.getMain().appendChild(this.body);
+				}
 				this.dispatchEvent('onload');
 			}
 		});
-		return new ui();
+		var uiInstance = new ui();
+		te.obj.push(uiInstance);
+		return uiInstance;
 	};
 })();
 
 test('base', function() {
 	var ui = te.getUI();
-	stop();
+	var dec = baidu.ui.behavior.decorator;
+
 	ui.render(te.dom[0]);
+	equals(dec.getDecorator().length, 0, 'none decorator added');
+	ui.decorator.push(ui.body);
+	ui.render();
+	equals(dec.getDecorator().length, 1, '1 decorator addedh');
+	var decIns = dec.getDecorator()[0];
+	equals(decIns.uiType, 'decorator');
 });
