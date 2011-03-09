@@ -880,7 +880,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         if (isInit) {
             return me._isLast;
         }
-        return me.getIndex() == (me.parentNode.children.length - 1);
+        return me.getIndex() == (me.parentNode.childNodes.length - 1);
     }
     
 

@@ -23,7 +23,7 @@
  */
 baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     var me = this;
-        me._arrowSize = {width: 0, height: 0};//用来存入prev按钮的宽度和高度
+        me._scrollBarSize = {width: 0, height: 0};//用来存入prev按钮的宽度和高度
 }).extend({
     uiType: 'scrollbar',
     tplDOM: '<div id="#{id}" class="#{class}"></div>',
@@ -35,12 +35,18 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     _axis: {
         horizontal: {
             size: 'width',
+            unSize: 'height',
+            offsetSize: 'offsetHeight',
+            unOffsetSize: 'offsetWidth',
             clientSize: 'clientWidth',
             scrollPos: 'scrollLeft',
             scrollSize: 'scrollWidth'
         },
         vertical: {
             size: 'height',
+            unSize: 'width',
+            offsetSize: 'offsetHeight',
+            unOffsetSize: 'offsetWidth',
             clientSize: 'clientHeight',
             scrollPos: 'scrollTop',
             scrollSize: 'scrollHeight'
@@ -83,13 +89,13 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
         var me = this,
             axis = me._axis[me.orientation],
             body = me.getBody(),
-            skin = me.skin || '',
             prev,
             slider,
             next;
         function options(type) {
-            return {
-                skin: (skin ? skin + '-' + type : skin + type),
+            return{
+                classPrefix: me.classPrefix + '-' +type,
+                skin: me.skin ? me.skin + '-' + type : '',
                 poll: {time: 4},
                 onmousedown: function() {me._basicScroll(type);},
                 element: body,
@@ -106,19 +112,18 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
             me.dispatchEvent('scroll', {value: Math.round(evt.target.getValue())});
         }
         slider = me._slider = new baidu.ui.Slider({
-            skin: skin + '-slider',
+            classPrefix: me.classPrefix + '-slider',
+            skin: me.skin ? me.skin + '-slider' : '',
             layout: me.orientation,
             onslide: handler,
             onslideclick: handler,
             element: baidu.dom.g(me.getId('track')),
             autoRender: true
         });
-        me._arrowSize = {
-            width: next.getBody().offsetWidth,
-            height: next.getBody().offsetHeight
-        };
+        me._scrollBarSize[axis.unSize] = next.getBody()[axis.unOffsetSize];//这里先运算出宽度，在flushUI中运算高度
         me._thumb = new baidu.ui.Button({
-            skin: skin + '-thumb-btn',
+            classPrefix: me.classPrefix + '-thumb-btn',
+            skin: me.skin ? me.skin + '-thumb-btn' : '',
             content: me.getThumbString(),
             capture: true,
             element: slider.getThumb(),
@@ -137,16 +142,16 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     flushUI: function(value, dimension) {
         var me = this,
             axis = me._axis[me.orientation],
+            btnSize = me._prev.getBody()[axis.offsetSize] + me._next.getBody()[axis.offsetSize],
             body = me.getBody(),
             slider = me._slider,
             thumb = slider.getThumb(),
-            arrowSize = me.getSize(),
             val;
         //当外观改变大小时
         baidu.dom.hide(body);
-        val = me.getMain()[axis.clientSize]
-            - arrowSize[axis.size] - arrowSize[axis.size];
-        slider.getMain().style[axis.size] = (val < 0 ? 0 : val) + 'px';//容错处理
+        val = me.getMain()[axis.clientSize];
+        me._scrollBarSize[axis.size] = (val <= 0) ? btnSize : val;
+        slider.getMain().style[axis.size] = (val <= 0 ? 0 : val - btnSize) + 'px';//容错处理
         thumb.style[axis.size] = Math.max(Math.min(dimension, 100), 0) + '%';
         baidu.dom.show(body);
         me._scrollTo(value);//slider-update
@@ -243,7 +248,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
      * @return {Object} 一个json，有width和height属性.
      */
     getSize: function() {
-        return this._arrowSize;
+        return this._scrollBarSize;
     },
 
     /**
