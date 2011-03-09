@@ -45,7 +45,7 @@ test('base', function() {
 	equals(d.getMain().id, 'tangram-decorator--TANGRAM__2-main',
 			'check main id');
 	equals(d.getMain().className,
-			'tangram-decorator-undefined-main test-undefined-main',
+			'tangram-decorator-box-main test-box-main',
 			'check class name');
 	ok(false, 'PUBLICGE-278');
 
