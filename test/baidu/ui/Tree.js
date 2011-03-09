@@ -88,11 +88,8 @@ test('参数：其他', function() {
 			text : 'a',
 			children : [{text:'a0'}]
 		},
-		_hoverNode : null,
 		parentNode : null,
-		_rootNode : null,
 		hasCheckbox : false,
-		_currentNode : null,
 		expandable : false
 	};
 });
