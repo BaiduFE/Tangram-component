@@ -35,7 +35,8 @@ test('base', function() {
 	// FIXME 没有可测接口，这个问题真头疼
 	var d = new baidu.ui.Decorator({
 		ui : te.getUI(),
-		skin : 'test'
+		skin : 'test',
+		type : 'box'
 	});
 	d.ui.render(te.dom[0]);
 	// 基础属性校验
