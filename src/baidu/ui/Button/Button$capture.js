@@ -23,18 +23,18 @@ baidu.ui.Button.register(function(me) {
     if (!me.capture) {return;}
     me.addEventListener('load', function() {
         var body = me.getBody(),
-            onMouseOut = body.onmouseout,
+            //onMouseOut = body.onmouseout,
             mouseUpHandler = baidu.fn.bind(function(evt) {
                 var target = baidu.event.getTarget(evt);
                 if (target != body
                         && !baidu.dom.contains(body, target)
                         && me.getState()['press']) {
-                    onMouseOut();
+                    me.fire('mouseout', evt);
                 }
             }),
-            mouseOutHandler = function() {
+            mouseOutHandler = function(evt) {
                 if (!me.getState()['press']) {
-                    onMouseOut();
+                    me.fire('mouseout', evt);
                 }
             };
         body.onmouseout = null;

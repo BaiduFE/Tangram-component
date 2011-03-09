@@ -1,4 +1,4 @@
-module('baidu.ui.Carousel$scrollByItem');
+module('baidu.ui.Carousel.Carousel$scrollByItem');
 test(
 		"next, prev",
 		function() {
@@ -20,7 +20,8 @@ test(
 			});
 			stop();
 			// 如果不设置一段超时，给滑块container的setStyle操作来不及生效，不是默认3个滑块的宽度
-			setTimeout(
+			ua.loadcss(upath+'style.css',function(){
+			   setTimeout(
 					function() {
 						carousel.render();
 						carousel.focus(0);
@@ -64,5 +65,6 @@ test(
 											}, 20);
 								}, 20);
 					}, 40);
+			})
 
 		});

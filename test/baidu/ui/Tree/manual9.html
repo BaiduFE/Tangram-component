@@ -243,6 +243,7 @@
 	var tree = new baidu.ui.Tree({data:data});
 	//var startTime = new Date().getTime();
 	tree.render("treetest");
+	tree.getRootNode().expandAll();
 	//document.title = new Date().getTime() - startTime;
 	function test(){
 		tree.getRootNode().appendData(json.children);

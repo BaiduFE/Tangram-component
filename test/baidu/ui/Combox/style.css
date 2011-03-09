@@ -18,7 +18,8 @@
 	top: 2px;
 	top: 4px\9;
 	left: 134px;
-	left: 136px\9
+	left: 136px\9
+
 }
 
 .tangram-menubar {
@@ -35,6 +36,17 @@
 	border: 1px solid #7E9DB9;
 }
 
+.tangram-combox {
+    border: 1px solid #A4BED4;
+    padding:1px;
+    width:169px;
+    height:20px;
+}
+.tangram-combox-hover {
+    border: 1px solid #fcd113;
+}
+
+
 .tangram-menubar-empty {
 	display: none
 }
@@ -50,4 +62,9 @@
 	.tangram-menubar {
 		margin: -2 0 0 0;
 	}
+}
+
+.cssloaded {
+	background-color : red;
+    width : 20px;
 }

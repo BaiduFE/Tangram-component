@@ -190,9 +190,11 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
             me.getBodyByHead(oldHead).style.display = "none";
             baidu.dom.removeClass(oldHead,  me.getClass(me.currentClass));
         }
-        me.setCurrentHead(head);
-        me.getBodyByHead(head).style.display = "block";
-        baidu.dom.addClass(head,  me.getClass(me.currentClass));
+        if(head){
+            me.setCurrentHead(head);
+            me.getBodyByHead(head).style.display = "block";
+            baidu.dom.addClass(head,  me.getClass(me.currentClass));
+        }
     },
     /**
     *通过head元素选择item

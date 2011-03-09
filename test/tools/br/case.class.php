@@ -61,7 +61,6 @@ class Kiss{
 			return;
 		}
 		$this->is_core();
-		$this->js_frame();
 		$this->case_id = 'id_case_'.join('_', explode('.', $name));
 	}
 
@@ -88,42 +87,30 @@ class Kiss{
 		}
 	}
 
-	private function js_frame(){
-		$filename = $this->path;
-		if(filesize($filename)>20 && $handle = fopen($filename, 'r')){
-			$contents = fread($handle, filesize($filename));
-			$this->js_frame = sizeof(explode('module', $contents))>1;
-			fclose($handle);
-		}else{
-		}
-	}
+	public function print_js($cov=false, $release=false){
+		print '<script type="text/javascript" src="js/jquery-1.3.2.js"></script>'."\n";
+		print '<script type="text/javascript" src="js/testrunner.js"></script>'."\n";
+		print '<script type="text/javascript" src="js/ext_qunit.js"></script>'."\n";
+		print '<script type="text/javascript" src="js/UserAction.js"></script>'."\n";
+		print '<script type="text/javascript" src="js/tools.js"></script>'."\n";
 
-	public function print_js(){
-		/* load test frame */
-		if($this->js_frame){
-			print '<script type="text/javascript" src="../jquery-1.3.2.js"></script>'."\n";
-			print '<script type="text/javascript" src="../testrunner.js"></script>'."\n";
-			print '<script type="text/javascript" src="js/ext_qunit.js"></script>'."\n";
-			print '<link media="screen" href="../testsuite.css" type="text/css" rel="stylesheet" />'."\n";
-		}else{
-//			print '<script type="text/javascript" src="../JSSpec.js"></script>'."\n";
-//			print '<script type="text/javascript" src="../DiffMatchPatch.js"></script>'."\n";
-			print '<script type="text/javascript" src="js/ext_jsspec.js"></script>'."\n";
-//			print '<link media="screen" href="../specs.css" type="text/css" rel="stylesheet"/>'."\n";
-		}
-		print '<script type="text/javascript" src="../tools.js"></script>'."\n";
-		print '<script type="text/javascript" src="../UserAction.js"></script>'."\n";
+		print '<link media="screen" href="css/testsuite.css" type="text/css" rel="stylesheet" />'."\n";
 
-		/* load case source*/
-		//		print '<script type="text/javascript" src="'.$this->projroot.'src/loader.js"></script>'."\n";
-		//		print '<script type="text/javascript">Include("'.$this->name.'");</script>'."\n";
-		print "<script src='import.php?f=$this->name' ></script>\n";
+		if($release == 0){
+			/* load case source*/
+			$importurl = "$this->projroot/test/tools/br/import.php?f=$this->name\n";
+			if($cov) $importurl.='&cov=true';
+			print "<script type='text/javascript' src='$importurl' ></script>\n";
+		}else{
+			print "<script type='text/javascript' src='{$this->projroot}release/all_release.js'></script>\n";
+		}
 
 		/* load case and case dependents*/
-			$ps = explode('.', $this->name);
-			array_pop($ps);
-			array_push($ps, 'tools');
-			print '<script type="text/javascript" src="'.$this->projroot.'test/'.implode('/', $ps).'.js"></script>'."\n";
+		$ps = explode('.', $this->name);
+		array_pop($ps);
+		array_push($ps, 'tools');
+		if(file_exists($this->projroot.'test/'.implode('/', $ps).'.js'))//没有就不加载了
+		print '<script type="text/javascript" src="'.$this->projroot.'test/'.implode('/', $ps).'.js"></script>'."\n";
 		print '<script type="text/javascript" src="'.$this->path.'"></script>'."\n";
 	}
 
@@ -136,7 +123,7 @@ class Kiss{
 		 * 处理多选分支，有一个成功则成功，filter后面参数使用|切割
 		 * @var unknown_type
 		 */
-		$ms = explode('|', $matcher);
+		$ms = explode(',', $matcher);
 		if(sizeof($ms)>1){
 			foreach($ms as $matcher1){
 				if($this->match($matcher1))
@@ -173,29 +160,30 @@ class Kiss{
 			if($c->empty)
 			continue;
 			if($c->match($matcher)){
-				print("<a href=\"javascript:void(0)\" id=\"$c->case_id\" class=\"jsframe_"
-				.($c->js_frame?"qunit":"jsspec")
-				."\" target=\"_blank\" title=\"$name\" onclick=\"run('$name');\$('#id_rerun').html('$name');return false;\">"
+				print("<a href=\"javascript:void(0)\" id=\"$c->case_id\" class=\"jsframe_qunit\" target=\"_blank\" title=\"$name\" onclick=\"run('$name');\$('#id_rerun').html('$name');return false;\">"
 				/*过长的时候屏蔽超出20的部分，因为隐藏的处理，所有用例不能直接使用标签a中的innerHTML，而应该使用title*/
-				.(strlen($name)>20?(substr($name,0,18)."..."):$name)."</a>");
+				.substr($name, 6)."</a>\n");
 			}
 		}
 	}
-	
-	public static function listSrcOnly($matcher="*", $projroot = '../../../'){
+
+	public static function listSrcOnly($print=true, $projroot = '../../../'){
 		$srcpath = $projroot.'src/';
 		$testpath = $projroot.'test/';
 		require_once 'filehelper.php';
-		$caselist = getSrcOnlyFile($srcpath, $testpath, '');
+		$caselist = getSameFile($srcpath, $testpath, '');
+		$srclist = getSrcOnlyFile($srcpath, $testpath, '');
 		$srcList = array();
-		foreach($caselist as $case){
-			$c = array();
-			$c = explode('/',$case);
-			if(count($c) >= 4)
-			array_push($srcList,$case);
+		foreach($srclist as $case){
+			if(in_array($case, $caselist))
+			continue;
+			$name = str_replace('/','.',substr($case,0, -3));
+			$tag = "<a class=\"jsframe_qunit\" title=\"$name\">".(strlen($name)>20? substr($name, 6) : $name)."</a>";
+			array_push($srcList, $tag);
+			if($print)
+			echo $tag;
 		}
 		return $srcList;
-
 	}
 }
 ?>

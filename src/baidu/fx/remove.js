@@ -29,7 +29,12 @@
  */
 
 baidu.fx.remove = function(element, options) {
+    var afterFinish = options.onafterfinish ? options.onafterfinish : new Function();
+    
     return baidu.fx.fadeOut(element, baidu.object.extend(options||{}, {
-        onafterfinish: function(){baidu.dom.remove(this.element);}
+        onafterfinish: function(){
+            baidu.dom.remove(this.element);
+            afterFinish.call(this);
+        }
     }));
 };

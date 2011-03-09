@@ -18,8 +18,8 @@
 			} ]
 		});
 		stop();
-
-		setTimeout(
+	    ua.loadcss(upath+'style.css',function(){
+		   setTimeout(
 				function() {
 					carousel.render();
 					carousel.focus(0);
@@ -38,6 +38,7 @@
 					start();
 
 				}, 20);
+	    })
 
 	});
 

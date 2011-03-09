@@ -23,12 +23,12 @@
  * @author berg
  */
 baidu.ui.Suggestion.extend({
-    posable : true,
-    fixWidth : true,
-    getWindowResizeHandler : function(){
-        var suggestion = this;
-        return function(){
-            suggestion.adjustPosition(true);
+    posable: true,
+    fixWidth: true,
+    getWindowResizeHandler: function() {
+        var me = this;
+        return function() {
+            me.adjustPosition(true);
         };
     },
 
@@ -36,58 +36,58 @@ baidu.ui.Suggestion.extend({
      * 重新放置suggestion
      * @private
      */
-    adjustPosition : function(onlyAdjustShown){
+    adjustPosition: function(onlyAdjustShown) {
         var me = this,
             target = me.getTarget(),
             targetPosition,
             main = me.getMain(),
             pos;
 
-        if(!me.isShowing() && onlyAdjustShown){
-            return ;
+        if (!me.isShowing() && onlyAdjustShown) {
+            return;
         }
         targetPosition = baidu.dom.getPosition(target),
         pos = {
-                top     : (targetPosition.top + target.offsetHeight - 1),
-                left    : targetPosition.left,
-                width   : target.offsetWidth
+                top: (targetPosition.top + target.offsetHeight - 1),
+                left: targetPosition.left,
+                width: target.offsetWidth
             };
         //交给用户的view函数计算
-        pos =  typeof me.view == "function" ? me.view(pos) : pos;
+        pos = typeof me.view == 'function' ? me.view(pos) : pos;
 
-        me.setPosition([pos.left, pos.top], null, {once:true});
+        me.setPosition([pos.left, pos.top], null, {once: true});
         baidu.dom.setOuterWidth(main, pos.width);
     }
 });
-baidu.ui.Suggestion.register(function(suggestion){
+baidu.ui.Suggestion.register(function(me) {
 
-    suggestion.windowResizeHandler = suggestion.getWindowResizeHandler();
+    me.windowResizeHandler = me.getWindowResizeHandler();
 
-    suggestion.addEventListener("onload", function(){
-        suggestion.adjustPosition();
+    me.addEventListener('onload', function() {
+        me.adjustPosition();
         //监听搜索框与suggestion弹出层的宽度是否一致。
-        if(suggestion.fixWidth){
-            suggestion.fixWidthTimer = setInterval(function (){
-                var main = suggestion.getMain(),
-                    target = suggestion.getTarget();
-                if(main.offsetWidth !=0 && target && target.offsetWidth != main.offsetWidth){
-                    suggestion.adjustPosition();
+        if (me.fixWidth) {
+            me.fixWidthTimer = setInterval(function() {
+                var main = me.getMain(),
+                    target = me.getTarget();
+                if (main.offsetWidth != 0 && target && target.offsetWidth != main.offsetWidth) {
+                    me.adjustPosition();
                     main.style.display = 'block';
                 }
             }, 100);
         }
         //当窗口变化的时候重新放置
-        baidu.on(window, "resize", suggestion.windowResizeHandler);
+        baidu.on(window, 'resize', me.windowResizeHandler);
     });
 
-    //每次出现的时候都重新定位，保证用户在初始化之后修改了input的位置，也不会出现混乱 
-    suggestion.addEventListener("onshow", function(){
-        suggestion.adjustPosition();
+    //每次出现的时候都重新定位，保证用户在初始化之后修改了input的位置，也不会出现混乱
+    me.addEventListener('onshow', function() {
+        me.adjustPosition();
     });
 
-    suggestion.addEventListener("ondispose", function(){
-        baidu.un(window, "resize", suggestion.windowResizeHandler);
-        clearInterval(suggestion.fixWidthTimer);
+    me.addEventListener('ondispose', function() {
+        baidu.un(window, 'resize', me.windowResizeHandler);
+        clearInterval(me.fixWidthTimer);
     });
 
 });

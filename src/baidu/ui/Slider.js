@@ -59,8 +59,8 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
     tplThumb        : '<div id="#{thumbId}" class="#{thumbClass}" style="position:absolute;"></div>',
     //位置换算
     axis:{
-        horizontal : {mousePos : "x", mainPos : "left", thumbSize : "offsetWidth", thumbPos : "left", _getSize : "_getWidth", _getThumbSize : "_getThumbWidth"},
-        vertical : {mousePos : "y", mainPos : "top", thumbSize : "offsetHeight", thumbPos : "top", _getSize : "_getHeight", _getThumbSize : "_getThumbHeight"}
+        horizontal : {mousePos : "x", mainPos : "left", clientSize: 'clientWidth', thumbSize : "offsetWidth", thumbPos : "left", _getSize : "_getWidth", _getThumbSize : "_getThumbWidth"},
+        vertical : {mousePos : "y", mainPos : "top", clientSize: 'clientHeight', thumbSize : "offsetHeight", thumbPos : "top", _getSize : "_getHeight", _getThumbSize : "_getThumbHeight"}
     },
     //初始化时，进度条所在的值
     value           : 0,
@@ -102,13 +102,15 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
         var me = this,
             mousePos = baidu.page.getMousePosition(),
             mainPos = baidu.dom.getPosition(me.getMain()),
+            thumb = me.getThumb(),
+            target = baidu.event.getTarget(e),
             len=0;
-        
         //如果点在了滑块上面，就不移动
-        if(baidu.event.getTarget(e) == me.getThumb()){
+        if(target == thumb
+            || baidu.dom.contains(thumb, target)){
             return ;
         }
-        len = mousePos[me.axis[me.layout].mousePos] - mainPos[me.axis[me.layout].mainPos] - me.getThumb()[me.axis[me.layout].thumbSize]/ 2;
+        len = mousePos[me.axis[me.layout].mousePos] - mainPos[me.axis[me.layout].mainPos] - thumb[me.axis[me.layout].thumbSize]/ 2;
         me._calcValue(len);
         //如果点击的地方在range之外，不发送stop事件
         if(me.update()){
@@ -130,7 +132,6 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
         if(!target){
             return ;
         }
-        
         baidu.dom.insertHTML(me.renderMain(target), "beforeEnd", me.getString());
         me.getMain().style.position = "relative";
         me._createThumb();
@@ -209,10 +210,10 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
         baidu.object.extend(me, options);
         me._updateDragRange();
         me._adjustValue(); 
-        if(me.value == me._lastValue){
-            return ;
-        }
-        me._lastValue = me.value;
+//        if(me.value == me._lastValue){
+//            return ;
+//        }
+//        me._lastValue = me.value;
         if (me.dispatchEvent("beforesliderto", {drop: options.drop})) {
             len = me[me.axis[me.layout]._getSize]()- me[me.axis[me.layout]._getThumbSize]();
             baidu.dom.setStyle(me.getThumb(), me.axis[me.layout].thumbPos, me.value * (len) / ( me.max - me.min ) );
@@ -246,7 +247,8 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * @private
      */
     _getWidth : function(){
-        return parseInt(baidu.dom.getStyle(this.getBody(), "width"));
+//        return parseInt(baidu.dom.getStyle(this.getBody(), "width"));
+        return this.getBody().clientWidth;
     },
 
     /**
@@ -254,7 +256,8 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * @private
      */
     _getHeight : function(){
-        return parseInt(baidu.dom.getStyle(this.getBody(), "height"));
+//        return parseInt(baidu.dom.getStyle(this.getBody(), "height"));
+        return this.getBody().clientHeight;
     },
 
 
@@ -263,14 +266,16 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * @private
      */
     _getThumbWidth : function(){
-        return parseInt(baidu.dom.getStyle(this.getThumb(), "width"));
+//        return parseInt(baidu.dom.getStyle(this.getThumb(), "width"));
+        return this.getThumb().offsetWidth;
     },
     /**
      * 获得thumb元素的height
      * @private
      */
     _getThumbHeight : function(){
-        return parseInt(baidu.dom.getStyle(this.getThumb(), "height"));
+//        return parseInt(baidu.dom.getStyle(this.getThumb(), "height"));
+        return this.getThumb().offsetHeight;
     },
 
     /**

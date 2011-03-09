@@ -375,7 +375,7 @@ var UserAction = {
 			customEvent = document.createEvent("MouseEvents");
 
 			// Safari 2.x (WebKit 418) still doesn't implement initMouseEvent()
-			if (customEvent.initMouseEvent) {
+			if (this.browser.ie !== 9 && customEvent.initMouseEvent) {
 				customEvent.initMouseEvent(type, bubbles, cancelable, view,
 						detail, screenX, screenY, clientX, clientY, ctrlKey,
 						altKey, shiftKey, metaKey, button, relatedTarget);
@@ -609,6 +609,34 @@ var UserAction = {
 		this.fireMouseEvent(target, "mouseup", options);
 	},
 
+	dragto : function(target, options) {
+		var me = this;
+		me.mousemove(target, {
+			clientX : options.startX,
+			clientY : options.startY
+		});
+		setTimeout(function() {
+			me.mousedown(target, {
+				clientX : options.startX,
+				clientY : options.startY
+			});
+			setTimeout(function() {
+				me.mousemove(target, {
+					clientX : options.endX,
+					clientY : options.endY
+				});
+				setTimeout(function() {
+					me.mouseup(target, {
+						clientX : options.endX,
+						clientY : options.endY
+					});
+					if (options.callback)
+						options.callback();
+				}, options.aftermove || 20);
+			}, options.beforemove || 20);
+		}, options.beforestart || 50);
+	},
+
 	// --------------------------------------------------------------------------
 	// Key events
 	// --------------------------------------------------------------------------
@@ -680,6 +708,79 @@ var UserAction = {
 	keyup : function(target /* :HTMLElement */, options /* Object */) /* :Void */{
 		this.fireKeyEvent("keyup", target, options);
 	},
+
+	/**
+	 * 提供iframe扩展支持，用例测试需要独立场景的用例，由于异步支持，需要触发事件finish方法来完成
+	 * <li>事件绑定在frame上，包括afterfinish和jsloaded
+	 * 
+	 * @param op.win
+	 * @param op.nojs
+	 *            不加载额外js
+	 * @param op.ontest
+	 *            测试步骤
+	 * @param op.onbeforestart
+	 *            测试启动前处理步骤，默认为QUnit.stop();
+	 * @param op.onafterfinish
+	 *            测试完毕执行步骤，默认为QUnit.start()
+	 * 
+	 */
+	frameExt : function(op) {
+		stop();
+		op = typeof op == 'function' ? {
+			ontest : op
+		} : op;
+		var pw = op.win || window, w, f, url = '', id = op.id || 'f', fid = 'iframe#'
+				+ id;
+
+		op.finish = function() {
+			pw.$(fid).unbind();
+			// pw.$('div#d').remove();
+			start();
+		};
+
+		if (pw.$(fid).length == 0) {
+			/* 添加frame，部分情况下，iframe没有边框，为了可以看到效果，添加一个带边框的div */
+			pw.$(pw.document.body).append('<div id="div' + id + '"></div>');
+			pw.$('div#div' + id).append('<iframe id="' + id + '"></iframe>');
+		}
+		op.onafterstart && op.onafterstart($('iframe#f')[0]);
+		pw.$('script').each(function() {
+			if (this.src && this.src.indexOf('import.php') >= 0) {
+				url = this.src.split('import.php')[1];
+			}
+		});
+		pw.$(fid).attr('src', cpath + 'frame.php' + url).load(function() {
+			var h = setInterval(function() {
+				w = pw.frames[pw.frames.length - 1];
+				if (w.baidu) {// 等待加载完成，IE6下这地方总出问题
+					clearInterval(h);
+					op.ontest(w, w.frameElement);
+				}
+			}, 50);
+		});
+	},
+
+	/**
+	 * 
+	 * 判断2个数组是否相等
+	 * 
+	 * @static
+	 */
+	isEqualArray : function(array1, array2) {
+		if ('[object Array]' != Object.prototype.toString.call(array1)
+				|| '[object Array]' != Object.prototype.toString.call(array2))
+			return (array1 === array2);
+		else if (array1.length != array2.length)
+			return false;
+		else {
+			for ( var i in array1) {
+				if (array1[i] != array2[i])
+					return false;
+			}
+			return true;
+		}
+	},
+
 	/***************************************************************************
 	 * 
 	 * 通用数据模块
@@ -707,7 +808,7 @@ var UserAction = {
 		}
 	},
 
-	importsrc : function(src, callback, matcher, exclude) {
+	importsrc : function(src, callback, matcher, exclude, win) {
 		/**
 		 * 支持release分之，此处应该直接返回
 		 */
@@ -717,35 +818,42 @@ var UserAction = {
 			return;
 		}
 
-		var srcpath = location.href.split("/test/")[0]
-				+ "/test/tools/br/import.php?f=" + src;
-		if (exclude)
-			srcpath += '&e=' + exclude;
+		win = win || window;
+		var doc = win.document;
 
+		var srcpath = location.href.split("/test/")[0]
+				+ "/test/tools/br/import.php";
+		var param0 = src;
+		var ps = {
+			f : src
+		};
+		if (exclude)
+			ps.e = exclude;
+		var param1 = exclude || "";
 		/**
 		 * IE下重复载入会出现无法执行情况
 		 */
-		if (window.execScript) {
-			$.get(srcpath.split('?')[0], {
-				f : srcpath.split('f=')[1]
-			}, function(data) {
-				window.execScript(data);
+		if (win.execScript) {
+			$.get(srcpath, ps, function(data) {
+				win.execScript(data);
 			});
 		} else {
-			var head = document.getElementsByTagName('head')[0];
-			var sc = document.createElement('script');
+			var head = doc.getElementsByTagName('head')[0];
+			var sc = doc.createElement('script');
 			sc.type = 'text/javascript';
-			sc.src = srcpath;
+			sc.src = srcpath + "?f=" + param0 + "&e=" + param1;
 			head.appendChild(sc);
 		}
 
 		matcher = matcher || src;
 		var mm = matcher.split(",")[0].split(".");
 		var h = setInterval(function() {
-			var p = window;
+			var p = win;
 			for ( var i = 0; i < mm.length; i++) {
-				if (!p[mm[i]])
+				if (typeof (p[mm[i]]) == 'undefined') {
+//					console.log(mm[i]);
 					return;
+				}
 				p = p[mm[i]];
 			}
 			clearInterval(h);
@@ -753,53 +861,60 @@ var UserAction = {
 				callback();
 		}, 20);
 	},
+	
+	/* 用于加载css文件，如果没有加载完毕则不执行回调函数*/
+	loadcss : function(url, callback, classname, style, value) {
+			var links = document.getElementsByTagName('link');
+			for ( var link in links) {
+				if (link.href == url) {
+					callback();
+					return;
+				}
+			}
+			var head = document.getElementsByTagName('head')[0];
+			var link = head.appendChild(document.createElement('link'));
+		    link.setAttribute("rel", "stylesheet");
+		    link.setAttribute("type", "text/css");
+		    link.setAttribute("href",url);
+		    var div = document.body.appendChild(document.createElement("div"));
+			$(document).ready(function() {
+				div.className = classname || 'cssloaded';
+				var h = setInterval(function() {
+						if ($(div).css(style||'width')==value||$(div).css(style||'width')=='20px') {
+							clearInterval(h);
+							document.body.removeChild(div);
+							setTimeout(callback, 20);
+						}
+				}, 20);
+			});
+		},
 
 	/**
-	 * 提供iframe扩展支持，用例测试需要独立场景的用例，由于异步支持，需要触发事件finish方法来完成
-	 * <li>事件绑定在frame上，包括afterfinish和jsloaded
-	 * 
-	 * @param op.win
-	 * @param op.nojs
-	 *            不加载额外js
-	 * @param op.ontest
-	 *            测试步骤
-	 * @param op.onbeforestart
-	 *            测试启动前处理步骤，默认为QUnit.stop();
-	 * @param op.onafterfinish
-	 *            测试完毕执行步骤，默认为QUnit.start()
-	 * 
+	 * options supported
 	 */
-	frameExt : function(op) {
-		stop();
-		op = typeof op == 'function' ? {
-			ontest : op
-		} : op;
-		var pw = op.win || window, w, f, url = '', id = op.id || 'f', fid = 'iframe#'
-				+ id;
-
-		op.finish = function() {
-			if (te && te.dom)
-				te.dom.push(pw.$("div#div" + id)[0]);
-			else
-				pw.$("div#div" + id).remove();
+	delayhelper : function(oncheck, onsuccess, onfail, timeout) {
+		onsuccess = onsuccess || oncheck.onsuccess;
+		onfail = onfail || oncheck.onfail || function() {
+			fail('timeout wait for timeout : ' + timeout + 'ms');
 			start();
 		};
+		timeout = timeout || oncheck.timeout || 10000;
 
-		if (pw.$(fid).length == 0) {
-			/* 添加frame，部分情况下，iframe没有边框，为了可以看到效果，添加一个带边框的div */
-			pw.$(pw.document.body).append('<div id="div' + id + '"></div>');
-			pw.$('div#div' + id).append('<iframe id="' + id + '"></iframe>');
-		}
-		op.onafterstart && op.onafterstart($('iframe#f')[0]);
-		pw.$('script').each(function() {
-			if (this.src && this.src.indexOf('import.php') >= 0) {
-				url = this.src.split('import.php')[1];
+		oncheck = (typeof oncheck == 'function') ? oncheck : oncheck.oncheck;
+		var h1 = setInterval(function() {
+			if (!oncheck())
+				return;
+			else {
+				clearInterval(h1);
+				clearTimeout(h2);
+				typeof onsuccess == "function" && onsuccess();
 			}
-		});
-		pw.$(fid).attr('src', cpath + 'frame.php' + url).load(function() {
-			w = pw.frames[pw.frames.length - 1];
-			op.ontest(w, w.frameElement);
-		});
+		}, 20);
+		var h2 = setTimeout(function() {
+			clearInterval(h1);
+			clearTimeout(h2);
+			onfail();
+		}, timeout);
 	},
 
 	browser : (function() {
