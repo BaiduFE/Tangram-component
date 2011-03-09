@@ -10,7 +10,7 @@
 
 ///import baidu.ui.createUI;
 ///import baidu.string.format;
-///import baidu.ui.Tree.TreeNode;
+
 /**
  * Tree：管理和操作TreeNode
  * @param {Object} options
@@ -27,7 +27,9 @@
 baidu.ui.Tree = baidu.ui.createUI(function(options) {
         //树的所有节点的集合 树的ID与实例的键值对
         this._treeNodes = {};
-}).extend({
+});
+///import baidu.ui.Tree.TreeNode; //[inner]
+baidu.ui.Tree.extend({
     //ui类型
     uiType: 'tree',
     //模板
