@@ -107,7 +107,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
             arrowClass: me.getClass('arrow'),
             inputid: me.getId("input"),
             arrowid: me.getId("arrow"),
-            stateHandler: me._getStateHandlerString() : '' // 是否会有更好的方式来使用ui.statable
+            stateHandler: me._getStateHandlerString() // 是否会有更好的方式来使用ui.statable
         });
     },
 
