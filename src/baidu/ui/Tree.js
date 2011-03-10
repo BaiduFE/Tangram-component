@@ -10,6 +10,10 @@
 
 ///import baidu.ui.createUI;
 ///import baidu.string.format;
+<<<<<<< HEAD
+
+=======
+>>>>>>> a566e5a0f72bb6fce04bd8d6bed23cbdffb5b0c7
 /**
  * Tree：管理和操作TreeNode
  * @param {Object} options

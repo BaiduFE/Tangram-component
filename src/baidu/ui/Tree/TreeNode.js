@@ -793,12 +793,12 @@ baidu.ui.Tree.TreeNode.prototype = {
      */
     expandAll: function() {
         var me = this;
-        if (me.getChildNodes().length > 0)
-            me.expand();
+        //if (me.getChildNodes().length > 0)
+        me.expand();
+        alert(me.getChildNodes().length);
         baidu.array.each(me.getChildNodes(), function(item) {
             item.expandAll();
         });
-
     },
     /**
      * 递归收起所有子节点
