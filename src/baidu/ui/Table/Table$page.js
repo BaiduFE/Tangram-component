@@ -96,7 +96,8 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	 */
 	getTotalPage : function(){
 		var me = this;
-		return Math.ceil(me.dataSet.length/me.pageSize);
+		return baidu.lang.isNumber(me.pageSize) ? Math.ceil(me.dataSet.length/me.pageSize)
+		  : me.currentPage;
 	},
 	
 	/**
