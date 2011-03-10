@@ -83,9 +83,15 @@ baidu.ui.Tab = baidu.ui.createUI( function (options) {
 	 */
 	insertItemHTML : function(item, index) {
 		var me = this;
-		baidu.dom.insertHTML(baidu.g(me.getId("headParent")),  "beforeEnd",  this._getHeadString(item, index));
-		baidu.dom.insertHTML(baidu.g(me.getId("bodyParent")),  "beforeEnd",  this._getBodyString(item, index));
-	}, 
+		baidu.dom.insertHTML(baidu.g(me.getId("head-container")),  "beforeEnd",  this._getHeadString(item, index));
+		baidu.dom.insertHTML(baidu.g(me.getId("body-container")),  "beforeEnd",  this._getBodyString(item, index));
+	},
+
+    insertContentHTML: function(item, index){
+        var me = this;
+        baidu.dom.insertHTML(me.bodies[index],'beforeEnd',item);
+    },
+
 	/**
 	* 兼容原接口getLabel
 	* @private

@@ -3,6 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <script src='../../../../src/import.php?f=baidu.tools.log.*'></script>
+        <link type='text/css' rel='stylesheet' href="tmp.css"/> 
         <style>
             body{
                 margin:5px;
@@ -101,17 +102,29 @@
                     123.123,
                     [1,2,3]
                 ];
-                baidu.logger.log(data);
+                baidu.log(data);
 
-                baidu.logger.time('test');
+                baidu.log.time('test');
                 setTimeout(endTime,500);
 
                 function endTime(){
-                    baidu.logger.time('test');   
+                    baidu.log.timeEnd('test');   
                 }
             }
-            
+
+            function update(){
+                baidu.log.update({
+                   timeStep: 1000 
+                }); 
+            }
+
+            function clear_dialog(){
+                baidu.tools.log.DInstance.clear();
+            }
+
         </script> 
-        <input type="button" value="test1" onclick="javascript:test1();"/>
+        <input type="button" value="console.log" onclick="javascript:test1();"/>
+        <input type="button" value="update" onclick="javascript:update();"/>
+        <input type="button" value="clear" onclick="javascript:clear_dialog();"/>
     </body>
 </html>

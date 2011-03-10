@@ -38,35 +38,38 @@ baidu.tools.log.Dialog = function(options){
         options = options || {};
 
     me.dialog = new baidu.ui.Dialog({
-        width: '200',
-        height: '30',
+        width: '522',
+        height: '250',
         titleText: 'tangram debug window',
-        left:'600px',
-        top:'30px'
+        left:'380px',
+        top:'130px'
     },options.dialogOptions || {});
     me.dialog.render();
     me.dialog.open();
 
-    //暂定直接向content中添加数据
-    me.dContent = me.dialog.getContent();
-    me.tmpContent = document.createElement('div');
-   
     me.tab = new baidu.ui.Tab({
         items: [
             {head: 'all'},
             {head: 'log'},
-            {head: 'error'},
             {head: 'info'},
-            {head: 'warn'}
+            {head: 'warn'},
+            {head: 'error'}
         ]
     });
     me.tab.render(me.dialog.getContent());
+    me.tabIndex = {
+        'all': 0,
+        'log': 1,
+        'info': 2,
+        'warn': 3,
+        'error': 4
+    };
     
     //log tpl
     me.logTpl = {
-        data: '<div>#{type}#{content}</div>',
-        type: '<span style="font-color:#{color}">#{type}:</span>',
-        content: '<span>#{content}</span>'
+        data: '<div>#{content}</div>',
+        content: '<span>#{content}</span>',
+        split: '<div style="height:1px; background-color:white;"></div>'
     };
 
     me.color = {
@@ -76,7 +79,7 @@ baidu.tools.log.Dialog = function(options){
         error: 'red'
     };
 };
-baidu.extend(baidu.tools.log.Dialog.prototype,{
+baidu.tools.log.Dialog.prototype = {
    
     _verifyFunction:[
         [baidu.lang.isString,'String'],
@@ -113,17 +116,15 @@ baidu.extend(baidu.tools.log.Dialog.prototype,{
         var me =  this,
             data = data || [],
             dataString = []
-            tmpChild = [];
+            tmpChild = [],
 
         baidu.each(data,function(d,i){
             dataString.push(me._getString(d));
+            dataString.push(me.logTpl.split);
         });
-
-        me.tmpContent.innerHTML = dataString.join('');
-        tmpChild = baidu.dom.children(me.tmpContent);
-        (tmpChild.length > 0) && baidu.each(tmpChild, function(d,i){
-            me.dContent.appendChild(d);
-        });
+        
+        dataString = dataString.join('');
+        me.tab.insertContentHTML(dataString,me.tabIndex['all']);
     },
 
     /**
@@ -131,24 +132,34 @@ baidu.extend(baidu.tools.log.Dialog.prototype,{
      * @public
      * @return {Null}
      */
-    clear: function(){
-           
+    clear: function(type){
+        var me = this,
+            type = type || "all";
+
+        if(type == 'all'){
+            baidu.object.each(me.tab.bodies,function(item,i){
+                item.innerHTML = '';
+            });
+        }else{
+            me.tab.insertContentHTML('',me.index[type]);
+        }
     },
 
     _getString:function(data){
         var me = this,
-            typeStr= data.type,
-            contentData = data.data;
+            type= data.type,
+            contentData = data.data,
+            contentString = '';
 
-        return baidu.format(me.logTpl['data'],{
-            type: baidu.format(me.logTpl['type'],{
-                color: me.color[typeStr],
-                'type': typeStr
-            }),
+        contentString = baidu.format(me.logTpl['data'],{
             content: baidu.format(me.logTpl['content'],{
                 content: me._getContentString(contentData)
             })
         });
+
+        me.tab.insertContentHTML(contentString,me.tabIndex[type]);
+        me.tab.insertContentHTML(me.logTpl.split,me.tabIndex[type]);
+        return contentString;
     },
 
     /**
@@ -183,7 +194,7 @@ baidu.extend(baidu.tools.log.Dialog.prototype,{
             resultStr.push(me._getContentString(item));
         });
 
-        return '[' + resultStr.join(',') + ']';
+        return '[' + resultStr.join(', ') + ']';
     },
 
     _echoObject: function(data){
@@ -191,10 +202,10 @@ baidu.extend(baidu.tools.log.Dialog.prototype,{
             resultStr = [];
 
         baidu.object.each(data,function(item,index){
-            resultStr.push( index + '=' + me._getContentString(item) + '<br/>');
+            resultStr.push( index + '=' + me._getContentString(item));
         });
 
-        return 'Object = {' + resultStr.join(',') + '}';          
+        return 'Object { ' + resultStr.join(', ') + ' }';          
     },
 
     _echoDate: function(data){
@@ -202,13 +213,13 @@ baidu.extend(baidu.tools.log.Dialog.prototype,{
     },
 
     _echoString: function(data){
-        return data.toString();
+        return '"' + data.toString() + '"';
     },
 
     _echoNumber: function(data){
         return data.toString(); 
     }
-});
+};
 
 baidu.dom.ready(function(){
     baidu.tools.log.DInstance = new baidu.tools.log.Dialog();

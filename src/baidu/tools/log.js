@@ -9,58 +9,62 @@
  */
 
 ///import baidu.object.extend;
-
 ///import baidu.tools;
 
-baidu.tools.log = function(){
-    var me = this;
+(function(){
+ 
+        //日志队列
+    var _logStack = [], 
 
-    me._logStack = [];
-    me._timeObject = {};
-
-    me.callBack = new Function();
-    me.timeStep = 0;
+        //存放time调用的datehandle
+        _timeObject = {},   
+        
+        //回调函数
+        callBack = new Function(),
+        
+        /**
+         * 设置的push数据时使用的timeHandler
+         * 若timeStep为零，则立即输出数据
+         **/
+        _timeHandler = null,
     
-    me._logLevel = {
-        'log': 0,
-        'info': 1,
-        'warn': 2,
-        'error': 3
-    };
+        /**
+         * 时间间隔
+         * 当timeStep = 0时，则当有日志需要输出时，立即输出
+         * 当timeStep > 0时，则以该timeStep为间隔时间，输出日志
+         * 默认值为0
+         * */
+        timeStep = 0,
+    
+        //日志等级
+        _logLevel = {
+            'log': 0,
+            'info': 1,
+            'warn': 2,
+            'error': 3
+        },
 
-    me.logLevel = 0;
-
-
-    /**
-     * 设置的push数据时使用的timeHandler
-     * 若timeStep为零，则立即输出数据
-     **/
-    me._timeHandler = null;
-
-};
-
-
-
-baidu.extend(baidu.tools.log.prototype,{
+        //默认输出日志等级
+        logLevel = 0;
 
     /**
      * 打印log
      * @public
      * @param {Object} data 需要打印的内容
      * @return {Null}
-     * */
-    log: function(data){
-        this._log(data,'log');
-    },
+     */
+    var log = function(data){
+        _log(data, 'log'); 
+    };
 
     /**
      * 打印error
      * @public
      * @param {Object} data 需要打印的内容
      * @return {Null}
-     * */
-    error: function(data){
-        this._log(data,'error');
+     */
+    log.error = function(data){
+        _log(data,'error');
     },
 
     /**
@@ -68,20 +72,20 @@ baidu.extend(baidu.tools.log.prototype,{
      * @public
      * @param {Object} data 需要打印的内容
      * @return {Null}
-     * */
-    info: function(data){
-        this._log(data,'info');
-    },
+     */
+    log.info = function(data){
+        _log(data,'info');
+    };
 
     /**
      * 打印warn
      * @public
      * @param {Object} data 需要打印的内容
      * @return {Null}
-     * */
-    warn: function(data){
-        this._log(data,'warn');
-    },
+     */
+    log.warn = function(data){
+        _log(data,'warn');
+    };
 
     /**
      * 设置timer
@@ -89,17 +93,16 @@ baidu.extend(baidu.tools.log.prototype,{
      * @param {String} name timer的标识名称
      * @return {Null}
      */
-    time: function(name){
-        var me = this,
-        timeOld = me._timeObject[name],
-        timeNew = new Date().getTime();
+    log.time = function(name){
+        var timeOld = _timeObject[name],
+            timeNew = new Date().getTime();
 
         if(timeOld){
-            me._log(timeNew - timeOld, 'info');
+            _log(timeNew - timeOld, 'info');
         }else{
-            me._timeObject[name] = timeNew;
+            _timeObject[name] = timeNew;
         }
-    },
+    };
 
     /**
      * 终止timer,并打印
@@ -107,67 +110,56 @@ baidu.extend(baidu.tools.log.prototype,{
      * @param {String} name timer的标识名称
      * @return {Null}
      */
-    timeEnd: function(name){
-        var me = this,
-        timeOld = me._timeObject[name],
-        timeNew = new Date().getTime();
+    log.timeEnd = function(name){
+        var timeOld = _timeObject[name],
+            timeNew = new Date().getTime();
 
         if(timeOld){
-            me._log(timeNew - timeOld, 'info');
-            delete(me._timeObject[name]);
+            _log(timeNew - timeOld, 'info');
+            delete(_timeObject[name]);
         }else{
-            me._log('timer not exist', 'error');
+            _log('timer not exist', 'error');
         }
-    },
-
+    };
+   
     /**
      * 输出log
      * @public
      * @param {String} data 需要打印的内容
      * @return {Null}
      */
-    _log: function(data,type){
-        var me = this;
+    var _log = function(data,type){
       
-        if(me._logLevel[type] >= me.logLevel){
+        if(_logLevel[type] >= logLevel){
             
             //log 压栈
-            me._logStack.push({type:type,data:data});
+            _logStack.push({type:type,data:data});
 
-            if(me.timeStep == 0){
+            if(timeStep == 0){
                 //如果这是time为0，则立即调用_push方法
-                me._push(); 
+                _push(); 
             }else{
                 //如果timeStep > 0
-                if(!me._timeHandler){
-
-                    me._timeHandler = setInterval(_p,me.timeStep * 1000);
-                    function _p(){
-                        me._push();
-                    }
-                }
+                !_timeHandler && (_timeHandler = setInterval(function(){_push();},timeStep));
             }
         }
-    },
+    };
 
     /**
      * 推送log,并调用回调函数
      * @private
      * @return {Null}
      */
-    _push: function(){
-        var me = this,
-            data = me._logStack;
+    var _push = function(){
+        var data = _logStack;
 
         //清空栈
-        me._logStack = [];
+        _logStack = [];
 
+        //dialog对话框
         baidu.tools.log.DInstance && baidu.tools.log.DInstance.push(data);
-        me.callBack(data);
-    },
-
-    
-    
+        callBack(data);
+    };
 
     /**
      * 传入log配置
@@ -176,21 +168,21 @@ baidu.extend(baidu.tools.log.prototype,{
      * @config {Number} timeStep 设置log输出时间间隔，默认为0，即只要有数据就立即输出
      * @config {String} logLevel 所需记录的log的等级,枚举值['log','error','info','warn']
      */
-    config: function(cfg){
-        var me = this,
-            cfg = cfg || {}; 
+    log.update = function(cfg){
+        var cfg = cfg || {}; 
 
-        (cfg.logLevel && me._logLevel[cfg.logLevel]) &&(cfg.logLevel = me._logLevel[cfg.logLevel]);
-        baidu.extend(me,cfg);
+        (cfg.logLevel && _logLevel[cfg.logLevel]) && (cfg.logLevel = _logLevel[cfg.logLevel]);
         
-        //停止当前的计时
-        if(me._timeHandler && me.timeStep == 0){
-            clearInterval(me._timeHandler);
-            me._timeHandler = null;
-        }
-    }
-});
+        callBack = cfg.callBack || callBack;
+        timeStep = cfg.timeStep || timeStep;
+        logLevel = cfg.logLevel || logLevel;
 
-baidu.logger = function(){
-    return new baidu.tools.log();
-}();
+        //停止当前的计时
+        if(_timeHandler && timeStep == 0){
+            clearInterval(_timeHandler);
+            _timeHandler = null;
+        }
+    };
+
+    baidu.log = baidu.tools.log = log;
+})();
