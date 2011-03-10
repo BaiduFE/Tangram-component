@@ -29,6 +29,7 @@
 ///import baidu.string.format;
 
 ///import baidu.behavior.posable;
+///import baidu.ui.behavior.statable;
 
  /**
  * combox类
@@ -68,6 +69,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
     height: '',
     zIndex: 1200,
     posable: true,
+    statable: true,
 
     /**
      * 过滤方法
@@ -105,7 +107,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
             arrowClass: me.getClass('arrow'),
             inputid: me.getId("input"),
             arrowid: me.getId("arrow"),
-            stateHandler: me.statable ? me._getStateHandlerString() : '' // 是否会有更好的方式来使用ui.statable
+            stateHandler: me._getStateHandlerString() : '' // 是否会有更好的方式来使用ui.statable
         });
     },
 
