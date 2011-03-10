@@ -10,26 +10,24 @@
 
 ///import baidu.ui.createUI;
 ///import baidu.string.format;
-<<<<<<< HEAD
 
-=======
->>>>>>> a566e5a0f72bb6fce04bd8d6bed23cbdffb5b0c7
 /**
  * Tree：管理和操作TreeNode
  * @param {Object} options
- * options说明
- * data : 节点数据集合 {text: "", children: [{text: ""},{text: ""}]}
- * _hoverNode : hover时候返回的节点,默认值为null
- * _rootNode : 根节点,默认值为null,
- * parentNode : 父节点,默认值为null,
- * hasCheckbox  : 是否有复选框,默认值为false
- * _currentNode : 当前节点，默认值为null
- * expandable : 是否改变trunk的状态到leaf,当一个trunk的子节点数为0时，
- * 如果为true,那么就变为leaf的状态，否则就不会变
+ * @config {Object} data 节点数据集合 {text: "", children: [{text: ""},{text: ""}]}
+ * @config {Boolean} expandable : 是否改变trunk的状态到leaf,当一个trunk的子节点数为0时，
+ *                                如果为true,那么就变为leaf的状态，否则就不会变
+ * @config {Function} onclick : 节点被点击后触发。
+ * @config {Function} ontoggle : 节点被展开或收起后触发。
+ * @config {Function} onload : Tree渲染后触发。
  */
+
+//  _rootNode : 根节点,默认值为null,
+// _currentNode : 当前节点，默认值为null
+
 baidu.ui.Tree = baidu.ui.createUI(function(options) {
-        //树的所有节点的集合 树的ID与实例的键值对
-        this._treeNodes = {};
+    //树的所有节点的集合 树的ID与实例的键值对
+    this._treeNodes = {};
 });
 ///import baidu.ui.Tree.TreeNode; //[inner]
 baidu.ui.Tree.extend({
