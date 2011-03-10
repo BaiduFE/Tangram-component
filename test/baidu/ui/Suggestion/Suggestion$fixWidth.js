@@ -45,7 +45,7 @@ test("position - absolute", function() {
 	sugg.render(input);
 	testingElement.obj.push(sugg);
 	sugg.show('a', [ 'ab', 'ac' ]);
-})
+});
 
 /**
  * set top and left, check suggestion position

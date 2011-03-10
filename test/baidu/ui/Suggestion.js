@@ -3,7 +3,6 @@
  */
 module("baidu.ui.Suggestion");
 
-
 (function() {
 	/**
 	 * create a input for test start
@@ -24,11 +23,10 @@ module("baidu.ui.Suggestion");
 
 	var s = QUnit.testStart;
 	QUnit.testStart = function() {
-		s.apply(this, arguments);;
+		s.apply(this, arguments);
 		_testStart();
-	}
+	};
 })();
-
 
 /**
  * check events list and event arguments and event queue
@@ -62,14 +60,14 @@ test("event list", function() {
 		onshow : onHandle("show", 0, function() {
 			/* call mouse over for highlight on item 0 when shown */
 			// ua.click(sugg.getItem(0));
-				ua.mouseover(sugg.getItem(0));
-			}),
+			ua.mouseover(sugg.getItem(0));
+		}),
 		onhighlight : onHandle("highlight", 1, function(event) {
 			check(event, 0, "ab", "ab", "at highlight");
 			/* call mouse down for select item */
 			// ua.click(sugg.getItem(0));
-				sugg.confirm(0);
-			}),
+			sugg.confirm(0);
+		}),
 		onbeforepick : onHandle("beforepick", 2, function(event) {
 			/* check highlight */
 			equals(sugg.getItem(0).className, "tangram-suggestion-current",
@@ -128,7 +126,7 @@ test("confirm", function() {
 test("dispose", function() {
 	var l1 = baidu.event._listeners.length;
 	var te = testingElement, input = te.dom[0], sugg, ua = UserAction;
-	sugg = new baidu.ui.Suggestion( {});
+	sugg = new baidu.ui.Suggestion({});
 	sugg.render(input);
 	sugg.dispose();
 	equals(baidu.event._listeners.length, l1, 'event removed all');

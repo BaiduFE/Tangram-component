@@ -87,18 +87,29 @@ class Kiss{
 		}
 	}
 
-	public function print_js(){
-		print '<script type="text/javascript" src="../jquery-1.3.2.js"></script>'."\n";
-		print '<script type="text/javascript" src="../testrunner.js"></script>'."\n";
+	public function print_js($cov=false, $release=false){
+		print '<script type="text/javascript" src="js/jquery-1.3.2.js"></script>'."\n";
+		print '<script type="text/javascript" src="js/testrunner.js"></script>'."\n";
 		print '<script type="text/javascript" src="js/ext_qunit.js"></script>'."\n";
-		print '<link media="screen" href="../testsuite.css" type="text/css" rel="stylesheet" />'."\n";
-		print '<script type="text/javascript" src="../tools.js"></script>'."\n";
-		print '<script type="text/javascript" src="../UserAction.js"></script>'."\n";
-		print "<script src='import.php?f=$this->name' ></script>\n";
+		print '<script type="text/javascript" src="js/UserAction.js"></script>'."\n";
+		print '<script type="text/javascript" src="js/tools.js"></script>'."\n";
+
+		print '<link media="screen" href="css/testsuite.css" type="text/css" rel="stylesheet" />'."\n";
+
+		if($release == 0){
+			/* load case source*/
+			$importurl = "$this->projroot/test/tools/br/import.php?f=$this->name\n";
+			if($cov) $importurl.='&cov=true';
+			print "<script type='text/javascript' src='$importurl' ></script>\n";
+		}else{
+			print "<script type='text/javascript' src='{$this->projroot}release/all_release.js'></script>\n";
+		}
+
 		/* load case and case dependents*/
 		$ps = explode('.', $this->name);
 		array_pop($ps);
 		array_push($ps, 'tools');
+		if(file_exists($this->projroot.'test/'.implode('/', $ps).'.js'))//没有就不加载了
 		print '<script type="text/javascript" src="'.$this->projroot.'test/'.implode('/', $ps).'.js"></script>'."\n";
 		print '<script type="text/javascript" src="'.$this->path.'"></script>'."\n";
 	}
@@ -151,12 +162,12 @@ class Kiss{
 			if($c->match($matcher)){
 				print("<a href=\"javascript:void(0)\" id=\"$c->case_id\" class=\"jsframe_qunit\" target=\"_blank\" title=\"$name\" onclick=\"run('$name');\$('#id_rerun').html('$name');return false;\">"
 				/*过长的时候屏蔽超出20的部分，因为隐藏的处理，所有用例不能直接使用标签a中的innerHTML，而应该使用title*/
-				.(strlen($name)>20?(substr($name,0,18)."..."):$name)."</a>");
+				.substr($name, 6)."</a>\n");
 			}
 		}
 	}
 
-	public static function listSrcOnly($matcher="*", $projroot = '../../../'){
+	public static function listSrcOnly($print=true, $projroot = '../../../'){
 		$srcpath = $projroot.'src/';
 		$testpath = $projroot.'test/';
 		require_once 'filehelper.php';
@@ -167,7 +178,10 @@ class Kiss{
 			if(in_array($case, $caselist))
 			continue;
 			$name = str_replace('/','.',substr($case,0, -3));
-			echo "<a class=\"jsframe_qunit\" title=\"$name\">".(strlen($name)>20?(substr($name,0,18)."..."):$name)."</a>";
+			$tag = "<a class=\"jsframe_qunit\" title=\"$name\">".(strlen($name)>20? substr($name, 6) : $name)."</a>";
+			array_push($srcList, $tag);
+			if($print)
+			echo $tag;
 		}
 		return $srcList;
 	}
