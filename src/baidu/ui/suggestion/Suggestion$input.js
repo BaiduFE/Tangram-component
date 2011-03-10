@@ -122,7 +122,7 @@ baidu.ui.suggestion.Suggestion.register(function(me) {
         clearInterval(me.circleTimer);
     });
 });
-baidu.object.extend(baidu.ui.me.Suggestion.prototype, {
+baidu.object.extend(baidu.ui.suggestion.Suggestion.prototype, {
 
     selectIndexByKeybord: -1,
 
