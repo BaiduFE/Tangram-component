@@ -20,7 +20,8 @@
 ///import baidu.dom.setStyles;
 ///import baidu.dom.addClass;
 ///import baidu.dom.removeClass;
-///import baidu.ui.smartPosition.element;
+
+///import baidu.ui.behavior.posable.setPositionByElement;
 
 ///import baidu.string.format;
 
@@ -53,6 +54,7 @@ baidu.ui.createUI(function(options){
     zIndex: 1200,
     hideDelay: 300,
     position: 'bottomCenter',
+    posable: true,
     tplBody: '<div id="#{id}" class="#{class}">#{content}</div>',
     tplBranch: '<ul id="#{ulId}">#{subitems}</ul>',
     tplItem: '<li onmouseover="#{onmouseover}" onmouseout="#{onmouseout}"><a href="#" id="#{id}" class="#{class}" onclick="#{onclick}" title="#{title}">#{content}</a>#{branch}</li>',
@@ -221,9 +223,9 @@ baidu.ui.createUI(function(options){
         });
                
         if (target) {
-            baidu.ui.smartPosition.element(me.getMain(), target, {
-                position: me.position
-            });
+            me.setPositionByElement(target, me.getMain(), {
+                position:me.position
+            }); 
         } 
     },
     

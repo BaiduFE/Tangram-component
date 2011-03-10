@@ -14,7 +14,6 @@
 ///import baidu.ui.menubar.Menubar;
 ///import baidu.ui.create;
 ///import baidu.ui.menubar.Menubar$click;
-///import baidu.ui.smartPosition.set;
 
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.g;
@@ -28,6 +27,8 @@
 ///import baidu.event.un;
 
 ///import baidu.string.format;
+
+///import baidu.behavior.posable;
 
  /**
  * combox类
@@ -66,6 +67,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
     width: '',
     height: '',
     zIndex: 1200,
+    posable: true,
 
     /**
      * 过滤方法
@@ -120,7 +122,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
         baidu.dom.insertHTML(me.renderMain(target || me.target), "beforeEnd", me.getString());
         me._createMenu(); //创建下拉menu
         me._enterTipMode();
-        me.position && baidu.ui.smartPosition.set(target, me.position);
+        me.position && me.setPosition(me.position,target); 
         me.dispatchEvent("onload");
     },
 

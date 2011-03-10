@@ -70,9 +70,9 @@ test('getItem and item event', function() {
 	menu.update();
 	item = menu.getItem('0-0');
 	equals($(item).text(), menu.items['0-0'].content, 'get content');
-	ok(/itemClick\(\'0-0\'\)/.test(item.onclick), 'check item click');
-	ok(/itemMouseOver\(\'0-0\'\)/.test(item.parentNode.onmouseover), 'check item on hover');
-	ok(/itemMouseOut\(\'0-0\'\)/.test(item.parentNode.onmouseout), 'check item on mouse out');
+    ok(/itemClick\(["']0-0["']\)/.test(item.onclick), 'check item click');
+	ok(/itemMouseOver\(["']0-0["']\)/.test(item.parentNode.onmouseover), 'check item on hover');
+	ok(/itemMouseOut\(["']0-0["']\)/.test(item.parentNode.onmouseout), 'check item on mouse out');
 	menu.open();
 	item = menu.getItem('0-0');
 //	UserAction.mouseover(item);

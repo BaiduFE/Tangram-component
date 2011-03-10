@@ -15,7 +15,6 @@
 //依赖包
 ///import baidu.ui;
 ///import baidu.ui.get;
-///import baidu.ui.smartPosition.set;
 
 ///import baidu.object.extend;
 ///import baidu.browser.ie;

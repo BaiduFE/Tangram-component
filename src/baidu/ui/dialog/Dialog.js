@@ -22,8 +22,6 @@
 ///import baidu.dom.getStyle;
 ///import baidu.dom._styleFilter.px;
 
-///import baidu.ui.smartPosition.setBorderBoxStyles;
-
 ///import baidu.array.each;
 ///import baidu.string.format;
 ///import baidu.browser;
