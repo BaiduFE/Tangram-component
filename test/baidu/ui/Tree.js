@@ -148,7 +148,6 @@ test('TreeNode constructor', function() {
 	equals(node.uiType, 'tree-node', 'check ui type');
 	equals(node.type, 'leaf', 'check node type');
 	ok(/TANGRAM__[a-z]+/.test(node.id), 'check node id : ' + node.id);
-
 });
 
 test('TreeNode function appendData', function() {
@@ -188,11 +187,12 @@ test('TreeNode function appendChild', function() {
 	cnode.appendChild(tree.getTreeNodeById('a3'));
 	equals(cnode.getChildNodes().length, 1, 'child size');
 	equals(cnode.getChildNodes()[0].id, 'a3', 'child node append');
-	// 同一个节点再操作会是个什么情况呢……
-	cnode.appendChild(tree.getTreeNodeById('a3'), 0);
+	// // 同一个节点再操作会是个什么情况呢……
+	// cnode.appendChild(tree.getTreeNodeById('a3'), 0);
 	equals(cnode.getChildNodes().length, 1, 'child size after new node');
 
 	// 从其他树上抓节点
+	var div = document.body.appendChild(document.createElement('div'));
 	var tree1 = te.getUI({
 		data : {
 			id : 'b',
@@ -202,24 +202,152 @@ test('TreeNode function appendChild', function() {
 				text : 'b1'
 			} ]
 		}
-	}, false, document.body.appendChild(document.createElement('div')));
+	}, false, div);
 	// 需要展开
 	tree1.getRootNode().expand();
 	cnode.appendChild(tree1.getTreeNodeById('b1'));
-	equals(cnode.getChildNodes().length, 2,
-			'child size should be 2 after new node append');
+	equals(cnode.getChildNodes().length, 2, 'child size should be 2');
 	equals(tree1.getRootNode().getChildNodes.length, 0,
 			'child size should be 0');
 	equals(tree.getTreeNodeById('b1').getParentNode().id, 'a2',
-			'new child parent should be a2');
+			'child parent should be a2');
 
 	// 展开后的树，加节点是个啥情况
 	cnode = tree1.getRootNode();
 	cnode.appendChild(tree.getTreeNodeById('a3'));
-	cnode.appendChild(tree.getTreeNodeById('a3'));
-	var onode = tree.getTreeNodeById('a3');
-	ok(onode == undefined, 'tree node with id a3 not exist');
-	equals(tree1.getTreeNodeById('a3').id, 'a3', 'a3 on tree1');
+	ok(tree.getTreeNodeById('a3') == undefined, 'a3 not exist on tree');
+	ok(tree1.getTreeNodeById('a3') != undefined, 'a3 exist on tree1');
+});
+
+test('TreeNode function appendTo', function() {
+	/**
+	 * 节点0拖到节点1下，
+	 * <li>如果有第三个参数，节点0从3下取否则从tree下取
+	 * <li>如果有第四个参数，节点1从4下取，否则从3下取，否则从tree下取
+	 */
+	var dragto = function(target, tonode, tree0, tree1) {
+		var node0 = (tree0 || tree).getTreeNodeById(target), node1 = (tree1
+				|| tree0 || tree).getTreeNodeById(tonode), size = node1
+				.getChildNodes().length;
+		node0.appendTo(node1);
+		equals(node1.getChildNodes().length, size + 1, tonode + '孩子节点数+1');
+		equals(node1.getChildNodes()[0].id, id0,
+				'id1\'s last child should be id0');
+	};
+	var tree = te.getUI(), root = tree.getTreeNodeById('a');
+	root.expand();
+	// 从当前树上拖节点，从上向下拖
+	root.appendChild(new baidu.ui.Tree.TreeNode({
+		id : 'a1',
+		text : 'a1'
+	}));
+	dragto('a1', 'a0');
+
+	// 从当前树上拖节点，从下向上拖回根节点
+	dragto('a1', 'a');
+
+	// 平级拖动是啥情况……
+	dragto('a1', 'a');
+
+	// 从其他树上拖节点
+	var div = document.body.appendChild(document.createElement('div'));
+	var tree1 = te.getUI({
+		data : {
+			id : 'b',
+			text : 'b',
+			children : [ {
+				id : 'b1',
+				text : 'b1'
+			} ]
+		}
+	}, false, div);
+	tree1.getTreeNodeById('b').expand();
+	dragto('b1', 'a', tree1, tree);
+
+	// root 拖走是啥情况……
+	dragto('b', 'a', tree1, tree);
+
+	// 新建节点append
+	new baidu.ui.Tree.TreeNode({
+		id : 'a1',
+		text : 'a1'
+	}).appendTo(root);
+	equals(root.getChildNodes().length, 2, 'root child size should be 2');
+});
+
+test('TreeNode function blur and focus', function() {
+	var tree = te.getUI(), node = tree.getTreeNodeById('a'), nodeid = node
+			.getId('node');
+
+	node.focus();
+	equals($("#" + nodeid).attr('class'),
+			'tangram-tree-node-node tangram-tree-node-current');
+	node.blur();
+	equals($("#" + nodeid).attr('class'), 'tangram-tree-node-node');
+	node.focus();
+	equals($("#" + nodeid).attr('class'),
+			'tangram-tree-node-node tangram-tree-node-current');
+	node.focus();
+	equals($("#" + nodeid).attr('class'),
+			'tangram-tree-node-node tangram-tree-node-current');
+
+	node.expand();
+	equals($("#" + nodeid).attr('class'),
+			'tangram-tree-node-node tangram-tree-node-current');
+	node.collapse();
+	equals($("#" + nodeid).attr('class'),
+			'tangram-tree-node-node tangram-tree-node-current');
+});
+
+test('TreeNode function toggle, collapse and expand', function() {
+	var tree = te.getUI(), node = tree.getTreeNodeById('a'), nodeid = "#"
+			+ node.getId('subNodeId');
+	// expand前，它是叶子
+	equals(node.getChildNodes().length, 0, 'size of child before expand');
+	equals($(nodeid)[0].children.length, 0, 'size of subnode child');
+	equals(parseInt($(nodeid).css('height')), 0, 'subnode is not shown');
+	node.expand();
+	equals(node.getChildNodes().length, 1, 'size of child before expand');
+	equals($(nodeid)[0].children.length, 1, 'size of subnode child');
+	ok(parseInt($(nodeid).css('height')) > 0, 'subnode is shown');
+	equals($(nodeid).css('display'), 'block', 'subnode is shown');
+	equals($(nodeid)[0].children[0].id, 'a0', 'subnode child is a0');
+	node.collapse();// 折叠后
+	equals(node.getChildNodes().length, 1, 'size of child after collapse');
+	equals($(nodeid)[0].children.length, 1, 'size of subnode child');
+	equals($(nodeid).css('display'), 'none', 'subnode is shown');
+	//TODO
+});
+
+test('TreeNode function collapseAll and expandAll', function() {
+	var tree = te.getUI({
+		data : {
+			id : 'a',
+			text : 'a',
+			children : [ {
+				text : 'a0',
+				children : [ {
+					id : 'a00',
+					text : 'a00'
+				} ]
+			}, {
+				text : 'a1',
+				children : [ {
+					id : 'a10',
+					text : 'a10'
+				} ]
+			} ]
+		}
+	}), node = tree.getTreeNodeById('a');
+	node.expandAll();
+	// 节点挂载，并显示
+	equals(tree.getTreeNodeById('a00').id, 'a00');
+	equals(tree.getTreeNodeById('a10').id, 'a10');
+	ok(isShown($('#a00')[0]), 'a00 shown');
+	ok(isShown($('#a10')[0]), 'a10 shown');
+	node.collapseAll();
+	ok(!isShown($('#a00')[0]), 'a00 hide');
+	ok(!isShown($('#a10')[0]), 'a10 hide');
 });
 
 test('TreeNode function getxxx', function() {
@@ -228,16 +356,17 @@ test('TreeNode function getxxx', function() {
 	var node = tree.getTreeNodeById('a');
 	// get Id http://icafe.baidu.com:8100/jtrac/app/item/PUBLICGE-292/
 	equals(node.getId('test'), 'a-test', 'getId');// 这个应该是私有属性
-
-	/** getParendNode */
 	equals(node.getParentNode(), undefined, 'getParentNode，根节点的父节点');
 	node.expand();
+
+	/** getParendNode */
 	equals(tree.getTreeNodeById('a0').getParentNode().id, 'a',
 			'getParentNode，有父节点的情况');
 	node.appendChild(new baidu.ui.Tree.TreeNode({
 		id : 'a1',
 		text : 'a1'
 	}));
+
 	var cnode = tree.getTreeNodeById('a1');
 	equals(cnode.getParentNode().id, node.id, 'getParentNode，新增节点的父节点');
 	cnode.setParentNode(tree.getTreeNodeById('a0'));
@@ -261,4 +390,43 @@ test('TreeNode function getxxx', function() {
 	equals(tnode.getTree().mainId, tree.mainId,
 			'getTree from node with set Tree');
 	/** getTree end */
+});
+
+test('TreeNode function Index, First, Last, Next and Previous', function() {
+	var tree = te.getUI(), node = tree.getTreeNodeById('a');
+	node.expand();
+	equals(node.getIndex(), -1, 'root index');
+	equals(node.getFirstChild().getIndex(), 0, 'root first child index');
+	equals(node.getFirstChild().id, 'a0', 'first');
+	equals(node.getLastChild().id, 'a0', 'last');
+	equals(node.getFirstChild().getNext().id, 'a0', 'first next');
+	equals(node.getLastChild().getNext().id, 'a0', 'last next');
+	equals(node.getFirstChild().getPrevious().id, 'a0', 'first next');
+	equals(node.getLastChild().getPrevious().id, 'a0', 'last next');
+
+	node.appendChild(new baidu.ui.Tree.TreeNode({
+		text : 'a1'
+	}));
+	equals(node.getFirstChild().getIndex(), 0, 'root first child index');
+	equals(node.getFirstChild().id, 'a0', 'first');
+	equals(node.getLastChild().getIndex(), 1, 'root first child index');
+	equals(node.getLastChild().id, 'a0', 'last');
+	equals(node.getFirstChild().getNext().id, 'a1', 'first next');
+	equals(node.getLastChild().getNext().id, 'a1', 'last next');
+	equals(node.getFirstChild().getPrevious().id, 'a0', 'first next');
+	equals(node.getLastChild().getPrevious().id, 'a0', 'last next');
+
+});
+
+test('TreeNode function hide, show and ', function(){
+	var tree = te.getUI(), node = tree.getTreeNodeById('a');
+	node.expand();
+	node.getFirstChild().hide();
+	ok(!isShown($("#"+node.getId())), 'hide');
+	node.getFirstChild().show();
+	ok(isShown($("#"+node.getId())), 'show');
+	node.getFirstChild().toggle();
+	ok(!isShown($("#"+node.getId())), 'toggle');
+	node.getFirstChild().toggle();
+	ok(isShown($("#"+node.getId())), 'toggle');
 });
