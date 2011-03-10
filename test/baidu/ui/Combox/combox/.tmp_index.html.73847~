@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>menuBar  manual test - by walter</title>
+<link rel="stylesheet" href="combox.css" type="text/css"/>
+<script language="javascript" src="combox.js"></script>
+</head>
+<body>
+<div id='combox'/>
+</div>
+</body>
+<script language="javascript">
+var data = [{
+    content: "复制",
+    icon: "-176px -128px",
+    title: "复制当前单元格"
+}, {
+    content: '复制11',
+    click: function(){
+        alert('复制511')
+    },
+    icon: "-176px -96px"
+}, {
+    content: '复制12',
+    icon: "-192px -96px"
+}, {
+    content: '复制13',
+    icon: "-208px -96px"
+}, {
+    content: '复制14',
+    icon: "-224px -96px"
+}, {
+    content: '复制15',
+    icon: "-240px -96px"
+}]
+
+var options = {
+    data: data,
+	element:'combox',
+    autoRender: true
+};
+
+var combox = baidu.ui.create(baidu.ui.Combox, options);
+
+</script>
+</html>

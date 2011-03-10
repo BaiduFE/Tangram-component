@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>menuBar  manual test - by walter</title>
+<link rel="stylesheet" href="combox.css" type="text/css"/>
+<script language="JavaScript" src="../../../../../src/import.php?f=baidu.ui.Combox.*"></script>
+</head>
+<body>
+<div id='combox'>
+</div>
+<div style="padding-top:200px;">
+    <select id="flower">
+    <option>牡丹花</option>
+    <option>玫瑰花</option>
+    <option>荷花</option>
+    <option>月季花</option>
+    <option>菊花</option>
+</select>
+</div>
+</body>
+<script language="javascript">
+var data = [{
+    content: "复制",
+    icon: "-176px -128px",
+    title: "复制当前单元格"
+}, {
+    content: '复制11',
+    click: function(){
+        alert('复制511')
+    },
+    icon: "-176px -96px"
+}, {
+    content: '复制12',
+    icon: "-192px -96px"
+}, {
+    content: '复制13',
+    icon: "-208px -96px"
+}, {
+    content: '复制14',
+    icon: "-224px -96px"
+}, {
+    content: '复制15',
+    icon: "-240px -96px"
+}]
+
+var options = {
+    data: data,
+	element:'combox',
+    autoRender: true
+};
+
+var combox2 = new baidu.ui.Combox({select:'flower',type:'select',autoRender:true});
+
+var combox1 = new baidu.ui.Combox(options);
+
+</script>
+</html>
