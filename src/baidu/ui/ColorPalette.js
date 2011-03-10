@@ -28,7 +28,7 @@
 
 /**
  * 复杂颜色拾取器
- * @name baidu.ui.ColorPicker.ColorPalette
+ * @name baidu.ui.ColorPalette
  * @class
  * @param {Object}  options 配置.
  * @param {Number}  [options.sliderLength = 150] 滑动条长度.
