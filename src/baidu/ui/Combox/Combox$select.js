@@ -10,6 +10,12 @@
 ///import baidu.dom.getPosition;
 ///import baidu.dom.setStyle;
 
+/**
+ * select 插件
+ * @param   {Object}            [options]   参数对象
+ * @config  {Element|String}    select      select对象的id或者element本身
+ * @config  {String}            type        启动插件参数，设置为'select'
+ */
 baidu.ui.Combox.register(function(me){
     
     me.addEventListener("onbeforerender",function(){
