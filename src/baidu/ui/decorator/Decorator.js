@@ -24,7 +24,7 @@
  * 装饰器控件基类
  */
 
-baidu.ui.decorator.Decorator = baidu.ui.createUI(function(ui){
+baidu.ui.decorator.Decorator = baidu.ui.createUI(function(options){
 
 }).extend({
     uiType : "decorator",
