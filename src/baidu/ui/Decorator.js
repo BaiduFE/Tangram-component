@@ -12,11 +12,10 @@
 ///import baidu.ui;
 ///import baidu.ui.createUI;
 
-///import baidu.ui.decorator;
-
 ///import baidu.dom.insertBefore;
 ///import baidu.dom.children;
 ///import baidu.array.each;
+///import baidu.string.format;
 
 /**
  * 装饰器控件基类
@@ -26,6 +25,8 @@ baidu.ui.Decorator = baidu.ui.createUI(function(ui){
 
 }).extend({
     uiType : "decorator",
+
+    type: 'box',
 
     //装饰器模板
     tpl : {
