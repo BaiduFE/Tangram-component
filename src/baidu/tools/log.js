@@ -19,41 +19,25 @@
         //存放time调用的datehandle
         _timeObject = {},   
         
-        //回调函数
-        callBack = new Function(),
-        
         /**
          * 设置的push数据时使用的timeHandler
          * 若timeStep为零，则立即输出数据
          **/
         _timeHandler = null,
-    
-        /**
-         * 时间间隔
-         * 当timeStep = 0时，则当有日志需要输出时，立即输出
-         * 当timeStep > 0时，则以该timeStep为间隔时间，输出日志
-         * 默认值为0
-         * */
+
         timeStep = 0,
     
-        //日志等级
-        _logLevel = {
-            'log': 0,
-            'info': 1,
-            'warn': 2,
-            'error': 3
-        },
+        _logLevel = parseInt('1111',2);
 
-        //默认输出日志等级
-        logLevel = 0;
-
+        
+     
     /**
      * 打印log
      * @public
      * @param {Object} data 需要打印的内容
      * @return {Null}
      */
-    var log = function(data){
+    function log(data){
         _log(data, 'log'); 
     };
 
@@ -128,20 +112,19 @@
      * @param {String} data 需要打印的内容
      * @return {Null}
      */
-    var _log = function(data,type){
-      
-        if(_logLevel[type] >= logLevel){
-            
-            //log 压栈
-            _logStack.push({type:type,data:data});
+    function _log (data,type){
+        var me = log;
 
-            if(timeStep == 0){
-                //如果这是time为0，则立即调用_push方法
-                _push(); 
-            }else{
-                //如果timeStep > 0
-                !_timeHandler && (_timeHandler = setInterval(function(){_push();},timeStep));
-            }
+        if(_logLevel & me.logLevel[type]){
+            _logStack.push({type:type,data:data});
+        }
+
+        if(timeStep == 0){
+            //如果这是time为0，则立即调用_push方法
+            _push();
+        }else{
+            //如果timeStep > 0
+            !_timeHandler && (_timeHandler = setInterval(function(){_push();},timeStep));
         }
     };
 
@@ -150,39 +133,65 @@
      * @private
      * @return {Null}
      */
-    var _push = function(){
-        var data = _logStack;
+    function _push (){
+        var me = log,
+            data = _logStack;
 
         //清空栈
         _logStack = [];
 
         //dialog对话框
         baidu.tools.log.DInstance && baidu.tools.log.DInstance.push(data);
-        callBack(data);
+        me.callBack.call(data);
     };
 
     /**
-     * 传入log配置
-     * @public {Object} log配置
-     * @config {Function} callBack 当log向外push数据时，同时调用的函数，并井数据以参数形式传入
-     * @config {Number} timeStep 设置log输出时间间隔，默认为0，即只要有数据就立即输出
-     * @config {String} logLevel 所需记录的log的等级,枚举值['log','error','info','warn']
+     * 设置log的timeStep值
+     * 当timeStep = 0时，则当有日志需要输出时，立即输出
+     * 当timeStep > 0时，则以该timeStep为间隔时间，输出日志
+     * 默认值为0
+     * @param {Number} ts
+     * @return {Null}
      */
-    log.update = function(cfg){
-        var cfg = cfg || {}; 
-
-        (cfg.logLevel && _logLevel[cfg.logLevel]) && (cfg.logLevel = _logLevel[cfg.logLevel]);
+    log.setTimeStep = function(ts){
         
-        callBack = cfg.callBack || callBack;
-        timeStep = cfg.timeStep || timeStep;
-        logLevel = cfg.logLevel || logLevel;
-
+        timeStep = ts;
+        
         //停止当前的计时
         if(_timeHandler && timeStep == 0){
             clearInterval(_timeHandler);
             _timeHandler = null;
         }
     };
+
+    
+   /**
+    * 设置所要记录的log的level
+    * @param {String} 'log','error','info','warn'中一个或多个
+    * @return {Null}
+    */ 
+    log.setLogLevel = function(){
+        var me = log,
+            logLevel = parseInt('0000',2);
+            
+        baidu.each(arguments,function(ll){
+            logLevel = logLevel | me.logLevel[ll];
+        });
+
+        _logLevel = logLevel;
+    }
+   
+    //日志等级
+    log.logLevel = {
+        'log'   : parseInt('0001', 2),
+        'info'  : parseInt('0010', 2),
+        'warn'  : parseInt('0100', 2),
+        'error' : parseInt('1000', 2)
+    };
+
+    //回调函数
+    log.callBack = new Function();
+
 
     baidu.log = baidu.tools.log = log;
 })();
