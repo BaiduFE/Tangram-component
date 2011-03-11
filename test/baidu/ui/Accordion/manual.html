@@ -18,23 +18,36 @@
         overflow:auto;
     }
 </style>
-<script src="../../../../src/import.php?f=baidu.ui.get,baidu.ui.Accordion.Accordion$collapse,baidu.ui.Accordion.Accordion$fx"></script>
+<script src="../../../../src/import.php?f=baidu.ui.Accordion.Accordion$fx"></script>
 </head>
 
 <body>
     <input type="button" value="ok" onclick="c.collapse();"/>
-    <div id="accordionId"></div>
+    <div id="accordionId" style='border:green solid 1px;'></div>
+    <div id='accordionId1' style='border:green solid 1px;'></div>
 </body>
 <script language="javascript">
-var c = new baidu.ui.Accordion({
+var instance = new baidu.ui.Accordion({
     items : [
         {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'},
         {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'},
         {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'},
         {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'},
         {head : 'HEAD-0', body : 'BODY-0<br/>BODY-0<br/>BODY-0<br/>BODY-0'}
-    ]
+    ],
+    element: 'accordionId',
+    autoRender: true
 });
-c.render('accordionId');
+
+new baidu.ui.Accordion({
+    items: [
+        {head: 'TAB-1', body: 'hellow world'},
+        {head: 'TAB-1', body: 'hellow world'},
+        {head: 'TAB-1', body: 'hellow world'},
+        {head: 'TAB-1', body: 'hellow world'}
+    ],
+    element: 'accordionId1',
+    autoRender: true
+});
 </script>
 </html>

@@ -36,8 +36,8 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
         horizontal: {
             size: 'width',
             unSize: 'height',
-            offsetSize: 'offsetHeight',
-            unOffsetSize: 'offsetWidth',
+            offsetSize: 'offsetWidth',
+            unOffsetSize: 'offsetHeight',
             clientSize: 'clientWidth',
             scrollPos: 'scrollLeft',
             scrollSize: 'scrollWidth'
