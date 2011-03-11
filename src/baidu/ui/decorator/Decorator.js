@@ -18,6 +18,8 @@
 ///import baidu.dom.children;
 ///import baidu.array.each;
 
+///import baidu.string.format;
+
 /**
  * 装饰器控件基类
  */
@@ -26,6 +28,8 @@ baidu.ui.decorator.Decorator = baidu.ui.createUI(function(ui){
 
 }).extend({
     uiType : "decorator",
+
+    type: 'box',
 
     //装饰器模板
     tpl : {
