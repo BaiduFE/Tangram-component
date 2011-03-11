@@ -1,27 +1,17 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/Combox/Combox$statable.js
- * author: walter
- * version: 1.0.0
- * date: 2010-12-09
  */
 
 ///import baidu.ui.Combox;
-///import baidu.ui.behavior.statable;
 ///import baidu.event.on;
 ///import baidu.event.un;
 
 /**
  * 提供enable、disable行为
  */
-baidu.ui.Combox.extend({
-    statable: true
-}); 
-
 baidu.ui.Combox.register(function(me){
-    
+ 
     me.addEventListener('onenable', function(){
         var input = me.getInput();
             

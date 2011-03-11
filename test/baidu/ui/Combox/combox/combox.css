@@ -1,0 +1,132 @@
+.tangram-menubar {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+    padding: 1px;
+    width: 169px !important;
+}
+
+.tangram-menubar-root {
+    height: 180px;
+}
+
+.tangram-menubar, .tangram-menubar-root ul {
+    border: 1px solid #a6c9e2;
+    background: #fcfdfd url(image/ui-bg.png) 50% bottom repeat-x;
+    color: #222222;
+}
+
+.tangram-menubar ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.tangram-menubar a:link, .tangram-menubar a:visited, .tangram-menubar a:hover, .tangram-menubar a:active {
+    float: left;
+    width: 96%;
+    padding: 0.3em 1%;
+    text-decoration: none;
+    outline: 0 !important;
+}
+
+.tangram-menubar-item {
+    color: #222222;
+    border: 1px solid #FFF;
+}
+
+.tangram-menubar li {
+    clear: both;
+    float: left;
+    width: 96%;
+    margin: 0;
+    padding: 1px;
+    border: 0;
+}
+
+.tangram-menubar-item-hover {
+    border: 1px solid #448dae;
+    background: #79c9ec url(image/ui-bg_75.png) 50% 50% repeat-x;
+    font-weight: normal;
+    color: #026890;
+    -moz-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.tangram-menubar-item-hover a {
+    color: #026890;
+}
+
+.tangram-menubar-empty {
+    display: none;
+}
+
+.tangram-menubar-item-disabled {
+    opacity: .35;
+    filter: Alpha(Opacity = 35);
+    background-image: none;
+    cursor: default;
+}
+
+.tangram-menubar-arrow {
+    float: right;
+    cursor: pointer;
+    display: block;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    text-indent: -9999px;
+    background-image: url("image/ui-icons.png");
+    background-position: -32px -16px;
+    height: 16px;
+    width: 16px;
+}
+
+.tangram-menubar-content {
+    float: left;
+    display: block;
+}
+
+.tangram-menubar-icon {
+    float: left;
+    cursor: pointer;
+    display: block;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    text-indent: -9999px;
+    background-image: url("image/ui-icons.png");
+    height: 16px;
+    width: 16px;
+}
+
+.tangram-combox {
+    border: 1px solid #A4BED4;
+    padding: 1px;
+    width: 169px;
+    height: 20px;
+}
+
+.tangram-combox-hover {
+    border: 1px solid #fcd113;
+}
+
+.tangram-combox-input {
+    border: 0 none;
+    height: 18px;
+    width: 150px;
+    float: left;
+    outline: none;
+}
+
+.tangram-combox-disabled .tangram-combox-input {
+    opacity: .35;
+    filter: Alpha(Opacity = 35);
+    background-image: none;
+    cursor: default;
+}
+
+.tangram-combox-arrow {
+    background: url("image/combo_arrow.gif") repeat scroll 0 0 transparent;
+    cursor: pointer;
+    float: left;
+    height: 20px;
+    width: 18px;
+}

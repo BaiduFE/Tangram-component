@@ -12,7 +12,8 @@
 ///import baidu.ui.Menubar;
 ///import baidu.ui.create;
 ///import baidu.ui.Menubar.Menubar$click;
-///import baidu.ui.behavior.posable.setPositionByElement;
+///import baidu.ui.behavior.statable;
+///import baidu.ui.behavior.posable;
 
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.g;
@@ -48,7 +49,8 @@
  * @config {Function}             onmouseout       离开时触发
  * @config {Function}             onmousedown      鼠标按下时触发
  * @config {Function}             onmouseup        鼠标抬起时触发
- * @plugin    statable      状态插件
+ * @plugin statable 状态插件
+ * @plugin select   通过select控件的数据创建combox     
  */
 baidu.ui.Combox = baidu.ui.createUI(function (options){
   var me = this;
@@ -64,8 +66,8 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
     width: '',
     height: '',
     zIndex: 1200,
+    statable: true,
     posable: true,
-    position: 'bottomCenter',
 
     /**
      * 过滤方法
@@ -103,7 +105,7 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
             arrowClass: me.getClass('arrow'),
             inputid: me.getId("input"),
             arrowid: me.getId("arrow"),
-            stateHandler: me.statable ? me._getStateHandlerString() : '' 
+            stateHandler: me._getStateHandlerString() 
         });
     },
 
@@ -117,9 +119,12 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
         if(me.getMain()){
             return ;
         }
+        
+        me.dispatchEvent("onbeforerender");
         baidu.dom.insertHTML(me.renderMain(target || me.target), "beforeEnd", me.getString());
         me._createMenu(); //创建下拉menu
         me._enterTipMode();
+        me.position && me.setPosition(me.position,target);
         me.dispatchEvent("onload");
     },
 
