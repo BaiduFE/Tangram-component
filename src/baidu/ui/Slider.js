@@ -152,7 +152,6 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
     _updateDragRange : function(val){
         var me = this,
             axis = me._axis[me.layout],
-            body = me.getBody(),
             range = val || me.range,
             dragRange = me._dragOpt.range,
             thumb = me.getThumb();
@@ -161,11 +160,11 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
         if(me.layout.toLowerCase() == 'horizontal'){
             dragRange[1] = me._parseValue(range[1], 'fix') + thumb[axis.offsetSize];
             dragRange[3] = me._parseValue(range[0], 'fix');
-            dragRange[2] = body.clientHeight;
+            dragRange[2] = thumb.clientHeight;
         }else{
             dragRange[0] = me._parseValue(range[0], 'fix');
             dragRange[2] = me._parseValue(range[1], 'fix') + thumb[axis.offsetSize];
-            dragRange[1] = body.clientWidth;
+            dragRange[1] = thumb.clientWidth;
         }
     },
 
