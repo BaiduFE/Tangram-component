@@ -176,7 +176,7 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
                  
         if (!me.menu) {
             me.menu = baidu.ui.create(baidu.ui.Menubar, menuOptions);
-            baidu.un(body, 'click', me.targetOpenHandler);
+//            baidu.un(body, 'click', me.targetOpenHandler);
             me.menu.addEventListener("onitemclick", function(data){
                 me.chooseItem(data)
             });

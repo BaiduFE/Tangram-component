@@ -62,8 +62,8 @@ baidu.ui.Accordion = baidu.ui.createUI(function (options){
      */
     insertItemHTML:function(item,index){
         var me = this;
-        baidu.dom.insertHTML(me.getMain(), "beforeEnd", me._getHeadString(item,index));
-        baidu.dom.insertHTML(me.getMain(), "beforeEnd", me._getBodyString(item,index));
+        baidu.dom.insertHTML(me.getBody(), "beforeEnd", me._getHeadString(item,index));
+        baidu.dom.insertHTML(me.getBody(), "beforeEnd", me._getBodyString(item,index));
     },
     
     /**
