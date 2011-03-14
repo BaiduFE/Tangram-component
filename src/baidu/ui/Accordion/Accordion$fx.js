@@ -41,6 +41,8 @@ baidu.ui.Accordion.register(function(me) {
                     }
                 }, currBody ? {
                         onbeforestart: function() {
+                            baidu.dom.removeClass(currHead, me.getClass(me.currentClass));
+                            baidu.dom.addClass(evt.element, me.getClass(me.currentClass));
                             currBody.style.overflow = 'hidden';
                             currBody.style.height = parseInt(baidu.dom.getStyle(currBody, 'height')) - 1 + 'px';
                         },

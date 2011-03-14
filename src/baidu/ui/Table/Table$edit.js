@@ -20,6 +20,8 @@
 ///import baidu.lang.Class.addEventListeners;
 /**
  * 使单元格支持编辑
+ * @param {Object} options config参数
+ * @config {Object} columns，在columns的数据描述中加入enableEdit属性并设置为true表示该支持可双击紡辑，如：{index:0, enableEdit: true}
  */
 baidu.ui.Table.register(function(me){
     //me._editArray = [];    //存入用户设置的需要编辑的行对象

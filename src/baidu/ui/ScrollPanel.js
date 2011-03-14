@@ -25,8 +25,8 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
     tplDOM: '<div id="#{id}" class="#{class}">#{body}</div>',
     overflow: 'auto',
     _scrollBarSize: 0,//滚动条尺寸
-    _yVisible: true,//用来标示竖向滚动条的隐藏显示状态
-    _xVisible: true,//用来标示横向滚动条的隐藏显示状态
+    _yVisible: false,//用来标示竖向滚动条的隐藏显示状态
+    _xVisible: false,//用来标示横向滚动条的隐藏显示状态
     _axis: {
         y: {
             size: 'height',
@@ -109,6 +109,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
                 baidu.dom.setStyle(track, 'float', 'left');
             }
             //
+            me['_' + pos + 'Visible'] = true;
             bar = me['_' + pos + 'Scrollbar'] = new baidu.ui.ScrollBar({
                 skin: skin + 'scrollbar' + '-' + pos,
                 orientation: pos == 'y' ? 'vertical' : 'horizontal',
