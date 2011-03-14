@@ -21,6 +21,7 @@
  * @param {String} options.sliderImgSrc 滑动条背景图片路径.
  * @param {String} [options.titleText = 'More Colors'] 标题文字.
  * @param {Object} [options.dilogOption] 填出对话框配置.
+ * @param {Object} [options.more] 插件开关.
  * @author walter
  */
 baidu.ui.colorPicker.ColorPicker.extend({
@@ -34,6 +35,8 @@ baidu.ui.colorPicker.ColorPicker.extend({
     titleText: 'More Colors',
 
     dialogOption: {},
+    
+    more: true,
     
     /**
      * fix mouseUp没有响应
@@ -90,6 +93,7 @@ baidu.ui.colorPicker.ColorPicker.extend({
 });
 
 baidu.ui.colorPicker.ColorPicker.register(function(me) {
+    if(!me.more) return;
     me.addEventListener('onupdate', function() {
         var strArray = [],
             body = me.getBody();
