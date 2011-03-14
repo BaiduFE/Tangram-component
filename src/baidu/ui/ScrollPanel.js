@@ -225,8 +225,13 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
      * @return {ScrollBar|Array} 返回滚动条对象或数组.
      */
     getScrollBar: function(pos) {
-        var me = this;
-        return pos ? me['_' + pos + 'Scrollbar'] : [me._yScrollbar, me._xScrollbar];
+        var me = this,
+            instance = pos ? me['_' + pos + 'Scrollbar'] : null;
+        if(!instance){
+            instance = (me._yScrollbar && me._xScrollbar) ? [me._yScrollbar, me._xScrollbar]
+                : (me._yScrollbar || me._xScrollbar)
+        }
+        return instance;
     },
 
     /**

@@ -93,7 +93,7 @@ class Kiss{
 		print '<script type="text/javascript" src="js/ext_qunit.js"></script>'."\n";
 		print '<script type="text/javascript" src="js/UserAction.js"></script>'."\n";
 		print '<script type="text/javascript" src="js/tools.js"></script>'."\n";
-		
+
 		print '<link media="screen" href="css/testsuite.css" type="text/css" rel="stylesheet" />'."\n";
 
 		if($release == 0){
@@ -178,7 +178,7 @@ class Kiss{
 			if(in_array($case, $caselist))
 			continue;
 			$name = str_replace('/','.',substr($case,0, -3));
-			$tag = "<a class=\"jsframe_qunit\" title=\"$name\">".(strlen($name)>20?(substr($name,0,18)."..."):$name)."</a>";
+			$tag = "<a class=\"jsframe_qunit\" title=\"$name\">".(strlen($name)>20? substr($name, 6) : $name)."</a>";
 			array_push($srcList, $tag);
 			if($print)
 			echo $tag;

@@ -14,15 +14,18 @@
     width:100%;/*初始值必要*/
     height:100%;/*初始值必要*/
 }
-.tangram-slider{
+.tangram-scrollbar-slider{
     width:100%;/*初始值必要*/
     height:100%;/*初始值必要*/
 }
-.tangram-slider-thumb{
+.tangram-scrollbar-slider-thumb{
     width:100%;/*初始值必要*/
     height:100%;/*初始值必要*/
+   background:gray;
 }
-.tangram-button{font-size:0px;}
+.tangram-scrollbar-prev,.tangram-scrollbar-next,.tangram-scrollbar-thumb-btn{
+    font-size: 0px;
+}
 /**/
 /*scrollbar-a start*/
 .scrollbar-a{
@@ -198,16 +201,11 @@
         ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
         ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
         ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
-        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ<br/>
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        ABCDEFG,HIJKLMN,OPQ,RST,UVW,XYZ
     </div>
     <div id='vScrollbarId' style='float:left; width:15px; height:200px; border:green solid 1px;'></div>
 </div>
 <div id='hScrollbarId' style='width:300px; height:15px; border:green solid 1px;'></div>
-
-
-
-<div id='defaultScrollbar' style='width:20px; height:100px; border:blue solid 1px;'></div>
 </body>
 <script language="javascript">
 var bar_a = new baidu.ui.ScrollBar({
@@ -215,50 +213,44 @@ var bar_a = new baidu.ui.ScrollBar({
     element: 'scrollbar_a_id',
     autoRender: true
 });
-
-var bar_b = new baidu.ui.ScrollBar({
-    skin: 'scrollbar-b',
-    orientation: 'horizontal',
-    value : 50,
-    dimension: 50,
-    element: 'scrollbar_b_id',
-    autoRender: true
-});
-
-var bar_c = new baidu.ui.ScrollBar({
-    skin: 'scrollbar-a',
-    container: 'mydiv',
-    element: 'vScrollbarId',
-    autoRender: true
-});
-var bar_d = new baidu.ui.ScrollBar({
-    skin: 'scrollbar-b',
-    orientation: 'horizontal',
-    container: 'mydiv',
-    element: 'hScrollbarId',
-    autoRender: true
-});
-
-
-function main_a(){
-    baidu.dom.g('scrollbar_a_id').style.height = baidu.dom.g('myHeight').value + 'px';
-    bar_a.update();
-}
-
-function main_b(){
-    var c = baidu.g('hValue');
-    bar_b.update({value: c.value});
-}
-function main_c(){
-    var c = baidu.g('hDimension');
-    bar_b.update({dimension: c.value});
-}
-
-
-new baidu.ui.ScrollBar({
-    
-    element : 'defaultScrollbar',
-    autoRender : true
-});
+bar_a.dispose();
+//
+//var bar_b = new baidu.ui.ScrollBar({
+//    skin: 'scrollbar-b',
+//    orientation: 'horizontal',
+//    value : 50,
+//    dimension: 50,
+//    element: 'scrollbar_b_id',
+//    autoRender: true
+//});
+//
+//var bar_c = new baidu.ui.ScrollBar({
+//    skin: 'scrollbar-a',
+//    container: 'mydiv',
+//    element: 'vScrollbarId',
+//    autoRender: true
+//});
+//var bar_d = new baidu.ui.ScrollBar({
+//    skin: 'scrollbar-b',
+//    orientation: 'horizontal',
+//    container: 'mydiv',
+//    element: 'hScrollbarId',
+//    autoRender: true
+//});
+//
+//
+//function main_a(){
+//    baidu.dom.g('scrollbar_a_id').style.height = baidu.dom.g('myHeight').value + 'px';
+//    bar_a.update();
+//}
+//
+//function main_b(){
+//    var c = baidu.g('hValue');
+//    bar_b.update({value: c.value});
+//}
+//function main_c(){
+//    var c = baidu.g('hDimension');
+//    bar_b.update({dimension: c.value});
+//}
 </script>
 </html>

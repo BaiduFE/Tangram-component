@@ -11,9 +11,7 @@
 
 ///import baidu.ui.createUI;
 ///import baidu.array.each;
-
 ///import baidu.string.format;
-
 ///import baidu.dom.g;
 ///import baidu.dom.children;
 ///import baidu.dom.addClass;
@@ -32,7 +30,8 @@
  */
  
 baidu.ui.Tab = baidu.ui.createUI( function (options) {
-
+    var me = this;
+    me.items = me.items || [];//初始化防止空
 }, {superClass : baidu.ui.ItemSet}).extend( 
     /**
      *  @lends baidu.ui.Tab.prototype

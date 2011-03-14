@@ -27,11 +27,11 @@ baidu.ui.createUI = function(constructor, options) {
         lastStep = superClass == baidu.lang.Class ? 1 : 0,
         i,
         n,
-        ui = function(opt){// 创建新类的真构造器函数
+        ui = function(opt, _inherit){// 创建新类的真构造器函数
             var me = this;
             opt = opt || {};
             // 继承父类的构造器
-            superClass.call(me, !lastStep ? opt : (opt.guid || ""));
+            superClass.call(me, !lastStep ? opt : (opt.guid || ""), true);
 
             //扩展静态配置到this上
             baidu.object.extend(me, ui.options);
@@ -66,7 +66,7 @@ baidu.ui.createUI = function(constructor, options) {
             if(opt.parent && me.setParent){
                 me.setParent(opt.parent);
             }
-            if(opt.autoRender){ 
+            if(opt.autoRender && !_inherit){ 
                 me.render(opt.element);
             }
         },
