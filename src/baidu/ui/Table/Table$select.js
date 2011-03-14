@@ -21,6 +21,8 @@
 ///import baidu.lang.Class.addEventListeners;
 /**
  * 增加选择列的插件
+ * @param   {Object} options config 参数
+ * @config  {Object} columns，在columns的数据描述中加入type属性并设置为'checkbox'表示该列支持checkbox，如：{index:0, type: 'checkbox'}
  */
 baidu.ui.Table.register(function(me){
 //	me._selectedItems = {};      //当前选中的id:checkbox-id, data:row-data
