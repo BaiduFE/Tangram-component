@@ -20,36 +20,39 @@
 baidu.ui.dialog.Dialog.prototype.draggable = true;
 
 baidu.ui.dialog.Dialog.register(function(me){
-    /**
-     * 更新拖拽的范围，通过调用draggable行为中提供的dragUpdate实现
-     * @private
-     * @return void
-     */
-    function updateDragRange(){
-        me.dragRange = [0,baidu.page.getWidth(),baidu.page.getHeight(),0];
-        me.dragUpdate();
-    };
-
-    me.addEventListener("onload", function(){
-        me.dragHandler = me.dragHandler || me.getTitle();
-        
-        //默认的拖拽范围是在窗口内
-        if(!me.dragRange){
-            updateDragRange();
-            
-            //如果用户窗口改变，拖拽的范围也要跟着变
-            baidu.on(window, "resize", updateDragRange);
-        }else{
+    
+    if(me.draggable){
+        /**
+         * 更新拖拽的范围，通过调用draggable行为中提供的dragUpdate实现
+         * @private
+         * @return void
+         */
+        function updateDragRange(){
+            me.dragRange = [0,baidu.page.getWidth(),baidu.page.getHeight(),0];
             me.dragUpdate();
-        }
-    });
+        };
 
-    me.addEventListener("ondragend", function(){
-        me.left = baidu.dom.getStyle(me.getMain(), "left");
-        me.top = baidu.dom.getStyle(me.getMain(), "top");
-    });
+        me.addEventListener("onload", function(){
+            me.dragHandler = me.dragHandler || me.getTitle();
 
-    me.addEventListener("ondispose", function(){
-        baidu.un(window, "resize", updateDragRange);
-    });
+            //默认的拖拽范围是在窗口内
+            if(!me.dragRange){
+                updateDragRange();
+
+                //如果用户窗口改变，拖拽的范围也要跟着变
+                baidu.on(window, "resize", updateDragRange);
+            }else{
+                me.dragUpdate();
+            }
+        });
+
+        me.addEventListener("ondragend", function(){
+            me.left = baidu.dom.getStyle(me.getMain(), "left");
+            me.top = baidu.dom.getStyle(me.getMain(), "top");
+        });
+
+        me.addEventListener("ondispose", function(){
+            baidu.un(window, "resize", updateDragRange);
+        });
+    }
 });
