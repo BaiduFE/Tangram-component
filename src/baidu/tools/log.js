@@ -150,7 +150,7 @@
      * 当timeStep = 0时，则当有日志需要输出时，立即输出
      * 当timeStep > 0时，则以该timeStep为间隔时间，输出日志
      * 默认值为0
-     * @param {Number} ts
+     * @param {Number} ts timeStep
      * @return {Null}
      */
     log.setTimeStep = function(ts){
