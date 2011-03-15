@@ -18,7 +18,13 @@
  *  鼠标hover触发menubar插件
  */
 baidu.ui.Menubar.extend({
-    
+   
+    /**
+     * 插件触发方式，默认为点击
+     * @param {String} [options.type = 'hover']
+     */
+    type: 'hover',
+
     /**
      * 菜单显示延迟时间
      * @param {Number} [options.showDelay = 100]

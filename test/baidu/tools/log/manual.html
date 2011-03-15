@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script src='../../../../src/import.php?f=baidu.tools.log.*'></script>
+        <link type='text/css' rel='stylesheet' href="test.css"/> 
+        <style>
+            body{
+                margin:5px;
+            }
+            h2{
+                margin:0.3em 0;
+            }
+            .case{
+                border:1px #333 solid;
+                padding:5px;
+                margin:5px;
+                width:300px;
+            }
+            .tangram-dialog{
+                border:2px solid #a8b9eb;
+                background:#dae4ff;
+                color:#333;
+                padding-bottom:18px;
+            }
+
+            .tangram-dialog-resizable-se{
+                background-color:yellow;
+            }
+
+            .tangram-dialog-resizable-e{
+                background-color:black;
+            }
+
+            .tangram-dialog-resizable-s{
+                background-color:green;
+            }
+
+            .tangram-dialog-resizable-w{
+                background-color:purple;
+            }
+
+            .tangram-dialog-resizable-n{
+                background-color:gray;
+            }
+
+            .tangram-dialog-resizable-nw{
+                background-color:aqua;
+            }
+
+            .tangram-dialog-resizable-ne{
+                background-color:blue;
+            }
+
+            .tangram-dialog-resizable-sw{
+                background-color:teal;
+            }
+
+            .tangram-dialog-title{
+                background:url(img/bg1.gif) repeat-x;
+                cursor:move;
+                -moz-user-select:none;
+                line-height:24px;
+                font-size:14px;
+                font-weight:bold;
+                padding-top:10px;
+                padding-left:5px;
+                padding-bottom:5px;
+            }
+            .tangram-dialog-titletext{
+                margin: 0 10px;
+                line-height:24px;
+            }
+            .tangram-dialog-close{
+                width:19px;
+                height:19px;
+                right: 8px;
+                top:8px;
+                position:absolute;
+                background:url(img/close.gif);
+                cursor:pointer;
+            }
+            .tangram-dialog-content{
+                margin:5px;
+                border:1px solid #c3cff2;
+                background:#FFF;
+                padding:6px;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            
+            function test1(){
+                var data = [
+                    {
+                        'array': [1,2,3],
+                        'string': 'this is a string.',
+                        'data': new Date()
+                    },
+                    'this is a string',
+                    new Date(),
+                    123.123,
+                    [1,2,3]
+                ];
+                baidu.log(data);
+
+                baidu.log.time('test');
+                setTimeout(endTime,500);
+
+                function endTime(){
+                    baidu.log.timeEnd('test');   
+                }
+            }
+
+            function update(){
+                baidu.log.setTimeStep(1000);
+                baidu.log.setLogLevel('error','info');
+
+                baidu.log.callBack = function(){
+                    alert('this is callback');
+                };
+            }
+
+            function clear_dialog(){
+                baidu.tools.log.DInstance.clear();
+            }
+
+        </script> 
+        <input type="button" value="console.log" onclick="javascript:test1();"/>
+        <input type="button" value="update" onclick="javascript:update();"/>
+        <input type="button" value="clear" onclick="javascript:clear_dialog();"/>
+    </body>
+</html>
