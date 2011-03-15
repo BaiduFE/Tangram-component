@@ -3,17 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>baidu.suggestion展示效果测试</title>
-        <script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.0.js"></script>
-		<!-- suggestion js -->
-		<script src="../../../../src/baidu/ui.js"></script>
-		<script src="../../../../src/baidu/ui/suggestion.js"></script>
-		<script src="../../../../src/baidu/ui/suggestion/_Central.js"></script>
-		<script src="../../../../src/baidu/ui/suggestion/_Div.js"></script>
-		<script src="../../../../src/baidu/ui/suggestion/_Data.js"></script>
-		<script src="../../../../src/baidu/ui/suggestion/_Input.js"></script>
-		<script src="../../../../src/baidu/ui/suggestion/_Suggestion.js"></script>
-		<script src="../../../../src/baidu/ui/suggestion/create.js"></script>
-        <!-- suggestion js-->
+        <script type="text/javascript" src="../../../../src/import.php?f=baidu.ui.suggestion.*"></script>
 		<style>
             
 			#aa {
@@ -153,24 +143,13 @@
                 "prepend_html": "<b>suggest here:</b>&gt;a"
             };
             options.getData = function(word){
-                saa.giveData("saa", raa);
+                var me = this;
+                me.setData("aa",['aaaa','bbbb']);
             };
             var saa = baidu.suggestion.create(baidu.G("aa"), options);
-            options.getData = function(word){
-                sab.giveData("sab", raa);
-            };
             var sab = baidu.suggestion.create(baidu.G("ab"), options);
-            options.getData = function(word){
-                sac.giveData("sac", raa);
-            };
             var sac = baidu.suggestion.create(baidu.G("ac"), options);
-            options.getData = function(word){
-                sad.giveData("sad", raa);
-            };
             var sad = baidu.suggestion.create(baidu.G("ad"), options);
-            options.getData = function(word){
-                sae.giveData("sae", raa);
-            };
             var sae = baidu.suggestion.create(baidu.G("ae"), options);
             
         </script>
