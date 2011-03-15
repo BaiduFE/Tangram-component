@@ -16,7 +16,6 @@ test('Open a common Menubar(expand) and close a common Menubar(collapse)', funct
 	menu.open();
 	var a = menu.getBody().getAttribute('att_baidu_fx_expand_collapse');
 	ok(!!a, 'The menubar expand');
-	debugger
 	menu.close();
 	ok(menu.getBody().getAttribute('att_baidu_fx_expand_collapse') != a, 'The menubar collapse');
 	menu.dispose();
@@ -25,7 +24,6 @@ test('Open a common Menubar(expand) and close a common Menubar(collapse)', funct
 test('Open a common Menubar(fadeIn) and close a common Menubar(fadeOut)', function() {
 	expect(6);
  	stop();
- 	debugger
  	var check = function (){
  	    var options = {
  			    data : [ {

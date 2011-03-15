@@ -22,7 +22,6 @@ test('Open a common tooltip(zoomIn) and close a common tooltip(zoomOut)', functi
 		    hideFx : baidu.fx.zoomOut
 		    });
 	    tp.render(div);
-	    debugger
 	    var a = tp.getMain().getAttribute('att_baidu_fx_scale'); 
 	    tp.open();
 	    var b = tp.getMain().getAttribute('att_baidu_fx_scale'); 

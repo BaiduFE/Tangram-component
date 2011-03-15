@@ -453,7 +453,6 @@ test('Test the "isParent()" function', function(){
 			} ]
 		}
 	})
-	debugger
 	var node_a = tree.getTreeNodeById('a');
 	node_a.expand();
 	var node_a0 = tree.getTreeNodeById('a0');
@@ -462,7 +461,6 @@ test('Test the "isParent()" function', function(){
 	node_a1.expand();
 	var node_a00 = tree.getTreeNodeById('a00');
 	var node_a10 = tree.getTreeNodeById('a10');
-	debugger
 	ok(node_a0.isParent(node_a00), 'a0 is the parenNode of a00');
 	ok(!node_a0.isParent(node_a1), 'a0 is not the parenNode of a1');
 	ok(!node_a0.isParent(node_a10), 'a0 is not the parenNode of a10');
@@ -585,7 +583,6 @@ test('Test the "removeAllChildren()" function with the parameter recursion = fal
 	node_a00.expand();
 	var node_a000 = tree.getTreeNodeById('a000');
 	var node_a1 = tree.getTreeNodeById('a1');
-	debugger
 	node_a1.removeAllChildren(false);
 	equals(node_a1.getChildNodes().length, 0, 'Remove a leaf node');
 	node_a0.removeAllChildren(false);
@@ -666,9 +663,7 @@ test('Test the "removeChild()" function', function(){
 	equals(node_a0.getChildNodes().length, 0, 'The dom element of "a00" is deleted');
 	equals(tree.getTreeNodes()['a00'], undefined, 'The data of "a00" is deleted');
 	equals(tree.getTreeNodes()['a000'], undefined, 'The data of "a000" is deleted');
-	debugger
 	node_a.removeChild(node_a0);
 	equals(node_a.getChildNodes().length, 0, 'The dom element of "a0" is deleted');
 	equals(tree.getTreeNodes()['a0'], undefined, 'The data of "a0" is deleted');
-	debugger
 });

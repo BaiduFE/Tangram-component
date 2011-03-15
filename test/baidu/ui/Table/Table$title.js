@@ -29,18 +29,15 @@ test('Create a table with title and data rows, then add a row', function() {
 	var div = te.dom[0];
 	table.render(div);
 	equal(table.getTitleBody().style.width, table.getBody().offsetWidth + 'px', 'The title style "width" is the initial value');
-	debugger
 	table.addRow( {
 		content : [ "700", "800", "900" ]
 	});
-	debugger
 	equal(table.getTitleBody().style.width, table.getBody().offsetWidth + 'px', 'The title style "width" is the same with the offserWidth of the data row');
 	table.dispose();
 });
 
 test('Update a table with title', function() {
 	expect(6);
-	debugger
 	var table = new baidu.ui.Table( {
 		data : [ {
 			id : "row1",
@@ -60,7 +57,6 @@ test('Update a table with title', function() {
 	});
 	var div = te.dom[0];
 	table.render(div);
-	debugger
 	ok(!!table.getTitleBody(), 'The column title is created');
 	equal(table.getBody().style.tableLayout, 'fixed', 'The table style "tableLayout" is "fixed"');
 	equal(table.getTitleBody().style.tableLayout, 'fixed', 'The title style "tableLayout" is "fixed"');
