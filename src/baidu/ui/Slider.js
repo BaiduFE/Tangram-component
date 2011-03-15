@@ -26,15 +26,16 @@
  * @param      {Object}                 [options]    选项layout
  * @config     {Number}                 value        记录滑块的当前进度值
  * @config     {Number}                 layout       滑块的布局[水平：horizontal,垂直：vertical]
- * @config     {Number}                 min          进度条最左边代表的值
- * @config     {Number}                 max          进度条最右边代表的值
+ * @config     {Number}                 min          进度条最左边代表的值，默认值取0
+ * @config     {Number}                 max          进度条最右边代表的值，默认值取100
+ * @config     {Array}                  range        可拖动的范围，取值min到max之间，例如[30, 80]
  * @config     {Boolean}                disabled     是否禁用
  * @config     {String}                 skin         自定义样式名称前缀
  * @plugin     progressBar              进度条跟随滑块的滑动
  */
 baidu.ui.Slider = baidu.ui.createUI(function(options){
     var me = this;
-    me.range = me.range || [me.min, me.max];
+    me.range = me.range || [me.min, me.max];//初始化range
 }).extend({
     layout: 'horizontal',//滑块的布局方式 horizontal :水平  vertical:垂直
     uiType: 'slider',

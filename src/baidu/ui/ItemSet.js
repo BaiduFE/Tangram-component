@@ -27,7 +27,6 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
     me.bodyIds = [];
     me.heads = [];
     me.bodies = [];
-
 }).extend( {
     currentClass     :  "current", 
     tplHead          :  "", 
@@ -46,15 +45,10 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
         var me = this, 
             headId = me.getId('head' + key);    
         me.headIds.push(headId);
-        if(key == me.defaultIndex){
-            me.addEventListener("onload", function(){
-                me.setCurrentHead(baidu.g(headId)); 
-            });
-        }
         return  baidu.format(me.tplHead, {
                 id       :  headId, 
-                bodyId   :  me.getId('body' + key), 
-                "class"  :  key == me.defaultIndex ? me.getClass('head')  +  " "  +  me.getClass(me.currentClass)  :  me.getClass('head'), 
+                bodyId   :  me.getId('body' + key),
+                'class'  :  me.getClass('head'),
                 head     :  item['head'], 
                 tangram  :  "name : " + me.getId('body' + key)
             });
@@ -75,7 +69,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
                 id       :  bodyId, 
                 "class"  :  me.getClass('body'), 
                 body  :  item['body'], 
-                display  :  key == me.defaultIndex ? "block"  :  "none"
+                display  :  'none'
             });
     }, 
 
@@ -115,7 +109,11 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
         
         baidu.each(me.heads, function(head, key) {
             me._addSwitchEvent(head);
-            key == 0 && me.setCurrentHead(head);
+            if(key == me.defaultIndex){
+                me.setCurrentHead(head);
+                baidu.dom.addClass(head, me.getClass(me.currentClass));
+                me.getBodyByHead(head).style.display = '';
+            }
         });
         me.dispatchEvent("onload");
     },

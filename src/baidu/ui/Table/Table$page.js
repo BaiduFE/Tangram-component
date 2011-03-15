@@ -13,6 +13,8 @@
 ///import baidu.dom.g;
 /**
  * 表格翻页的插件
+ * @param   {Object} options config参数
+ * @config  {Number} pageSize 一页显多少行的数字表示形式
  */
 baidu.ui.Table.register(function(me){
 	me._createPage();

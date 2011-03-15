@@ -23,7 +23,7 @@
  */
 baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     var me = this;
-        me._scrollBarSize = {width: 0, height: 0};//用来存入prev按钮的宽度和高度
+        me._scrollBarSize = {width: 0, height: 0};//用来存入scrollbar的宽度和高度
 }).extend({
     uiType: 'scrollbar',
     tplDOM: '<div id="#{id}" class="#{class}"></div>',
