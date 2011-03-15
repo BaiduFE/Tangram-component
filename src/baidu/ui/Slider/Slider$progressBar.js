@@ -29,7 +29,7 @@ baidu.ui.Slider.register(function(me){
                 me.progressBar.dispose();
         });
     });
-    me.addEventListeners("slide, slideclick", function(){
+    me.addEventListeners('slide, slideclick, update', function(){
         me._adjustProgressbar();
     });
 });
@@ -57,6 +57,7 @@ baidu.ui.Slider.extend({
             axis = me._axis[layout],
             thumb = me.getThumb(),
             thumbPos = parseInt(thumb.style[axis.pos], 10);
+        if(!me.progressBar){return;}
         me.progressBar.getBar().style[me.progressBar.axis[layout].size] = (isNaN(thumbPos) ? 0 : thumbPos)
             + thumb[axis.offsetSize] / 2 + 'px';
     }
