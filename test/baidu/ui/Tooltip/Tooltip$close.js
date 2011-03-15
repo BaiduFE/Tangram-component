@@ -10,7 +10,8 @@ test('Close a common tooltip', function() {
     });
 	tp.render(div);
     tp.open();
-    ok(isShown(tp.getMain().firstChild),'The tooltip is created in the page');
+    ok(isShown(tp.getMain().firstChild),
+    		'The tooltip is created in the page');
     var closetp = $("div[class$=close]");
     closetp.click();
 });

@@ -1,6 +1,7 @@
 module('baidu.ui.Menubar.Menubar$fx');
 
-test('Open a common Menubar(expand) and close a common Menubar(collapse)', function() {
+test('Open a common Menubar(expand) and'
+		+ ' close a common Menubar(collapse)', function() {
 	expect(2);
  	var options = {
  			data : [ {
@@ -8,7 +9,7 @@ test('Open a common Menubar(expand) and close a common Menubar(collapse)', funct
  		        }, {
  				content : 'm12'
  			} ],
-			target : testingElement.dom[0],
+			target : testingElement.dom[0]
 		   };
     var menu = new baidu.ui.Menubar(options);
     testingElement.obj.push(menu);
@@ -17,11 +18,13 @@ test('Open a common Menubar(expand) and close a common Menubar(collapse)', funct
 	var a = menu.getBody().getAttribute('att_baidu_fx_expand_collapse');
 	ok(!!a, 'The menubar expand');
 	menu.close();
-	ok(menu.getBody().getAttribute('att_baidu_fx_expand_collapse') != a, 'The menubar collapse');
+	var b = menu.getBody().getAttribute('att_baidu_fx_expand_collapse');
+	ok( b!= a, 'The menubar collapse');
 	menu.dispose();
 });
 
-test('Open a common Menubar(fadeIn) and close a common Menubar(fadeOut)', function() {
+test('Open a common Menubar(fadeIn) ' 
+		+'and close a common Menubar(fadeOut)', function() {
 	expect(6);
  	stop();
  	var check = function (){
@@ -36,18 +39,22 @@ test('Open a common Menubar(fadeIn) and close a common Menubar(fadeOut)', functi
 			    hideFx : baidu.fx.fadeOut,
 			    showFxOptions : {
 			    	onbeforestart : function() {
-		        		ok(true, 'The manubar fadeIn with a custom onbeforestart function');
+		        		ok(true, 'The manubar fadeIn with '
+		        				+'a custom onbeforestart function');
 		        	},
 		        	onafterfinish : function() {
-		        		ok(true, 'The manubar fadeIn with a custom onafterfinish function');
+		        		ok(true, 'The manubar fadeIn with '
+		        				+'a custom onafterfinish function');
 		        	}
 		    	},
 		    	hideFxOptions : {
 		    		onbeforestart : function() {
-		        		ok(true, 'The manubar fadeOut with a custom onbeforestart function');
+		        		ok(true, 'The manubar fadeOut with '
+		        				+'a custom onbeforestart function');
 		        	},
 		    		onafterfinish : function() {
-		        		ok(true, 'The manubar fadeOut with a custom onafterfinish function');
+		        		ok(true, 'The manubar fadeOut with '
+		        				+'a custom onafterfinish function');
 		        	}
 		    	}
 		    };
@@ -55,13 +62,16 @@ test('Open a common Menubar(fadeIn) and close a common Menubar(fadeOut)', functi
       testingElement.obj.push(menu);
 	    menu.render(menu.target);
 	    menu.open();
-	    equal($(menu.getBody()).css('opacity'), 0, 'After the manubar fadeIn, the opacity is');
+	    var a = $(menu.getBody()).css('opacity');
+	    equal(a, 0, 'After the manubar fadeIn, the opacity is');
 	    menu.close();
-	    equal($(menu.getBody()).css('opacity'), 1, 'After the manubar fadeOut, the opacity is');
+	    a = $(menu.getBody()).css('opacity');
+	    equal(a, 1, 'After the manubar fadeOut, the opacity is');
 	    menu.dispose();
 	    start();
  	};
- 	ua.importsrc('baidu.fx.fadeIn,baidu.fx.fadeOut', check ,'baidu.fx.fadeIn', 'baidu.ui.Menubar.Menubar$fx');
+ 	ua.importsrc('baidu.fx.fadeIn,baidu.fx.fadeOut', check ,
+ 			'baidu.fx.fadeIn', 'baidu.ui.Menubar.Menubar$fx');
 });
 
 

@@ -452,7 +452,7 @@ test('Test the "isParent()" function', function(){
 				} ]
 			} ]
 		}
-	})
+	});
 	var node_a = tree.getTreeNodeById('a');
 	node_a.expand();
 	var node_a0 = tree.getTreeNodeById('a0');
@@ -466,13 +466,19 @@ test('Test the "isParent()" function', function(){
 	ok(!node_a0.isParent(node_a10), 'a0 is not the parenNode of a10');
 	ok(node_a1.isParent(node_a10), 'a1 is the parenNode of a10');
 	ok(node_a.isParent(node_a0), 'a is the parenNode of a0');
-	ok(node_a.isParent(node_a1), 'a is the parenNode of a1');
 	ok(node_a.isParent(node_a00), 'a is the parenNode of a00');
-	ok(node_a.isParent(node_a10), 'a is the parenNode of a10');
-	ok(!node_a.isParent(node_a), 'a is not the parenNode of a');
 	ok(!node_a0.isParent(node_a0), 'a0 is not the parenNode of a0');
 	ok(!node_a0.isParent(node_a), 'a0 is not the parenNode of a');
-	ok(!node_a00.isParent(node_a0), 'a00 is not the parenNode of a0');
+	var newnode = node_a10;
+	for (var i = 20; i < 30; i++){
+		newnode.appendChild(new baidu.ui.Tree.TreeNode({
+			id : 'a' + i,
+			text : 'a' + i
+		}));
+		newnode = tree.getTreeNodeById('a' + i);
+	}
+	ok(node_a1.isParent(tree.getTreeNodeById('a29')), 
+			'a1 is the parenNode of a29 (a tree of 13 layers)');
 });
 
 test('Test the "moveTo()" function', function(){
@@ -507,13 +513,18 @@ test('Test the "moveTo()" function', function(){
 	var node_a00 = tree.getTreeNodeById('a00');
 	var node_a10 = tree.getTreeNodeById('a10');
 	node_a0.moveTo(node_a1);
-	ok((node_a.getChildNodes()[0].id == 'a1') && (node_a.getChildNodes()[1].id == 'a0'), "a0 is moved to a10");
+	ok((node_a.getChildNodes()[0].id == 'a1') && 
+			(node_a.getChildNodes()[1].id == 'a0'), "a0 is moved to a10");
 	node_a0.moveTo(node_a10);
-	ok((node_a.getChildNodes().length == 1) && (node_a1.getChildNodes().length == 2) && (node_a1.getChildNodes()[0].id == 'a10') && (node_a1.getChildNodes()[1].id == 'a0'), "a0 is moved to a1");
+	ok((node_a.getChildNodes().length == 1) && 
+			(node_a1.getChildNodes().length == 2) && 
+			(node_a1.getChildNodes()[0].id == 'a10') && 
+			(node_a1.getChildNodes()[1].id == 'a0'), "a0 is moved to a1");
 	ok(!node_a.moveTo(node_a00), "Move the root node 'a', return false ");
 });
 
-test('Test the "removeAllChildren()" function with the parameter "recursion" = true', function(){
+test('Test the "removeAllChildren()" function'
+		+' with the parameter "recursion" = true', function(){
 
 	var tree = te.getUI({
 		data : {
@@ -547,12 +558,15 @@ test('Test the "removeAllChildren()" function with the parameter "recursion" = t
 	node_a1.removeAllChildren(true);
 	equals(node_a1.getChildNodes().length, 0, 'Remove a leaf node');
 	node_a00.removeAllChildren(true);
-	equals(node_a00.getChildNodes().length, 0, 'Remove a node with a childNodes');
+	equals(node_a00.getChildNodes().length, 0, 
+			'Remove a node with a childNodes');
 	node_a.removeAllChildren(true);
-	equals(node_a.getChildNodes().length, 0, 'Remove a root node with some childNodes and grandchildNodes');
+	equals(node_a.getChildNodes().length, 0, 
+			'Remove a root node with some childNodes and grandchildNodes');
 });
 
-test('Test the "removeAllChildren()" function with the parameter recursion = false', function(){
+test('Test the "removeAllChildren()" '
+		+'function with the parameter recursion = false', function(){
 
 	var tree = te.getUI({
 		data : {
@@ -586,9 +600,11 @@ test('Test the "removeAllChildren()" function with the parameter recursion = fal
 	node_a1.removeAllChildren(false);
 	equals(node_a1.getChildNodes().length, 0, 'Remove a leaf node');
 	node_a0.removeAllChildren(false);
-	equals(node_a0.getChildNodes().length, 1, 'Remove a node with a childNodes(注意：现在这个接口的实现还存在争议，等到决定此接口是否带recursion参数)');
+	equals(node_a0.getChildNodes().length, 1, 
+			'Remove a node with a childNodes(注意：现在这个接口的实现还存在争议，等到决定此接口是否带recursion参数)');
 	node_a.removeAllChildren(false);
-	equals(node_a.getChildNodes().length, 0, 'Remove a root node with some childNodes and grandchildNodes');
+	equals(node_a.getChildNodes().length, 0, 
+			'Remove a root node with some childNodes and grandchildNodes');
 });
 
 test('Test the "isLastNode()" function', function(){
@@ -603,7 +619,7 @@ test('Test the "isLastNode()" function', function(){
 	ok(!node_a.isLastNode(), 'a is not the last node');
 });
 
-test('Test the "isLastNode()" function', function(){
+test('Test the "update()" function', function(){
 	var tree = te.getUI();
 	var node_a = tree.getTreeNodeById('a');
 	node_a.expand();
@@ -657,13 +673,20 @@ test('Test the "removeChild()" function', function(){
 	var node_a00 = tree.getTreeNodeById('a00');
 	var node_a10 = tree.getTreeNodeById('a10');
 	node_a1.removeChild(node_a10);
-	equals(node_a1.getChildNodes().length, 0, 'The dom element of "a10" is deleted');
-	equals(tree.getTreeNodes()['a10'], undefined, 'The data of "a10" is deleted');
+	equals(node_a1.getChildNodes().length, 0, 
+			'The dom element of "a10" is deleted');
+	equals(tree.getTreeNodeById('a10'), undefined, 
+			'The data of "a10" is deleted');
 	node_a0.removeChild(node_a00);
-	equals(node_a0.getChildNodes().length, 0, 'The dom element of "a00" is deleted');
-	equals(tree.getTreeNodes()['a00'], undefined, 'The data of "a00" is deleted');
-	equals(tree.getTreeNodes()['a000'], undefined, 'The data of "a000" is deleted');
+	equals(node_a0.getChildNodes().length, 0, 
+			'The dom element of "a00" is deleted');
+	equals(tree.getTreeNodeById('a00'), undefined, 
+			'The data of "a00" is deleted');
+	equals(tree.getTreeNodeById('a000'), undefined, 
+			'The data of "a000" is deleted');
 	node_a.removeChild(node_a0);
-	equals(node_a.getChildNodes().length, 0, 'The dom element of "a0" is deleted');
-	equals(tree.getTreeNodes()['a0'], undefined, 'The data of "a0" is deleted');
+	equals(node_a.getChildNodes().length, 0, 
+			'The dom element of "a0" is deleted');
+	equals(tree.getTreeNodeById('a0'), undefined, 
+			'The data of "a0" is deleted');
 });
