@@ -45,7 +45,11 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     me.data = options.data || [];
     me._initialized = false; //判断是否已经初始化
     me.dispatchEvent("oninit");
-}).extend({
+}).extend(
+    /**
+     *  @lends baidu.ui.Menubar.prototype
+     */
+{
     uiType: "menubar",
     width: '200',
     height: '',
