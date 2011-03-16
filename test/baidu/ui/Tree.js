@@ -153,13 +153,13 @@ test('TreeNode constructor', function() {
 test('TreeNode function appendData', function() {
 	var tree = te.getUI(), node = tree.getTreeNodeById('a');
 
+	node.expand();
 	/** appendData */
 	equals(node.children.length, 1, 'before appendData');
 	node.appendData([ {
 		id : 'a1',
 		text : 'a1'
 	} ]);
-	node.expand();
 	equals(node.children.length, 2, 'after appendData');
 	var cnode = tree.getTreeNodeById('a1');
 	equals(cnode && cnode.id, 'a1', 'node exist on tree');
@@ -277,7 +277,7 @@ test('TreeNode function appendTo', function() {
 
 test('TreeNode function blur and focus', function() {
 	var tree = te.getUI(), node = tree.getTreeNodeById('a'), nodeid = node
-			.getId('node');
+			._getId('node');
 
 	node.focus();
 	equals($("#" + nodeid).attr('class'),
@@ -301,7 +301,7 @@ test('TreeNode function blur and focus', function() {
 
 test('TreeNode function toggle, collapse and expand', function() {
 	var tree = te.getUI(), node = tree.getTreeNodeById('a'), nodeid = "#"
-			+ node.getId('subNodeId');
+			+ node._getId('subNodeId');
 	// expand前，它是叶子
 	equals(node.getChildNodes().length, 0, 'size of child before expand');
 	equals($(nodeid)[0].children.length, 0, 'size of subnode child');
@@ -355,7 +355,7 @@ test('TreeNode function getxxx', function() {
 
 	var node = tree.getTreeNodeById('a');
 	// get Id http://icafe.baidu.com:8100/jtrac/app/item/PUBLICGE-292/
-	equals(node.getId('test'), 'a-test', 'getId');// 这个应该是私有属性
+	equals(node._getId('test'), 'a-test', '_getId');// 这个应该是私有属性
 	equals(node.getParentNode(), undefined, 'getParentNode，根节点的父节点');
 	node.expand();
 
@@ -422,13 +422,13 @@ test('TreeNode function hide, show and ', function(){
 	var tree = te.getUI(), node = tree.getTreeNodeById('a');
 	node.expand();
 	node.getFirstChild().hide();
-	ok(!isShown($("#"+node.getId())), 'hide');
+	ok(!isShown($("#"+node._getId())), 'hide');
 	node.getFirstChild().show();
-	ok(isShown($("#"+node.getId())), 'show');
+	ok(isShown($("#"+node._getId())), 'show');
 	node.getFirstChild().toggle();
-	ok(!isShown($("#"+node.getId())), 'toggle');
+	ok(!isShown($("#"+node._getId())), 'toggle');
 	node.getFirstChild().toggle();
-	ok(isShown($("#"+node.getId())), 'toggle');
+	ok(isShown($("#"+node._getId())), 'toggle');
 });
 
 test('Test the "isParent()" function', function(){
