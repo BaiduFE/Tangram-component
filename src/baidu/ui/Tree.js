@@ -109,6 +109,15 @@ baidu.ui.Tree.extend({
      */
     setCurrentNode: function(treeNode) {
         this._currentNode = treeNode;
+    },
+    /**
+     *销毁Tree对象
+     */
+    dispose: function() {
+        var me = this;
+        me.dispatchEvent('dispose');
+        baidu.dom.remove(me.getMain());
+        baidu.lang.Class.prototype.dispose.call(me);
     }
 });
 
