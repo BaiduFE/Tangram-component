@@ -7,7 +7,7 @@
 ///import baidu.ui.ColorPalette;
 ///import baidu.ui.Button;
 ///import baidu.ui.Dialog;
-///import baidu.ui.Dialog$button;
+///import baidu.ui.Dialog.Dialog$button;
 ///import baidu.ui.create;
 
 ///import baidu.object.extend;
