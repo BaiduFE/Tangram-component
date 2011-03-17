@@ -234,16 +234,26 @@
 			{
 				id: 'node3',
 				text: '节点3',
-				type: 'trunk'
+				type: 'trunk',
+				children:[
+					{
+						id: 'node31',
+						text: '节点3.1'
+						
+					}
+				]
 			}
 		]
 	}
 	
 	var data = {text:'根节点'};
-	var tree = new baidu.ui.Tree({data:data});
+	var tree = new baidu.ui.Tree({data:json,onclick:function(){alert(1);}});
 	//var startTime = new Date().getTime();
 	tree.render("treetest");
+	
 	tree.getRootNode().expandAll();
+	//tree.getRootNode().collapseAll();
+
 	//document.title = new Date().getTime() - startTime;
 	function test(){
 		tree.getRootNode().appendData(json.children);
@@ -263,6 +273,11 @@
 		var node = tree.getCurrentNode();
 		node.appendChild(new baidu.ui.Tree.TreeNode({text:'测试节点',type:'leaf'}));
 	}
+	var node3 = tree.getTreeNodeById('node3');
+	var node31 = tree.getTreeNodeById('node31');
+	var node21 = tree.getTreeNodeById('node21');
+
+	//tree.getRootNode().removeAllChildren();
 	//test();
 		</script>
 
