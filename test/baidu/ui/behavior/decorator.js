@@ -26,8 +26,8 @@ test('base', function() {
 	var dec = baidu.ui.behavior.decorator;
 
 	ui.render(te.dom[0]);
-	equals(dec.getDecorator().length, 0, 'none decorator added');
-	ui.decorator.push(ui.body);
+	equals(dec.getDecorator(), null, 'none decorator added');
+	ui.decorator.push(ui);
 	ui.render();
 	equals(dec.getDecorator().length, 1, '1 decorator addedh');
 	var decIns = dec.getDecorator()[0];
