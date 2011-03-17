@@ -5,7 +5,6 @@
 
 ///import baidu.ui.ColorPicker;
 ///import baidu.ui.ColorPalette;
-
 ///import baidu.ui.Button;
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Dialog.Dialog$button;
@@ -57,7 +56,7 @@ baidu.ui.ColorPicker.extend({
     _createColorPaletteDialog: function() {
         var me = this;
         me.colorPaletteDialog =
-            baidu.ui.Dialog(baidu.object.extend({
+            new baidu.ui.Dialog(baidu.object.extend({
                 titleText: me.titleText,
                 height: 180,
                 width: 360,
@@ -109,7 +108,6 @@ baidu.ui.ColorPicker.register(function(me) {
                 me.colorPaletteDialog.open();
             }
         });
-
         me._createColorPaletteDialog();
         me._createColorPalette();
     });
