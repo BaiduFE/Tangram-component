@@ -121,7 +121,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
             autoRender: true
         });
         me._scrollBarSize[axis.unSize] = next.getBody()[axis.unOffsetSize];//这里先运算出宽度，在flushUI中运算高度
-        me._thumb = new baidu.ui.Button({
+        new baidu.ui.Button({
             classPrefix: me.classPrefix + '-thumb-btn',
             skin: me.skin ? me.skin + '-thumb-btn' : '',
             content: me.getThumbString(),
