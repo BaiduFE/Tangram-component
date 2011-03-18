@@ -96,6 +96,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     isShown: function() {
         return baidu.ui.Dialog.instances[this.guid] == 'show';
     },
+    
     /**
      * 获取dialog的HTML字符串
      * @private
