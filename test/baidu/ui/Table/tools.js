@@ -1,4 +1,4 @@
-(function() {debugger
+(function() {
 		function mySetup() {
 		var div = document.createElement('div');
 		div.id = 'div_test';

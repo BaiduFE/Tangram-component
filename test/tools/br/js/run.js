@@ -41,7 +41,7 @@ function run(kiss, runnext) {
 	$(wbkiss)
 			.one(
 					'done',
-					function(event, a, b, cov) {debugger
+					function(event, a, b, cov) {
 						clearTimeout(toh);
 					    //田丽丽修改  原本此处参数b中只有两个元素，但是为了标识有test超时，传入config.testTimeoutFlag作为b[2]，如果config.testTimeoutFlag为true，将module标记为fail_case
 						var wb = window.brtest, errornum = b[0], allnum = b[1], testTimeOutFlag = b[2];
