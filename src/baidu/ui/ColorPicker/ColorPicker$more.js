@@ -55,26 +55,27 @@ baidu.ui.ColorPicker.extend({
      */
     _createColorPaletteDialog: function() {
         var me = this;
-        me.colorPaletteDialog =
-            new baidu.ui.Dialog(baidu.object.extend({
-                titleText: me.titleText,
-                height: 180,
-                width: 360,
-                modal: true,
-                type: 'confirm',
-                onaccept: function() {
-                    me.dispatchEvent('onchosen', {
-                        color: me.colorPalette.hex
-                    });
-                    me._fixMouseUp();
-                },
-                oncancel: function() {
-                    me._fixMouseUp();
-                },
-                draggable: true,
-                autoDispose: false,
-                autoOpen: false
-            }, me.dialongOption || {}));
+        me.colorPaletteDialog = new baidu.ui.Dialog(baidu.object.extend({
+            titleText: me.titleText,
+            height: 180,
+            width: 360,
+            modal: true,
+            type: 'confirm',
+            onaccept: function() {
+                me.dispatchEvent('onchosen', {
+                    color: me.colorPalette.hex
+                });
+                me._fixMouseUp();
+            },
+            oncancel: function() {
+                me._fixMouseUp();
+            },
+            draggable: true,
+            autoDispose: false,
+            autoOpen: false,
+            autoRender: true
+        }, me.dialongOption || {}));
+        me.colorPaletteDialog.open();
     },
 
     /**
