@@ -57,7 +57,7 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
     /**
      * 滑动条模板
      */
-    tplSlider: '<div id="#{sliderId}"></div>',
+    tplSlider: '<div id="#{sliderId}" class="#{sliderClass}"></div>',
 
     /**
      * 调色块模板
@@ -99,6 +99,7 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
      * @param {Object} target 目标渲染对象.
      */
     render: function(target) {
+        
         var me = this;
         if (me.getMain()) {
             return;
@@ -106,7 +107,6 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
         baidu.dom.insertHTML(me.renderMain(target),
                              'beforeEnd',
                              me.getString());
-
         me._createSlider();
         me._padClickHandler = baidu.fn.bind('_onPadClick', me);
 
@@ -204,7 +204,8 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
     _getSliderString: function() {
         var me = this;
         return baidu.string.format(me.tplSlider, {
-            sliderId: me.getId('slider')
+            sliderId: me.getId('slider'),
+            sliderClass: me.getClass('sliderMain')
         });
     },
 

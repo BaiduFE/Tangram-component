@@ -5,7 +5,6 @@
 
 ///import baidu.ui.ColorPicker;
 ///import baidu.ui.ColorPalette;
-
 ///import baidu.ui.Button;
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Dialog.Dialog$button;
@@ -56,26 +55,27 @@ baidu.ui.ColorPicker.extend({
      */
     _createColorPaletteDialog: function() {
         var me = this;
-        me.colorPaletteDialog =
-            baidu.ui.Dialog(baidu.object.extend({
-                titleText: me.titleText,
-                height: 180,
-                width: 360,
-                modal: true,
-                type: 'confirm',
-                onaccept: function() {
-                    me.dispatchEvent('onchosen', {
-                        color: me.colorPalette.hex
-                    });
-                    me._fixMouseUp();
-                },
-                oncancel: function() {
-                    me._fixMouseUp();
-                },
-                draggable: true,
-                autoDispose: false,
-                autoOpen: false
-            }, me.dialongOption || {}));
+        me.colorPaletteDialog = new baidu.ui.Dialog(baidu.object.extend({
+            titleText: me.titleText,
+            height: 180,
+            width: 360,
+            modal: true,
+            type: 'confirm',
+            onaccept: function() {
+                me.dispatchEvent('onchosen', {
+                    color: me.colorPalette.hex
+                });
+                me._fixMouseUp();
+            },
+            oncancel: function() {
+                me._fixMouseUp();
+            },
+            draggable: true,
+            autoDispose: false,
+            autoOpen: false,
+            autoRender: true
+        }, me.dialongOption || {}));
+        me.colorPaletteDialog.open();
     },
 
     /**
@@ -109,7 +109,6 @@ baidu.ui.ColorPicker.register(function(me) {
                 me.colorPaletteDialog.open();
             }
         });
-
         me._createColorPaletteDialog();
         me._createColorPalette();
     });

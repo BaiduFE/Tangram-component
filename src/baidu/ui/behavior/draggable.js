@@ -42,7 +42,8 @@
         if(!me.draggable){
             return ;
         }
-        if(me.dragHandler != me._lastDragHandler && me._dragFn){
+        //me.dragHandler != me._lastDragHandler,这个判断会造成当调用两次dragUpdate更新range时上次的事件没有被注销
+        if(me._lastDragHandler && me._dragFn){
             baidu.event.un(me._lastDragHandler, "onmousedown", me._dragFn); //把上次的拖拽事件取消掉
         }
         baidu.object.extend(me, options);
