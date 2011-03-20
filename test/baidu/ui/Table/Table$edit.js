@@ -12,7 +12,7 @@ var check = function(c, isEditable, newValue) {
 	var first, last = newValue || 'test';
 	if (isEditable) {
 		first = c.innerHTML.replace('<.*$', '');
-		console.log(first);
+//		console.log(first);
 	}
 	$(c).dblclick();
 	if (isEditable) {/* 检测包含子元素并子元素标签并子元素value */
