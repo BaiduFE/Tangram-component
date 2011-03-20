@@ -47,7 +47,7 @@ test('base', function() {
 	equals(d.getMain().className,
 			'tangram-decorator-box-main test-box-main',
 			'check class name');
-	ok(false, 'PUBLICGE-278');
+//	ok(false, 'PUBLICGE-278');
 
 	// check fn list
 	var tbl = d.getBox();
