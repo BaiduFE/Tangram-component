@@ -14,7 +14,7 @@ test("get", function(){
     sioSource.get({
         callByType: "browser",
         onsuccess: function(response){
-            equals(response, "百度", "xhr return");
+        	equals(window.fromBrowser, '百度');
             start();
         }
     });
