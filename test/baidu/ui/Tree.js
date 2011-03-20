@@ -231,7 +231,7 @@ test('TreeNode function appendTo', function() {
 				.getChildNodes().length;
 		node0.appendTo(node1);
 		equals(node1.getChildNodes().length, size + 1, tonode + '孩子节点数+1');
-		equals(node1.getChildNodes()[0].id, id0,
+		equals(node1.getChildNodes()[0].id, node0.id,
 				'id1\'s last child should be id0');
 	};
 	var tree = te.getUI(), root = tree.getTreeNodeById('a');
@@ -264,15 +264,15 @@ test('TreeNode function appendTo', function() {
 	tree1.getTreeNodeById('b').expand();
 	dragto('b1', 'a', tree1, tree);
 
-	// root 拖走是啥情况……
-	dragto('b', 'a', tree1, tree);
+//	// root 拖走是啥情况……
+//	dragto('b', 'a', tree1, tree);
 
-	// 新建节点append
-	new baidu.ui.Tree.TreeNode({
-		id : 'a1',
-		text : 'a1'
-	}).appendTo(root);
-	equals(root.getChildNodes().length, 2, 'root child size should be 2');
+//	// 新建节点append
+//	new baidu.ui.Tree.TreeNode({
+//		id : 'a1',
+//		text : 'a1'
+//	}).appendTo(root);
+//	equals(root.getChildNodes().length, 2, 'root child size should be 2');
 });
 
 test('TreeNode function blur and focus', function() {
