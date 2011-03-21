@@ -46,49 +46,26 @@ baidu.extend(baidu.ui.suggestion.Suggestion.prototype, {
             targetPosition,
             main = me.getMain(),
             pos;
-        
-        if (!me.isShowing()) {
-            return;
+
+        if(!me.isShowing() && onlyAdjustShown){
+            return ;
         }
-
-        targetPosition = getPositionToTarget();
-
+        
+        targetPosition = baidu.dom.getPosition(target),
         pos = {
-                top: targetPosition.top,
-                left: targetPosition.left,
-                width:target.offsetWidth
-            };
-        //交给用户的view函数计算
-        pos = typeof me.view == 'function' ? me.view(pos) : pos;
-
-        me.setPosition([pos.left, pos.top], null, {once: true});
-        baidu.dom.setOuterWidth(main, pos.width);
-
-        function getPositionToTarget(){
-            var eOffsetParentPos = baidu.dom.getPosition(main.offsetParent),
-                tPos = baidu.dom.getPosition(target),
-                tE;
-            
-            if(main.offsetParent == document.body){
-                eOffsetParentPos = {
-                    top:0,
-                    left:0
-                };  
-            }
-
-            //target相对me.main的offsetParent的坐标
-            tE = {
-                top:  tPos.top - eOffsetParentPos.top,
-                left: tPos.left - eOffsetParentPos.left
-            };
-
-            return {
-                top: tE.top + target.offsetHeight - 1,
-                left: tE.left
-            };
+                top     : (targetPosition.top + target.offsetHeight - 1),
+                left    : targetPosition.left,
+                width   : target.offsetWidth
         };
+        
+        //交给用户的view函数计算
+        pos =  typeof me.view == "function" ? me.view(pos) : pos;
+
+        me.setPosition([pos.left, pos.top], null, {once:true});
+        baidu.dom.setOuterWidth(main, pos.width);  
     }
 });
+
 baidu.ui.suggestion.Suggestion.register(function(me) {
 
     me.windowResizeHandler = me.getWindowResizeHandler();
