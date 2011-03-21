@@ -49,17 +49,19 @@
 //   format是非常耗性能的。
 //2. 弃用了baidu.ui.createUI的方法，在多次使用createUI有性能瓶颈。
 //3. 增加了分步渲染机制。
-//4. 优化了getId,getClass,getCallRef等调用次数较多的方法。
-//5. 减少函数调用的次数。比如getId(),在初始化时，是通过字符串拼接来实现，因为一个函数多次调用
+//4. 优化了_getId,_getClass,_getCallRef等调用次数较多的方法。
+//5. 减少函数调用的次数。比如_getId(),在初始化时，是通过字符串拼接来实现，因为一个函数多次调用
 //   也对性能有影响。
 //6. 用数组push再join代替字符串拼装。
 //   如果字符串的叠加次数小于3至5，建议还是用字符串叠加，因为多次实例化一个Array，并且再join(''),
 //   也挺消耗性能的。
 //7. 去掉了不必要的HTML与样式，这些都会耗损渲染性能。
+
+
 baidu.ui.Tree.TreeNode = function(options) {
     var me = this;
     baidu.object.extend(me, options);
-    //这里只所以需要判断是因为getId()的实现已经调用到了me.id,而me.id是对外开放的属性。
+    //这里只所以需要判断是因为_getId()的实现已经调用到了me.id,而me.id是对外开放的属性。
     me.id = me.id || baidu.lang.guid();
     me.childNodes = [];
     window['$BAIDU$']._instances[me.id] = me;
@@ -67,7 +69,9 @@ baidu.ui.Tree.TreeNode = function(options) {
     me._stringArray = [];
 };
 
-baidu.ui.Tree.TreeNode.prototype = {
+
+
+baidu.ui.Tree.TreeNode.prototype =  {
     //ui控件的类型 **必须**
     uiType: 'tree-node',
     //节点的文本属性
@@ -81,7 +85,7 @@ baidu.ui.Tree.TreeNode.prototype = {
      * @param {String} key
      * @return {String} id.
      */
-    getId: function(key) {
+    _getId: function(key) {
        return this.id + '-' +key;
     },
     /**
@@ -89,7 +93,7 @@ baidu.ui.Tree.TreeNode.prototype = {
      * @param {String} key
      * @return {String} class.
      */
-    getClass: function(key) {
+    _getClass: function(key) {
         var me = this,
             className = 'tangram-tree-node-' + key;
         if( me.skin){
@@ -101,7 +105,7 @@ baidu.ui.Tree.TreeNode.prototype = {
      * 生成当前实例所对应的字符串
      * @return {String} stringRef.
      */
-    getCallRef: function() {
+    _getCallRef: function() {
         return "window['$BAIDU$']._instances['" + this.id + "']";
     },
     /**
@@ -201,7 +205,7 @@ baidu.ui.Tree.TreeNode.prototype = {
     isParent: function(treeNode) {
         var me = this,
             parent = treeNode;
-        while ((parent = parent.getParentNode()) && !parent.isRoot) {
+        while (!parent.isRoot && (parent = parent.getParentNode()) ) {
             if (parent == me) {
                 return true;
             }
@@ -209,7 +213,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         return false;
     },
     /**
-     * 将节点拖放到另一个节点中。
+     * 将已有节点添加到目标节点中，成为这个目标节点的子节点。
      * @param : parentNode
      */
     appendTo: function(parentNode) {
@@ -219,7 +223,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         me.dispatchEvent('appendto');
     },
     /**
-     * 将此节点移动至一个目标节点
+     * 将此节点移动至一个目标节点,成为这个目标节点的next节点
      * @Param {TreeNode} 移动至目标节点
      */
     moveTo: function(treeNode) {
@@ -240,6 +244,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         oldParent._removeChildData(me);
         index = (newParent == treeNode) ? -1 : treeNode.getIndex();
         newParent.appendChild(me, index);
+        me.dispatchEvent('moveto');
     },
     /**
      * 新增一个子节点 只是单一的管理数据结构，没有渲染元素的职责。
@@ -274,6 +279,7 @@ baidu.ui.Tree.TreeNode.prototype = {
      * @param {TreeNode} 需要加入的节点(分为已经渲染的节点和为被渲染的节点)
      *                  通过treeNode._getContainer()返回值来判断是否被渲染.
      * @param {index}
+     * @return {TreeNode} treeNode 返回被新增的child
     */
     appendChild: function(treeNode,index) {
         var me = this,
@@ -324,9 +330,10 @@ baidu.ui.Tree.TreeNode.prototype = {
         treeNode._updateOldParent(oldParent);
         if (me.type == 'leaf') {
             me.type = 'trunk';
-            me._getIconElement().className = me.getClass('trunk');
+            me._getIconElement().className = me._getClass('trunk');
         }
         me._getSpanElement().innerHTML = me._getImagesString();
+        return treeNode;
     },
     /**
      * @private
@@ -343,7 +350,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         }
         else {
             if (me.getTree().expandable) {
-                oldParent._getIconElement().className = me.getClass('leaf');
+                oldParent._getIconElement().className = me._getClass('leaf');
                 oldParent.type = 'leaf';
             }
             oldParent._update();
@@ -370,13 +377,12 @@ baidu.ui.Tree.TreeNode.prototype = {
     },
     /**
      * 批量删除一个节点下的所有子节点
-     * @param {Boolean} recursion  如果为true,那么就递归删除子节点.
     */
-    removeAllChildren: function(recursion) {
+    removeAllChildren: function() {
         var me = this,
             childNodes = me.getChildNodes();
         while (childNodes[0]) {
-            me.removeChild(childNodes[0], recursion);
+            me.removeChild(childNodes[0], true);
         }
     },
     /**
@@ -398,7 +404,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         if (nodes.length <= 0 && !me.isRoot) {
             me._getSubNodesContainer().style.display = 'none';
             if (me.getTree().expandable) {
-                me._getIconElement().className = me.getClass('leaf');
+                me._getIconElement().className = me._getClass('leaf');
                 me.type = 'leaf';
             }
         }
@@ -451,7 +457,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         }
         me.isExpand = flag;
         if (toggleElement) {
-            toggleElement.className = me.getClass(me.isLastNode() ? lastClassName : className);
+            toggleElement.className = me._getClass(me.isLastNode() ? lastClassName : className);
         }
         if (me.getChildNodes() && me.getChildNodes().length > 0) {
             me._getSubNodesContainer().style.display = display;
@@ -494,9 +500,9 @@ baidu.ui.Tree.TreeNode.prototype = {
      */
     _switchFocusState: function(className,flag,methodName) {
         var me = this;
-        baidu.dom[methodName](me._getNodeElement() , me.getClass('current'));
+        baidu.dom[methodName](me._getNodeElement() , me._getClass('current'));
         if (me.type != 'leaf') {
-            me._getIconElement().className = me.getClass(className);
+            me._getIconElement().className = me._getClass(className);
             me.isOpen = flag;
         }
     },
@@ -519,7 +525,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         }
         me._switchFocusState('open-trunk', true, 'addClass');
         me.getTree().setCurrentNode(me);
-        baidu.dom.removeClass(me._getNodeElement(), me.getClass('over'));
+        baidu.dom.removeClass(me._getNodeElement(), me._getClass('over'));
     },
     /**
      * 鼠标放上去的效果
@@ -527,7 +533,7 @@ baidu.ui.Tree.TreeNode.prototype = {
     _onMouseOver: function(event) {
         var me = this;
         if (me != me.getTree().getCurrentNode()) {
-            baidu.dom.addClass(me._getNodeElement(), me.getClass('over'));
+            baidu.dom.addClass(me._getNodeElement(), me._getClass('over'));
         }
         me.dispatchEvent('draghover', {event: event});
         me.dispatchEvent('sorthover', {event: event});
@@ -537,7 +543,7 @@ baidu.ui.Tree.TreeNode.prototype = {
      */
     _onMouseOut: function() {
         var me = this;
-        baidu.dom.removeClass(me._getNodeElement(), me.getClass('over'));
+        baidu.dom.removeClass(me._getNodeElement(), me._getClass('over'));
         me.getTree().dispatchEvent('mouseout', {treeNode: me});
     },
     /**
@@ -598,7 +604,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         if(me.skin){
             stringArray.push(' ',me.skin,'-node');
         }
-        stringArray.push(' onclick="',me.getCallRef() + ('._onClick(event)'),'"> <span id="',
+        stringArray.push(' onclick="',me._getCallRef() + ('._onClick(event)'),'"> <span id="',
             me.id,'-span">',me._getImagesString(true),'</span>');
         me._createIconStringArray();
         me._createTextStringArray();
@@ -613,7 +619,7 @@ baidu.ui.Tree.TreeNode.prototype = {
     _getImagesString: function(isInit) {
         var me = this,
             string = '';
-        string += me._getIdentString(isInit);
+        string += me.__getIdentString(isInit);
         if (me.type == 'leaf') {
             string += me._getTLString(isInit);
         }
@@ -631,7 +637,7 @@ baidu.ui.Tree.TreeNode.prototype = {
      * @param {isInit} 是否是初始化节点.
      * @return {string} htmlstring.
      */
-    _getIdentString: function(isInit) {
+    __getIdentString: function(isInit) {
         var me = this,
             string = '',
             prifix;
@@ -673,7 +679,7 @@ baidu.ui.Tree.TreeNode.prototype = {
         if(me.skin){
             className += ' '+me.skin+'-'+prifix;
         }
-        return ['<span onclick="', me.getCallRef(),
+        return ['<span onclick="', me._getCallRef(),
                 '._onToggleClick(event)" class="',className,
                 '" id="',me.id,'-toggle"></span>'].join('');
     },
@@ -722,56 +728,56 @@ baidu.ui.Tree.TreeNode.prototype = {
      * @return {HTMLObject} span.
      */
     _getSpanElement: function() {
-        return baidu.g(this.getId('span'));
+        return baidu.g(this._getId('span'));
     },
     /**
      * 取得节点图标的HTMLObject
      * @return {HTMLObject}
      */
     _getIconElement: function() {
-        return baidu.g(this.getId('icon'));
+        return baidu.g(this._getId('icon'));
     },
     /**
      * 取得文本父容器的HTMLObject
      * @return {HTMLObject}
     */
     _getTextContainer: function() {
-        return baidu.g(this.getId('textContainer'));
+        return baidu.g(this._getId('textContainer'));
     },
     /**
      * 取得文本容器的HTMLObject
      * @return {HTMLObject}
      */
     _getTextElement: function() {
-        return baidu.g(this.getId('text'));
+        return baidu.g(this._getId('text'));
     },
     /**
      * 取得切换展开或收起的image HTMLObject
      * @return {HTMLObject}
      */
     _getToggleElement: function() {
-        return baidu.g(this.getId('toggle'));
+        return baidu.g(this._getId('toggle'));
     },
     /**
      * 取得装子节点的父容器 HTMLObject
      * @return {HTMLObject}
      */
     _getSubNodesContainer: function() {
-        return baidu.g(this.getId('subNodeId'));
+        return baidu.g(this._getId('subNodeId'));
     },
     /**
      * 取得href的容器 HTMLObject
      * @return {HTMLObject}
      */
     _getHrefElement: function() {
-        return baidu.g(this.getId('link'));
+        return baidu.g(this._getId('link'));
     },
     /**
      * 取得node(不包括子节点)的 HTMLObject
      * @return {HTMLObject}
      */
     _getNodeElement: function() {
-        return baidu.g(this.getId('node'));
+        return baidu.g(this._getId('node'));
     },
     /**
      * 取得node(包括子节点的dom)的容器 HTMLObject
@@ -837,9 +843,14 @@ baidu.ui.Tree.TreeNode.prototype = {
      * @return {TreeNode} next.
      */
     getNext: function() {
-        var me = this, index = me.getIndex(),
-            nodes = me.getParentNode().getChildNodes();
-        return (index + 1 >= nodes.length) ? null : nodes[index + 1];
+        var me = this, 
+            index = me.getIndex(),
+            nodes;
+        if(me.isRoot) {
+            return me;
+        }
+        nodes = me.getParentNode().getChildNodes();
+        return (index + 1 >= nodes.length) ? me : nodes[index + 1];
     },
     /**
      * 取得本节点的上一个节点
@@ -847,9 +858,14 @@ baidu.ui.Tree.TreeNode.prototype = {
      * @return {TreeNode} previous.
      */
     getPrevious: function() {
-        var me = this, index = me.getIndex(),
-            nodes = me.getParentNode().getChildNodes();
-        return (index - 1 < 0) ? null : nodes[index - 1];
+        var me = this, 
+            index = me.getIndex(),
+            nodes ;
+        if(me.isRoot) {
+            return me;
+        }
+        nodes = me.getParentNode().getChildNodes();
+        return (index - 1 < 0) ? me : nodes[index - 1];
     },
     /**
      * 取得本节点的第一个子节点
@@ -890,3 +906,4 @@ baidu.ui.Tree.TreeNode.prototype = {
 
 };
 
+baidu.object.extend(baidu.ui.Tree.TreeNode.prototype, baidu.lang.Class.prototype);

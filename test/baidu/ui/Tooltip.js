@@ -108,15 +108,26 @@ test("Set or don't set the offset of the tooltip", function(){
 	});
 	tp.render(div);
 	tp.open();
-	equals(tp.getMain().style.top, '300px', "If set the offset, the top position of the tooltip = the top position of the div(100px) + the height of the div(100px) + the offset of the tooltip(100px) ");
-	equals(tp.getMain().style.left, '200px', "If set the offset, the left position of the tooltip = the left position of the div(100px) + the offset of the tooltip(100px) ");
+	equals(tp.getMain().style.top, '300px', 
+			"If set the offset, the top position of the "
+			+"tooltip = the top position of the div(100px) + the "
+			+"height of the div(100px) + the offset of the tooltip(100px) ");
+	equals(tp.getMain().style.left, '200px', 
+			"If set the offset, the left position of the "
+			+"tooltip = the left position of the div(100px) + the "
+			+"offset of the tooltip(100px) ");
 	tp.close();
 	var tp1 = new baidu.ui.Tooltip({
 		content : 'tooltip_1'
 	});
 	tp1.render(div);
 	tp1.open();
-	equals(tp1.getMain().style.top, '200px', "If don't set the offset, the top position of the tooltip = the top position of the div(100px) + the height of the div(100px) ");
-	equals(tp1.getMain().style.left, '100px', "If don't set the offset, the left position of the tooltip = the left position of the div(100px) ");
+	equals(tp1.getMain().style.top, '200px', 
+			"If don't set the offset, the top position of the "
+			+"tooltip = the top position of the div(100px) + the "
+			+"height of the div(100px) ");
+	equals(tp1.getMain().style.left, '100px', 
+			"If don't set the offset, the left position of the "
+			+"tooltip = the left position of the div(100px) ");
 	tp1.close();
 });

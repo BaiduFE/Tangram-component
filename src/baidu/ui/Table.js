@@ -244,6 +244,7 @@ baidu.ui.Table.extend({
 
 /**
  * Row表格的行组件。
+ * @private
  * @class Row组件，table的组合组件
  * @param       {Object}    options config参数
  * @config      {String}    id 标识该行的id，当该行存在checkbox复选框时，该id会被赋予checkbox的value
@@ -407,6 +408,7 @@ baidu.ui.Table.Row = baidu.ui.createUI(function(options){
 
 /**
  * Cell单元格组件，当调用Row组件的getCell方法时该组件才会被生成
+ * @private
  * @class Cell组件类
  */
 baidu.ui.Table.Cell = baidu.ui.createUI(function(options){}).extend({
