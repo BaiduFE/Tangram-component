@@ -134,9 +134,8 @@
                 'resize',
                 baidu.fn.bind.apply(me, [fnName, me].concat([].slice.call(args)))
             );
-        }else {
-            me[fnName].apply(me, args);
         }
+        me[fnName].apply(me, args);
     };
     /**
      * 格式化坐标格式
