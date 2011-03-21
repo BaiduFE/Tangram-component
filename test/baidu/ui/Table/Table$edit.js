@@ -30,7 +30,6 @@ var check = function(c, isEditable, newValue) {
 				|| c.firstChild.style.display == 'none', '不包含子元素或者子元素不显示');
 	}
 };
-
 test('校验是否可编辑和非可编辑', function() {
 	var columns = [ {
 		index : 0,
@@ -55,7 +54,6 @@ test('校验是否可编辑和非可编辑', function() {
 	});
 	tb.render(te.dom[0]);
 	te.obj.push(tb);
-
 	/**
 	 * 双击第3列，进入编辑状态
 	 */
