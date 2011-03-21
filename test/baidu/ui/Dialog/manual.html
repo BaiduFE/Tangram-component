@@ -6,7 +6,7 @@
         <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*,baidu.ui.legacy' ></script>
         
         <script src='../../../../src/import.php?f=baidu.ui.behavior.decorator' ></script>
-        <!--Ò³ÃæÒÀÀµ-->
+        <!--é¡µé¢ä¾èµ–-->
         <script src='../../../../src/import.php?f=baidu.dom.ready,baidu.dom.query,baidu.object.extend,baidu.swf.create,baidu.array.each' type="text/javascript" ></script>
         <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
 <style>
@@ -158,13 +158,13 @@ h2{
                 dialogPool = [];
 
             /*
-            ×Ô¶¨ÒåDecoratorÄ¬ÈÏÊôĞÔ
+            è‡ªå®šä¹‰Decoratoré»˜è®¤å±æ€§
             baidu.ui.decorator.Decorator.options = {
                 "classPrefix" : "test"
             },
             */
             /*
-             * ¾²Ì¬ÅäÖÃ
+             * é™æ€é…ç½®
              */
             baidu.ui.Dialog.options = {
                 "titleText" : "default Title",
@@ -178,7 +178,7 @@ h2{
             });
 
             /*
-             * Çå¿Õevent·½¿éµÄÑÕÉ«
+             * æ¸…ç©ºeventæ–¹å—çš„é¢œè‰²
              */
             function resetEventBlockColor(){
                 baidu.each(eventsArray, function(item, key){
@@ -187,7 +187,7 @@ h2{
             }
 
             /*
-             * ·µ»ØÒ»¸ö°üº¬ËùÓĞÊÂ¼şµÄObject
+             * è¿”å›ä¸€ä¸ªåŒ…å«æ‰€æœ‰äº‹ä»¶çš„Object
              */
             function getEventsObject(){
                 var options = {};
@@ -201,7 +201,7 @@ h2{
             }
 
             /*
-             * ´ÓÒ³ÃæµÄInput¿òÖĞ»ñÈ¡ÅäÖÃObject
+             * ä»é¡µé¢çš„Inputæ¡†ä¸­è·å–é…ç½®Object
              */
             function getConfigureObject(){
                 var options = {};
@@ -215,7 +215,7 @@ h2{
             };
 
             /*
-             * ´´½¨Ò»¸ö¾²Ì¬ÅäÖÃµÄdialog
+             * åˆ›å»ºä¸€ä¸ªé™æ€é…ç½®çš„dialog
              */
             function createStaticConfigDialog(){
                 var dialog = new baidu.ui.Dialog({
@@ -224,14 +224,14 @@ h2{
                 dialog.open();
             }
             /**
-             * ×°ÊÎÆ÷¶Ô»°¿ò
+             * è£…é¥°å™¨å¯¹è¯æ¡†
              */
             function createDecoratorDialog(){
                 var dialog = new baidu.ui.Dialog({
-                    //×°ÊÎÆ÷ÊÇ¿ÉÒÔÇ¶Ì×µÄ
+                    //è£…é¥°å™¨æ˜¯å¯ä»¥åµŒå¥—çš„
                     decorator : [
                         'box', 
-                        { //Èç¹ûÊÇobject£¬¾ÍÊÇ×°ÊÎÆ÷´´½¨Ê±µÄ²ÎÊı
+                        { //å¦‚æœæ˜¯objectï¼Œå°±æ˜¯è£…é¥°å™¨åˆ›å»ºæ—¶çš„å‚æ•°
                             type : 'box',
                             classPrefix :  "box"
                         }
@@ -243,7 +243,7 @@ h2{
             }
 
 
-            //°´ÕÕÅäÖÃ´´½¨
+            //æŒ‰ç…§é…ç½®åˆ›å»º
             function createDialog(type){
                 var nowIndex = dialogPool.length;
                 var options = {
@@ -310,13 +310,13 @@ h2{
         </script>
 
         <div class="case">
-            <input type="button" onclick="createStaticConfigDialog();" value="¾²Ì¬ÅäÖÃµÄdialog" />
-            <input type="button" onclick="createDecoratorDialog();" value="´ø×°ÊÎÆ÷µÄdialog" />
+            <input type="button" onclick="createStaticConfigDialog();" value="é™æ€é…ç½®çš„dialog" />
+            <input type="button" onclick="createDecoratorDialog();" value="å¸¦è£…é¥°å™¨çš„dialog" />
         </div>
 
         <div class="case">
         
-        <h2>°´ÕÕÑ¡ÏîÅäÖÃµÄdialog</h2>
+        <h2>æŒ‰ç…§é€‰é¡¹é…ç½®çš„dialog</h2>
 
         width: <input type="text" id="width" value="368px" /><br />
         height: <input type="text" id="height" value="344px" /><br />
