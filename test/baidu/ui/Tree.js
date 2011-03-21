@@ -405,6 +405,7 @@ test('TreeNode function Index, First, Last, Next and Previous', function() {
 	equals(node.getLastChild().getPrevious().id, 'a0', 'last next');
 
 	node.appendChild(new baidu.ui.Tree.TreeNode({
+		id : 'a1',
 		text : 'a1'
 	}));
 	equals(node.getFirstChild().getIndex(), 0, 'root first child index');
@@ -523,8 +524,7 @@ test('Test the "moveTo()" function', function(){
 	ok(!node_a.moveTo(node_a00), "Move the root node 'a', return false ");
 });
 
-test('Test the "removeAllChildren()" function'
-		+' with the parameter "recursion" = true', function(){
+test('Test the "removeAllChildren()" function', function(){
 
 	var tree = te.getUI({
 		data : {
@@ -565,48 +565,6 @@ test('Test the "removeAllChildren()" function'
 			'Remove a root node with some childNodes and grandchildNodes');
 });
 
-test('Test the "removeAllChildren()" '
-		+'function with the parameter recursion = false', function(){
-
-	var tree = te.getUI({
-		data : {
-			id : 'a',
-			text : 'a',
-			children : [ {
-				id : 'a0',
-				text : 'a0',
-				children : [ {
-					id : 'a00',
-					text : 'a00',
-					children : [ {
-						id : 'a000',
-						text : 'a000'
-					} ]
-				} ]
-			}, {
-              id : 'a1',
-              text : 'a1'
-          }  ]
-		}
-	});
-	var node_a = tree.getTreeNodeById('a');
-	node_a.expand();
-	var node_a0 = tree.getTreeNodeById('a0');
-	node_a0.expand();
-	var node_a00 = tree.getTreeNodeById('a00');
-	node_a00.expand();
-	var node_a000 = tree.getTreeNodeById('a000');
-	var node_a1 = tree.getTreeNodeById('a1');
-	node_a1.removeAllChildren(false);
-	equals(node_a1.getChildNodes().length, 0, 'Remove a leaf node');
-	node_a0.removeAllChildren(false);
-	equals(node_a0.getChildNodes().length, 1, 
-			'Remove a node with a childNodes(注意：现在这个接口的实现还存在争议，等到决定此接口是否带recursion参数)');
-	node_a.removeAllChildren(false);
-	equals(node_a.getChildNodes().length, 0, 
-			'Remove a root node with some childNodes and grandchildNodes');
-});
-
 test('Test the "isLastNode()" function', function(){
 	var tree = te.getUI(), node_a = tree.getTreeNodeById('a');
 	node_a.expand();
@@ -619,24 +577,26 @@ test('Test the "isLastNode()" function', function(){
 	ok(!node_a.isLastNode(), 'a is not the last node');
 });
 
-//test('Test the "update()" function', function(){
-//	var tree = te.getUI();
-//	var node_a = tree.getTreeNodeById('a');
-//	node_a.expand();
-//	var options = {
-//			id : 'b',
-//			text : 'b',
-//			href : 'www.baidu.com',
-//			isExpand : true,
-//	        isToggle : true,
-//	        children : [ {
-//              id : 'b0',
-//              text : 'b0'
-//             } ]
-//	};
-//	node_a.update(options);
-//	equals(true, false, 'TODO，等源代码写完后再测试');
-//});
+test('Test the "update()" function', function(){
+	var tree = te.getUI();
+	var node_a = tree.getTreeNodeById('a');
+	node_a.expand();
+	var options = {
+			id : 'b',
+			text : 'b',
+			href : 'www.baidu.com',
+			isExpand : true,
+	        isToggle : true,
+	        children : [ {
+              id : 'b0',
+              text : 'b0'
+             } ]
+	};
+	node_a.update(options);
+	equals(baidu.dom.g("a-text").innerHTML, 'b', 'The innerHTML of node_a is updated');
+	equals(node_a.text, 'b', 'The text attribute of node_a is updated');
+	equals(true, false, 'TODO，等源代码写完后再测试');
+});
 
 test('Test the "removeChild()" function', function(){
 	var tree = te.getUI({
@@ -685,8 +645,14 @@ test('Test the "removeChild()" function', function(){
 	equals(tree.getTreeNodeById('a000'), undefined, 
 			'The data of "a000" is deleted');
 	node_a.removeChild(node_a0);
-	equals(node_a.getChildNodes().length, 0, 
+	equals(node_a.getChildNodes().length, 1, 
 			'The dom element of "a0" is deleted');
 	equals(tree.getTreeNodeById('a0'), undefined, 
 			'The data of "a0" is deleted');
+});
+
+test('Test the "dispose()" function', function() {
+	var tree = te.getUI();
+	tree.dispose();
+	ok(!isShown(tree.getMain()), 'hide after dispose');
 });
