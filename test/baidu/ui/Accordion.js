@@ -64,7 +64,7 @@ test('function - insertItemHTML', function() {
 			'check inserted item');
 });
 
-test('function - collapse', function() {
+test('function - collapse & event beforecollapse', function() {
 	var ui = te.getUI({
 		items : [ {
 			head : 'H0',
@@ -72,9 +72,13 @@ test('function - collapse', function() {
 		}, {
 			head : 'H1',
 			body : 'BODY-1-0<br/>BODY-1-1'
-		} ]
+		} ],beforecollapse:function(){
+			ok(true, 'beforecollapse dispatched');
+			ok(isShown(ui.getBodies()[0]), 'item 0 shown before collapse');
+		}
 	});
 	ui.render("div_test");
 	ui.collapse();
 	ok(!isShown(ui.getBodies()[0]), 'item 0 hide after collapse');
+	expect(3);
 });

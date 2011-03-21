@@ -4,30 +4,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>slider by lly</title>
 <style type="text/css">
-    .tangram-slider,.tangram-progressbar {
-        background : #eee;
-        width : 300px;
-        height : 20px;
-    }
-    .tangram-slider-thumb {
-        width : 15px;
-        height : 20px;
-        font-size : 0px;
-        background : red;
-    }
-    .tangram-progressbar-bar {
-        height : 20px;
-        background : yellow;
-    }
+.tangram-slider{
+    width: 100%;
+    height: 100%;
+    background:silver;
+}
+.tangram-slider-progressbar,.tangram-progressbar{
+    height: 100%;
+}
+.tangram-progressbar-bar{
+    height: 100%;
+    background:yellow;
+}
+.tangram-slider-thumb{
+    width:20px;
+    height:100%;
+    background:red;
+}
 </style>
-<script src="../../../../src/import.php?f=baidu.ui.get,baidu.ui.Slider,baidu.ui.Slider.Slider$progressBar"></script>
+<script src='../../../../src/import.php?f=baidu.ui.Slider.Slider$progressbar'></script>
 </head>
 
 <body>
-    <div id="sliderId"></div>
+    <div id="sliderId" style='width:300px; height:25px; border:red solid 1px;'></div>
+    <input type='button' value='getter' onclick='main();'/>
 </body>
 <script language="javascript">
-    var slider = new baidu.ui.Slider();
-    slider.render('sliderId');
+    var slider = new baidu.ui.Slider({
+        
+        element: 'sliderId',
+        autoRender: true
+    });
+    //
+    function main(){
+        alert(slider.getValue());
+    }
 </script>
 </html>

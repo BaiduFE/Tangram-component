@@ -4,10 +4,10 @@
  */
 
 ///import baidu.ui.ColorPicker;
-///import baidu.ui.ColorPicker.ColorPalette;
+///import baidu.ui.ColorPalette;
 ///import baidu.ui.Button;
 ///import baidu.ui.Dialog;
-///import baidu.ui.Dialog$button;
+///import baidu.ui.Dialog.Dialog$button;
 ///import baidu.ui.create;
 
 ///import baidu.object.extend;
@@ -22,6 +22,7 @@
  * @param {String} options.sliderImgSrc 滑动条背景图片路径.
  * @param {String} [options.titleText = 'More Colors'] 标题文字.
  * @param {Object} [options.dilogOption] 填出对话框配置.
+ * @param {Object} [options.more = true] 是否开启插件功能.
  * @author walter
  */
 baidu.ui.ColorPicker.extend({
@@ -35,6 +36,8 @@ baidu.ui.ColorPicker.extend({
     titleText: 'More Colors',
 
     dialogOption: {},
+    
+    more: true,
     
     /**
      * fix mouseUp没有响应
@@ -52,26 +55,27 @@ baidu.ui.ColorPicker.extend({
      */
     _createColorPaletteDialog: function() {
         var me = this;
-        me.colorPaletteDialog =
-            baidu.ui.Dialog(baidu.object.extend({
-                titleText: me.titleText,
-                height: 180,
-                width: 360,
-                modal: true,
-                type: 'confirm',
-                onaccept: function() {
-                    me.dispatchEvent('onchosen', {
-                        color: me.colorPalette.hex
-                    });
-                    me._fixMouseUp();
-                },
-                oncancel: function() {
-                    me._fixMouseUp();
-                },
-                draggable: true,
-                autoDispose: false,
-                autoOpen: false
-            }, me.dialongOption || {}));
+        me.colorPaletteDialog = new baidu.ui.Dialog(baidu.object.extend({
+            titleText: me.titleText,
+            height: 180,
+            width: 360,
+            modal: true,
+            type: 'confirm',
+            onaccept: function() {
+                me.dispatchEvent('onchosen', {
+                    color: me.colorPalette.hex
+                });
+                me._fixMouseUp();
+            },
+            oncancel: function() {
+                me._fixMouseUp();
+            },
+            draggable: true,
+            autoDispose: false,
+            autoOpen: false,
+            autoRender: true
+        }, me.dialongOption || {}));
+        me.colorPaletteDialog.open();
     },
 
     /**
@@ -81,7 +85,7 @@ baidu.ui.ColorPicker.extend({
     _createColorPalette: function() {
         var me = this;
         me.colorPalette =
-            baidu.ui.create(baidu.ui.ColorPicker.ColorPalette, {
+            baidu.ui.create(baidu.ui.ColorPalette, {
                 autoRender: true,
                 sliderLength: me.sliderLength,
                 coverImgSrc: me.coverImgSrc,
@@ -92,6 +96,7 @@ baidu.ui.ColorPicker.extend({
 });
 
 baidu.ui.ColorPicker.register(function(me) {
+    if(!me.more) return;
     me.addEventListener('onupdate', function() {
         var strArray = [],
             body = me.getBody();
@@ -104,7 +109,6 @@ baidu.ui.ColorPicker.register(function(me) {
                 me.colorPaletteDialog.open();
             }
         });
-
         me._createColorPaletteDialog();
         me._createColorPalette();
     });

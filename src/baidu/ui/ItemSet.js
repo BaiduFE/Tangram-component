@@ -22,9 +22,11 @@
 
 baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
     var me = this;
+    
     me.headIds = [];
     me.bodyIds = [];
-    
+    me.heads = [];
+    me.bodies = [];
 }).extend( {
     currentClass     :  "current", 
     tplHead          :  "", 
@@ -43,15 +45,10 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
         var me = this, 
             headId = me.getId('head' + key);    
         me.headIds.push(headId);
-        if(key == me.defaultIndex){
-            me.addEventListener("onload", function(){
-                me.setCurrentHead(baidu.g(headId)); 
-            });
-        }
         return  baidu.format(me.tplHead, {
                 id       :  headId, 
-                bodyId   :  me.getId('body' + key), 
-                "class"  :  key == me.defaultIndex ? me.getClass('head')  +  " "  +  me.getClass(me.currentClass)  :  me.getClass('head'), 
+                bodyId   :  me.getId('body' + key),
+                'class'  :  me.getClass('head'),
                 head     :  item['head'], 
                 tangram  :  "name : " + me.getId('body' + key)
             });
@@ -72,7 +69,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
                 id       :  bodyId, 
                 "class"  :  me.getClass('body'), 
                 body  :  item['body'], 
-                display  :  key == me.defaultIndex ? "block"  :  "none"
+                display  :  'none'
             });
     }, 
 
@@ -106,9 +103,17 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
     render  :  function(main) {
         var me = this;
         baidu.dom.insertHTML(me.renderMain(main),  "beforeEnd",  me.getString());
-        baidu.each(me.getHeads(), function(head, key) {
+        
+        me.heads = me.getHeads();
+        me.bodies = me.getBodies();
+        
+        baidu.each(me.heads, function(head, key) {
             me._addSwitchEvent(head);
-            key == 0 && me.setCurrentHead(head);
+            if(key == me.defaultIndex){
+                me.setCurrentHead(head);
+                baidu.dom.addClass(head, me.getClass(me.currentClass));
+                me.getBodyByHead(head).style.display = '';
+            }
         });
         me.dispatchEvent("onload");
     },
@@ -156,16 +161,26 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
      */
     getBodyByHead  :  function(head) {
         return baidu.g(head.getAttribute("bodyId"));
-    }, 
+    },
+
+    getBodyByIndex: function(index){
+        var me = this;
+        return me.getBodyByHead(me.heads[index]);
+    },
     /**
      * 增加item
      * @param {Object} item
      */
     addItem : function(item) {
-        var index = this.getHeads().length;
-        this.insertItemHTML(item, index);
-        //this.getHeads().push(baidu.g(
-        this._addSwitchEvent(this.getHeads()[index]);
+        var me = this,
+            index = me.getHeads().length;
+        
+        me.insertItemHTML(item, index);
+        
+        me.heads = me.getHeads();
+        me.bodies = me.getBodies();
+        
+        me._addSwitchEvent(me.heads[index]);
         
     }, 
     /**
@@ -173,15 +188,19 @@ baidu.ui.ItemSet = baidu.ui.createUI(function (options) {
      * @param {int} index
      */
     removeItem  : function(index) {
-        var head = this.getHeads()[index], 
+        var me = this,
+            head = me.heads[index], 
             headId = head.id, 
-            body = this.getBodyByHead(head), 
+            body = me.getBodyByHead(head), 
             bodyId = body.id;
+        
         baidu.dom.remove(head);
         baidu.dom.remove(body);
         baidu.array.remove(this.headIds, headId);
         baidu.array.remove(this.bodyIds, bodyId);
-        
+
+        me.heads = me.getHeads();
+        me.bodies = me.getBodies();
     },
     
     _switch : function(head){

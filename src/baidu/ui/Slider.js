@@ -3,28 +3,22 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  * 
  * path: ui/slider/Slider.js
- * author: berg
+ * author: berg,linlingyu
  * version: 1.0.0
  * date: 2010/09/02
  */
-
-
 ///import baidu.ui.createUI;
+///import baidu.string.format;
+///import baidu.page.getMousePosition;
+///import baidu.dom.getPosition;
+///import baidu.event.getTarget;
+///import baidu.dom.contains;
+///import baidu.dom.insertHTML;
+///import baidu.dom.draggable;
 ///import baidu.object.extend;
 ///import baidu.dom.g;
 ///import baidu.dom.remove;
-///import baidu.dom.setStyle;
-///import baidu.dom._styleFilter.px;
-///import baidu.dom.getStyle;
-///import baidu.dom.insertHTML;
-///import baidu.dom.draggable;
-///import baidu.dom.getPosition;
-///import baidu.event.getTarget;
-///import baidu.page.getMousePosition;
-///import baidu.string.format;
-
-
- 
+///import baidu.lang.Class;
  /**
  * 拖动条控件，可用作音乐播放进度。
  * @class
@@ -32,49 +26,43 @@
  * @param      {Object}                 [options]    选项layout
  * @config     {Number}                 value        记录滑块的当前进度值
  * @config     {Number}                 layout       滑块的布局[水平：horizontal,垂直：vertical]
- * @config     {Number}                 min          进度条最左边代表的值
- * @config     {Number}                 max          进度条最右边代表的值
+ * @config     {Number}                 min          进度条最左边代表的值，默认值取0
+ * @config     {Number}                 max          进度条最右边代表的值，默认值取100
+ * @config     {Array}                  range        可拖动的范围，取值min到max之间，例如[30, 80]
  * @config     {Boolean}                disabled     是否禁用
  * @config     {String}                 skin         自定义样式名称前缀
  * @plugin     progressBar              进度条跟随滑块的滑动
  */
 baidu.ui.Slider = baidu.ui.createUI(function(options){
     var me = this;
-    options = options || {};
-    me.layout = options.layout || "horizontal";
-    //初始化range
-    if(!options.range){
-        me.range = [me.min, me.max];
-    }
-    
-}).extend(
-    /**
-     *  @lends baidu.ui.slider.Slider.prototype
-     */
-{
-    //滑块的布局方式 horizontal :水平  vertical:垂直
-    layout          : "horizontal",
-    uiType          : "slider",
-    tplBody         : '<div id="#{id}" class="#{class}" onmousedown="#{mousedown}">#{thumb}</div>',
-    tplThumb        : '<div id="#{thumbId}" class="#{thumbClass}" style="position:absolute;"></div>',
-    //位置换算
-    axis:{
-        horizontal : {mousePos : "x", mainPos : "left", clientSize: 'clientWidth', thumbSize : "offsetWidth", thumbPos : "left", _getSize : "_getWidth", _getThumbSize : "_getThumbWidth"},
-        vertical : {mousePos : "y", mainPos : "top", clientSize: 'clientHeight', thumbSize : "offsetHeight", thumbPos : "top", _getSize : "_getHeight", _getThumbSize : "_getThumbHeight"}
+    me.range = me.range || [me.min, me.max];//初始化range
+}).extend({
+    layout: 'horizontal',//滑块的布局方式 horizontal :水平  vertical:垂直
+    uiType: 'slider',
+    tplBody: '<div id="#{id}" class="#{class}" onmousedown="#{mousedown}">#{thumb}</div>',
+    tplThumb: '<div id="#{thumbId}" class="#{thumbClass}" style="position:absolute;"></div>',
+    value: 0,//初始化时，进度条所在的值
+    min: 0,//进度条最左边代表的值
+    max: 100,//进度条最右边代表的值
+    disabled: false,
+//    range: [0, 100],
+    _dragOpt: {},
+    _axis: {//位置换算
+        horizontal: {
+            mousePos: 'x',
+            pos: 'left',
+            size: 'width',
+            clientSize: 'clientWidth',
+            offsetSize: 'offsetWidth'
+        },
+        vertical: {
+            mousePos: 'y',
+            pos: 'top',
+            size: 'height',
+            clientSize: 'clientHeight',
+            offsetSize: 'offsetHeight'
+        }
     },
-    //初始化时，进度条所在的值
-    value           : 0,
-    //进度条最左边代表的值
-    min             : 0,
-    //进度条最右边代表的值
-    max             : 100,
-
-    disabled        : false,
-
-    //拖拽的范围
-    //range         : [min, max]
-
-    _dragOpt        : {},
 
     /**
      * 获得slider控件字符串
@@ -100,22 +88,21 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      */
     _mouseDown : function(e){
         var me = this,
+            axis = me._axis[me.layout],
             mousePos = baidu.page.getMousePosition(),
             mainPos = baidu.dom.getPosition(me.getMain()),
             thumb = me.getThumb(),
-            target = baidu.event.getTarget(e),
-            len=0;
+            target = baidu.event.getTarget(e);
         //如果点在了滑块上面，就不移动
         if(target == thumb
-            || baidu.dom.contains(thumb, target)){
+            || baidu.dom.contains(thumb, target)
+            || me.disabled){
             return ;
         }
-        len = mousePos[me.axis[me.layout].mousePos] - mainPos[me.axis[me.layout].mainPos] - thumb[me.axis[me.layout].thumbSize]/ 2;
-        me._calcValue(len);
-        //如果点击的地方在range之外，不发送stop事件
-        if(me.update()){
-            me.dispatchEvent("slidestop");
-        }
+        me._calcValue(mousePos[axis.mousePos]
+            - mainPos[axis.pos]
+            - thumb[axis.offsetSize] / 2);
+        me.update()
         me.dispatchEvent("slideclick");
     },
     
@@ -125,13 +112,8 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * @param     {String|HTMLElement}   target     将渲染到的元素或元素id
      */
     render : function(target){
-        var me = this,
-            main,
-            thumbWidth;
-
-        if(!target){
-            return ;
-        }
+        var me = this;
+        if(!target){return;}
         baidu.dom.insertHTML(me.renderMain(target), "beforeEnd", me.getString());
         me.getMain().style.position = "relative";
         me._createThumb();
@@ -153,7 +135,8 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
                                 me.dispatchEvent("slidestart");
                             },
             "ondrag"        : function(){
-                                var len = me.getThumb().style[me.axis[me.layout].thumbPos];
+                                var axis = me._axis[me.layout],
+                                    len = me.getThumb().style[axis.pos];
                                 me._calcValue(parseInt(len));
                                 me.dispatchEvent("slide");
                             },
@@ -167,29 +150,22 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * 更新拖拽范围，使用户可以动态修改滑块的拖拽范围
      * @private
      */
-    _updateDragRange : function(){
+    _updateDragRange : function(val){
         var me = this,
-            range = me.range,
-            ratio = 0;
-        me._dragOpt.range[2] = me._getHeight();
-        ratio =(me[me.axis[me.layout]._getSize]() - me[me.axis[me.layout]._getThumbSize]()) / ( me.max - me.min );
-
-        if(me.layout == "horizontal"){
-            if(typeof range != 'undefined'){
-                me._dragOpt.range[1] = range[1] * ratio + me._getThumbWidth();
-                me._dragOpt.range[3] = range[0] * ratio;
-            }else{
-                me._dragOpt.range[1] = me._getWidth();
-                me._dragOpt.range[3] = 0;
-            }
-        } else {
-            if(typeof range != 'undefined'){
-                me._dragOpt.range[2] = range[1] * ratio + me._getThumbHeight();
-                me._dragOpt.range[1] = me._getThumbWidth();
-            }else{
-                me._dragOpt.range[1] = me._getWidth();
-                me._dragOpt.range[3] = 0;
-            }
+            axis = me._axis[me.layout],
+            range = val || me.range,
+            dragRange = me._dragOpt.range,
+            thumb = me.getThumb();
+        range = [Math.max(Math.min(range[0], me.max), me.min),
+                Math.max(Math.min(range[1], me.max), me.min)];
+        if(me.layout.toLowerCase() == 'horizontal'){
+            dragRange[1] = me._parseValue(range[1], 'fix') + thumb[axis.offsetSize];
+            dragRange[3] = me._parseValue(range[0], 'fix');
+            dragRange[2] = thumb.clientHeight;
+        }else{
+            dragRange[0] = me._parseValue(range[0], 'fix');
+            dragRange[2] = me._parseValue(range[1], 'fix') + thumb[axis.offsetSize];
+            dragRange[1] = thumb.clientWidth;
         }
     },
 
@@ -205,18 +181,15 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * @config  {String}                 skin         自定义样式名称前缀
      */
     update : function(options){
-        var me = this,len=0;
+        var me = this,
+            axis = me._axis[me.layout],
+            body = me.getBody();
         options = options || {};
         baidu.object.extend(me, options);
         me._updateDragRange();
-        me._adjustValue(); 
-//        if(me.value == me._lastValue){
-//            return ;
-//        }
-//        me._lastValue = me.value;
+        me._adjustValue();
         if (me.dispatchEvent("beforesliderto", {drop: options.drop})) {
-            len = me[me.axis[me.layout]._getSize]()- me[me.axis[me.layout]._getThumbSize]();
-            baidu.dom.setStyle(me.getThumb(), me.axis[me.layout].thumbPos, me.value * (len) / ( me.max - me.min ) );
+            me.getThumb().style[axis.pos] = me._parseValue(me.value, 'pix') + 'px';
             me.dispatchEvent("update");
         }
     },
@@ -225,10 +198,10 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * 校准value值，保证它在range范围内
      * @private
      */
-
     _adjustValue : function(){
-        var me = this;
-        me.value = Math.max(Math.min(me.value, me.range[1]), me.range[0]);
+        var me = this,
+            range = me.range;
+        me.value = Math.max(Math.min(me.value, range[1]), range[0]);
     },
 
     /**
@@ -237,45 +210,26 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * @param {number} position
      */
     _calcValue : function(pos){
-        var me = this, len = me[me.axis[me.layout]._getSize]()-me[me.axis[me.layout]._getThumbSize]();
-        me.value = pos * (me.max - me.min) / (len);
-        me._adjustValue(); 
+        var me = this;
+        me.value = me._parseValue(pos, 'value');
+        me._adjustValue();
     },
-
+    
     /**
-     * 获得body元素的width   todo: 考虑把两个函数放入基类
-     * @private
+     * 将刻度转换为像素或是将像素转换为刻度
+     * @param {Number} val 刻度值或是像素
+     * @param {Object} type 'pix':刻度转换为像素, 'value':像素转换为刻度
      */
-    _getWidth : function(){
-//        return parseInt(baidu.dom.getStyle(this.getBody(), "width"));
-        return this.getBody().clientWidth;
-    },
-
-    /**
-     * 获得body元素的height
-     * @private
-     */
-    _getHeight : function(){
-//        return parseInt(baidu.dom.getStyle(this.getBody(), "height"));
-        return this.getBody().clientHeight;
-    },
-
-
-    /**
-     * 获得thumb元素的width
-     * @private
-     */
-    _getThumbWidth : function(){
-//        return parseInt(baidu.dom.getStyle(this.getThumb(), "width"));
-        return this.getThumb().offsetWidth;
-    },
-    /**
-     * 获得thumb元素的height
-     * @private
-     */
-    _getThumbHeight : function(){
-//        return parseInt(baidu.dom.getStyle(this.getThumb(), "height"));
-        return this.getThumb().offsetHeight;
+    _parseValue: function(val, type){
+        var me = this,
+            axis = me._axis[me.layout];
+            len = me.getBody()[axis.clientSize] - me.getThumb()[axis.offsetSize];
+        if(type == 'value'){
+            val = (me.max - me.min) / len * val + me.min;
+        }else{//to pix
+            val = Math.round(len /(me.max - me.min) * (val - me.min));
+        }
+        return val;
     },
 
     /**
@@ -285,22 +239,6 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      */
     getValue : function(){
         return this.value;
-    },
-
-    /**
-     * 禁用滑块
-     * @public
-     */
-    disable : function(){
-        this.disabled = true;
-    },
-
-    /**
-     * 启用滑块
-     * @public
-     */
-    enable : function(){
-        this.disabled = false;
     },
     
     /**
@@ -320,7 +258,18 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
     getThumb : function(){
         return baidu.g(this.getId("thumb"));
     },
-
+    
+    disable: function(){
+        var me = this;
+        me.disabled = true;
+        me._updateDragRange([me.value, me.value]);
+    },
+    
+    enable: function(){
+        var me = this;
+        me.disabled = false;
+        me._updateDragRange(me.range);
+    },
     /**
      * 销毁当前实例
      * @public
@@ -328,5 +277,6 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
     dispose : function(){
         var me = this;
         baidu.dom.remove(me.getId());
+        baidu.lang.Class.prototype.dispose.call(me);
     }
 });

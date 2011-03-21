@@ -1,0 +1,57 @@
+.tangram-tab{
+    /*background:url("img/InlineSprites.png") repeat-x scroll 0 -36px transparent;*/
+    font-size:14px;
+    font-weight:700;
+    height:61px;
+    text-align:center;
+}
+
+.tangram-tab-head a{
+    color:white;
+}
+       
+.tangram-tab-head-container{
+    padding-left:10px;
+}
+
+.tangram-tab-body-container{
+    -moz-border-radius:4px 4px 4px 4px;
+    background:url("img/InlineSprites.png") repeat-x scroll 0 -36px transparent;
+}
+       
+.tangram-tab-head-container li{
+    display:inline;
+    float:left;
+    margin:0 1px;
+}
+
+.tangram-tab-head-container li a{
+   display:block;
+    height:29px;
+    line-height:29px;
+    outline:medium none;
+    padding-top:3px;
+    text-decoration:none;
+    width:90px;
+}
+       
+.tangram-tab-current a{
+    background:url("img/BlockSprites.png") no-repeat scroll 0 -240px transparent;
+    color:#35608C;
+}
+       
+.tangram-tab-head-container a:hover{
+    background:url("img/BlockSprites.png") no-repeat scroll 0 -240px transparent;
+    color:#35608C;
+}
+
+.tangram-tab-body{
+    clear:both;
+    background-color:#DDEDF7;
+    text-align:left;
+}
+       
+.tangram-tab-body p{
+    color:#3377AA;
+    margin-top:0px;
+}        

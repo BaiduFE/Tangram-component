@@ -20,7 +20,7 @@
 			if (!!window._$jscoverage)//如果参数里有cov=true
 				KissCov = window._$jscoverage[kissPath];
 			parent.$(wbkiss).trigger('done',
-					[ new Date().getTime(), args, KissCov ]);
+					[ new Date().getTime(), args[0], KissCov ]);
 		}
 	}
 

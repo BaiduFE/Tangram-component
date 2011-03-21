@@ -11,9 +11,7 @@
 
 ///import baidu.ui.createUI;
 ///import baidu.array.each;
-
 ///import baidu.string.format;
-
 ///import baidu.dom.g;
 ///import baidu.dom.children;
 ///import baidu.dom.addClass;
@@ -32,7 +30,8 @@
  */
  
 baidu.ui.Tab = baidu.ui.createUI( function (options) {
-
+    var me = this;
+    me.items = me.items || [];//初始化防止空
 }, {superClass : baidu.ui.ItemSet}).extend( 
     /**
      *  @lends baidu.ui.Tab.prototype
@@ -83,9 +82,15 @@ baidu.ui.Tab = baidu.ui.createUI( function (options) {
 	 */
 	insertItemHTML : function(item, index) {
 		var me = this;
-		baidu.dom.insertHTML(baidu.g(me.getId("headParent")),  "beforeEnd",  this._getHeadString(item, index));
-		baidu.dom.insertHTML(baidu.g(me.getId("bodyParent")),  "beforeEnd",  this._getBodyString(item, index));
-	}, 
+		baidu.dom.insertHTML(baidu.g(me.getId("head-container")),  "beforeEnd",  this._getHeadString(item, index));
+		baidu.dom.insertHTML(baidu.g(me.getId("body-container")),  "beforeEnd",  this._getBodyString(item, index));
+	},
+
+    insertContentHTML: function(item, index){
+        var me = this;
+        baidu.dom.insertHTML(me.bodies[index],'beforeEnd',item);
+    },
+
 	/**
 	* 兼容原接口getLabel
 	* @private

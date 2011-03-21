@@ -27,7 +27,8 @@
  * @param {HTMLElment} [options.target] 渲染的容器元素
  */
 baidu.ui.Accordion = baidu.ui.createUI(function (options){
-
+    var me = this;
+    me.items = me.items || [];//初始化防止空
 },{superClass:baidu.ui.ItemSet}).extend({
     //ui控件的类型 **必须**
     uiType      : "accordion",
@@ -61,8 +62,8 @@ baidu.ui.Accordion = baidu.ui.createUI(function (options){
      */
     insertItemHTML:function(item,index){
         var me = this;
-        baidu.dom.insertHTML(me.getMain(), "beforeEnd", me._getHeadString(item,index));
-        baidu.dom.insertHTML(me.getMain(), "beforeEnd", me._getBodyString(item,index));
+        baidu.dom.insertHTML(me.getBody(), "beforeEnd", me._getHeadString(item,index));
+        baidu.dom.insertHTML(me.getBody(), "beforeEnd", me._getBodyString(item,index));
     },
     
     /**

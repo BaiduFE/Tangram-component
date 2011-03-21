@@ -23,7 +23,7 @@
  */
 baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     var me = this;
-        me._scrollBarSize = {width: 0, height: 0};//用来存入prev按钮的宽度和高度
+        me._scrollBarSize = {width: 0, height: 0};//用来存入scrollbar的宽度和高度
 }).extend({
     uiType: 'scrollbar',
     tplDOM: '<div id="#{id}" class="#{class}"></div>',
@@ -36,8 +36,8 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
         horizontal: {
             size: 'width',
             unSize: 'height',
-            offsetSize: 'offsetHeight',
-            unOffsetSize: 'offsetWidth',
+            offsetSize: 'offsetWidth',
+            unOffsetSize: 'offsetHeight',
             clientSize: 'clientWidth',
             scrollPos: 'scrollLeft',
             scrollSize: 'scrollWidth'
@@ -121,7 +121,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
             autoRender: true
         });
         me._scrollBarSize[axis.unSize] = next.getBody()[axis.unOffsetSize];//这里先运算出宽度，在flushUI中运算高度
-        me._thumb = new baidu.ui.Button({
+        new baidu.ui.Button({
             classPrefix: me.classPrefix + '-thumb-btn',
             skin: me.skin ? me.skin + '-thumb-btn' : '',
             content: me.getThumbString(),
