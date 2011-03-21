@@ -12,6 +12,8 @@
 ///import baidu.ui.Base;
 ///import baidu.ui.create;
 ///import baidu.object.extend;
+///import baidu.event.on;
+///import baidu.event.un;
 
 /**
  * 创建一个UI控件类
@@ -105,6 +107,13 @@ baidu.ui.createUI = function(constructor, options) {
     
     //静态配置支持
     ui.options = {};
-
+    
+    //事件支持, 避免析构中漏掉注销事件.
+    ui.on = function(element, type, listener){
+        baidu.on(element, type, listener);
+        ui.addEventListener("ondispose", function(){
+            baidu.un(element, type, listener);
+        });
+    };
     return ui;
 };
