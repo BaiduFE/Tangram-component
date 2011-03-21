@@ -71,7 +71,7 @@ test('校验是否可编辑和非可编辑', function() {
 	 * 更新非可编辑列为可编辑列
 	 */
 	columns[0].enableEdit = true;
-	tb.update(columns);
+	tb.update({columns: columns});
 	check(tb.getRow(0).getCell(0).getMain(), true);
 	
 	/**
