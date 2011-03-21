@@ -10,10 +10,10 @@ function mySetup() {
 	link.setAttribute('href','../../baidu/ui/Combox/style.css');
 	
 	document.getElementsByTagName("head")[0].appendChild(link);
-	var select = document.createElement('select');
-	select.id = "select_test";
-	document.body.appendChild(select);
-	testingElement.dom.push(select);
+//	var select = document.createElement('select');
+//	select.id = "select_test";
+//	document.body.appendChild(select);
+//	testingElement.dom.push(select);
 
 //	testingElement.dom.push(link);
 	for ( var i = 0; i < baidu.event._listeners; i++)
