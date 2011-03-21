@@ -59,40 +59,80 @@ test("key和cache", function() {
 test('ajaxOption', function() {
 	stop();
 	var url = (upath || "") + "get.php";
-	var ajaxSource = baidu.dataSource.ajax(url + '?key=2');
-	var cache;
-	var check = ua.functionListHelper();
-
-	check.add(function() {
-		ajaxSource.get({
-			key : 'test',
-			ajaxOption : {
-				'method' : 'get',
-				'onsuccess' : function(xhr, text) {
-					console.log("test");
-					ok(/\d+/.test(text), 'reponse matched \\d+: '
-							+ text);
-					cache = text;
-					check.next();
-				}
+	var ajaxSource = baidu.dataSource.ajax(url, {
+		ajaxOption : {
+			'method' : 'post',
+			data : 'm=post',
+			'onsuccess' : function(xhr, text) {
+				equals(text, 'POST', 'method post');
+				start();
 			}
-		});
+		}
 	});
-	check.add(function() {// 有cache
-		ajaxSource.update({
-			'url' : url + '?key=3'
-		});// 更换URL，确保不会在ajax请求时被浏览器cache
-		ajaxSource.get({
-			key : 'test',
-			ajaxOption : {
-				'method' : 'get',
-				'onsuccess' : function(xhr, text) {
-					equals(text, cache, "cached");
-					check.next();
-				}
-			}
-		});
+	ajaxSource.get({
+		key : 'post'
 	});
-	check.start();
+});
 
+// FIXME 这个事件是否对外公开？？？？
+// test('onbeforeget', function() {
+// stop();
+// expect(2);
+// var as = baidu.dataSource.ajax(upath + 'get.php', {
+// onbeforeget : function() {
+// ok(true, 'onbeforeget return false');
+// return false;
+// }
+// });
+// as.get({
+// key : 'get',
+// onsuccess : function() {
+// ok(false, 'onsuccess should not trigger');
+// }
+// });
+//
+// as.update({
+// onbeforeget : function() {
+// ok(true, 'onbeforeget return null');
+// }
+// });
+// as.get({
+// key : 'get',
+// onsuccess : function() {
+// ok(false, 'onsuccess should not trigger');
+// }
+// });
+//	
+// as.update({
+// onbeforeget : function() {
+// ok(true, 'onbeforeget return null');
+// return true;
+// }
+// });
+// as.get({
+// key : 'get123',
+// onsuccess : function() {
+// ok(false, 'onsuccess should not trigger');
+// start();
+// }
+// });
+// });
+
+test('onfailure', function() {
+	expect(1);
+	stop();
+	// 502, 404
+	var as = baidu.dataSource.ajax(upath + 'noneexist.php');
+	as.get({
+		key : 'onfailure 404',
+		onfailure : function(xhr) {
+			equals(xhr.status, 404, 'onfailure');
+			start();
+		}
+//	,//FIXME 404为啥没出来？
+//		on404 : function(xhr){
+//			equals(xhr.status, 404, 'on404');
+//			start();
+//		}
+	});
 });

@@ -1,7 +1,7 @@
 module('baidu.ui.ColorPicker.ColorPalette');
 
 function createColorPalette(options) {
-    var colorPalette = baidu.ui.create(baidu.ui.ColorPicker.ColorPalette,
+    var colorPalette = baidu.ui.create(baidu.ui.ColorPalette,
     baidu.object.extend({
         autoRender: true,
         element:'div_test'
@@ -25,4 +25,4 @@ test("dispose", function() {
   colorPalette.dispose();
   equals(baidu.g(colorPaletteId), null,
           "Check colorPalette element exists or not");
-})
+});

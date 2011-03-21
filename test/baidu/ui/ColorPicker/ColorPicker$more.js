@@ -1,20 +1,22 @@
 module('baidu.ui.ColorPicker.ColorPicker$more');
 
-function createColorPicker(options) {
-    var colorPicker = baidu.ui.create(baidu.ui.ColorPicker,
-    baidu.object.extend({
-        autoRender: true,
-        element: testingElement.dom[0]
-    }, options || {}));
-    testingElement.obj.push(colorPicker);
-    return colorPicker;
-}
-
-test("more", function(){
-  var colorPicker = createColorPicker();
-  colorPicker.open();
-  ok(colorPicker.colorPalette,
-          "Check colorPalette obj exists or not");
-  ok(colorPicker.colorPaletteDialog,
-          "Check colorPaletteDialog obj exists or not");
-})
+// colorPalate的校验在colorPalate中进行，此处仅校验交互接口
+test("base", function() {
+	stop();
+	ua.loadcss(upath + 'css/colorpicker.css',
+			function() {
+				var cp = new baidu.ui.ColorPicker({
+					posable : true,
+					autoRender : true,
+					element : te.dom[1]
+				});
+				te.obj.push(cp);
+				ok(cp.more, 'more is set');
+				cp.render();
+				cp.open();
+				ok(cp.colorPalette, "Check colorPalette obj exists or not");
+				ok(cp.colorPaletteDialog,
+						"Check colorPaletteDialog obj exists or not");
+				start();
+			}, 'tangram-dialog-cancel', 'height', '20px');
+});
