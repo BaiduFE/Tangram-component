@@ -15,11 +15,11 @@
  * @class  Tree：管理和操作TreeNode
  * @param {Object} options
  * @config {Object} data 节点数据集合 {text: "", children: [{text: ""},{text: ""}]}
- * @config {Boolean} expandable : 是否改变trunk的状态到leaf,当一个trunk的子节点数为0时，
+ * @config {Boolean} expandable  是否改变trunk的状态到leaf,当一个trunk的子节点数为0时，
  *                                如果为true,那么就变为leaf的状态，否则就不会变
- * @config {Function} onclick : 节点被点击后触发。
- * @config {Function} ontoggle : 节点被展开或收起后触发。
- * @config {Function} onload : Tree渲染后触发。
+ * @config {Function} onclick  节点被点击后触发。
+ * @config {Function} ontoggle  节点被展开或收起后触发。
+ * @config {Function} onload  Tree渲染后触发。
  */
 
 //  _rootNode : 根节点,默认值为null,
