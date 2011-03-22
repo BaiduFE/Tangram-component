@@ -12,7 +12,7 @@
 ///import baidu.string.format;
 
 /**
- * Tree：管理和操作TreeNode
+ * @class  Tree：管理和操作TreeNode
  * @param {Object} options
  * @config {Object} data 节点数据集合 {text: "", children: [{text: ""},{text: ""}]}
  * @config {Boolean} expandable : 是否改变trunk的状态到leaf,当一个trunk的子节点数为0时，
@@ -30,7 +30,11 @@ baidu.ui.Tree = baidu.ui.createUI(function(options) {
     this._treeNodes = {};
 });
 ///import baidu.ui.Tree.TreeNode; //[inner]
-baidu.ui.Tree.extend({
+baidu.ui.Tree.extend(
+    /**
+     *  @lends baidu.ui.Tree.prototype
+     */
+    {
     //ui类型
     uiType: 'tree',
     //模板
