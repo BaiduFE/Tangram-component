@@ -29,7 +29,7 @@
 ///import baidu.lang.isFunction;
 
 /**
- * Menubar 下拉菜单
+ * @class  Menubar 下拉菜单
  * @param {Object} [options]                             配置选项
  * @param {String} [options.width = '200']               选项宽度
  * @param {String} [options.height]                      选项高度
