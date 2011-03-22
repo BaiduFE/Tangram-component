@@ -13,8 +13,10 @@
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.g;
 ///import baidu.array.each;
+///import baidu.array.contains;
 ///import baidu.ui.createUI;
 ///import baidu.object.merge;
+///import baidu.object.each;
 
 /**
  * @class   toolBar基类，建立toolBar实例
@@ -36,17 +38,16 @@
 baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
     var me = this,
         positionCheck = false,
-        positionPrefix = 'align="',
-        position = 'left';
+        positionPrefix = 'align="';
 
     me._itemObject = {};
     me.items = me.items || {};
    
     if(me.direction != 'horizontal'){
         me.direction = 'vertical';
-        position = 'top';
+        !baidu.array.contains(['top','middle','bottom','baseline'], me.position) && me.position = 'top';
     }
-    me.position = me.position || position;
+    
     me._positionStr = positionPrefix + me.position + '"';
 
 }).extend({
@@ -282,10 +283,10 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
             cells = cells.join('');
         }else {
             container = baidu.g(me.getId('tableInner'));
-            containerTR = container.row[0];
+            containerTR = container.rows[0];
             if (me.direction == 'horizontal') {
                 for (i = 0; i < num; i++) {
-                    td = container.insertCell(containerTR.cells.length);
+                    td = containerTR.insertCell(containerTR.cells.length);
                     td.id = me.getId('cell-' + i);
                     td.valign = 'middle';
                     cells.push(td);
@@ -329,10 +330,10 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
 
     /**
      * enable ui组件，当不传入name时，enable所有ui组件到
-     * @private
+     * @public
      * @param {String} [name] ui组件唯一标识符.
      */
-    _enable: function(name) {
+    enable: function(name) {
         var me = this, item;
 
         if (!name) {
@@ -344,10 +345,10 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
 
     /**
      * disable ui组件，当不传入name时，disable所有ui组建
-     * @private
+     * @public
      * @param {String} [name] ui组件唯一标识符.
      */
-    _disable: function(name) {
+    disable: function(name) {
         var me = this, item;
 
         if (!name) {

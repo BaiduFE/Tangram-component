@@ -38,8 +38,8 @@
  * @param     {Object}        options               选项
  * @config    {DOMElement}    content               要放到dialog中的元素，如果传此参数时同时传contentText，则忽略contentText。
  * @config    {String}        contentText           dialog中的内容
- * @config    {String|Number} width                 内容区域的宽度，默认值为400，注意，这里的内容区域指getContent()得到元素的区域，不包含title和footer。
- * @config    {String|Number} height                内容区域的高度，默认值为300
+ * @config    {String|Number} width                 内容区域的宽度,注意，这里的内容区域指getContent()得到元素的区域，不包含title和footer。
+ * @config    {String|Number} height                内容区域的高度
  * @config    {String|Number} top                   dialog距离页面上方的距离
  * @config    {String|Number} left                  dialog距离页面左方的距离
  * @config    {String}        titleText             dialog标题文字
