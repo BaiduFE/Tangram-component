@@ -45,16 +45,17 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
    
     if(me.direction != 'horizontal'){
         me.direction = 'vertical';
-        !baidu.array.contains(['top','middle','bottom','baseline'], me.position) && me.position = 'top';
+        !baidu.array.contains(['top','middle','bottom','baseline'], me.position) && (me.position = 'top');
     }
     
     me._positionStr = positionPrefix + me.position + '"';
 
-}).extend({
-
+}).extend(
+    
     /*
      * @lends baidu.ui.toolbar.Toolbar.prototype
      */
+{
 
     /**
      * item容器,默认为document.body
@@ -223,7 +224,7 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
             });
         }
         if(uiNS){
-            baidu.object.merge(uiNS,{statable:true},{overwrite:true,whiteList:["statable"]});
+            baidu.object.merge(uiNS,{statable:true},{whiteList:["statable"]});
             uiInstance = baidu.ui.create(uiNS,options.config);
         }
         //uiNS && (uiInstance = baidu.ui.create(uiNS, options.config));

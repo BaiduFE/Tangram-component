@@ -16,12 +16,12 @@
  * @author  lixiaopeng
  */
 baidu.ui.toolbar.Spacer = baidu.ui.createUI(function(options) {
-}).extend({
-
+}).extend(
+   
     /*
      * @lends baidu.ui.toolbar.Spacer.prototype
-     */
-
+     */ 
+{
     /**
      * statable
      */

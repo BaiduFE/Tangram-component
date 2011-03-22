@@ -13,12 +13,11 @@
  * @author  lixiaopeng
  */
 baidu.ui.toolbar.Separator = baidu.ui.createUI(function(options) {
-}).extend({
-  
+}).extend(
     /*
      * @lends baidu.ui.toolbar.Separator.prototype
      */
-
+{
     /**
      * statable
      */
