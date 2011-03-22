@@ -401,8 +401,8 @@ test('TreeNode function Index, First, Last, Next and Previous', function() {
 	equals(node.getLastChild().id, 'a0', 'last');
 	equals(node.getFirstChild().getNext().id, 'a0', 'first next');
 	equals(node.getLastChild().getNext().id, 'a0', 'last next');
-	equals(node.getFirstChild().getPrevious().id, 'a0', 'first next');
-	equals(node.getLastChild().getPrevious().id, 'a0', 'last next');
+	equals(node.getFirstChild().getPrevious().id, 'a0', 'first previous');
+	equals(node.getLastChild().getPrevious().id, 'a0', 'last previous');
 
 	node.appendChild(new baidu.ui.Tree.TreeNode({
 		id : 'a1',
@@ -411,25 +411,25 @@ test('TreeNode function Index, First, Last, Next and Previous', function() {
 	equals(node.getFirstChild().getIndex(), 0, 'root first child index');
 	equals(node.getFirstChild().id, 'a0', 'first');
 	equals(node.getLastChild().getIndex(), 1, 'root first child index');
-	equals(node.getLastChild().id, 'a0', 'last');
+	equals(node.getLastChild().id, 'a1', 'last');
 	equals(node.getFirstChild().getNext().id, 'a1', 'first next');
 	equals(node.getLastChild().getNext().id, 'a1', 'last next');
-	equals(node.getFirstChild().getPrevious().id, 'a0', 'first next');
-	equals(node.getLastChild().getPrevious().id, 'a0', 'last next');
+	equals(node.getFirstChild().getPrevious().id, 'a0', 'first previous');
+	equals(node.getLastChild().getPrevious().id, 'a0', 'last previous');
 
 });
 
-test('TreeNode function hide, show and ', function(){
+test('TreeNode function hide, show and toggle', function(){
 	var tree = te.getUI(), node = tree.getTreeNodeById('a');
 	node.expand();
 	node.getFirstChild().hide();
-	ok(!isShown($("#"+node._getId())), 'hide');
+	ok(!isShown(document.getElementById(node.getFirstChild()._getId('node'))), 'hide');
 	node.getFirstChild().show();
-	ok(isShown($("#"+node._getId())), 'show');
-	node.getFirstChild().toggle();
-	ok(!isShown($("#"+node._getId())), 'toggle');
-	node.getFirstChild().toggle();
-	ok(isShown($("#"+node._getId())), 'toggle');
+	ok(isShown(document.getElementById(node.getFirstChild()._getId('node'))), 'show');
+	node.toggle();
+	ok(!isShown(document.getElementById(node.getFirstChild()._getId('node'))), 'toggle');
+	node.toggle();
+	ok(isShown(document.getElementById(node.getFirstChild()._getId('node'))), 'toggle');
 });
 
 test('Test the "isParent()" function', function(){
