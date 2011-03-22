@@ -31,20 +31,17 @@ baidu.ui.Table.register(function(me){
         var i = 0,
             rowCount = me.getRowCount(),
             editArray = me._editArray = [],
-            field;
+            field = me._textField = new baidu.ui.Input({//这里每次update都会innerHTML,则每次都得新建input
+                element: me.getMain(),
+                autoRender: true
+            });
+        field.getBody().onblur = baidu.fn.bind('_cellBlur', me);
+        baidu.dom.hide(field.getBody());
         baidu.array.each(me.columns, function(item){
             if(item.hasOwnProperty('enableEdit')){
                 editArray.push(item);
             }
         });
-        if(!me._textField){//初始化textField
-            field = me._textField = new baidu.ui.Input({
-                element: me.getMain(),
-                autoRender: true
-            });
-            field.getBody().onblur = baidu.fn.bind('_cellBlur', me);
-        }
-        baidu.dom.hide(field.getBody());
         for(; i < rowCount; i++){
             me.attachEdit(me.getRow(i));
         }
@@ -89,7 +86,7 @@ baidu.object.extend(baidu.ui.Table.prototype, {
     },
     
     /**
-     * 失去单元格焦点时当编辑数据写回单元格
+     * 失去单元格焦点时编辑数据写回单元格
      * @param {Object} evt
      */
     _cellBlur : function(evt){

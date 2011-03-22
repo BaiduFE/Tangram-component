@@ -40,13 +40,11 @@ test('Open a common Menubar(fadeIn) '
 		        		equal(baidu.fx.current(menu.getBody())[len-1]['_className'], 
 		        				'baidu.fx.fadeOut', 'The menubar fadeOut');
 		    	    	start();
-		    	    	menu.dispose();
 		        	}
 		    	}
 		    };
         var menu = new baidu.ui.Menubar(options);
         testingElement.obj.push(menu);
-	    stop();
 	    menu.render(menu.target);
 	    menu.open();
  	};
@@ -83,10 +81,8 @@ test('Open a common Menubar(expand) and'
 	    	ok((fx == 'baidu.fx.expand_collapse') &&
 		    		guid != baidu.fx.current(menu.getBody())[len-1]['_guid'],
 		    		'The menubar collapse');
-	    	start();
-	    	menu.dispose();
+	    	setTimeout(start,500);
 	    });
-	    stop();
 		menu.render(menu.target);
 		menu.open();
 	};
