@@ -5,7 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <link type="text/css" rel="stylesheet" media="all" href="manual.css" />
         <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.Toolbar,baidu.ui.Toolbar.*'></script>
-        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.Button,baidu.ui.Menubar,baidu.ui.Combox'></script>
+        <script type="text/javascript" src='../../../../src/import.php?f=baidu.ui.Button'></script>
     </head>
     <body>
         <div id="toolBar-Container"></div>
@@ -15,7 +15,7 @@
                 items:[{
                     config:{
                         name:"cut_button",
-                        content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"        
+                        content:"<span class='in' style='width: 60px;'><strong>鎸夐挳</strong></span>"        
                     }
                 },{
                     type:"toolbar-spacer",
@@ -25,26 +25,7 @@
                 },{
                     config:{
                         name:"paste_button",
-                        content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"     
-                    }
-                },{
-                    type:"menubar",
-                    config:{
-                        name:"menu",
-                        target:"<li id='menulist'>这里是菜单</li>",
-                        data:[{content:"复制"},{content:"粘贴"}]
-                        /**
-                         * width
-                         * height
-                         * zIndex
-                         * onitemclick
-                         * onitemmouseover
-                         * onitemmouseout
-                         * onopen,
-                         * onclose,
-                         * onbeforeopen,
-                         * onbeforeclose
-                         * */
+                        content:"<span class='in' style='width: 60px;'><strong>鎸夐挳</strong></span>"     
                     }
                 },{
                     type:"toolbar",     
@@ -55,7 +36,7 @@
                              items:[{
                              config:{
                                 name:"cut_button2",
-                                content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"        
+                                content:"<span class='in' style='width: 60px;'><strong>鎸夐挳</strong></span>"        
                             }
                         },{
                             type:"toolbar-spacer",
@@ -65,21 +46,9 @@
                         },{
                             config:{
                                 name:"paste_button2",
-                                content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"     
+                                content:"<span class='in' style='width: 60px;'><strong>鎸夐挳</strong></span>"     
                             }
-                        }/*,{
-                            type:"combox",
-                            config:{
-                                name:"combox",
-                                target:"<div class='code-area' style='height:130px' id='comboxContent'></div>",
-                                data:[{content:'content-option1',value:'1'},{content:'content-option2',value:'2'},{content:'content-option3',value:'3'}]//,
-                                //width,
-                                //height,
-                                //data,
-                                //zIndex,
-                                //onitemclick 
-                            }   
-                        }*/]
+                        }]
                     }
                     
                 },{
@@ -92,9 +61,10 @@
                             config:{
                                 title:"toolbar",
                                 name:"toolbar2-1",
+                                position:"right",
                                 items:[
-                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}},
-                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}}
+                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>鎸夐挳</strong></span>"}},
+                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>鎸夐挳</strong></span>"}}
                                 ]
                             }
                         },{
@@ -103,9 +73,9 @@
                                 name:"toolbar2-2",
                                 title:"toolbar",
                                 items:[
-                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}},
-                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}},
-                                    {config:{name:"button7",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}}
+                                    {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>鎸夐挳</strong></span>"}},
+                                    {config:{name:"button6",content:"<span class='in' style='width: 60px;'><strong>鎸夐挳</strong></span>"}},
+                                    {config:{name:"button7",content:"<span class='in' style='width: 60px;'><strong>鎸夐挳</strong></span>"}}
                                 ]
                             }       
                         }]

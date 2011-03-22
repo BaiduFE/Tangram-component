@@ -16,6 +16,8 @@
 ///import baidu.browser;
 ///import baidu.lang.isString;
 ///import baidu.ui.getUI;
+///import baidu.object.each;
+///import baidu.array.contains;
 
 /**
  * @class   toolBar基类，建立toolBar实例
@@ -37,25 +39,23 @@
 baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     var me = this,
         positionCheck = false,
-        positionPrefix = 'align="',
-        position = 'left';
+        positionPrefix = 'align="';
 
     me._itemObject = {};
     me.items = me.items || {};
    
     if(me.direction != 'horizontal'){
         me.direction = 'vertical';
-        position = 'top';
+        !baidu.array.contains(['top', 'middle', 'bottom', 'baseline'], me.position) && (me.position = 'top'); 
     }
-    me.position = me.position || position;
     me._positionStr = positionPrefix + me.position + '"';
 
-}).extend({
-
+}).extend(
+    
     /*
      * @lends baidu.ui.Toolbar.prototype
      */
-
+{
     /**
      * item容器,默认为document.body
      */
@@ -203,11 +203,12 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
             return;
 
         /*检查默认参数*/
-        options = baidu.extend(defaultOptions, options);
+        baidu.object.merge(options, defaultOptions);
         delete(options.config.statable);
         options.type = options.type.toLowerCase();
 
         uiNS = baidu.ui.getUI(options.type);
+        baidu.object.merge(uiNS,{statable:true},{whiteList: ['statable']});
         uiNS && (uiInstance = new uiNS(options.config));
         me.addRaw(uiInstance, container);
 
@@ -265,10 +266,10 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
             cells = cells.join('');
         }else {
             container = baidu.g(me.getId('tableInner'));
-            containerTR = container.row[0];
+            containerTR = container.rows[0];
             if (me.direction == 'horizontal') {
                 for (i = 0; i < num; i++) {
-                    td = container.insertCell(containerTR.cells.length);
+                    td = containerTR.insertCell(containerTR.cells.length);
                     td.id = me.getId('cell-' + i);
                     td.valign = 'middle';
                     cells.push(td);
@@ -312,10 +313,10 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
 
     /**
      * enable ui组件，当不传入name时，enable所有ui组件到
-     * @private
+     * @public
      * @param {String} [name] ui组件唯一标识符.
      */
-    _enable: function(name) {
+    enable: function(name) {
         var me = this, item;
 
         if (!name) {
@@ -327,10 +328,10 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
 
     /**
      * disable ui组件，当不传入name时，disable所有ui组建
-     * @private
+     * @public
      * @param {String} [name] ui组件唯一标识符.
      */
-    _disable: function(name) {
+    disable: function(name) {
         var me = this, item;
 
         if (!name) {
@@ -428,27 +429,27 @@ baidu.ui.Toolbar._itemBehavior = {
      * @return {String} name.
      */
     getName: function() {
-                 var me = this;
-                 return me._toolbar_item_name;
-             },
+        var me = this;
+        return me._toolbar_item_name;
+    },
 
     /**
      * 设置高亮状态
      * @return void.
      */
     setHighLight: function() {
-                      var me = this;
-                      me.setState('highlight');
-                      me.dispatchEvent('onhighlight');
-                  },
+        var me = this;
+        me.setState('highlight');
+        me.dispatchEvent('onhighlight');
+    },
 
     /**
      * 取消高亮状态
      * @return void.
      */
     cancelHighLight: function() {
-                         var me = this;
-                         me.removeState('highlight');
-                         me.dispatchEvent('oncancelhighlight');
-                     }
+        var me = this;
+        me.removeState('highlight');
+        me.dispatchEvent('oncancelhighlight');
+    }
 };
