@@ -75,7 +75,6 @@ baidu.ui.ColorPicker.extend({
             autoOpen: false,
             autoRender: true
         }, me.dialongOption || {}));
-        me.colorPaletteDialog.open();
     },
 
     /**
