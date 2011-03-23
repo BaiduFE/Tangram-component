@@ -408,6 +408,6 @@ baidu.ui.toolbar.Toolbar = baidu.ui.createUI(function(options) {
        me.removeAll();
        me.dispatchEvent("dispose");
        baidu.dom.remove(me.getMain());
-       baidu.lang.class.prototype.dispose.call(me);
+       baidu.lang.Class.prototype.dispose.call(me);
     }
 });
