@@ -15,7 +15,7 @@
 ///import baidu.event.on;
 
 /**
- * 星级评价条
+ * @class 星级评价条
  * @param {Object} [options] 选项
  * @param {Number} [options.total] 总数,默认5个
  * @param {Number} [options.current] 当前亮着的星星数
@@ -26,7 +26,11 @@
 baidu.ui.StarRate = baidu.ui.createUI(function(options){
     
     
-}).extend({
+}).extend(
+    /**
+     *  @lends baidu.ui.Suggestion.prototype
+     */ 
+    {
     uiType  : "starRate",
     // 总共需要多少个星星【可选，默认显示5个】
     total : 5,
@@ -44,7 +48,10 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
     
     classOff : 'off',
     isDisable : false,
-    
+    /**
+     * 获得控件的string
+     * @private
+     */
     getString : function(){
         var me = this, ret = [], i;
         for(i=0; i < me.total; ++i){
@@ -57,27 +64,43 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
         }
         return ret.join('');
     },
-    
+    /**
+     * 渲染控件
+     * @public 
+     * @param   {HTMLElement}   element       目标父级元素
+     */
     render : function(element){
         var me = this,element = baidu.g(element);
         baidu.dom.insertHTML(element, "beforeEnd",me.getString());
         baidu.on(element, 'mouseout', function(){me.starAt(me.current);me.dispatchEvent("onleave");});
     },
-    
+    /**
+     * 指定高亮几个星星
+     * @public 
+     * @param   {number}  num  索引
+     */
     starAt : function(num){
         var me = this, i;
         for(i=0; i < me.total; ++i){
             baidu.g(me.getId(i)).className = i < num ? me.getClass(me.classOn) : me.getClass(me.classOff);
         }
     },
-    
+    /**
+     * 鼠标悬停指定高亮几个星星
+     * @public 
+     * @param   {number}  num  索引
+     */
     hoverAt : function(num){
         if(!this.isDisable){
             this.starAt(num);
             this.dispatchEvent("onhover",{data : {index : num}});
         }
     },
-    
+    /**
+     * 鼠标点击指定高亮几个星星
+     * @public 
+     * @param   {number}  num  索引
+     */
     clickAt : function(num){
         if(!this.isDisable){
             this.current = num;

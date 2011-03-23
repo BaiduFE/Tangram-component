@@ -29,7 +29,7 @@
 ///import baidu.lang.isFunction;
 
 /**
- * Menubar 下拉菜单
+ * @class  Menubar 下拉菜单
  * @param {Object} [options]                             配置选项
  * @param {String} [options.width = '200']               选项宽度
  * @param {String} [options.height]                      选项高度
@@ -66,6 +66,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 获取Menubar组件的HTML String
+	 * @private
      * @return {String}
      */
     getString: function(){
@@ -80,6 +81,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 生成items字符串
+	 * @private
      * @param {Object} items 数据
      * @param {String} branchId 条目ID
      * @return {String}
@@ -158,7 +160,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 单个条目mouseover的响应
-     * @param {Object} idx
+     * @param {Object} idx     索引
      */
     itemMouseOver: function(idx){
         var me = this, 
@@ -191,7 +193,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 更新menubar
-     * @param {Object} options
+     * @param {Object} options    选项
      */
     update: function(options){
         var me = this, 
@@ -251,7 +253,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 获取指定索引值的页面元素
-     * @param {Number} idx
+     * @param {Number} idx     索引
      * @return {HTMLElement} dom节点
      */
     getItem: function(idx){

@@ -22,14 +22,18 @@
 ///import baidu.ui.ItemSet;
 
 /**
- * 手风琴组件
+ * @class 手风琴组件
  * @param {Object}     [options] 选项
  * @param {HTMLElment} [options.target] 渲染的容器元素
  */
 baidu.ui.Accordion = baidu.ui.createUI(function (options){
     var me = this;
     me.items = me.items || [];//初始化防止空
-},{superClass:baidu.ui.ItemSet}).extend({
+},{superClass:baidu.ui.ItemSet}).extend(
+    /**
+     *  @lends baidu.ui.Accordion.prototype
+     */
+    {
     //ui控件的类型 **必须**
     uiType      : "accordion",
     //ui控件的class样式前缀 可选
@@ -57,8 +61,8 @@ baidu.ui.Accordion = baidu.ui.createUI(function (options){
     },
     /**
      * 插入item html
-     * @param {Object} item
-     * @param {int} index
+     * @param {Object} item     插入项
+     * @param {number} index    索引
      */
     insertItemHTML:function(item,index){
         var me = this;
