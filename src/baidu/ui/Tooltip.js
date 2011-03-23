@@ -44,9 +44,8 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     var me = this;
     me.target = me.getTarget();
     me.offset = [0, 0];
-    me.index = baidu.ui.Tooltip.index++;
 
-    baidu.ui.Tooltip.showTooltip[me.index] = me;
+    baidu.ui.Tooltip.showingTooltip[me.guid] = me;
 
 }).extend(
     /**
@@ -113,7 +112,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 	 */
 	open: function(target) {
 		var me = this,
-            showTooltip = baidu.ui.Tooltip.showTooltip,
+            showTooltip = baidu.ui.Tooltip.showingTooltip,
             isSingleton = baidu.ui.Tooltip.isSingleton,
             target = target || me.target[0],
             currentTarget = me.currentTarget;
@@ -128,7 +127,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
         //查看当前tooltip全局设置,若为单例，关闭当前打开的tooltip
         if(isSingleton){
             baidu.object.each(showTooltip,function(tooltip,key){
-                if(key != me.index && tooltip.isShowing){
+                if(key != me.guid && tooltip.isShowing){
                     tooltip.close(); 
                 } 
             });
@@ -162,7 +161,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
             main = me.getMain(),
             body = me.getBody();
 
-        if(me.content && me.content != body.content){
+        if(me.content && me.content != body.firstChlid){
             //若存在me.content 并且该content和content里面的firstChlid不一样
             body.innerHTML == '';
             body.appendChild(me.content);
@@ -279,7 +278,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 		if (me.getBody()) {
 			baidu.dom.remove(me.getBody());
 		}
-        delete(baidu.ui.Tooltip.showTooltip[me.index]);
+        delete(baidu.ui.Tooltip.showingTooltip[me.guid]);
 		baidu.lang.Class.prototype.dispose.call(me);
 	},
     /**
@@ -299,5 +298,4 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 });
 
 baidu.ui.Tooltip.isSingleton = false;
-baidu.ui.Tooltip.showTooltip = {};
-baidu.ui.Tooltip.index = 0;
+baidu.ui.Tooltip.showingTooltip = {};

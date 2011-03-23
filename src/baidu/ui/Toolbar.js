@@ -57,11 +57,6 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
      */
 {
     /**
-     * item容器,默认为document.body
-     */
-    container: document.body,
-
-    /**
      * title
      */
     title: '',
@@ -75,6 +70,8 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
      * position
      */
     position: 'left',
+
+    cellIndex: 0,
 
     /**
      * tplMain
@@ -235,7 +232,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         }
 
         uiInstance.render(container);
-        me._itemObject[uiInstance.getName()] = uiInstance;
+        me._itemObject[uiInstance.getName()] = [uiInstance, container.id];
     },
 
     /**
@@ -256,11 +253,11 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         if (type == 'str') {
             if (me.direction == 'horizontal') {
                 for (i = 0; i < num; i++) {
-                    cells.push(baidu.format(me.tplHorizontalCell,{id:me.getId('cell-' + i)}));
+                    cells.push(baidu.format(me.tplHorizontalCell,{id:me.getId('cell-' + me.cellIndex++ )}));
                 }
             }else {
                 for (i = 0; i < num; i++) {
-                    cells.push(baidu.format(me.tplVerticalCell,{id:me.getId('cell-' + i)}));
+                    cells.push(baidu.format(me.tplVerticalCell,{id:me.getId('cell-' + me.cellIndex++ )}));
                 }
             }
             cells = cells.join('');
@@ -270,7 +267,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
             if (me.direction == 'horizontal') {
                 for (i = 0; i < num; i++) {
                     td = containerTR.insertCell(containerTR.cells.length);
-                    td.id = me.getId('cell-' + i);
+                    td.id = me.getId('cell-' + me.cellIndex++ );
                     td.valign = 'middle';
                     cells.push(td);
                 }
@@ -278,8 +275,9 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
                 for (i = 0; i < num; i++) {
                     td = container.insertRow(container.rows.length);
                     td = td.insertCell(0);
-                    td.id = me.getId('cell-' + i);
+                    td.id = me.getId('cell-' + me.cellIndex++ );
                     td.valign = 'middle';
+                    cells.push(td);
                 }
             }
         }
@@ -296,7 +294,9 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         var me = this, item;
         if (!name) return;
         if (item = me._itemObject[name]) {
-            item.dispose();
+            item[0].dispose();
+            baidu.dom.remove[item[1]];
+            delete(me._itemObject[name]);
         }
     },
 
@@ -307,8 +307,10 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     removeAll: function() {
         var me = this;
         baidu.object.each(me._itemObject, function(item,key) {
-           item.dispose();
+            item[0].dispose();
+            baidu.dom.remove(item[1]);
         });
+        me._itemObject = {};
     },
 
     /**
@@ -322,7 +324,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         if (!name) {
             me.enableAll();
         }else if (item = me._itemObject[name]) {
-            item.enable();
+            item[0].enable();
         }
     },
 
@@ -337,7 +339,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         if (!name) {
             me.disableAll();
         }else if (item = me._itemObject[name]) {
-            item.disable();
+            item[0].disable();
         }
     },
 
@@ -348,7 +350,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     enableAll: function() {
         var me = this;
         baidu.object.each(me._itemObject, function(item,key) {
-            item.enable();
+            item[0].enable();
         });
     },
 
@@ -359,7 +361,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     disableAll: function() {
         var me = this;
         baidu.object.each(me._itemObject, function(item,key) {
-            item.disable();
+            item[0].disable();
         });
     },
 
@@ -380,6 +382,15 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         }
 
         return item;
+    },
+
+    dispose: function(){
+       var me = this;
+
+       me.removeAll();
+       me.dispatchEvent("dispose");
+       baidu.dom.remove(me.getMain());
+       baidu.lang.Class.prototype.dispose.call(me);
     }
 });
 

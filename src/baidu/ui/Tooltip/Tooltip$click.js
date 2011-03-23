@@ -13,8 +13,7 @@
 ///import baidu.lang.isArray;
 ///import baidu.array.each;
 
-///import baidu.event.stopPropagation;
-///import baidu.event.preventDefault;
+///import baidu.event.stop;
 
 baidu.ui.Tooltip.register(function(me) {
     
@@ -60,8 +59,7 @@ baidu.ui.Tooltip.register(function(me) {
             me.open(target);
             
             //停止默认事件及事件传播
-            baidu.event.preventDefault(e);
-            baidu.event.stopPropagation(e);
+            baidu.event.stop(e);
         }
 
         //隐藏tooltip
@@ -72,8 +70,7 @@ baidu.ui.Tooltip.register(function(me) {
             me.close();
 
             //停止默认事件及事件传播
-            baidu.event.preventDefault(e);
-            baidu.event.stopPropagation(e);
+            baidu.event.stop(e);
         }
     }
 });
