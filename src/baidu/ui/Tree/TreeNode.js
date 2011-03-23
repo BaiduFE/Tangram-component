@@ -32,17 +32,17 @@
  * 树节点类
  * @Class TreeNode
  * @param {Object} options
- * @config {Boolean} isExpand : 是否是展开, 默认值为false
- * @config {Array} children: 子节点options数组  默认值为null
- * @config {Boolean} isRoot : 是否是根节点,默认值为false
- * @config {Boolean} type : 节点类型 trunk|leaf, 默认值为'leaf'
- * @config {String} id : 节点的唯一标识ID。默认为null
- * @config {String} text : 节点显示名称. 默认值为null
- * @config {String} href: 节点的链接href. 默认值为null
- * @config {String} target: 节点链接的target,有href的时候才生效。默认值为null
- * @config {String} icon: 节点图标的路径. 默认值为null
- * @config {String} skin: 节点样式选择符. 默认值为null
- * @config {Boolean} isToggle: 是否支持节点展开或收起 默认值为true
+ * @config {Boolean} isExpand  是否是展开, 默认值为false
+ * @config {Array} children 子节点options数组  默认值为null
+ * @config {Boolean} isRoot  是否是根节点,默认值为false
+ * @config {Boolean} type  节点类型 trunk|leaf, 默认值为'leaf'
+ * @config {String} id  节点的唯一标识ID。默认为null
+ * @config {String} text  节点显示名称. 默认值为null
+ * @config {String} href 节点的链接href. 默认值为null
+ * @config {String} target 节点链接的target,有href的时候才生效。默认值为null
+ * @config {String} icon 节点图标的路径. 默认值为null
+ * @config {String} skin 节点样式选择符. 默认值为null
+ * @config {Boolean} isToggle 是否支持节点展开或收起 默认值为true
  */
 //此类做了以下优化。
 //1. TreeNode通过字符串拼装HTML来代替模板format,因为多次使用

@@ -228,7 +228,6 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     /**
      * 显示当前dialog
 	 * @public
-     * @return void
      */
     open: function() {
         var me = this;
@@ -241,7 +240,6 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     /**
      * 隐藏当前dialog
 	 * @public
-     * @return void
      */
     close: function() {
         var me = this;
@@ -443,7 +441,6 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     /**
      * 销毁dialog实例
 	 * @public
-     * @return void
      */
     dispose: function() {
         var me = this;

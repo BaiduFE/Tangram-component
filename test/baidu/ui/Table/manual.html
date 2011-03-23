@@ -47,7 +47,7 @@
         border : white solid 1px;
     }
 </style>
-<script src="../../../../src/import.php?f=baidu.ui.get,baidu.ui.Table,baidu.ui.Table.Row,baidu.ui.Table.Table$title,baidu.ui.Table.Table$page,baidu.ui.Table.Table$btn,baidu.ui.Table.Table$select,baidu.ui.Table.Table$edit"></script>
+<script src="../../../../src/import.php?f=baidu.ui.Table.*"></script>
 </head>
 
 <body>
@@ -116,7 +116,7 @@ for(i = 0; i < 50; i++){
 table = new baidu.ui.Table({
     pageSize : 5,
     title : ['删除', 'column-0', 'column-1', 'column-2', 'column-3', 'column-4', 'column-5'],
-//    withPager : true,
+    withPager : true,
     data : myData
 });
 table.render('table_2');
