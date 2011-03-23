@@ -20,7 +20,7 @@
 ///import baidu.ui.get;
 
 /**
- * Suggestion基类，建立一个Suggestion实例
+ * @class  Suggestion基类，建立一个Suggestion实例
  *
  * @author berg
  * @param  {Object}             options optional        选项参数.

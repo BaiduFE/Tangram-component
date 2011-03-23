@@ -3,7 +3,7 @@ module('baidu.ui.Tooltip.Tooltip$fx');
 test('Open a common tooltip(fadeIn) and '
 		+'close a common tooltip(fadeOut)', function() {
  	expect(2);
- 	stop();
+	stop();
 	var check = function() {
 		var div = testingElement.dom[0];
 		var tp = new baidu.ui.Tooltip();
@@ -11,18 +11,18 @@ test('Open a common tooltip(fadeIn) and '
 	    	var len = baidu.fx.current(tp.getMain()).length;
 			equal(baidu.fx.current(tp.getMain())[len-1]['_className'], 
 					'baidu.fx.fadeIn', 'The tooltip fadeIn');
-	    	tp.close();
+			tp.close();
 	    });
 	    tp.addEventListener('beforeclose', function(){
 	    	var len = baidu.fx.current(tp.getMain()).length;
 		    equal(baidu.fx.current(tp.getMain())[len-1]['_className'], 
 					'baidu.fx.fadeOut', 'The tooltip fadeOut');
-		    tp.dispose();
-		    start();
+		    setTimeout(start,500);
 	    });
-	    stop();
+	 
 		tp.render(div);
 	    tp.open();
+	    te.obj.push(tp);
 	};
 	ua.importsrc('baidu.fx.current', 
 			check ,'baidu.fx.current', 'baidu.ui.Tooltip.Tooltip$fx');
@@ -53,12 +53,12 @@ test('Open a common tooltip(expand) and '
 	    	ok((fx == 'baidu.fx.expand_collapse') &&
 		    		guid != baidu.fx.current(tp.getMain())[len-1]['_guid'],
 		    		'The tooltip collapse');
-	    	tp.dispose();
-		    start();
+	    	setTimeout(start,500);
 	    });
-	    stop();
+		
 	    tp.render(div);
 	    tp.open();
+	    te.obj.push(tp);
 	    };
 	ua.importsrc('baidu.fx.expand,baidu.fx.collapse,baidu.fx.current', 
 			check ,'baidu.fx.expand', 'baidu.ui.Tooltip.Tooltip$fx');
@@ -68,33 +68,52 @@ test('Open a common tooltip(fadeIn) and '
 		+'close a common tooltip(fadeOut) with options', function() {
  	expect(4);
 	var div = testingElement.dom[0];
-	var showFxOptions = {
-		onbeforestart : function() {
-    		ok(true, 'The tooltip fadeIn '
-    				+'with a custom onbeforestart function');
-    	},
-    	onafterfinish : function() {
-    		ok(true, 'The tooltip fadeIn '
-    				+'with a custom onafterfinish function');
-    		tp.close();
-    	}
-	};
-	var hideFxOptions = {
-		onbeforestart : function() {
-    		ok(true, 'The tooltip fadeOut '
-    				+'with a custom onbeforestart function');
-    	},
-    	onafterfinish : function() {
-    		ok(true, 'The tooltip fadeOut '
-    				+'with a custom onafterfinish function');
-    		tp.dispose();
-		    start();
-    	}
-	};
-    var tp = new baidu.ui.Tooltip();
-	baidu.object.extend(tp.showFxOptions, showFxOptions);
-	baidu.object.extend(tp.hideFxOptions, hideFxOptions);
-	stop();
+    var tp = new baidu.ui.Tooltip({
+        showFxOptions : {
+    			onbeforestart : function() {
+    	    		ok(true, 'The tooltip fadeIn '
+    	    				+'with a custom onbeforestart function');
+    	    	},
+    	    	onafterfinish : function() {
+    	    		ok(true, 'The tooltip fadeIn '
+    	    				+'with a custom onafterfinish function');
+    	    		tp.close();
+    	    	}
+    		},
+    	hideFxOptions : {
+    			onbeforestart : function() {
+    	    		ok(true, 'The tooltip fadeOut '
+    	    				+'with a custom onbeforestart function');
+    	    	},
+    	    	onafterfinish : function() {
+    	    		ok(true, 'The tooltip fadeOut '
+    	    				+'with a custom onafterfinish function');
+    			    start();
+    	    	}
+    		}
+    });
+ 	stop();
 	tp.render(div);
     tp.open();
+});
+
+test('Clear the tooltip when the fx is showing', function() {
+ 	expect(1);
+	stop();
+	var check = function() {
+		var div = testingElement.dom[0];
+		var tp = new baidu.ui.Tooltip();
+	    tp.addEventListener('onopen', function(){
+			tp.close();
+	    });
+	    tp.addEventListener('beforeclose', function(){
+		    start();
+		    ok(false, "用例跑完后会报错：Cannot read property 'style' of null,PUBLICGE-330");
+	    });
+		tp.render(div);
+	    tp.open();
+	    te.obj.push(tp);
+	};
+	ua.importsrc('baidu.fx.current', 
+			check ,'baidu.fx.current', 'baidu.ui.Tooltip.Tooltip$fx');
 });

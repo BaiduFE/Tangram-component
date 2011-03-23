@@ -85,7 +85,10 @@ baidu.ui.Tab = baidu.ui.createUI( function (options) {
 		baidu.dom.insertHTML(baidu.g(me.getId("head-container")),  "beforeEnd",  this._getHeadString(item, index));
 		baidu.dom.insertHTML(baidu.g(me.getId("body-container")),  "beforeEnd",  this._getBodyString(item, index));
 	},
-
+    /**
+	 * @private
+	 * 
+	 */
     insertContentHTML: function(item, index){
         var me = this;
         baidu.dom.insertHTML(me.bodies[index],'beforeEnd',item);
