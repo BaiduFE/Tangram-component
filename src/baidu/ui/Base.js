@@ -10,6 +10,8 @@
 
 ///import baidu.lang.Class;
 ///import baidu.lang.Event;
+///import baidu.event.on;
+///import baidu.event.un;
 
 
 /**
@@ -96,6 +98,16 @@ baidu.ui.Base = {
                 + '.' + fn + '('
                 + arg.join(',') 
                 + ');'; 
+    },
+
+    /**
+     * 添加事件. 避免析构中漏掉注销事件.
+     */
+    on : function(element, type, listener){
+        baidu.on(element, type, listener);
+        ui.addEventListener("ondispose", function(){
+            baidu.un(element, type, listener);
+        });
     },
 
     /**
