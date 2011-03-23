@@ -1,4 +1,4 @@
-/**
+﻿/**
  * check Toolbar properties, methods and events
  * addRaw
  * add ui
@@ -9,7 +9,6 @@
  * enableAll
  * disableAll
  * getItemByName
- * _itemBehavior
  * getItemByName
  */
 module("baidu.ui.Toolbar");
