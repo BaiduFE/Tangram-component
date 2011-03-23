@@ -13,7 +13,7 @@
 ///import baidu.object.keys;
 
 /**
- * 数据源类
+ * @class 数据源类
  * @param {Object}     [options]                     配置
  * @param {Number}     [options.maxCache = 10]       缓存数据的最大个数
  * @param {Boolean}    [options.cache = true]        是否使用缓存
@@ -34,7 +34,11 @@ baidu.data.dataSource.DataSource = baidu.lang.createClass(function(options){
     });
 }, {
     className: "baidu.data.dataSource.DataSource"
-}).extend({
+}).extend(
+    /**
+     *  @lends baidu.data.dataSource.DataSource.prototype
+     */
+    {
     
 	maxCache: 100,
     
@@ -75,7 +79,8 @@ baidu.data.dataSource.DataSource = baidu.lang.createClass(function(options){
     },
     
     /**
-     * @interface 转换数据格式
+	 * 转换数据格式
+     * @function 
      * @param  {Object} source 数据源
      * @return {Object} source 转换格式后的数据源
      */
