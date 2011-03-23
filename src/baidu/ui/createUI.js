@@ -105,6 +105,6 @@ baidu.ui.createUI = function(constructor, options) {
     
     //静态配置支持
     ui.options = {};
-
+    
     return ui;
 };
