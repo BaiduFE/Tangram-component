@@ -14,8 +14,7 @@ module('baidu.ui.Slider');
 		var id = "div_test";
 		var div = document.createElement("div");
 		div.id = id;
-		$(div).css('width', '200px').css('height', '20px').css('border', 'solid')
-		.css('color', 'black');
+		$(div).css('width', '200px').css('height', '20px').css('border','solid').css('color', 'black');
 		document.body.appendChild(div);
 		te.dom.push(div);
 	}
@@ -108,50 +107,52 @@ test('update', function() {
 })
 
 test('onslide', function() {
-	var options = {
-		onslidestop : function() {
-			equal($(s.getThumb()).css('left'), '20px',
-					'slide stop check thumb left');
-		},
-		onslidestart : function() {
-			equal($(s.getThumb()).css('left'), '0px',
-					'slide start check thumb left');
-		},
-		onslide : function() {
-			ok(true, 'on slide');
-		},
-		onupdate : function() {
-			ok(true, 'update');
-		}
-	}
 	stop();
-	var s = new baidu.ui.Slider(options);
-	var div = te.dom[0];
-	s.render(div);
-	var thumb = s.getThumb();
-	var thumbX = parseInt(baidu.dom.getPosition(thumb)['left']);
-	var thumbY = parseInt(baidu.dom.getPosition(thumb)['top']);
-	ua.mousemove(thumb, {
-		clientX : thumbX,
-		clientY : thumbY
-	});
-	ua.mousedown(thumb, {
-		clientX : thumbX,
-		clientY : thumbY
-	});
-	setTimeout(function() {
+	ua.loadcss(upath+'Slider/style.css',function(){
+		var options = {
+			onslidestop : function() {
+				equal($(s.getThumb()).css('left'), '20px',
+						'slide stop check thumb left');
+			},
+			onslidestart : function() {
+				equal($(s.getThumb()).css('left'), '0px',
+						'slide start check thumb left');
+			},
+			onslide : function() {
+				ok(true, 'on slide');
+			},
+			onupdate : function() {
+				ok(true, 'update');
+			}
+		}
+		var s = new baidu.ui.Slider(options);
+		var div = te.dom[0];
+		s.render(div);
+		var thumb = s.getThumb();
+		var thumbX = parseInt(baidu.dom.getPosition(thumb)['left']);
+		var thumbY = parseInt(baidu.dom.getPosition(thumb)['top']);
 		ua.mousemove(thumb, {
-			clientX : thumbX + 20,
+			clientX : thumbX+3,
 			clientY : thumbY
 		});
-	}, 30);
-	setTimeout(function() {
-		ua.mouseup(thumb, {
-			clientX : thumbX + 20,
+		ua.mousedown(thumb, {
+			clientX : thumbX+3,
 			clientY : thumbY
 		});
-		start();
-	}, 60);
+		setTimeout(function() {
+			ua.mousemove(thumb, {
+				clientX : thumbX + 20,
+				clientY : thumbY
+			});
+		}, 30);
+		setTimeout(function() {
+			ua.mouseup(thumb, {
+				clientX : thumbX + 20,
+				clientY : thumbY
+			});
+			start();
+		}, 60);
+	})
 })
 
 /*
@@ -229,12 +230,70 @@ test('set min max', function() {
 		start();
 	}, 60);
 })
-
+/**
+ * 事件没有删除 ，开问题单 PUBLICGE-344
+ */
 test('dispose',function(){
 	expect(2);
+	var l1 = baidu.event._listeners.length;
 	var s = new baidu.ui.Slider();
 	s.render(te.dom[0]);
 	ok(baidu.dom.g(s.getId()),'created');
 	s.dispose();
 	equal(baidu.dom.g(s.getId()),null,'disposed');
-})
+	equals(baidu.event._listeners.length, l1, 'event removed all');
+});
+/**
+ * disable 的效果是，滑块不能滑动；
+ * enable的效果是取消disable的作用；
+ * 两者要组合测试
+ */
+test('disable enable',function(){
+		var options = {};
+		stop();
+		var s = new baidu.ui.Slider(options);
+		var div = te.dom[0];
+		s.render(div);
+		var body = s.getBody(),
+		    thumb = s.getThumb();
+		    thumbleft = thumb.style.left;
+		    thumbwidth = parseInt(baidu.dom.getStyle(thumb,'width'));
+		var thumbX = parseInt(baidu.dom.getPosition(thumb)['left']);
+		var thumbY = parseInt(baidu.dom.getPosition(thumb)['top']);
+		s.disable();
+		ok(s.disabled,'set disabled');
+		ua.mousemove(body, {
+			clientX : thumbX+50,
+			clientY : thumbY
+		});
+		ua.mousedown(body, {
+			clientX : thumbX+50,
+			clientY : thumbY
+		});
+		setTimeout(function(){
+			ua.mouseup(body, {
+				clientX : thumbX + 50,
+				clientY : thumbY
+			});
+			equal($(s.getThumb()).css('left'), thumbleft,'after disable thumb left ');
+			s.enable();
+		},30);
+		setTimeout(function(){
+			ua.mousedown(body, {
+				clientX : thumbX+50,
+				clientY : thumbY
+			});
+			setTimeout(function(){
+				ua.mouseup(body, {
+					clientX : thumbX+50,
+					clientY : thumbY
+				});
+				equal($(s.getThumb()).css('left'), (50-thumbwidth/2)+'px','slide stop check thumb left');
+				start();
+			},100);
+		},60)
+
+});
+
+
+

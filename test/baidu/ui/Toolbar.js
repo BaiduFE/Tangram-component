@@ -1,4 +1,4 @@
-﻿/**
+/**
  * check Toolbar properties, methods and events
  * addRaw
  * add ui
@@ -9,30 +9,10 @@
  * enableAll
  * disableAll
  * getItemByName
+ * _itemBehavior
  * getItemByName
  */
 module("baidu.ui.Toolbar");
-
-test("render--no argument", function() {
-    //如果不写width和height的话，至少写一个title元素保证div元素的显示
-    //使isShown函数通过
-    var options = {
-    	title:"title",
-    	width : 200,
-    	height:100
-    };
-    var toolbar = new baidu.ui.Toolbar(options);
-    toolbar.render();
-    ok(isShown(toolbar.getBody()), 'toolbar has been shown');
-    equal(toolbar.uiType,'toolbar','check uiType');
-    ok(toolbar.container==document.body,'check container');
-    var containerTR = baidu.g(toolbar.getId('tableInner')).rows[0];
-    equal(containerTR.cells.length,0,'check cell empty');
-    equal(baidu.g(toolbar.getId()).style.width,'200px','check width 0');
-    equal(baidu.g(toolbar.getId()).style.height,'100px','check height 0');
-    te.dom.push(toolbar.getMain());
-});
-
 
 test("createitem", function() {
 	stop();
@@ -71,10 +51,10 @@ test("createitem", function() {
 	                        title: "复制当前单元格",
 	                        items: [
 	                            {
-			                        label: "复制1",
+			                        label: "复制1"
 			                    }, 
 			                    {
-			                        label: "复制2",
+			                        label: "复制2"
 			                    } 
 			                ]
 		                } ]
@@ -99,7 +79,8 @@ test("createitem", function() {
 //	    ok(isShown(test_menubar.getItem('0-0-0')), 'menubar is showon,so create menubar success');
 //	    te.dom.push(test_menubar.getMain());
 	    
-	    te.dom.push(toolbar.getMain());
+//	    te.dom.push(toolbar.getMain());
+		te.obj.push(toolbar);
 	    start();
   },'baidu.ui.Menubar','baidu.ui.Toolbar' );
 });
@@ -152,21 +133,19 @@ test("direction vertical", function() {//纵向也测一下
     options = {
   	  	   name : 'button',
   	  	   content:"<span class='in' style='width: 60px;'><strong>按钮4</strong></span>" 
-  	  }
+  	}
 	var button = new baidu.ui.Button(options);
 	toolbar.addRaw(button);
 	ok(button==toolbar.getItemByName(options.name),'create a button4');
-    te.dom.push(toolbar.getMain());
-
-
+    te.obj.push(toolbar);
 });
 
 /*
  * 针对container的情况进行测试，1、默认container;2、无container;3、随意创建container
  */
 test("add", function() {
-	stop();
-    ua.importsrc('baidu.ui.Button',function(){
+//	stop();
+//    ua.importsrc('baidu.ui.Button',function(){
 	 var options = {
 	    	title:"title",
 	    	width : 200,
@@ -213,8 +192,8 @@ test("add", function() {
 	    equal(test_button.getBody().parentNode,div,'check test_button2 position');
 	    te.dom.push(div);
 	    te.dom.push(toolbar.getMain());
-	    start();
-    })
+//	    start();
+//    })
 
 });
   
