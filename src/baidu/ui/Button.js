@@ -116,8 +116,8 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
     /**
      * 设置disabled属性
      * @pubic
-     * @return void.
-     * */
+     * 
+	 */
     disable: function() {
         var me = this,
         body = me.getBody();
@@ -127,8 +127,8 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
     /**
      * 删除disabled属性
      * @pubic
-     * @return void.
-     * */
+     * 
+	 */
     enable: function() {
         var me = this;
         body = me.getBody();
