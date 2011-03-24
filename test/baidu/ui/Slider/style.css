@@ -1,16 +1,19 @@
-.tangram-slider-thumb {
-	background-color: blue;
-	height: 20px;
-	width: 6px;
+.tangram-slider{
+    width: 100%;
+    height: 100%;
+    background:silver;
 }
-.tangram-slider {
-	background-color: red;
-	height: 20px;
-	width: 200px;
+.tangram-slider-progressbar,.tangram-progressbar{
+    height: 100%;
 }
-.tangram-progressbar-bar {
-	background-color : yellow;
-	height : 20px;
+.tangram-progressbar-bar{
+    height: 100%;
+    background:yellow;
+}
+.tangram-slider-thumb{
+    width:20px;
+    height:100%;
+    background:red;
 }
 .cssloaded {
 	background-color : red;
