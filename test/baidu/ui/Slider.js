@@ -129,7 +129,6 @@ test('onslide', function() {
 		var div = te.dom[0];
 		s.render(div);
 		var thumb = s.getThumb();
-		alert(s.getBody()['clientWidth']-thumb['offsetWidth']);
 		var thumbX = parseInt(baidu.dom.getPosition(thumb)['left']);
 		var thumbY = parseInt(baidu.dom.getPosition(thumb)['top']);
 		ua.mousemove(thumb, {
