@@ -1,3 +1,4 @@
+/*public*/
 .tangram-scrollbar{
     width:100%;/*初始值必要*/
     height:100%;/*初始值必要*/
@@ -7,49 +8,52 @@
     width:100%;/*初始值必要*/
     height:100%;/*初始值必要*/
 }
-.tangram-slider{
+.tangram-scrollbar-slider{
     width:100%;/*初始值必要*/
     height:100%;/*初始值必要*/
 }
-.tangram-slider-thumb{
+.tangram-scrollbar-slider-thumb{
     width:100%;/*初始值必要*/
     height:100%;/*初始值必要*/
+   background:gray;
 }
-.tangram-button{font-size:0px;}
+.tangram-scrollbar-prev,.tangram-scrollbar-next,.tangram-scrollbar-thumb-btn{
+    font-size: 0px;
+}
 /**/
-/*scrollbar start*/
-.scrollbar{
+/*scrollbar-a start*/
+.scrollbar-a{
     background:url(imgs/scrollbar-v.gif) repeat-y -105px 0;
 }
-.scrollba-prev{
+.scrollbar-a-prev{
     width: 15px;
     height: 15px;
     background: url(imgs/scrollbar-v.gif) no-repeat 0 0;
 }
-.scrollbar-prev-hover{
+.scrollbar-a-prev-hover{
     background-position:-15px 0;
 }
-.scrollbar-prev-press{
+.scrollbar-a-prev-press{
     background-position:-30px 0;
 }
-.scrollbar-next{
+.scrollbar-a-next{
     width: 15px;
     height: 15px;
     background: url(imgs/scrollbar-v.gif) no-repeat 0 -15px;
 }
-.scrollbar-next-hover{
+.scrollbar-a-next-hover{
     background-position:-15px -15px;
 }
-.scrollbar-next-press{
+.scrollbar-a-next-press{
     background-position:-30px -15px;
 }
-.scrollbar-thumb-btn{
+.scrollbar-a-thumb-btn{
     position:relative;
     width:100%;
     height:100%;
     background:url(imgs/scrollbar-v.gif) repeat-y -60px 0;
 }
-.scrollbar-thumb-prev{
+.scrollbar-a-thumb-prev{
     position:absolute;
     top:0px;
     width:100%;
@@ -57,7 +61,7 @@
     font-size:0px;
     background:url(imgs/scrollbar-v.gif) -45px 0;
 }
-.scrollbar-thumb-next{
+.scrollbar-a-thumb-next{
     position:absolute;
     bottom:0px!important;
     bottom:-1px;
@@ -66,25 +70,25 @@
     font-size:0px;
     background:url(imgs/scrollbar-v.gif) -45px -5px;
 }
-.scrollbar-thumb-btn-hover{
+.scrollbar-a-thumb-btn-hover{
     background-position:-75px 0px;
 }
-.scrollbar-thumb-btn-hover .scrollbar-thumb-prev{
+.scrollbar-a-thumb-btn-hover .scrollbar-a-thumb-prev{
     background-position:-45px -10px;
 }
-.scrollbar-thumb-btn-hover .scrollbar-thumb-next{
+.scrollbar-a-thumb-btn-hover .scrollbar-a-thumb-next{
     background-position:-45px -15px;
 }
-.scrollbar-thumb-btn-press{
+.scrollbar-a-thumb-btn-press{
     background-position:-90px 0px;
 }
-.scrollbar-thumb-btn-press .scrollbar-thumb-prev{
+.scrollbar-a-thumb-btn-press .scrollbar-a-thumb-prev{
     background-position:-45px -20px;
 }
-.scrollbar-thumb-btn-press .scrollbar-thumb-next{
+.scrollbar-a-thumb-btn-press .scrollbar-a-thumb-next{
     background-position:-45px -25px;
 }
-/*scrollbar end*/
+/*scrollbar-a end*/
 
 
 .cssloaded {
