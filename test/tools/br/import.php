@@ -29,53 +29,18 @@ foreach ($e as $d){
 if($DEBUG)var_dump($IGNORE);
 
 $cnt = "";
-if($cov){//覆盖率
-	$filepath = '../../../test/coverage/';
-	foreach($f as $d){
-       getIGNORE($d);
-       foreach($IGNORE as $l){
-       	 $path = join('/', explode('.', $l)).'.js';
-       	 if(file_exists($filepath.$path)){
-			$cnt.= file_get_contents($filepath.$path);
-         }
-       }
-	}
-}
-else {
-	foreach($f as $d){
-		$cnt.=importSrc($d);
-	}
+foreach($f as $d){
+	$cnt.=importSrc($d, $cov);
 }
 echo $cnt;
 
-//组装数组$IGNORE，按加载顺序存所有的导入接口名
-function getIGNORE($d){
-	global $IGNORE;
-	global $cntcov;
-	$ccnt = Analysis::get_src_cnt($d);
-	$num = 0;
-	$array_length = count($ccnt['i']);
-	foreach($ccnt['i'] as $is){
-		$num++;
-		getIGNORE($is);
-		if($array_length==$num){
-	        if(!in_array($is,$IGNORE)){
-	    		array_push($IGNORE, $is);
-	    	}
-	    	if(!in_array($d,$IGNORE)){
-	    		array_push($IGNORE, $d);
-	    	}
-	    }
-	}
-}
-
-function importSrc($d){
+function importSrc($d, $cov=false){
 	global $IGNORE;
 	foreach($IGNORE as $idx=>$domain)
 	if($domain == $d)
 	return "";
 	array_push($IGNORE, $d);
-	$ccnt = Analysis::get_src_cnt($d);
+	$ccnt = Analysis::get_src_cnt($d, $cov);
 	return preg_replace("/\/\/\/import\s+([\w\-\$]+(\.[\w\-\$]+)*);?/ies", "importSrc('\\1')", $ccnt['c']);
 }
 ?>

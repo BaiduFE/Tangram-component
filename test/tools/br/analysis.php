@@ -1,6 +1,6 @@
 ﻿<?php
 /**
- * 
+ *
  * 分析源码引入及依赖关系，提供单次读取中的文件载入缓存 dfddf
  * @author yangbo
  *
@@ -62,14 +62,15 @@ class Analysis{
 	 * 读取源文件内容，支持缓存
 	 * @param string $domain
 	 */
-	static function get_src_cnt($domain){
+	static function get_src_cnt($domain, $cov=false){
 		new Analysis();
 		if(!array_key_exists($domain, self::$_cache)){
-			$cnt = '';
+			$cnt = $covcnt = '';
 			$path = join('/', explode('.', $domain)).'.js';
 			//文件在当前项目存在则取当前项目，否则取tangram项目
 			if(self::$DEBUG)var_dump(self::$projpath);
-			foreach(self::$projpath as $i=>$d){
+			require_once 'config.php';
+			foreach(Config::$SOURCE_PATH as $i=>$d){
 				if(self::$DEBUG)
 				var_dump($d.$path);
 				if(file_exists($d.$path)){
@@ -78,6 +79,13 @@ class Analysis{
 					break;
 				}
 			}
+			if($cov){
+				//尝试读取cov目录下的文件，如果不存在则忽略
+				if(file_exists(Config::$COVERAGE_PATH))
+				$covcnt = file_get_contents(Config::$COVERAGE_PATH.$path);
+				else $covcnt = $cnt;
+			}else
+			$covcnt = $cnt;
 			if($cnt == ''){
 				if(self::$DEBUG)
 				print "fail read file : ".$path;
@@ -96,7 +104,7 @@ class Analysis{
 			//移除/**/
 			//			$cnt = preg_replace('/\/\*.*\*\//sU', '', $cnt);
 
-			self::$_cache[$domain] = array('c'=>$cnt, 'i'=>$is[1]);
+			self::$_cache[$domain] = array('c'=>$cnt, 'i'=>$is[1], 'cc'=>$covcnt);
 		}
 		return self::$_cache[$domain];
 	}
