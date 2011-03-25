@@ -96,7 +96,7 @@ test("direction vertical", function() {//纵向也测一下
 	    	   	type : 'button',
 	    	   	config : {
 	   		        name:"test_button1",
-	                content:"<span class='in' style='width: 60px;'><strong>按钮1</strong></span>" ,
+	                content:"<span class='in' style='width: 60px;'><strong>按钮1</strong></span>" 
 	    	   	}
     	   },
     	   {
@@ -155,7 +155,7 @@ test("add", function() {
 		    	   	type : 'button',
 		    	   	config : {
 		   		        name:"test_button",
-		                content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>" ,
+		                content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>" 
 		    	   	}
 	    	   }
 	    	]
@@ -202,7 +202,7 @@ test('addRow',function(){
   	  toolbar.render();
   	  var options = {
   	  	   name : 'button',
-  	  	   content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>" ,
+  	  	   content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>" 
   	  }
   	  var div = document.createElement('div');
 	  document.body.appendChild(div);
@@ -212,7 +212,7 @@ test('addRow',function(){
   	  ok(button==toolbar.getItemByName(options.name),'create a button');
   	  options = {
   	  	   name : 'button1',
-  	  	   content:"<span class='in' style='width: 60px;'><strong>按钮2</strong></span>" ,
+  	  	   content:"<span class='in' style='width: 60px;'><strong>按钮2</strong></span>" 
   	  };
   	  button = new baidu.ui.Button(options);
   	  toolbar.addRaw(button);//html形式，在td里添加
@@ -230,7 +230,7 @@ test('addRow',function(){
 		    	   	type : 'button',
 		    	   	config : {
 		   		        name:"test_button",
-		                content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>" ,
+		                content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>" 
 		    	   	}
 	    	   },
 	    	   {
@@ -282,7 +282,7 @@ test('addRow',function(){
 		    	   	type : 'button',
 		    	   	config : {
 		   		        name:"test_button1",
-		                content:"<span class='in' style='width: 60px;'><strong>按钮1</strong></span>" ,
+		                content:"<span class='in' style='width: 60px;'><strong>按钮1</strong></span>" 
 		    	   	}
 	    	   },
 	    	   {
