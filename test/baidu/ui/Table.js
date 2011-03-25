@@ -1,7 +1,6 @@
 module('baidu.ui.Table');
 
 (function() {
-
 	var s = QUnit.testStart;
 	QUnit.testStart = function() {
 		s.apply(this, arguments);
