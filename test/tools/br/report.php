@@ -1,7 +1,8 @@
 <?php
 
 //TODO add php info in xml
-if(!array_key_exists("browser", $config)){
+if(!array_key_exists("config", $_POST) ||
+!array_key_exists("browser", $_POST['config'])){
 	echo "report only create if browser is set\n\r<br />";
 	return;
 }
