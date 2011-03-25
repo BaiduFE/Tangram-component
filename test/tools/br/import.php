@@ -1,4 +1,5 @@
 <?php
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header("Content-type: text/javascript; charset=utf-8");
 /*
  * Tangram

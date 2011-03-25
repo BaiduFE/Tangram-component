@@ -74,6 +74,7 @@ class Analysis{
 				var_dump($d.$path);
 				if(file_exists($d.$path)){
 					$cnt = file_get_contents($d.$path);
+					$cnt.="\n";//读取文件内容必须加个回车
 					break;
 				}
 			}
