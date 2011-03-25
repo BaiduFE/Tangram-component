@@ -25,15 +25,18 @@
             显示方式使用click
         </span><br/>
         <span>第一组</span><br/>
-        <a id='click1'>click1</a><br/>
+        <a id='click1' title='click1'>click1</a><br/>
         <a id='click2'>click2</a><br/>
-        <a id='click3'>click3</a><br/>
+        <a id='click3' title='click3'>click3</a><br/>
         <br/>
 
         <span>第二组</span><br/>
         <a id='click4'>click4</a><br/>
-        <a id='click5'>click5</a><br/>
+        <a id='click5' title='click5'>click5</a><br/>
         <a id='click6'>click6</a><br/>
+        <br/>
+
+        
     </div>
     <div class="wrapper">
         <span>
@@ -42,7 +45,7 @@
         </span><br/>
         <span>第一组</span><br/>
         <a id='hover1'>hover1</a><br/>
-        <a id='hover2'>hover2</a><br/>
+        <a id='hover2' title='hover2'>hover2</a><br/>
         <a id='hover3'>hover3</a><br/>
         <br/>
 
@@ -50,6 +53,12 @@
         <a id='hover4'>hover4</a><br/>
         <a id='hover5'>hover5</a><br/>
         <a id='hover6'>hover6</a><br/>
+        <br/>
+
+        <span>第三组</span><br/>
+        <a id='hover7'>hover7</a><br/>
+        <a id='hover8' title='hover8'>hover8</a><br/>
+        <a id='hover9'>hover9</a><br/>
     </div>
     <script type='text/javascript'>
         function changeType(){
@@ -80,7 +89,7 @@
 
         tooltip_options['type'] = 'click';
         tooltip_options['target'] = ['click1','click2','click3'];
-        tooltip_options['contentText'] = '这是一个点击生成的tooltip';
+        tooltip_options['content'] = '这是一个点击生成的tooltip';
         var tooltip_click1 = new baidu.ui.Tooltip(tooltip_options);
 
         tooltip_options['target'] = ['click4','click5','click6'];
@@ -94,7 +103,9 @@
         tooltip_options['type'] = 'hover';
         var tooltip_hover2 = new baidu.ui.Tooltip(tooltip_options);
 
-        
+        tooltip_options['target'] = ['hover7','hover8','hover9'];
+        delete(tooltip_options['content']);
+        var tooltip_click2 = new baidu.ui.Tooltip(tooltip_options);
     </script>
 </body>
 </html>

@@ -64,9 +64,11 @@ baidu.ui.Tree.TreeNode = function(options) {
     //这里只所以需要判断是因为_getId()的实现已经调用到了me.id,而me.id是对外开放的属性。
     me.id = me.id || baidu.lang.guid();
     me.childNodes = [];
+    me._children = [];
     window['$BAIDU$']._instances[me.id] = me;
     me._tree = {};
     me._stringArray = [];
+    
 };
 
 
@@ -114,10 +116,12 @@ baidu.ui.Tree.TreeNode.prototype =  {
      */
     getString: function() {
         var me = this,
-            stringArray = me._stringArray;
+            stringArray = me._stringArray,
+            style='';
         stringArray.push('<dl id="',me.id,'">');
         me._createBodyStringArray();
-        stringArray.push('<dd id="',me.id,'-subNodeId"></dd></dl>');
+        style = me.isExpand ? "display:''" : 'display:none';
+        stringArray.push('<dd  style="'+style+'" id="',me.id,'-subNodeId"></dd></dl>');
         return stringArray.join('');
     },
     /**
@@ -167,7 +171,8 @@ baidu.ui.Tree.TreeNode.prototype =  {
      */
     appendData: function(childrenData) {
         var me = this;
-        me._getSubNodesContainer().innerHTML = me._getSubNodeString(childrenData);
+        baidu.dom.insertHTML(me._getSubNodesContainer(), 'beforeEnd'
+        , me._getSubNodeString(childrenData));
     },
     /**
      * 取得所有子节点返回的HTMLString
@@ -177,23 +182,19 @@ baidu.ui.Tree.TreeNode.prototype =  {
     _getSubNodeString: function(childrenData) {
         var me = this,
             treeNode,
-            children,
             len,
             stringArray = [],
             ii = 0,
-            item;
-        if (me.children = childrenData) {
-            children = me.children;
-            len = children.length;
-            for (; ii < len; ii++) {
-                item = children[ii];
-                treeNode = new baidu.ui.Tree.TreeNode(item);
-                if (ii == (len - 1)) {
-                    treeNode._isLast = true;
-                }
-                me._appendChildData(treeNode, len - 1);
-                stringArray.push(treeNode.getString());
+            item,
+            len = childrenData.length;
+        for (; ii < len; ii++) {
+            item = childrenData[ii];
+            treeNode = new baidu.ui.Tree.TreeNode(item);
+            if (ii == (len - 1)) {
+                treeNode._isLast = true;
             }
+            me._appendChildData(treeNode, len - 1);
+            stringArray.push(treeNode.getString());
         }
         return stringArray.join('');
     },
@@ -261,12 +262,14 @@ baidu.ui.Tree.TreeNode.prototype =  {
         treeNode.setTree(me.getTree());
 
         if (isDynamic) {
-            nodes.splice(index + 1, 0, treeNode);
-            me.children = me.children || [];
-            me.children.splice(index + 1, 0, treeNode.json);
+            nodes.splice(index+1 , 0, treeNode);
+            //me.children = me.children || [];
+            me._children.splice(index+1 , 0, treeNode.json);
         }
         else {
             nodes.push(treeNode);
+            me._children.push(treeNode.json);
+            //me.children.push(treeNode.json);
         }
     },
 
@@ -278,7 +281,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * 3.更新treeNode与tree的update
      * @param {TreeNode} 需要加入的节点(分为已经渲染的节点和为被渲染的节点)
      *                  通过treeNode._getContainer()返回值来判断是否被渲染.
-     * @param {index}
+     * @param {index}  此节点做为 节点集合的[index+1]的值
      * @return {TreeNode} treeNode 返回被新增的child
     */
     appendChild: function(treeNode,index) {
@@ -312,6 +315,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
             }
         }
         else {
+            //console.log('-----appendData--------'+index);
             //当本节点为展开的trunk节点
             if (index == -1) {
                 //当本节点在treeNode加入之前的childNode的length为0时
@@ -366,7 +370,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      */
     _removeChildData: function(treeNode,recursion) {
         var me = this;
-        baidu.array.remove(me.children, treeNode.json);
+        baidu.array.remove(me._children, treeNode.json);
         baidu.array.remove(me.childNodes, treeNode);
         delete me.getTree().getTreeNodes()[treeNode.id];
         if (recursion) {
@@ -619,7 +623,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     _getImagesString: function(isInit) {
         var me = this,
             string = '';
-        string += me.__getIdentString(isInit);
+        string += me._getIdentString(isInit);
         if (me.type == 'leaf') {
             string += me._getTLString(isInit);
         }
@@ -637,7 +641,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * @param {isInit} 是否是初始化节点.
      * @return {string} htmlstring.
      */
-    __getIdentString: function(isInit) {
+    _getIdentString: function(isInit) {
         var me = this,
             string = '',
             prifix;
@@ -889,17 +893,21 @@ baidu.ui.Tree.TreeNode.prototype =  {
     },
     /**
      * 是否是最后一个节点
-     * @param {Boolean} true | false
      * 在初始渲染节点的时候，自己维护了一个_isLast,就不用去动态算是否是最后一个子节点。
      * 而在动态新增，删除节点时，动态的处理是否是最后一个节点能方便代码实现，
      * 这样做的目的既能保证初始化时的性能，也能够方便动态功能的实现。.
      * @return {Boolean} true | false.
      */
+     //isInit不作为参数做文档描述，是一个内部参数。
     isLastNode: function(isInit) {
         var me = this;
         if (isInit) {
             return me._isLast;
         }
+        if(me.isRoot) {
+            return true;
+        }
+            
         return me.getIndex() == (me.parentNode.childNodes.length - 1);
     }
     

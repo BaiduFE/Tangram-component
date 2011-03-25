@@ -17,12 +17,15 @@
 ///import baidu.dom.children;
 ///import baidu.object.each;
 ///import baidu.array.each;
+///import baidu.dom.getAttr;
+///import baidu.dom.setAttr;
 
  /**
  * 弹出tip层,类似鼠标划过含title属性元素的效果
  * @class
  * @param       {Object}          options         选项.
- * @config      {Element}         content         Tooltip元素的内部html。当指定target时，默认为target的title属性，否则默认为空。
+ * @config      {Element}         contentElement  Tooltip元素的内部HTMLElement。
+ * @config      {String}          content     Tooltip元素的内部HTML String。若target存在title，则以title为准
  * @config      {String}          width           宽度
  * @config      {String}          height          高度
  * @config      {Array|Object}    offset          偏移量。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
@@ -43,9 +46,9 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     
     var me = this;
     me.target = me.getTarget();
-    me.offset = [0, 0];
+    me.offset = options.offset || [0, 0];
 
-    baidu.ui.Tooltip.showingTooltip[me.guid] = me;
+    baidu.ui.Tooltip._showingTooltip[me.guid] = me;
 
 }).extend(
     /**
@@ -96,10 +99,19 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
      */
     render: function(element) {
         var me = this,
-            main;
+            main,title;
 
         main = me.renderMain(element);
+
+        baidu.each(me.target, function(t,index){
+            if((title = baidu.getAttr(t, 'title')) && title != ''){
+                baidu.setAttr(t, 'tangram-tooltip-title', title);
+                baidu.setAttr(t, 'title', '');
+            }
+        });
         baidu.dom.insertHTML(main,"beforeend",me.getString());
+        me._update();
+        me._close();
         
         me.dispatchEvent('onload');
     },
@@ -112,10 +124,11 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 	 */
 	open: function(target) {
 		var me = this,
-            showTooltip = baidu.ui.Tooltip.showingTooltip,
+            showTooltip = baidu.ui.Tooltip._showingTooltip,
             isSingleton = baidu.ui.Tooltip.isSingleton,
             target = target || me.target[0],
-            currentTarget = me.currentTarget;
+            currentTarget = me.currentTarget,
+            body = me.getBody();
 
          //判断是否为当前打开tooltip的target
          //若是，则直接返回
@@ -137,7 +150,15 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
         if (typeof me.toggle == 'function' && !me.toggle()) return;
 
         me.currentTarget = target;
-        me._update();
+
+        if(!me.contentElement && !me.content){
+            if((title = baidu.getAttr(me.currentTarget, 'tangram-tooltip-title')) && title != ''){
+                body.innerHTML = title;
+            }else{
+                body.innerHTML = '';
+            }
+        }
+
         me._setPosition();
         me.isShowing = true;
         
@@ -148,6 +169,31 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
         }
 	},
 
+    _updateBody: function(options){
+        var me = this,
+            options = options || {},
+            body = me.getBody(),
+            title;
+
+        if(me.contentElement && me.contentElement != body.firstChlid){
+            //若存在me.content 并且该content和content里面的firstChlid不一样
+            body.innerHTML = '';
+            body.appendChild(me.contentElement);
+        }else if(options.contentElement && me.contentElement != options.contentElement){
+            //若options.content存在，则认为用户向对content进行更新
+            //判断时候和原有content相同，不同则进行更新
+            body.innerHTML = '';
+            body.appendChild(options.contentElement);
+        }else if(options.content && me.content != options.content){
+            //若存在options.contentText，则认为用户相对contentText进行更新
+            //判断是否和原有contenText相同，不同则进行更新（包括原本不存在contentText）
+            body.innerHTML = options.content;
+        }else if(me.content && baidu.dom.children(body).length == 0 ) {
+            //第一次new Tooltip时传入contentText，进行渲染
+            body.innerHTML = me.content;
+        }
+
+    },
 	
     /**
      * 更新tooltip属性值
@@ -158,30 +204,10 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     _update: function(options){
         var me = this,
             options = options || {},
-            main = me.getMain(),
-            body = me.getBody();
+            main = me.getMain();
 
-        if(me.content && me.content != body.firstChlid){
-            //若存在me.content 并且该content和content里面的firstChlid不一样
-            body.innerHTML == '';
-            body.appendChild(me.content);
-        }else if(options.content && me.content != options.content){
-            //若options.content存在，则认为用户向对content进行更新
-            //判断时候和原有content相同，不同则进行更新
-            body.innerHTML == '';
-            body.appendChild(content);
-        }else if(options.contentText && me.contentText != options.contentText){
-            //若存在options.contentText，则认为用户相对contentText进行更新
-            //判断是否和原有contenText相同，不同则进行更新（包括原本不存在contentText）
-            body.innerHTML = options.contentText;
-        }else if(me.contentText) {
-            //针对两种情况
-            //1.第一次new Tooltip时传入contentText，进行渲染
-            //2.new Tooltip时没有传入contentText的，之后使用tooltipInstance.contentText = HTMLString；TooltipInstance._update这样的情况进行更新
-            baidu.dom.children(body).length == 0 && (body.innerHTML = me.contentText);
-        }
-
-        baidu.object.extend(this, options);
+        me._updateBody(options);
+        baidu.object.extend(me, options);
 
         //更新寛高数据
         baidu.dom.setStyles(main, {
@@ -249,8 +275,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
      * @return {Null}
 	 */
 	close: function() {
-		var me = this,
-            target = target || me.target[0];
+		var me = this;
 
         if(!me.isShowing) return;
         
@@ -258,8 +283,8 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
         if(me.dispatchEvent('onbeforeclose')){
             me._close();
             me.dispatchEvent('onclose');
-            return;
         }
+        me.currentTarget = null;
     },
 
 
@@ -278,7 +303,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 		if (me.getBody()) {
 			baidu.dom.remove(me.getBody());
 		}
-        delete(baidu.ui.Tooltip.showingTooltip[me.guid]);
+        delete(baidu.ui.Tooltip._showingTooltip[me.guid]);
 		baidu.lang.Class.prototype.dispose.call(me);
 	},
     /**
@@ -298,4 +323,4 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 });
 
 baidu.ui.Tooltip.isSingleton = false;
-baidu.ui.Tooltip.showingTooltip = {};
+baidu.ui.Tooltip._showingTooltip = {};

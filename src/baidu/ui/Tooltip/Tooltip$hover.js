@@ -44,8 +44,6 @@ baidu.ui.Tooltip.register(function(me) {
         me.addEventListener('onclose', function(){
             baidu.on(me.currentTarget, 'mouseover', showFn);
             baidu.un(me.currentTarget, 'mouseout', hideFn);
-
-            me.currentTarget = null;
         });
 
         //显示tooltip

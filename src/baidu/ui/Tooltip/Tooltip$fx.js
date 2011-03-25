@@ -28,6 +28,8 @@ baidu.ui.Tooltip.register(function(me) {
 	
         var fxHandle = null;
 
+        //TODO:fx目前不支持事件队列，此处打补丁解决
+        //等fx升级后更新
         me.addEventListener('beforeopen', function(e) {
 	        me.dispatchEvent('onopen');
             'function' == typeof me.showFx && me.showFx(me.getMain(), me.showFxOptions);

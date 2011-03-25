@@ -205,9 +205,11 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         options.type = options.type.toLowerCase();
 
         uiNS = baidu.ui.getUI(options.type);
-        baidu.object.merge(uiNS,{statable:true},{whiteList: ['statable']});
-        uiNS && (uiInstance = new uiNS(options.config));
-        me.addRaw(uiInstance, container);
+        if(uiNS){
+            baidu.object.merge(uiNS,{statable:true},{whiteList: ['statable']});
+            uiInstance = new uiNS(options.config);
+            me.addRaw(uiInstance, container);
+        }
 
         return uiInstance;
     },
@@ -381,7 +383,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
             });
         }
 
-        return item;
+        return (item ? item[0] : null);
     },
 
     dispose: function(){

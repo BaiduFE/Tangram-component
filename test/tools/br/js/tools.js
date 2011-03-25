@@ -68,16 +68,16 @@ var testingElement = {}, te = testingElement;
 		e.call(this, arguments);
 		myTeardown();
 	};
-	QUnit.moduleStart = function() {
-		var h = setInterval(function() {
-			if (window && window['baidu'] && window.document && window.document.body) {
-				clearInterval(h);
-				start();
-			}
-		}, 20);
-		stop();
-		ms.apply(this, arguments);;
-	};
+//	QUnit.moduleStart = function() {
+//		var h = setInterval(function() {
+//			if (window && window['baidu'] && window.document && window.document.body) {
+//				clearInterval(h);
+//				start();
+//			}
+//		}, 20);
+//		stop();
+//		ms.apply(this, arguments);;
+//	};
 //	QUnit.moduleEnd = function() {
 //		me.call(this, arguments);
 //	};

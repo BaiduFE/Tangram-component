@@ -44,11 +44,11 @@ baidu.ui.Tooltip.register(function(me) {
 
         //tooltip隐藏时，绑定和解除方法
         me.addEventListener('onclose', function(){
+            
             baidu.on(me.currentTarget, 'click', showFn);
             baidu.un(me.currentTarget, 'click', hideFn);
             baidu.un(document, 'click', hideFn);
 
-            me.currentTarget = null;
         });
 
         //显示tooltip
