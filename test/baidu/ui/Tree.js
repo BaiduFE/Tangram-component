@@ -663,6 +663,6 @@ test('Test the "removeChild()" function', function(){
 
 test('Test the "dispose()" function', function() {
 	var tree = te.getUI();
-	tree.dispose();
+	te.checkUI.dispose(tree);
 	ok(!isShown(tree.getMain()), 'hide after dispose');
 });

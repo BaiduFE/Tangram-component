@@ -25,7 +25,7 @@ module('baidu.ui.ProgressBar');
 	QUnit.testStart = function() {
 		s.apply(this, arguments);;
 		_testStart();
-	}
+	};
 })();
 
 test('initialize', function() {
@@ -39,7 +39,7 @@ test('initialize', function() {
 		equal(pb.getValue(), 20);
 		pb.dispose();
 		start();
-	})
+	});
 });
 
 test('dynamic', function() {
@@ -75,4 +75,4 @@ test('dispose', function() {
 	ok(baidu.dom.g(pb.getId()),'created');
 	pb.dispose();
 	equal(baidu.dom.g(pb.getId()),null,'disposed');
-})
+});
