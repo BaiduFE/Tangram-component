@@ -53,7 +53,7 @@ test('set/get state', function() {
 	stop();
 	expect(4);
 	UserAction.importsrc(
-			'baidu.string.format,baidu.dom.insertHtml,baidu.ui.createUI',
+			'baidu.string.format,baidu.dom.insertHTML,baidu.ui.createUI',
 			function() {
 				var instance = te.getUI();
 				instance.render(te.dom[0]);
