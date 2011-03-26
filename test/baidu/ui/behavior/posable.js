@@ -60,7 +60,7 @@ module('baidu.ui.behavior.posable');
  */
 test('setPosition - base', function() {
 	stop();
-	ua.importsrc('baidu.string.format,baidu.dom.insertHtml'
+	ua.importsrc('baidu.string.format,baidu.dom.insertHTML'
 			+ ',baidu.ui.createUI',
 			function() {
 				var ui = te.getUI(), m = ui.getMain();
