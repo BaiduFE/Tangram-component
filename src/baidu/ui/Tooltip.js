@@ -66,7 +66,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 
     posable: true,
     positionBy: 'element',
-	offsetPosition: 'bottomRight',
+	offsetPosition: 'bottomright',
 
     isShowing: false,
 
