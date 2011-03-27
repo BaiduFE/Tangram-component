@@ -35,6 +35,6 @@
 
 baidu.ui.suggestion.create = function(target, options) {
     var s = new baidu.ui.suggestion.Suggestion(options);
-    s.render(baidu.g(target));
+    s.render(target);
     return s;
 };

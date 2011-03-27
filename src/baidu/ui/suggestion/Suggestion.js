@@ -103,10 +103,13 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function(options) {
      */
     render: function(target) {
         var me = this,
-            main;
-        if (me.getMain()) {
+            main,
+            target = baidu.g(target);
+        
+        if (me.getMain() || !target) {
             return;
         }
+
         if (target.id) {
             me.targetId = target.id;
         }else {
