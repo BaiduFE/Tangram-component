@@ -40,7 +40,7 @@ test('initi', function() {
 		ok(!slider.disabled, 'check enable');
 		start();
 	}); 
-})
+});
 
 test('update', function() {
 	var v = 0;
@@ -106,7 +106,7 @@ test('update', function() {
 			}
 		}, 20);
 	});
-})
+});
 
 test('onslide', function() {
 	stop();
@@ -155,7 +155,7 @@ test('onslide', function() {
 			start();
 		}, 60);
 	})
-})
+});
 
 /*
 test('range', function() {
@@ -231,12 +231,11 @@ test('set min max', function() {
 		equal(s.getValue(),options.max,'check value');
 		start();
 	}, 60);
-})
+});
 /**
  * 事件没有删除 ，开问题单 PUBLICGE-344
  */
 test('dispose',function(){
-	expect(2);
 	var l1 = baidu.event._listeners.length;
 	var s = new baidu.ui.Slider();
 	s.render(te.dom[0]);
