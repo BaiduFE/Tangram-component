@@ -605,7 +605,7 @@ test('Test the "update()" function', function(){
 	node_a.update(options);
 	equals(baidu.dom.g("a-text").innerHTML, 'b', 'The innerHTML of node_a is updated');
 	equals(node_a.text, 'b', 'The text attribute of node_a is updated');
-	equals(true, false, 'TODO，等源代码写完后再测试');
+//	更新仅支持类似text等……
 });
 
 test('Test the "removeChild()" function', function(){
