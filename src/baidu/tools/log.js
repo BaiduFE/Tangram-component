@@ -11,6 +11,7 @@
 ///import baidu.object.extend;
 ///import baidu.tools;
 ///import baidu.array.each;
+///import baidu.fn.blank;
 
 (function(){
  
@@ -22,11 +23,11 @@
         
         /**
          * 设置的push数据时使用的timeHandler
-         * 若timeStep为零，则立即输出数据
+         * 若timeInterval为零，则立即输出数据
          **/
         _timeHandler = null,
 
-        timeStep = 0,
+        timeInterval = 0,
     
         _logLevel = parseInt('1111',2);
 
@@ -50,7 +51,7 @@
      */
     log.error = function(data){
         _log(data,'error');
-    },
+    };
 
     /**
      * 打印info
@@ -74,6 +75,8 @@
 
     /**
      * 设置timer
+     * 若此时一寸在相同名称的计时器，则立即输出，并重新初始化
+     * 若不存在，则初始化计时器
      * @public
      * @param {String} name timer的标识名称
      * @return {Null}
@@ -84,9 +87,8 @@
 
         if(timeOld){
             _log(timeNew - timeOld, 'info');
-        }else{
-            _timeObject[name] = timeNew;
         }
+        _timeObject[name] = timeNew;
     };
 
     /**
@@ -120,12 +122,12 @@
             _logStack.push({type:type,data:data});
         }
 
-        if(timeStep == 0){
+        if(timeInterval == 0){
             //如果这是time为0，则立即调用_push方法
             _push();
         }else{
-            //如果timeStep > 0
-            !_timeHandler && (_timeHandler = setInterval(function(){_push();},timeStep));
+            //如果timeInterval > 0
+            !_timeHandler && (_timeHandler = setInterval(_push,timeInterval));
         }
     };
 
@@ -147,19 +149,19 @@
     };
 
     /**
-     * 设置log的timeStep值
-     * 当timeStep = 0时，则当有日志需要输出时，立即输出
-     * 当timeStep > 0时，则以该timeStep为间隔时间，输出日志
+     * 设置log的timeInterval值
+     * 当timeInterval = 0时，则当有日志需要输出时，立即输出
+     * 当timeInterval > 0时，则以该timeStep为间隔时间，输出日志
      * 默认值为0
-     * @param {Number} ts timeStep
+     * @param {Number} ts timeInterval
      * @return {Null}
      */
-    log.setTimeStep = function(ts){
+    log.setTimeInterval = function(ti){
         
-        timeStep = ts;
+        timeInterval = ti;
         
         //停止当前的计时
-        if(_timeHandler && timeStep == 0){
+        if(_timeHandler && timeInterval == 0){
             clearInterval(_timeHandler);
             _timeHandler = null;
         }
@@ -180,7 +182,7 @@
         });
 
         _logLevel = logLevel;
-    }
+    };
    
     //日志等级
     log.logLevel = {
@@ -191,7 +193,7 @@
     };
 
     //回调函数
-    log.callBack = new Function();
+    log.callBack = baidu.fn.blank;
 
 
     baidu.log = baidu.tools.log = log;
