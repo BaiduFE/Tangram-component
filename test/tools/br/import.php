@@ -1,6 +1,8 @@
 <?php
 require_once 'config.php';
-
+//加入一个调试开关
+if(array_key_exists('debug', $_GET))
+Config::$DEBUG = true;
 if(!Config::$DEBUG){
 	header("Content-type: text/javascript; charset=utf-8");
 	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
