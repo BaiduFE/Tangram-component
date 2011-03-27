@@ -10,6 +10,7 @@
 
 ///import baidu.object.extend;
 ///import baidu.tools;
+///import baidu.array.each;
 
 (function(){
  

@@ -17,6 +17,7 @@
 ///import baidu.lang.isString;
 ///import baidu.ui.getUI;
 ///import baidu.object.each;
+///import baidu.dom.remove;
 ///import baidu.array.contains;
 
 /**
