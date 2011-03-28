@@ -169,7 +169,7 @@ test("events", function() {
 });
 
 test("dispose", function() {
-	expect(5);
+	expect(2);
 	var options = {
 		data : [ {
 			content : 'file',
@@ -181,23 +181,16 @@ test("dispose", function() {
 			content : 'close',
 			value : 'close3'
 		} ],
-		editable : true,
-		onopen : function() {
-			ok(true, 'open');
-		}
+		editable : true
 	};
 	var div = document.body.appendChild(document.createElement("div"));
 	var cb = new baidu.ui.Combox(options);
 	cb.render(div);
     var input = cb.getInput();
 	var arrow = cb.getArrow();
-	$(input).focus();
-	ua.keyup(input);
-    ua.click(arrow);
+    var ie = baidu.event._listeners.length;
     cb.dispose();
+    var ic = baidu.event._listeners.length;
     ok(cb.getBody()==null,"element is removed");
-    $(input).focus();
-	ua.keyup(input);
-    ua.click(arrow);
-    ok(true,'event is lose');
+    equals(ie, ic - 3 , 'event is lose');
 })
