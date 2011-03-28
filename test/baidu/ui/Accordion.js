@@ -53,6 +53,13 @@ test('function - insertItemHTML', function() {
 	equals(ui.getHeads()[1].innerHTML, 'H4', 'check inserted item');
 	equals(ui.getBodies()[1].innerHTML, 'body4-0<div>body4-1</div>',
 			'check inserted item');
+	equals(ui.getHeads()[2].innerHTML, 'H1', 'check inserted item');
+
+	ui.insertItemHTML({
+		head : 'H5',
+		body : 'body4-0<div>body4-1</div>'
+	});
+	equals(ui.getHeads()[3].innerHTML, 'H5', 'check inserted item');
 });
 
 test('collapse switchByHead onbeforecollapse onbeforeswitchhead', function() {
