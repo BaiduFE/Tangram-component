@@ -36,8 +36,8 @@ test('Check the basic functions',function(){
 			(cb.data[1].content == data[1].content), "The data of the combox is set");
 	equals(cb.select.style.display, "none", "The select is hidden");
 	//测试combox的位置是否被重新设置为select所在的位置
-	ok((baidu.dom.getPosition(cb.getMain()).left == 102) && 
-			(baidu.dom.getPosition(cb.getMain()).top == 202),
+	ok(Math.abs(baidu.dom.getPosition(cb.getMain()).left - 102) < 5 && 
+			Math.abs(baidu.dom.getPosition(cb.getMain()).top - 202) < 5,
 			"The position of the Combox is reset,PUBLICGE-329,PUBLICGE-318");
 	//测试onitemchosen事件能否正确加载监听函数并派发
 	cb.menu.open();
