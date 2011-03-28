@@ -1,12 +1,17 @@
 module("baidu.ui.Suggestion.Suggestion$smartCover");
 
 test("hide and show a select", function() {
-	expect(2);
 	stop();
-	var te = testingElement, sugg, options = {
+	var te = testingElement, sugg, input = te.dom[0], options = {
 		onshow : function() {
 			setTimeout(function(){
 				equals(select.style.visibility, "hidden", "The select element is hidden");
+				if (baidu.browser.ie) {
+					equal(sugg.getMain().lastChild.style.width,
+							sugg.getMain().offsetWidth + 'px');
+					equal(sugg.getMain().lastChild.style.height,
+							sugg.getMain().offsetHeight + 'px');
+				}
 				sugg.hide();
 			},0);
 		},
@@ -19,23 +24,16 @@ test("hide and show a select", function() {
 		}
 	};
 	
-	var div = document.createElement('div');
-	var tr = document.createElement('tr');
 	var select = document.createElement('select');
 	var option = document.createElement("option");  
 	option.text = 'content_a';  
 	option.value = 'value_a';  
 	select.add(option, null); 
-	document.body.appendChild(div);
-	div.appendChild(tr);
-	tr.appendChild(select);
+	document.body.appendChild(select);
 	te.dom.push(select);
-	var input = document.createElement("input");
-	document.body.appendChild(input);
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	baidu.ui.smartCover.options.hideSelect = true;
-	ua.click(select);
 	sugg.show('a', [ 'ab', 'ac' ]);
 
 });
