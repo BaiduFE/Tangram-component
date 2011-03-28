@@ -21,6 +21,7 @@ baidu.ui.Carousel.register(function(me){
 					page = currPage >= totalPage ? (me.isCycle ? 1 : totalPage) : currPage + 1;
 					index = (page - 1) * me.pageSize;
 				}else{
+					alert(me.scrollIndex );
 					index = me.scrollIndex >= me.totalCount - 1 ? (me.isCycle ? 0 : me.totalCount - 1) : me.scrollIndex + 1;
 				}
 				me.scrollTo(index);
