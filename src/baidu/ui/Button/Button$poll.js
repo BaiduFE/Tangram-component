@@ -4,6 +4,7 @@
  */
 
 ///import baidu.ui.Button;
+///import baidu.lang.isBoolean;
 /**
  * 使按钮支持poll轮询，实现在按钮上点击并保持鼠标按着状态时连续激活事件侦听器
  * @param   {Object}    options config参数.
@@ -13,6 +14,7 @@
  */
 baidu.ui.Button.register(function(me) {
     if (!me.poll) {return;}
+    baidu.lang.isBoolean(me.poll) && (me.poll = {});
     me.addEventListener('mousedown', function(evt) {
         var pollIdent = 0,
             interval = me.poll.interval || 100,
