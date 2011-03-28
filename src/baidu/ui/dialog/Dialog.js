@@ -187,21 +187,18 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
 
         
         if(me.content && content.firstChild != me.content) {
-            //若存在me.content 并且该content和content里面的firstChlid不一样
+            //若存在me.content 并且该content和content里面的firstChild不一样
             content.innerHTML = '';
             content.appendChild(me.content);
-        
-        }else if(options.content && options.content != me.content){
+            me.content = content.firstChild 
+        }else if(options.content){
             //若options.content存在，则认为用户向对content进行更新
-            //判断时候和原有content相同，不同则进行更新
             content.innerHTML = '';
             content.appendChild(options.content);
-        
-        }else if(options.contentText && options.contentText != me.contentText){
+            me.content = content.firstChild;
+        }else if(options.contentText){
             //若存在options.contentText，则认为用户相对contentText进行更新
-            //判断是否和原有contenText相同，不同则进行更新（包括原本不存在contentText）
             content.innerHTML = options.contentText;
-        
         }else if(me.contentText) {
             //针对两种情况
             //1.第一次new dialog时传入contentText，进行渲染

@@ -4,6 +4,7 @@
  */
 
 ///import baidu.ui.createUI;
+///import baidu.ui.toolbar;
 
 /**
  * @class Toolbar类
