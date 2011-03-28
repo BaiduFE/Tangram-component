@@ -175,16 +175,17 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
             body = me.getBody(),
             title;
 
-        if(me.contentElement && me.contentElement != body.firstChlid){
-            //若存在me.content 并且该content和content里面的firstChlid不一样
+        if(me.contentElement && me.contentElement !== body.firstChild){
+            //若存在me.content 并且该content和content里面的firstChild不一样
             body.innerHTML = '';
             body.appendChild(me.contentElement);
-        }else if(options.contentElement && me.contentElement != options.contentElement){
+            me.contentElement = body.firstChild;
+        }else if(options.contentElement){
             //若options.content存在，则认为用户向对content进行更新
-            //判断时候和原有content相同，不同则进行更新
             body.innerHTML = '';
             body.appendChild(options.contentElement);
-        }else if(options.content && me.content != options.content){
+            me.contentElement = body.firstChild;
+        }else if(options.content){
             //若存在options.contentText，则认为用户相对contentText进行更新
             //判断是否和原有contenText相同，不同则进行更新（包括原本不存在contentText）
             body.innerHTML = options.content;

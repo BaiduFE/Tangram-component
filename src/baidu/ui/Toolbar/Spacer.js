@@ -7,6 +7,7 @@
 ///import baidu.string.format;
 ///import baidu.object.extend;
 ///import baidu.ui.createUI;
+///import baidu.ui.ToolBar;
 
 /**
  * @class Spacer类
