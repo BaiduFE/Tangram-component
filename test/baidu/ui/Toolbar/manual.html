@@ -84,7 +84,12 @@
             };
             var toolbar = new baidu.ui.Toolbar(options);
             toolbar.render("toolBar-Container");
-        </script>
 
+            function del(name){
+                toolbar.remove(name);
+            }
+        </script>
+        <input type="button" onclick="javascript:del('cut_button');" value="delete"/>
+        <input type="button" onclick="javascript:del('button7');" value="delete"/>
     </body>
 </html>

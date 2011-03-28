@@ -298,8 +298,12 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         if (!name) return;
         if (item = me._itemObject[name]) {
             item[0].dispose();
-            baidu.dom.remove[item[1]];
+            baidu.dom.remove(item[1]);
             delete(me._itemObject[name]);
+        }else{
+            baidu.object.each(me._itemObject, function(item, index){
+                item[0].remove && item[0].remove(name);
+            });
         }
     },
 
