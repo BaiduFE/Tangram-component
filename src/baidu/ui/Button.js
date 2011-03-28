@@ -110,7 +110,9 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
        });
 
         baidu.dom.remove(body);
-		baidu.lang.Class.prototype.dispose.call(me);
+		
+        me.dispatchEvent('ondispose');
+        baidu.lang.Class.prototype.dispose.call(me);
 	},
 
     /**

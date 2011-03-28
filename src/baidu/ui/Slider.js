@@ -277,6 +277,7 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
     dispose : function(){
         var me = this;
         baidu.dom.remove(me.getId());
+        me.dispatchEvent('ondispose');
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });
