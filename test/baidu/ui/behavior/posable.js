@@ -49,7 +49,7 @@ module('baidu.ui.behavior.posable');
 	};
 
 	te.checkPosition = function(ele, left, top, info) {
-		info = info || '';		
+		info = info || '';
 		equals(parseInt($(ele).css('left')), left, info + ' - left');
 		equals(parseInt($(ele).css('top')), top, info + ' - top');
 	};
@@ -60,7 +60,7 @@ module('baidu.ui.behavior.posable');
  */
 test('setPosition - base', function() {
 	stop();
-	ua.importsrc('baidu.string.format,baidu.dom.insertHtml'
+	ua.importsrc('baidu.string.format,baidu.dom.insertHTML'
 			+ ',baidu.ui.createUI',
 			function() {
 				var ui = te.getUI(), m = ui.getMain();
@@ -75,8 +75,9 @@ test('setPosition - base', function() {
 				});
 				te.checkPosition(m, 81, 82);
 				var eventLen = baidu.event._listeners.length;
+				// none once, position should be set
 				ui.setPosition([ 50, 50 ]);// 这个貌似是注册事件。。。
-				te.checkPosition(m, 81, 82);
+				te.checkPosition(m, 50, 50);
 				// 检查事件添加
 				equals(baidu.event._listeners.length, eventLen + 1,
 						'event added');
@@ -84,10 +85,6 @@ test('setPosition - base', function() {
 				equals(e[0], window, 'event on window');
 				equals(e[1], 'resize', 'event type is resize');
 
-				ui.setPosition([ 50, 50 ], null, {
-					once : true
-				});// 必须调用once，不带元素时默认为main
-				te.checkPosition(m, 50, 50);
 				ui.setPosition([ 20, 20 ], te.dom[0], {
 					once : true
 				});// 必须调用once，不带元素时默认为main
@@ -105,7 +102,15 @@ test('options - offset', function() {
 	// 偏移量
 	};
 	ui.setPosition([ 100, 100 ], m, op);
-	te.checkPosition(m, 110, 110, 'check offset ');
+	te.checkPosition(m, 110, 110, 'check offset as array ');
+	equals(op.position, 'bottomright', 'set position as default');
+
+	op.offset = {
+		left : 10,
+		top : 10
+	};
+	ui.setPosition([ 100, 100 ], m, op);
+	te.checkPosition(m, 110, 110, 'check offset as left-top');
 	equals(op.position, 'bottomright', 'set position as default');
 });
 

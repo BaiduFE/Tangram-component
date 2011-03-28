@@ -28,6 +28,20 @@ module("baidu.ui.Suggestion");
 	};
 })();
 
+test('构造函数同时支持id和dom', function(){
+	var sugg = new baidu.ui.Suggestion();
+	te.obj.push(sugg);
+	sugg.render(te.dom[0]);
+	equals(sugg.getTarget().id, te.dom[0].id, 'create by dom');
+});
+
+test('构造函数同时支持id和dom', function(){
+	var sugg = new baidu.ui.Suggestion();
+	te.obj.push(sugg);
+	sugg.render(te.dom[0].id);
+	equals(sugg.getTarget().id, te.dom[0].id, 'create by id');
+});
+
 /**
  * check events list and event arguments and event queue
  * <li> on show
@@ -268,18 +282,17 @@ test(
 		});
 
 test('position absolute', function() {
-        stop();
-            var options = {
-                        onshow : function() {
-                                                equals(parseInt($(sugg.getItem(0)).css('left')), 10, 'check left');
-                                                equals(parseInt($(sugg.getItem(0)).css('top')), 30, 'check left');
-                                                                        start();
-                                                                                }
-                                    };
-                var sugg = new baidu.ui.Suggestion(options);
-                    $(te.dom[0]).css('position', 'absolute').css('left', 10).css('top',
-                                    10).css('height', 20);
-                        sugg.render(te.dom[0]);
-                            sugg.show('a', [ 'ab', 'ac' ]);
+	stop();
+	var options = {
+		onshow : function() {
+			equals(parseInt($(sugg.getItem(0)).css('left')), 10, 'check left');
+			equals(parseInt($(sugg.getItem(0)).css('top')), 30, 'check left');
+			start();
+		}
+	};
+	var sugg = new baidu.ui.Suggestion(options);
+	$(te.dom[0]).css('position', 'absolute').css('left', 10).css('top', 10)
+			.css('height', 20);
+	sugg.render(te.dom[0]);
+	sugg.show('a', [ 'ab', 'ac' ]);
 });
-

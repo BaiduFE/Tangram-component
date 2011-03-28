@@ -23,6 +23,10 @@ test('dom', function() {
 	stop();
 });
 
+test('position static', function() {
+	equals(baidu.fx.move(te.dom[0]), null, 'unsupported for position static');
+});
+
 test('id', function() {
 	var t = te.dom[0];
 	$(t).css('height', '100px');

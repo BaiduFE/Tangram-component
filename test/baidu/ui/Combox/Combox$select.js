@@ -2,7 +2,6 @@ module('baidu.ui.Combox.Combox$select');
 
 test('Check the basic functions',function(){
 	var select = document.createElement('select');
-	document.body.appendChild(select);
 	var option = document.createElement("option");  
 	option.text = 'content_a';  
 	option.value = 'value_a';  
@@ -14,6 +13,7 @@ test('Check the basic functions',function(){
 	select.style.position = 'absolute';
 	select.style.left = '100px';
 	select.style.top = '200px';
+	document.body.appendChild(select);
 	var div = document.body.appendChild(document.createElement("div"));
 	var options = {
 		select : select,
@@ -52,16 +52,16 @@ test('Check the ajax form content',function(){
 	stop();
 	var check  = function(){
 		var select = document.createElement('select');
-		document.body.appendChild(select);
 		var option = document.createElement("option");  
 		option.text = 'content_a';  
 		option.value = 'value_a';  
-		select.add(option, null); 
+		select.add(option, null);
 		$(select).attr("name", "select1");
 		var options = {
 			select : select,
 			type : 'select'
 		};
+		document.body.appendChild(select);
 		var div = document.body.appendChild(document.createElement("div"));
 		var cb = new baidu.ui.Combox(options);
 		cb.render(div);	
@@ -73,7 +73,7 @@ test('Check the ajax form content',function(){
 		document.body.appendChild(div1);
 		form.appendChild(cb.getMain());
 		form.appendChild(select);
-		form.action = 'http://localhost/Tangram-Component/test/baidu/ui/Combox/form.php';
+		form.action = upath+'form.php';
 		form.method = 'post';
 		stop();
 		var ajaxOptions = {
