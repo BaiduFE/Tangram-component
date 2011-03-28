@@ -3,13 +3,14 @@
     <head>
         <title>modal manual test - by berg</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.modal.*' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Modal' ></script>
         <script>
             var modal_array = [];
             var modal_in_div = [];
             var color = ["red","black","yellow"],a=0,b=0;
             function showModal (){
-                var modal = baidu.ui.modal.create();
+                var modal = new baidu.ui.Modal();
+                modal.render();
                 modal.show({styles:{color:color[a]}});
                 modal_array.push(modal);
                 a++;
@@ -20,9 +21,10 @@
             }
 
             function createModalInDiv(){
-                var modal = baidu.ui.modal.create({
+                var modal = new baidu.ui.Modal({
                     container:"module_container"
                 });
+                modal.render();
                 modal.show({styles:{color:color[b]}});
                 modal_in_div.push(modal);
                 b++;
@@ -50,5 +52,17 @@
             </select>
         </div>
         </div>
+        <IFRAME onload="javascript:init();" width="700px" height="700px" src="manual2.html" style="position:absolute; top:500px;" id="ff"></IFRAME>
+        <SCRIPT>
+            function init(){
+                var w = frames[0];
+                var modal = new w.baidu.ui.Modal();
+                modal.render();
+                modal.show({styles:{color:"blue"}});
+
+                document.getElementById("ff").style.width = "100px";
+            } 
+        </SCRIPT>
+
     </body>
 </html>

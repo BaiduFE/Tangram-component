@@ -27,7 +27,7 @@ baidu.ui.Toolbar.Separator = baidu.ui.createUI(function(options) {
     /**
      * uiType
      */
-    uiType: 'toolbar-sepatator',
+    uiType: 'toolbar-separator',
 
     /**
      * 模板
