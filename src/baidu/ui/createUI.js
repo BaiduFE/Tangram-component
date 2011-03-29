@@ -1,11 +1,6 @@
 /*
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: baidu/ui/createUI.js
- * author: berg
- * version: 1.1.0
- * date: 2010/12/02
  */
 
 ///import baidu.ui;
