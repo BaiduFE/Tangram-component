@@ -15,8 +15,7 @@
 <body>
     <input type="BUTTON" value="单例/多例切换" onclick="javascript:changeType();"/>
     <span id='isSingleton'>多例</span>
-    <input type="BUTTON" value="fx效果开关" onclick="javascript:changeFx();"/>
-    <span id='usingFX'>启用fx</span>
+    <input type="BUTTON" value="update content" onclick="javascript:changeContent();"/>
     <div class="wrapper">
 
 
@@ -71,20 +70,18 @@
             }
         }
 
-        var usingFX = true;
-        function changeFx(){
-            if(usingFX){
-                usingFX = false
-                baidu.g('usingFX').innerHTML = '无fx';
-            }else{
-                usingFX = true;
-                baidu.g('usingFX').innerHTML = '启用fx';
-            }
+        function changeContent(){
+            var options = {
+                content:'',
+                contentElement:null
+            };
+
+            tooltip_click1.update(options);
         }
 
         var tooltip_options = {
             autoRender: true,
-            enableFx: usingFX 
+            enableFx: true 
         };
 
         tooltip_options['type'] = 'click';

@@ -151,14 +151,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 
         me.currentTarget = target;
 
-        if(!me.contentElement && !me.content){
-            if((title = baidu.getAttr(me.currentTarget, 'tangram-tooltip-title')) && title != ''){
-                body.innerHTML = title;
-            }else{
-                body.innerHTML = '';
-            }
-        }
-
+        me._updateBodyByTitle();
         me._setPosition();
         me.isShowing = true;
         
@@ -176,26 +169,44 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
             title;
 
         if(me.contentElement && me.contentElement !== body.firstChild){
+            
             //若存在me.content 并且该content和content里面的firstChild不一样
             body.innerHTML = '';
             body.appendChild(me.contentElement);
             me.contentElement = body.firstChild;
-        }else if(options.contentElement){
+        
+        }else if(typeof options.contentElement != 'undefined'){
+            
             //若options.content存在，则认为用户向对content进行更新
             body.innerHTML = '';
-            body.appendChild(options.contentElement);
-            me.contentElement = body.firstChild;
-        }else if(options.content){
+            options.contentElement != null && body.appendChild(options.contentElement);
+        
+        }else if(typeof options.content == 'string'){
+            
             //若存在options.contentText，则认为用户相对contentText进行更新
-            //判断是否和原有contenText相同，不同则进行更新（包括原本不存在contentText）
+            body.innerHTML = '';
             body.innerHTML = options.content;
-        }else if(me.content && baidu.dom.children(body).length == 0 ) {
+        
+        }else if(typeof me.content == 'string' && baidu.dom.children(body).length == 0 ) {
             //第一次new Tooltip时传入contentText，进行渲染
             body.innerHTML = me.content;
         }
-
     },
 	
+    _updateBodyByTitle:function(){
+        var me = this,
+            body = me.getBody();
+        
+        if(!me.contentElement && !me.content && me.currentTarget){
+            if((title = baidu.getAttr(me.currentTarget, 'tangram-tooltip-title')) && title != ''){
+                body.innerHTML = title;
+            }else{
+                body.innerHTML = '';
+            }
+        }
+
+    },
+
     /**
      * 更新tooltip属性值
      * @private
@@ -205,10 +216,13 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     _update: function(options){
         var me = this,
             options = options || {},
-            main = me.getMain();
+            main = me.getMain(),
+            body = me.getBody();
 
         me._updateBody(options);
         baidu.object.extend(me, options);
+        me.contentElement = baidu.dom.children(body).length > 0 ? body.firstChild : null;
+        me._updateBodyByTitle();
 
         //更新寛高数据
         baidu.dom.setStyles(main, {

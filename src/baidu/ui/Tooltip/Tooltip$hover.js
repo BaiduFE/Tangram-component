@@ -15,9 +15,15 @@
 
 ///import baidu.event.stop;
 
+baidu.ui.Tooltip.extend({
+    hideDelay: 500
+});
+
 baidu.ui.Tooltip.register(function(me) {
     
     if (me.type == 'hover') {
+
+        var hideHandle = null;
 
         //onload时绑定显示方法
         me.addEventListener("onload",function(){
@@ -48,6 +54,8 @@ baidu.ui.Tooltip.register(function(me) {
 
         //显示tooltip
         function showFn(e){
+            hideHandle && clearTimeout(hideHandle);
+
             var e = e || window.event,
                 target = baidu.event.getTarget(e);
             
@@ -61,11 +69,13 @@ baidu.ui.Tooltip.register(function(me) {
         function hideFn(e){
             var e = e || window.event,
                 target = baidu.event.getTarget(e);
-            
-            me.close();
 
-            //停止默认事件及事件传播
-            baidu.event.stop(e);
+            hideHandle = setTimeout(function(){
+                me.close();
+
+                //停止默认事件及事件传播
+                baidu.event.stop(e);   
+            },me.hideDelay);
         }
     }
 });
