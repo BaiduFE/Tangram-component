@@ -3,7 +3,7 @@
     <head>
         <title>suggestion manual test - by berg</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.create,baidu.ui.Suggestion,baidu.ui.Suggestion.*,baidu.object.each,baidu.lang.isObject,baidu.dom.insertHTML&path=../../tangram/src/' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.create,baidu.ui.Suggestion,baidu.ui.Suggestion.*,baidu.object.each,baidu.lang.isObject,baidu.dom.insertHTML&path=../../tangram/src/'></script>
 <style>
 #console{background-color:black;color:white;width:400px;position:absolute;right:0;top:0;height:500px;overflow-y:scroll;}
 
@@ -45,45 +45,45 @@
 
         <script>
 
-            function eventAction(type, event){
-                var html = [],
-                    spaces = "&nbsp;&nbsp;&nbsp;&nbsp";
-                html.push("<span style='color:red'>" + type + " " + event.currentTarget.getTargetValue() + "</span>");
-                baidu.object.each(event.data, function(item, key){
-                    html.push("&nbsp;&nbsp;&nbsp;&nbsp;" + key + ":" + item);
-                    if(baidu.lang.isObject(item)){
-                        baidu.object.each(item, function(item, key){
-                            html.push("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + key + ":" + item);
-                        });
-                    }
-                });
-                baidu.dom.insertHTML("console", "afterBegin", html.join("<br />")+"<br />");
-            }
-            //静态配置
-            baidu.ui.Suggestion.options = {
-                "onconfirm" : function(event){
-                    /*
-                    this.getTarget().style.display = "none";
-                    var me = this;
-                    setTimeout(function(){
-                        me.getTarget().style.display = "";
-                    },1000);
-                    */
-                    eventAction("confirm", event);
-                },
-                "onhighlight" : function(event){
-                    eventAction("highlight", event);
-                },
-                "onbeforepick" : function(event){
-                    eventAction("beforepick", event);
-                },
-                "onpick" : function(event){
-                    eventAction("pick", event);
-                },
-                "onhide" : function(event){
-                    eventAction("hide", event);
-                }
-            };
+//            function eventAction(type, event){
+//                var html = [],
+//                    spaces = "&nbsp;&nbsp;&nbsp;&nbsp";
+//                html.push("<span style='color:red'>" + type + " " + event.currentTarget.getTargetValue() + "</span>");
+//                baidu.object.each(event.data, function(item, key){
+//                    html.push("&nbsp;&nbsp;&nbsp;&nbsp;" + key + ":" + item);
+//                    if(baidu.lang.isObject(item)){
+//                        baidu.object.each(item, function(item, key){
+//                            html.push("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + key + ":" + item);
+//                        });
+//                    }
+//                });
+//                baidu.dom.insertHTML("console", "afterBegin", html.join("<br />")+"<br />");
+//            }
+//            //静态配置
+//            baidu.ui.Suggestion.options = {
+//                "onconfirm" : function(event){
+//                    /*
+//                    this.getTarget().style.display = "none";
+//                    var me = this;
+//                    setTimeout(function(){
+//                        me.getTarget().style.display = "";
+//                    },1000);
+//                    */
+//                    eventAction("confirm", event);
+//                },
+//                "onhighlight" : function(event){
+//                    eventAction("highlight", event);
+//                },
+//                "onbeforepick" : function(event){
+//                    eventAction("beforepick", event);
+//                },
+//                "onpick" : function(event){
+//                    eventAction("pick", event);
+//                },
+//                "onhide" : function(event){
+//                    eventAction("hide", event);
+//                }
+//            };
             var defaultData = [
                 "ddmap",
                 {
@@ -99,27 +99,39 @@
                 "ddx"
             ];
             var sug1 = baidu.ui.create('suggestion', {
+                onbeforepick: function(){
+                    console.log('-----')
+                },
                 autoRender: true,
                 element : baidu.g("suggestion1")
             });
-            var sug2 = new baidu.ui.Suggestion({
-                autoRender: true,
-                element : baidu.g("suggestion2")
-            });
-            var sug3 = new baidu.ui.Suggestion({
-                autoRender: true,
-                element : baidu.g("suggestion3"),
-                view : function(pos){
-                    pos.top -= baidu.g("suggestion3").offsetHeight;
-                    pos.left += baidu.g("suggestion3").offsetWidth;
-                    return pos;
-                }
-            });
-
-            sug1.getData = sug2.getData = sug3.getData = function(){
+            sug1.getData = function(){
                 this.setData("fk", defaultData);
             };
-
+//            var sug2 = new baidu.ui.Suggestion({
+//                autoRender: true,
+//                element : baidu.g("suggestion2")
+//            });
+//            var sug3 = new baidu.ui.Suggestion({
+//                autoRender: true,
+//                element : baidu.g("suggestion3"),
+//                view : function(pos){
+//                    pos.top -= baidu.g("suggestion3").offsetHeight;
+//                    pos.left += baidu.g("suggestion3").offsetWidth;
+//                    return pos;
+//                }
+//            });
+//
+//            sug1.getData = sug2.getData = sug3.getData = function(){
+//                this.setData("fk", defaultData);
+//            };
+//            var c = new baidu.ui.Suggestion({
+//                element: baidu.g("suggestion1"),
+//                autoRender: true,
+//                onbeforepick: function(){
+//                    console.log('AAA');
+//                }
+//            });
         </script>
     </body>
 </html>
