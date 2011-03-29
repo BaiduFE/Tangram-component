@@ -216,7 +216,7 @@ test("add", function() {
         ok(isShown(test_button.getBody()), 'test_button3 created success');    
         equal(test_button.getBody().parentNode,div,'check test_button2 position');
         te.dom.push(div);
-        te.obj.push(toolbar);;
+        te.obj.push(toolbar);
         start();
     });
 
@@ -285,12 +285,13 @@ test('addRow',function(){
         ok(isShown(test_button.getBody()), 'test_button created success');    
         ok(isShown(test_button2.getBody()), 'test_button2 created success');  
         ok(isShown(test_button3.getBody()), 'test_button3 created success'); 
-
+        
         toolbar.remove('test_button');
         ok(!isShown(test_button.getBody()), 'test_button is removed success');  
-        ok(!containerTR.cells[0],'td[0] is removed');
+        ok(!baidu._g('tangram-toolbar--TANGRAM__1-cell-0'),'td[0] is removed');
         ok(!toolbar._itemObject['test_button'],'_itemObject[test_button] is removed');
         toolbar.removeAll();
+        
         ok(!isShown(test_button2.getBody()), 'test_button2 is removed success');  
         ok(!isShown(test_button3.getBody()), 'test_button3 is removed success');  
         ok(!containerTR.cells[1],'td[1] is removed');
