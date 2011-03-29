@@ -39,6 +39,7 @@ test("Mouse down on the button and mouse up on another div", function() {
 
 test("Test whether the events are un after disposing", function() {
 	var div_test = te.dom[0];
+	var ic = baidu.event._listeners.length;
 	var div = document.createElement("div");
 	document.body.appendChild(div);
 	var options = {
@@ -50,8 +51,7 @@ test("Test whether the events are un after disposing", function() {
 	ua.mousedown(button.getBody());
 	ua.mouseout(button.getBody());
 	ua.mouseup(div);
-	var ic = baidu.event._listeners.length;
 	button.dispose();
 	var ie = baidu.event._listeners.length;
-	equals(ie, ic-2, 'The mouseout and mouseup event is un PUBLICGE-342');
+	equals(ie, ic, 'The mouseout and mouseup event is un PUBLICGE-342');
 });
