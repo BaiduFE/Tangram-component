@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/starRate/StarRate.js
- * author: rocy
- * version: 1.0.0
- * date: 2010-07-20
  */
 ///import baidu.ui.createUI;
 ///import baidu.ui.starRate;
@@ -14,6 +9,8 @@
 ///import baidu.dom.insertHTML;
 ///import baidu.string.format;
 ///import baidu.event.on;
+///import baidu.event.un;
+///import baidu.fn.bind;
 
 /**
  * 星级评价条
@@ -25,8 +22,8 @@
  */
 //TODO: 实现一个支持任意刻度的星的显示
 baidu.ui.starRate.StarRate = baidu.ui.createUI(function(options){
-	
-	
+    var me = this;	
+	me.element = null;
 }).extend({
 	uiType  : "starRate",
 	// 总共需要多少个星星【可选，默认显示5个】
@@ -60,9 +57,18 @@ baidu.ui.starRate.StarRate = baidu.ui.createUI(function(options){
 	},
 	
 	render : function(element){
-		var me = this,element = baidu.g(element);
-		baidu.dom.insertHTML(element, "beforeEnd",me.getString());
-		baidu.on(element, 'mouseout', function(){me.starAt(me.current);me.dispatchEvent("onleave");});
+		var me = this;
+        
+        me.element = baidu.g(element);
+		baidu.dom.insertHTML(me.element, "beforeEnd",me.getString());
+
+        me._mouseOutHandle = baidu.fn.bind(function(){
+            var me = this;
+            me.starAt(me.current);
+            me.dispatchEvent("onleave");
+        },me);
+
+		baidu.on(me.element, 'mouseout', me._mouseOutHandle);
 	},
 	
 	starAt : function(num){
@@ -99,7 +105,13 @@ baidu.ui.starRate.StarRate = baidu.ui.createUI(function(options){
 	enable : function(){
 		var me = this;
         me.isDisable = false;
-	}
-	
-	
+	},
+
+    dispose:function(){
+        var me = this;
+
+        baidu.un(me.element, 'mouseout', me._mouseOutHandle);
+        me.dispatchEvent("ondispose");
+        baidu.lang.Class.prototype.dispose(me);
+    }
 });
