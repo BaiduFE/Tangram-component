@@ -183,14 +183,14 @@ test("dispose", function() {
 		} ],
 		editable : true
 	};
+	var ie = baidu.event._listeners.length;
 	var div = document.body.appendChild(document.createElement("div"));
 	var cb = new baidu.ui.Combox(options);
 	cb.render(div);
     var input = cb.getInput();
 	var arrow = cb.getArrow();
-    var ie = baidu.event._listeners.length;
     cb.dispose();
     var ic = baidu.event._listeners.length;
     ok(cb.getBody()==null,"element is removed");
-    equals(ie, ic - 3 , 'event is lose');
-})
+    equals(ic, ie , 'event is lose');
+});
