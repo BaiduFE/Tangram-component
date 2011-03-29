@@ -21,7 +21,7 @@ baidu.ui.Tooltip.extend({
 });
 
 baidu.ui.Tooltip.register(function(me) {
-    me.addEventListener('onupdate', function() {
+    me.addEventListener('onload', function() {
         var me = this,
             button;
         
