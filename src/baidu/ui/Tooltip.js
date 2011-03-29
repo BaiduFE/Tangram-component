@@ -181,15 +181,19 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
             body.innerHTML = '';
             options.contentElement != null && body.appendChild(options.contentElement);
         
-        }else if(typeof options.content == 'string'){
-            
-            //若存在options.contentText，则认为用户相对contentText进行更新
-            body.innerHTML = '';
-            body.innerHTML = options.content;
+        }
         
-        }else if(typeof me.content == 'string' && baidu.dom.children(body).length == 0 ) {
-            //第一次new Tooltip时传入contentText，进行渲染
-            body.innerHTML = me.content;
+        if(!options.contentElement){
+            if(typeof options.content == 'string'){
+
+                //若存在options.contentText，则认为用户相对contentText进行更新
+                body.innerHTML = '';
+                body.innerHTML = options.content;
+
+            }else if(typeof me.content == 'string' && baidu.dom.children(body).length == 0 ) {
+                //第一次new Tooltip时传入contentText，进行渲染
+                body.innerHTML = me.content;
+            }
         }
     },
 	
