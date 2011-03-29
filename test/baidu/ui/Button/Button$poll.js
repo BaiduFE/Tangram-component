@@ -85,6 +85,6 @@ test("Test when the button disposed, whether the poll event is canceled", functi
 		ua.mouseup(button.getBody());
 		button.dispose();
 		start();
+		equals(button.poll, undefined, 'The poll event is canceled PUBLICGE-338');
 	}, 250);
-	equals(button.poll, undefined, 'The poll event is canceled PUBLICGE-338');
 });
