@@ -243,7 +243,6 @@ test('target title',function(){
 	equal(tp.getBody().firstChild,contentElement);
 	    
 	options = {
-		target : [target1],
 		contentElement : null
 	}; 
 	tp.update(options);
@@ -252,15 +251,23 @@ test('target title',function(){
 	equal(tp.getBody().innerHTML,'this is a title');
 	
 	options = {//设置contentElement=null，应该显示content
-		contentElement : null,
 		content : 'content'
 	}
 	tp.update(options);
 	equal(tp.getBody().innerHTML,'content');
 	
-	tp.contentElement = contentElement;
-	tp.update();
+	options = {
+		contentElement : contentElement
+	}; 
+	tp.update(options);
 	equal(tp.getBody().firstChild,contentElement);
+	
+	options = {
+		contentElement : null,
+		content : 'content'
+	}; 
+	tp.update(options);
+	equal(tp.getBody().innerHTML,'content');
 
 });
 
