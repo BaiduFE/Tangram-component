@@ -14,18 +14,13 @@
 ///import baidu.ui.Menubar.Menubar$click;
 ///import baidu.ui.behavior.statable;
 ///import baidu.ui.behavior.posable;
-
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.g;
 ///import baidu.dom.remove;
-
 ///import baidu.array.each;
-
 ///import baidu.fn.bind;
-
 ///import baidu.event.on;
 ///import baidu.event.un;
-
 ///import baidu.string.format;
 
  /**
@@ -228,13 +223,15 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
      */
     dispose: function(){
         var me = this;
-        baidu.un(me.getInput(), "keyup", me._showMenuHandler);
-        baidu.un(me.getInput(), "focus", me._showMenuHandler);
+        baidu.un(me.getInput(), 'keyup', me._showMenuHandler);
+        baidu.un(me.getInput(), 'focus', me._showMenuHandler);
         baidu.un(me.getArrow(), 'click', me._showAllMenuHandler);
 
         if (me.getMain()) {
             baidu.dom.remove(me.getMain());
         }
+
+        me.dispatchEvent('ondispose');
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });

@@ -20,7 +20,7 @@
 ///import baidu.lang.isDate;
 ///import baidu.lang.isNumber;
 ///import baidu.lang.isObject;
-///import baiud.lang.isString;
+///import baidu.lang.isString;
 
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Dialog.Dialog$resizable;

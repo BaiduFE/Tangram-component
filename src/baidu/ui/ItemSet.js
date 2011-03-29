@@ -67,6 +67,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function(options){
             bodyId = me.getId('body' + baidu.lang.guid()),
             index = ids[index] ? index : ids.length;
         ids.splice(index, 0, bodyId);
+        
         return baidu.string.format(me.tplBody, {
             id: bodyId,
             'class': me.getClass('body'),
@@ -201,7 +202,7 @@ baidu.ui.ItemSet = baidu.ui.createUI(function(options){
             head = baidu.dom.g(me._headIds[index]),
             body = baidu.dom.g(me._bodyIds[index]),
             curr = me.getCurrentHead();
-        curr.id == head.id && me.setCurrentHead(null);
+        curr && curr.id == head.id && me.setCurrentHead(null);
         baidu.dom.remove(head);
         baidu.dom.remove(body);
         baidu.array.removeAt(me._headIds, index);

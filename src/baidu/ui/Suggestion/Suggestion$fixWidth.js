@@ -37,7 +37,7 @@ baidu.ui.Suggestion.extend({
      * @private
      */
     adjustPosition: function(onlyAdjustShown) {
-        var me = this,
+       var me = this,
             target = me.getTarget(),
             targetPosition,
             main = me.getMain(),
@@ -56,7 +56,7 @@ baidu.ui.Suggestion.extend({
         pos = typeof me.view == 'function' ? me.view(pos) : pos;
 
         me.setPosition([pos.left, pos.top], null, {once: true});
-        baidu.dom.setOuterWidth(main, pos.width);
+        baidu.dom.setOuterWidth(main, pos.width); 
     }
 });
 baidu.ui.Suggestion.register(function(me) {
