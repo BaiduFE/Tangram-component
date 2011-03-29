@@ -97,40 +97,6 @@ baidu.ui.Tab = baidu.ui.createUI( function (options) {
 	 */
     insertContentHTML: function(item, index){
         var me = this;
-        baidu.dom.insertHTML(me.bodies[index],'beforeEnd',item);
-    },
-
-	/**
-	* 兼容原接口getLabel
-	* @private
-	* @return {HTMLObject} head
-	*/
-	getLabel : function() {
-		return this.getHead();
-	}, 
-	/**
-	 * 兼容原接口getContent
-	 * @private
-	 * @return {HTMLObject} body
-	 */
-	getContent : function() {
-		return this.getBody();
-	}, 
-	/**
-	 * 兼容原接口getAllLabelItems
-	 * @private
-	 * @return {Array[HTMLObject]} heads	
-	 */
-	getAllLabelItems : function() {
-		return this.getHeads();
-	}, 
-	/**
-	 * 兼容原接口focus
-	 * @private
-	 * @param {Number} index	标签索引
-	 */
-	focus : function(index) {
-		this.selectByIndex(index);
-	}
-
+        baidu.dom.insertHTML(me.getBodies()[index], 'beforeEnd', item);
+    }
 });

@@ -9,7 +9,6 @@
 
 ///import baidu.ui.Carousel;
 ///import baidu.ui.Table;
-///import baidu.ui.Table.Row;
 ///import baidu.array.each;
 ///import baidu.dom.create;
 ///import baidu.lang.isArray;
