@@ -16,6 +16,9 @@
 ///import baidu.browser;
 ///import baidu.lang.isString;
 ///import baidu.ui.getUI;
+///import baidu.object.each;
+///import baidu.dom.remove;
+///import baidu.array.contains;
 
 /**
  * @class   toolBar基类，建立toolBar实例
@@ -37,30 +40,23 @@
 baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     var me = this,
         positionCheck = false,
-        positionPrefix = 'align="',
-        position = 'left';
+        positionPrefix = 'align="';
 
     me._itemObject = {};
     me.items = me.items || {};
    
     if(me.direction != 'horizontal'){
         me.direction = 'vertical';
-        position = 'top';
+        !baidu.array.contains(['top', 'middle', 'bottom', 'baseline'], me.position) && (me.position = 'top'); 
     }
-    me.position = me.position || position;
     me._positionStr = positionPrefix + me.position + '"';
 
-}).extend({
-
+}).extend(
+    
     /*
      * @lends baidu.ui.Toolbar.prototype
      */
-
-    /**
-     * item容器,默认为document.body
-     */
-    container: document.body,
-
+{
     /**
      * title
      */
@@ -76,6 +72,8 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
      */
     position: 'left',
 
+    cellIndex: 0,
+
     /**
      * tplMain
      * @private
@@ -84,7 +82,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
             '#{title}' +
             '<div id="#{bodyInner}" class="#{bodyInnerClass}">' +
                 '<table cellpadding="0" cellspacing="0" style="width:100%; height:100%" id="#{tableId}">' +
-                    '<tr><td style="width:100%; height:100%; font-size:0pt;" #{position}>' +
+                    '<tr><td style="width:100%; height:100%; overflow:hidden;" valign="top">' +
                         '<table cellpadding="0" cellspacing="0" id="#{tableInnerId}">#{content}</table>' +
                     '</td></tr>' +
                 '</table>' +
@@ -101,13 +99,13 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
      * tplHorizontalCell
      * @private
      */
-    tplHorizontalCell: '<td id="#{id}" valign="middle" style="font-size:0pt;"></td>',
+    tplHorizontalCell: '<td id="#{id}" valign="middle" style="overflow:hidden;"></td>',
     
     /**
      * tplVerticalCell
      * @private
      */
-    tplVerticalCell: '<tr><td id="#{id}" valign="middle" style="font-size:0pt;"></td></tr>',
+    tplVerticalCell: '<tr><td id="#{id}" valign="middle" style="overflow:hidden;"></td></tr>',
 
     /**
      * uiType
@@ -203,13 +201,16 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
             return;
 
         /*检查默认参数*/
-        options = baidu.extend(defaultOptions, options);
+        baidu.object.merge(options, defaultOptions);
         delete(options.config.statable);
         options.type = options.type.toLowerCase();
 
         uiNS = baidu.ui.getUI(options.type);
-        uiNS && (uiInstance = new uiNS(options.config));
-        me.addRaw(uiInstance, container);
+        if(uiNS){
+            baidu.object.merge(uiNS,{statable:true},{whiteList: ['statable']});
+            uiInstance = new uiNS(options.config);
+            me.addRaw(uiInstance, container);
+        }
 
         return uiInstance;
     },
@@ -234,7 +235,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         }
 
         uiInstance.render(container);
-        me._itemObject[uiInstance.getName()] = uiInstance;
+        me._itemObject[uiInstance.getName()] = [uiInstance, container.id];
     },
 
     /**
@@ -255,21 +256,21 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         if (type == 'str') {
             if (me.direction == 'horizontal') {
                 for (i = 0; i < num; i++) {
-                    cells.push(baidu.format(me.tplHorizontalCell,{id:me.getId('cell-' + i)}));
+                    cells.push(baidu.format(me.tplHorizontalCell,{id:me.getId('cell-' + me.cellIndex++ )}));
                 }
             }else {
                 for (i = 0; i < num; i++) {
-                    cells.push(baidu.format(me.tplVerticalCell,{id:me.getId('cell-' + i)}));
+                    cells.push(baidu.format(me.tplVerticalCell,{id:me.getId('cell-' + me.cellIndex++ )}));
                 }
             }
             cells = cells.join('');
         }else {
             container = baidu.g(me.getId('tableInner'));
-            containerTR = container.row[0];
+            containerTR = container.rows[0];
             if (me.direction == 'horizontal') {
                 for (i = 0; i < num; i++) {
-                    td = container.insertCell(containerTR.cells.length);
-                    td.id = me.getId('cell-' + i);
+                    td = containerTR.insertCell(containerTR.cells.length);
+                    td.id = me.getId('cell-' + me.cellIndex++ );
                     td.valign = 'middle';
                     cells.push(td);
                 }
@@ -277,8 +278,9 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
                 for (i = 0; i < num; i++) {
                     td = container.insertRow(container.rows.length);
                     td = td.insertCell(0);
-                    td.id = me.getId('cell-' + i);
+                    td.id = me.getId('cell-' + me.cellIndex++ );
                     td.valign = 'middle';
+                    cells.push(td);
                 }
             }
         }
@@ -295,7 +297,13 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
         var me = this, item;
         if (!name) return;
         if (item = me._itemObject[name]) {
-            item.dispose();
+            item[0].dispose();
+            baidu.dom.remove(item[1]);
+            delete(me._itemObject[name]);
+        }else{
+            baidu.object.each(me._itemObject, function(item, index){
+                item[0].remove && item[0].remove(name);
+            });
         }
     },
 
@@ -306,37 +314,39 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     removeAll: function() {
         var me = this;
         baidu.object.each(me._itemObject, function(item,key) {
-           item.dispose();
+            item[0].dispose();
+            baidu.dom.remove(item[1]);
         });
+        me._itemObject = {};
     },
 
     /**
      * enable ui组件，当不传入name时，enable所有ui组件到
-     * @private
+     * @public
      * @param {String} [name] ui组件唯一标识符.
      */
-    _enable: function(name) {
+    enable: function(name) {
         var me = this, item;
 
         if (!name) {
             me.enableAll();
         }else if (item = me._itemObject[name]) {
-            item.enable();
+            item[0].enable();
         }
     },
 
     /**
      * disable ui组件，当不传入name时，disable所有ui组建
-     * @private
+     * @public
      * @param {String} [name] ui组件唯一标识符.
      */
-    _disable: function(name) {
+    disable: function(name) {
         var me = this, item;
 
         if (!name) {
             me.disableAll();
         }else if (item = me._itemObject[name]) {
-            item.disable();
+            item[0].disable();
         }
     },
 
@@ -347,7 +357,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     enableAll: function() {
         var me = this;
         baidu.object.each(me._itemObject, function(item,key) {
-            item.enable();
+            item[0].enable();
         });
     },
 
@@ -358,7 +368,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     disableAll: function() {
         var me = this;
         baidu.object.each(me._itemObject, function(item,key) {
-            item.disable();
+            item[0].disable();
         });
     },
 
@@ -378,7 +388,16 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
             });
         }
 
-        return item;
+        return (item ? item[0] : null);
+    },
+
+    dispose: function(){
+       var me = this;
+
+       me.removeAll();
+       me.dispatchEvent("dispose");
+       baidu.dom.remove(me.getMain());
+       baidu.lang.Class.prototype.dispose.call(me);
     }
 });
 
@@ -428,27 +447,27 @@ baidu.ui.Toolbar._itemBehavior = {
      * @return {String} name.
      */
     getName: function() {
-                 var me = this;
-                 return me._toolbar_item_name;
-             },
+        var me = this;
+        return me._toolbar_item_name;
+    },
 
     /**
      * 设置高亮状态
      * @return void.
      */
     setHighLight: function() {
-                      var me = this;
-                      me.setState('highlight');
-                      me.dispatchEvent('onhighlight');
-                  },
+        var me = this;
+        me.setState('highlight');
+        me.dispatchEvent('onhighlight');
+    },
 
     /**
      * 取消高亮状态
      * @return void.
      */
     cancelHighLight: function() {
-                         var me = this;
-                         me.removeState('highlight');
-                         me.dispatchEvent('oncancelhighlight');
-                     }
+        var me = this;
+        me.removeState('highlight');
+        me.dispatchEvent('oncancelhighlight');
+    }
 };

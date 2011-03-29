@@ -36,6 +36,8 @@ baidu.ui.behavior.posable._setPositionByElement =
         var targetPos = baidu.dom.getPosition(target),
             coordinate = {};
 
+        options.position && (options.position = options.position.toLowerCase());
+
         coordinate['x'] = targetPos.left +
                             (options.position.indexOf('right') >= 0 ? target.offsetWidth : 0);
         coordinate['y'] = targetPos.top +
