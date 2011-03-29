@@ -1,47 +1,57 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>button manual test - by berg</title>
+        <title>button manual test</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.button.*' ></script>
-        <script src='../../../../src/import.php?f=baidu.ui.setup' ></script>
-        <!--script src="http://img.baidu.com/js/tangram-1.1.1.js"></script-->
-        <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
-
+        <script src='../../../../src/import.php?f=baidu.ui.Button.*' ></script>
         <style>
+            .container{
+                width: 100px;
+            }
             .tangram-button{
-                border: 2px red solid;
-                background-color:#aaa;
-                display:inline;
+                border: 1px solid black;
+                background: gray;
+                text-align:center;
+                cursor: default;
             }
             .tangram-button-hover{
-                border-color:blue;
+                background: silver;
             }
             .tangram-button-press{
-                border-color: green;
+                background: #eee;
             }
         </style>
     </head>
 
     
     <body>
-
-        <div id="console"></div>
-        <br />
-        222
-        <div id="btn-setup" class="tangram-button"><b>strong</b>normal</div>
-
-        <div id="btn-auto-setup" class="tangram-button" data-tangram="ui:button;"><b>strong</b>normal</div>
-        111
-        <script>
-            baidu.ui.button.setup(baidu.g("btn-setup"), {
-                "onmouseover" : function(){
-                    alert("over me");
-                }
-            });
-            //自动渲染所有节点
-            baidu.ui.setup(document.body);
-        </script>
-
+        <div id='buttonId-0' class='container'></div><br/>
+        <div id='buttonId-1' class='container'></div><br/>
+        <div id='buttonId-2' class='container'></div>
     </body>
+    <script language='JavaScript'>
+        new baidu.ui.Button({
+            content: '普通按钮',
+            element: 'buttonId-0',
+            autoRender: true
+        });
+        
+        new baidu.ui.Button({
+            content: 'capture按钮',
+            element: 'buttonId-1',
+            capture: true,
+            autoRender: true
+        });
+        
+        new baidu.ui.Button({
+            content: 'poll按钮',
+            element: 'buttonId-2',
+            autoRender: true,
+            poll: {tiem: 0},
+            onmousedown: function(){
+//                document.title = new Date().getTime();
+                console.log('-');
+            }
+        });
+    </script>
 </html>

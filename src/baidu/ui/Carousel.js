@@ -284,8 +284,6 @@ baidu.ui.Carousel = baidu.ui.createUI(
 
         var me = this, item;
 
-        me.dispatchEvent("onitemclick");
-
         //这里当index是传入id时转换成索引
 
         if("string" == typeof(index)){
@@ -315,6 +313,8 @@ baidu.ui.Carousel = baidu.ui.createUI(
             me.scrollIndex = index;
 
         }
+        
+        me.dispatchEvent("onitemclick");
 
     },
     
