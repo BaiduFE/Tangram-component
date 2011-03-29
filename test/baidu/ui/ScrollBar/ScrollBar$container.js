@@ -51,13 +51,13 @@ test('scroll',function(){
 		equal(scrollbar.dimension,Math.round(container.clientHeight/container.scrollHeight*100),'check init dimension');
 	    equal(scrollbar.value,0,'check init value');
 		var thumb = scrollbar._slider.getThumb();
-		var thumbtop = parseInt(baidu.dom.getStyle(thumb,'top'));//初始滑块top值
-		var sliderheight = parseInt(baidu.dom.getStyle(scrollbar._slider.getMain(),'height'));//滑动区域高度
-		var thumbheight = sliderheight*parseFloat(baidu.dom.getStyle(thumb,'height'))*0.01;//滑块高度 thumbtop+sliderheight-thumbheight：滑块可滑动区域
+		var thumbtop = Math.round(parseInt(baidu.dom.getStyle(thumb,'top')));//初始滑块top值
+		var sliderheight = Math.round(parseInt(baidu.dom.getStyle(scrollbar._slider.getMain(),'height')));//滑动区域高度
+		var thumbheight = Math.round(sliderheight*parseFloat(baidu.dom.getStyle(thumb,'height'))*0.01);//滑块高度 thumbtop+sliderheight-thumbheight：滑块可滑动区域
 
 		ua.mousedown(scrollbar._next.getBody());
 		ua.mouseup(scrollbar._next.getBody());
-		equal(baidu.dom.getStyle(thumb,'top'),(thumbtop+sliderheight-thumbheight)*(scrollbar.step)*0.01+'px','click next step 1');
+		equal(baidu.dom.getStyle(thumb,'top'),Math.round((thumbtop+sliderheight-thumbheight)*(scrollbar.step)*0.01)+'px','click next step 1');
 		equal(container.scrollTop,scrollbar._slider.getValue()/100*(container.scrollHeight-container.clientHeight),'check container scrollTop');
 		start();
 

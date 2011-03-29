@@ -27,17 +27,19 @@
 
 <body>
     <div id="sliderId" style='width:300px; height:25px; border:red solid 1px;'></div>
-    <input type='button' value='getter' onclick='main();'/>
+    <input type='button' value='getter' onclick='dispose();'/>
 </body>
 <script language="javascript">
-    var slider = new baidu.ui.Slider({
-        
-        element: 'sliderId',
-        autoRender: true
-    });
+    var slider;
+    function create(){
+        slider = new baidu.ui.Slider({
+            element: 'sliderId',
+            autoRender: true
+        });
+    }
     //
-    function main(){
-        alert(slider.getValue());
+    function dispose(){
+        slider.dispose();
     }
 </script>
 </html>

@@ -39,7 +39,7 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
 }).extend({
     layout: 'horizontal',//滑块的布局方式 horizontal :水平  vertical:垂直
     uiType: 'slider',
-    tplBody: '<div id="#{id}" class="#{class}" onmousedown="#{mousedown}">#{thumb}</div>',
+    tplBody: '<div id="#{id}" class="#{class}" onmousedown="#{mousedown}" style="position:relative;">#{thumb}</div>',
     tplThumb: '<div id="#{thumbId}" class="#{thumbClass}" style="position:absolute;"></div>',
     value: 0,//初始化时，进度条所在的值
     min: 0,//进度条最左边代表的值
@@ -90,7 +90,7 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
         var me = this,
             axis = me._axis[me.layout],
             mousePos = baidu.page.getMousePosition(),
-            mainPos = baidu.dom.getPosition(me.getMain()),
+            mainPos = baidu.dom.getPosition(me.getBody()),
             thumb = me.getThumb(),
             target = baidu.event.getTarget(e);
         //如果点在了滑块上面，就不移动
@@ -115,7 +115,7 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
         var me = this;
         if(!target){return;}
         baidu.dom.insertHTML(me.renderMain(target), "beforeEnd", me.getString());
-        me.getMain().style.position = "relative";
+//        me.getMain().style.position = "relative";
         me._createThumb();
         me.update();
         me.dispatchEvent("onload");
@@ -126,7 +126,7 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * @private
      */
     _createThumb : function(){
-        var me = this;
+        var me = this, drag;
         me._dragOpt = {
             "ondragend"     : function(){
                                 me.dispatchEvent("slidestop");
@@ -143,7 +143,10 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
             range           : [0, 0, 0, 0]
         };
         me._updateDragRange();
-        baidu.dom.draggable(me.getThumb(), me._dragOpt);
+        drag = baidu.dom.draggable(me.getThumb(), me._dragOpt);
+        me.addEventListener('dispose', function(){
+            drag.cancel();
+        });
     },
 
     /**
@@ -276,6 +279,7 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      */
     dispose : function(){
         var me = this;
+        me.dispatchEvent('dispose');
         baidu.dom.remove(me.getId());
         me.dispatchEvent('ondispose');
         baidu.lang.Class.prototype.dispose.call(me);

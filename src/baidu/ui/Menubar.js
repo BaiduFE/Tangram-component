@@ -290,8 +290,9 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         }
         
         var body = me.getBody();
-        baidu.dom.addClass(body, me.getClass('open'));
-        baidu.dom.removeClass(body, me.getClass('empty'));
+//        baidu.dom.addClass(body, me.getClass('open'));
+//        baidu.dom.removeClass(body, me.getClass('empty'));
+        body.style.display = '';
         me.dispatchEvent("onopen");
         baidu.ui.Menubar.showing = me;
     },
@@ -307,8 +308,9 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
             return;
         baidu.ui.Menubar.showing = null;
         if (directly || me.dispatchEvent("onbeforeclose")) {
-            baidu.dom.addClass(body, me.getClass('empty'));
-            baidu.dom.removeClass(body, me.getClass('open'));
+//            baidu.dom.addClass(body, me.getClass('empty'));
+//            baidu.dom.removeClass(body, me.getClass('open'));
+            body.style.display = 'none';
             me.dispatchEvent("onclose");
         }
     },

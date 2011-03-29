@@ -76,14 +76,20 @@ baidu.ui.Tab = baidu.ui.createUI( function (options) {
 	}, 
 	/**
 	 * 插入item html
-	 * @private
 	 * @param {Object} item
 	 * @param {int} index
 	 */
 	insertItemHTML : function(item, index) {
-		var me = this;
-		baidu.dom.insertHTML(baidu.g(me.getId("head-container")),  "beforeEnd",  this._getHeadString(item, index));
-		baidu.dom.insertHTML(baidu.g(me.getId("body-container")),  "beforeEnd",  this._getBodyString(item, index));
+		var me = this,
+            headIds = me._headIds,
+            bodyIds = me._bodyIds,
+            index = headIds[index] ? index : headIds.length,
+            headContainer = baidu.dom.g(headIds[index] || me.getId('head-container')),
+            bodyContainer = baidu.dom.g(bodyIds[index] || me.getId('body-container')),
+            pos = headIds[index] ? 'beforeBegin' : 'beforeEnd';
+        baidu.dom.insertHTML(headContainer, pos, me._getHeadString(item, index));
+        baidu.dom.insertHTML(bodyContainer, pos, me._getBodyString(item, index));
+        me._addSwitchEvent(baidu.dom.g(headIds[index]));
 	},
     /**
 	 * @private
