@@ -55,13 +55,13 @@
 					 * 校验时间点附近的期望值和实际值，时间点采用等分切割方式
 					 * <li>getexpect : 方法，获取每个时间点期望值
 					 * <li>getvalue : 方法，获取每个时间点实际值
-					 * <li>timelinepoint : 整形，定制检查的时间点，默认4
+					 * <li>timelinepoint : 整形，定制检查的时间点，默认2
 					 * <li>threshold : 整形，期望值与实际值之间的运行误差，默认为5
 					 */
 					checktimeline : function(getexpect, getvalue,
 							timelinepoint, threshold) {
 						var me = this;
-						var timelinepoint = timelinepoint || 4;
+						var timelinepoint = timelinepoint || 2;
 						var threshold = threshold === 0 ? 0
 								: threshold ? threshold : 5;
 						var actuallist = [];
