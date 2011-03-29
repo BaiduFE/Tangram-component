@@ -38,7 +38,7 @@ function myTeardown() {
 				if (array[i] == item)
 					return i;
 			return -1;
-		}
+		};
 		if (testingElement.evt.length < baidu.event._listeners.length)
 			for ( var i = 0; i < baidu.event._listeners.length; i++) {
 				var evt = baidu.event._listeners[i];
@@ -55,11 +55,11 @@ function myTeardown() {
 	QUnit.testStart = function() {
 		mySetup(arguments[0]);
 		s.apply(this, arguments);;
-	}
+	};
 	QUnit.testDone = function() {
 		e.call(this, arguments);
 		myTeardown();
-	}
+	};
 })();
 
 test("createMenu", function() {
@@ -92,6 +92,7 @@ test("createMenu", function() {
 	ua.loadcss(upath+'Combox/style.css',function(){
 		var div = document.body.appendChild(document.createElement("div"));
 		var cb = new baidu.ui.Combox(options);
+		te.obj.push(cb);
 		cb.render(div);
 		var input = cb.getInput();
 		var arrow = cb.getArrow();
@@ -102,7 +103,7 @@ test("createMenu", function() {
 			equal(input.value, 'a-content-1');
 			start();
 		}, 30);
-	})
+	});
 
 });
 
@@ -146,6 +147,7 @@ test("events", function() {
 	};
 	var div = document.body.appendChild(document.createElement("div"));
 	var cb = new baidu.ui.Combox(options);
+	te.obj.push(cb);
 	cb.render(div);
 	var input = cb.getInput();
 	var arrow = cb.getArrow();
