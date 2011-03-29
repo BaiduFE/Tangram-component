@@ -36,7 +36,7 @@ baidu.ui.createPopup = function(options) {
     // 非 IE 浏览器使用 <iframe> 作为 popup 的载体
     if (!POPUP) {
         var str = "<iframe id='"+ popup.eid +"' scrolling='no'"+
-            " frameborder='0' style='position:absolute; z-index:1; "+
+            " frameborder='0' style='position:absolute; z-index:1001; "+
             " width:0px; height:0px; background-color:#0FFFFF'></iframe>";
         if (!document.body) {document.write(str);} else {
             baidu.dom.insertHTML(document.body, "afterbegin", str);
