@@ -2,16 +2,18 @@ module('baidu.ui.Tooltip.Tooltip$close');
 
 test('Close a common tooltip', function() {
 	var div = testingElement.dom[0];
+	var div1 = document.createElement("div");
+	document.body.appendChild(div1);
     var tp = new baidu.ui.Tooltip({
+    	target : div1,
     	content:'tooltip_1',
     	onclose:function(){
     		ok(true, 'The tooltip is closed');
     	}
     });
 	tp.render(div);
-    tp.open();
-    ok(isShown(tp.getMain().firstChild),
+    tp.open(div1);
+    ok(isShown(tp.getMain().firstChild.nextSibling),
     		'The tooltip is created in the page');
-    var closetp = $("div[class$=close]");
-    closetp.click();
+    ua.click(baidu.g(tp.getId('head')).firstChild);
 });
