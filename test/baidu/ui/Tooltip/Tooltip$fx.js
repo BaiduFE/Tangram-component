@@ -103,16 +103,18 @@ test('Open a common tooltip(fadeIn) and '
     	    				+'with a custom onbeforestart function');
     	    	},
     	    	onafterfinish : function() {
-    	    		ok(true, 'The tooltip fadeOut '
-    	    				+'with a custom onafterfinish function');
-    			    start();
+    	    		setTimeout(function(){
+    	    			tp.dispose();
+    	    			ok(true, 'The tooltip fadeOut '
+        	    				+'with a custom onafterfinish function');
+	    			    start();
+    	    		}, 0);
     	    	}
     		}
     });
  	stop();
 	tp.render(div);
     tp.open(div1);
-    te.obj.push(tp);
 });
 
 test('Test the dispose()', function() {
