@@ -12,7 +12,7 @@ test('StarRate', function() {
 	expect(40);
 	var div = document.createElement('div');
 	document.body.appendChild(div);
-	te.obj.push(div);
+	
 	var i = 0;
 	var options = {
 		total : 10,
@@ -30,7 +30,8 @@ test('StarRate', function() {
 		}
 	};
 	var sRate = new baidu.ui.starRate.StarRate(options);
-	sRate.render(div);
+	te.obj.push(sRate);
+    sRate.render(div);
 	var spans = div.childNodes;
 	for (; i < spans.length; i++) {
 		var span = spans[i];
@@ -46,7 +47,7 @@ test('disable & enable', function() {
 	expect(25);
 	var div = document.createElement('div');
 	document.body.appendChild(div);
-	te.obj.push(div);
+	
 	var i = 0;
 	var options = {
 		current : 3,
@@ -61,7 +62,8 @@ test('disable & enable', function() {
 		}
 	};
 	var sRate = new baidu.ui.starRate.StarRate(options);
-	sRate.render(div);
+	te.obj.push(sRate);
+    sRate.render(div);
 	var spans = div.childNodes;
 	/*disable*/
 	sRate.disable();
