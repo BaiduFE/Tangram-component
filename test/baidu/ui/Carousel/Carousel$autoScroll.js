@@ -51,7 +51,7 @@ test("autoScrollTo:H, index=1, time=4, type=item", function() {
 
 test("autoScrollTo:H, index=1, time=8, type=item", function() {
     var cas, oitem, item, c;
-    cas = createCarousel(te.dom[0], false);
+    cas = createCarousel(false);
 	cas.render();
 	item = document.getElementById(cas.getId("item" + 2));
 	c = document.getElementById(cas.getId());
@@ -68,7 +68,7 @@ test("autoScrollTo:H, index=1, time=8, type=item", function() {
 
 test("autoScrollTo:H, index=1, time=8, type=item, isCycle:true", function() {
 	var cas, oitem, item, c;
-	cas = createCarousel(te.dom[0], false);
+	cas = createCarousel(false);
 	cas.isCycle = true;
 	cas.render();
 	item = document.getElementById(cas.getId("item" + 2));
@@ -86,7 +86,7 @@ test("autoScrollTo:H, index=1, time=8, type=item, isCycle:true", function() {
 
 test("autoScrollTo:V, index=2, time=2, type=item", function() {
 	var cas, oitem, item, c;
-	cas = createCarousel(te.dom[0], true);
+	cas = createCarousel(true);
 	cas.render();
   item = document.getElementById(cas.getId("item" + 2));
   c = document.getElementById(cas.getId());
@@ -102,7 +102,7 @@ test("autoScrollTo:V, index=2, time=2, type=item", function() {
 
 test("autoScrollTo:H, index=1, time=2, type=page", function() {
     var cas, oitem, item, c;
-    cas = createCarousel(te.dom[0], false);
+    cas = createCarousel(false);
 	cas.render();
 	cas.autoScroll.type = 'page';
 	item = document.getElementById(cas.getId("item" + 2));
@@ -120,7 +120,7 @@ test("autoScrollTo:H, index=1, time=2, type=page", function() {
 
 test("autoScrollTo:H, index=3, time=2, type=page", function() {
     var cas, oitem, item, c;
-    cas = createCarousel(te.dom[0], false);
+    cas = createCarousel(false);
 	cas.render();
 	cas.autoScroll.type = 'page';
 	item = document.getElementById(cas.getId("item" + 2));
@@ -138,7 +138,7 @@ test("autoScrollTo:H, index=3, time=2, type=page", function() {
 
 test("autoScrollTo:H, index=3, time=2, type=page", function() {
     var cas, oitem, item, c;
-    cas = createCarousel(te.dom[0], false);
+    cas = createCarousel(false);
     cas.isCycle = true;
 	cas.render();
 	cas.autoScroll.type = 'page';
@@ -157,7 +157,7 @@ test("autoScrollTo:H, index=3, time=2, type=page", function() {
 
 test("autoScrollTo:V, index=1, time=2, type=page", function() {
     var cas, oitem, item, c;
-    cas = createCarousel(te.dom[0], true);
+    cas = createCarousel(true);
 	cas.render();
 	cas.autoScroll.type = 'page';
 	item = document.getElementById(cas.getId("item" + 2));
