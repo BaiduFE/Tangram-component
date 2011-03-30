@@ -15,9 +15,9 @@ test('key down', function() {
 			});
 		},
 		onpick : function() {
-			setTimeout(function() {
+//			setTimeout(function() {
+				debugger
 				if (step == 3) {
-
 					start();
 					return;
 				}
@@ -27,7 +27,7 @@ test('key down', function() {
 				UserAction.keydown(input, {
 					keyCode : 40
 				});
-			}, 0);
+//			}, 0);
 		}
 	};
 	sugg = new baidu.ui.Suggestion(options);
@@ -47,9 +47,8 @@ test('key up', function() {
 			});
 		},
 		onpick : function() {
-			setTimeout(function() {
+//			setTimeout(function() {
 				if (step == 3) {
-
 					start();
 					return;
 				}
@@ -59,7 +58,7 @@ test('key up', function() {
 				UserAction.keydown(input, {
 					keyCode : 38
 				});
-			}, 0);
+//			}, 0);
 		}
 	};
 	sugg = new baidu.ui.Suggestion(options);

@@ -1,34 +1,32 @@
 module('baidu.ui.ScrollBar.ScrollBar$container');
 
 test('init',function(){
-	stop();
-	ua.loadcss(upath+'style.css',function(){
-		var div = document.body.appendChild(document.createElement("div"));
-		$(div).css('width', '200px').css('height', '200px').css('border', 'red solid 1px')
-			.css('color', 'black').css('overflow','hidden').css('float','left');
-		div.id = "mydev";
-		var div1 = document.body.appendChild(document.createElement("div"));
-		$(div1).css('width', '15px').css('height', '200px').css('border', 'green solid 1px').css('float','left');
-		div1.id = 'vScrollbarId';
-		var options = {
-			skin: 'scrollbar',
-			container: div,
-			onbeforeupdate : function(){
-				ok(true,'onbeforeupdate');
-			}
-		};
-		var scrollbar = new baidu.ui.ScrollBar(options);
-		scrollbar.render(div1);	
-		equal(scrollbar.dimension,100,'check init dimension');
-	    equal(scrollbar.value,0,'check init value');
-	    start();
-		te.dom.push(div);
-		te.dom.push(div1);
-	});
-
+	var div = document.body.appendChild(document.createElement("div"));
+	$(div).css('width', '200px').css('height', '200px').css('border', 'red solid 1px')
+		.css('color', 'black').css('overflow','hidden').css('float','left');
+	div.id = "mydev";
+	var div1 = document.body.appendChild(document.createElement("div"));
+	$(div1).css('width', '15px').css('height', '200px').css('border', 'green solid 1px').css('float','left');
+	div1.id = 'vScrollbarId';
+	var options = {
+		skin: 'scrollbar-a',
+		container: div,
+		onbeforeupdate : function(){
+			ok(true,'onbeforeupdate');
+		}
+	};
+	var scrollbar = new baidu.ui.ScrollBar(options);
+	scrollbar.render(div1);	
+	equal(scrollbar.dimension,100,'check init dimension');
+    equal(scrollbar.value,0,'check init value');
+    te.dom.push(div);
+	te.dom.push(div1);
+	te.obj.push(scrollbar);
 });
 
 test('scroll',function(){
+	stop();
+	ua.loadcss(upath+'style.css',function(){
 		var div = document.body.appendChild(document.createElement("div"));
 		$(div).css('width', '200px').css('height', '200px').css('border', 'red solid 1px')
 			.css('color', 'black').css('overflow','hidden').css('float','left');
@@ -39,11 +37,8 @@ test('scroll',function(){
 		$(div1).css('width', '15px').css('height', '200px').css('border', 'green solid 1px').css('float','left');
 		div1.id = 'vScrollbarId';
 		var options = {
-			skin: 'scrollbar',
+			skin: 'scrollbar-a',
 			container: div
-//			onscroll : function(){
-//				
-//			}
 		};
 		var scrollbar = new baidu.ui.ScrollBar(options);
 		var container = scrollbar.getContainer();
@@ -58,10 +53,11 @@ test('scroll',function(){
 		ua.mousedown(scrollbar._next.getBody());
 		ua.mouseup(scrollbar._next.getBody());
 		equal(baidu.dom.getStyle(thumb,'top'),Math.round((thumbtop+sliderheight-thumbheight)*(scrollbar.step)*0.01)+'px','click next step 1');
-		equal(container.scrollTop,scrollbar._slider.getValue()/100*(container.scrollHeight-container.clientHeight),'check container scrollTop');
-		start();
-
+		var cstop = container.scrollTop-scrollbar._slider.getValue()/100*(container.scrollHeight-container.clientHeight);
+		ok(-1<cstop&&cstop<1,'check container scrollTop');
 		te.dom.push(div);
     	te.dom.push(div1);
-
+    	te.obj.push(scrollbar);
+	    start();
+	});
 });
