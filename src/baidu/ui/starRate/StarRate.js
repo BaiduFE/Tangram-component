@@ -11,6 +11,7 @@
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.fn.bind;
+///import baidu.dom.remove;
 
 /**
  * 星级评价条
@@ -111,6 +112,11 @@ baidu.ui.starRate.StarRate = baidu.ui.createUI(function(options){
         var me = this;
 
         baidu.un(me.element, 'mouseout', me._mouseOutHandle);
+        
+        for(var i=0; i < me.total; i++){
+            baidu.dom.remove(me.getId(i));
+        }
+
         me.dispatchEvent("ondispose");
         baidu.lang.Class.prototype.dispose(me);
     }
