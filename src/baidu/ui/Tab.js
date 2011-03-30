@@ -76,8 +76,8 @@ baidu.ui.Tab = baidu.ui.createUI( function (options) {
 	}, 
 	/**
 	 * 插入item html
-	 * @param {Object} item
-	 * @param {int} index
+	 * @param {Object} item     选项内容
+	 * @param {int} index       选项的索引
 	 */
 	insertItemHTML : function(item, index) {
 		var me = this,
