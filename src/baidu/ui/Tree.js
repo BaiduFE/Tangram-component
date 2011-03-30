@@ -41,8 +41,9 @@ baidu.ui.Tree.extend(
     tplDOM: "<div class='#{class}'>#{body}</div>",
     /**
      * 取得html string
+	 * @private
      * @return tree的htmlstring,
-    */
+     */
     getString: function() {
         var me = this;
         return baidu.format(me.tplDOM, {
@@ -94,7 +95,7 @@ baidu.ui.Tree.extend(
     },
     /**
      * 通过id属性来取得treeNode
-     * @param {String} id
+     * @param {String} id       节点id
      * @return {TreeNode} treeNode.
      */
     getTreeNodeById: function(id) {
