@@ -46,10 +46,7 @@ test('Check the ajax form content',function(){
 	stop();
 	var check  = function(){
 		var select = document.createElement('select');
-		var option = document.createElement("option");  
-		option.text = 'content_a';  
-		option.value = 'value_a';  
-		select.add(option, null);
+		select.options[select.options.length] = new Option('content_a', 'value_a');
 		$(select).attr("name", "select1");
 		var options = {
 			select : select,
