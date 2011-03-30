@@ -1,17 +1,13 @@
 /*
  * Tangram UI
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: baidu/ui/createUI.js
- * author: berg
- * version: 1.1.0
- * date: 2010/12/02
  */
 
 ///import baidu.ui;
 ///import baidu.ui.Base;
 ///import baidu.ui.create;
 ///import baidu.object.extend;
+///import baidu.object.merge;
 
 /**
  * 创建一个UI控件类
@@ -36,7 +32,8 @@ baidu.ui.createUI = function(constructor, options) {
             //扩展静态配置到this上
             baidu.object.extend(me, ui.options);
             //扩展当前options中的项到this上
-            baidu.object.extend(me, opt);
+            //baidu.object.extend(me, opt);
+            baidu.object.merge(me, opt, {overwrite:true, recursive:true});
 
             me.classPrefix = me.classPrefix || "tangram-" + me.uiType.toLowerCase();
 

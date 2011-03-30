@@ -1,12 +1,8 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/Menubar/Menubar$click.js
- * author: walter
- * version: 1.0.0
- * date: 2010-12-09
  */
+
 ///import baidu.ui.Menubar;
 ///import baidu.ui.get;
 ///import baidu.event.on;

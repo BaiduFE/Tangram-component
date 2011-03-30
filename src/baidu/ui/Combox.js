@@ -226,8 +226,12 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
         baidu.un(me.getInput(), 'keyup', me._showMenuHandler);
         baidu.un(me.getInput(), 'focus', me._showMenuHandler);
         baidu.un(me.getArrow(), 'click', me._showAllMenuHandler);
-        me.menu && me.menu.dispose();
-        me.getMain() && baidu.dom.remove(me.getMain());
+
+        if (me.getMain()) {
+            baidu.dom.remove(me.getMain());
+        }
+
+        me.dispatchEvent('ondispose');
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });

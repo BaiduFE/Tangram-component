@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/Menubar.js
- * author: rocy
- * version: 1.0.0
- * date: 2010-12-09
  */
 
 ///import baidu.ui.createUI;

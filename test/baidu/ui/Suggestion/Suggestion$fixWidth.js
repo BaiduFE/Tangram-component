@@ -10,7 +10,7 @@ test("position", function() {
 					"check top");
 			equals(document.body.lastChild.offsetWidth, input.offsetWidth,
 					"check width");
-			start();
+                start();
 		}
 	};
 	input.style.borderStyle = 'solid';

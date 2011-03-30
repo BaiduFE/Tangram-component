@@ -4,35 +4,59 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Carousel</title>
 <style type="text/css">
-.tangram-carousel {position:relative; float:left; overflow:hidden;}
-.tangram-carousel .tangram-carousel-scroll {position:absolute;}
-.tangram-carousel .tangram-carousel-scroll .tangram-carousel-item {position:relatiev; float:left; width:100px; height:20px;text-align:center; border:#7E9DB9 solid 1px;cursor:pointer;}
-.tangram-carousel .tangram-carousel-scroll .tangram-carousel-item-focus{border:red solid 1px; background:#FF8C00;}
-.tangram-carousel-btn-base {float:left; width:20px; height:20px; font-size:12px; text-align:center;}
+.tangram-carousel {
+    position:relative;
+    float:left;
+    overflow:hidden;
+}
+.tangram-carousel-scroll {
+    position:absolute;
+}
+.tangram-carousel-item {
+    position:relatiev;
+    float:left;
+    width:100px;
+    height:20px;
+    text-align:center;
+    border:#7E9DB9 solid 1px;
+    cursor:pointer;
+}
+.tangram-carousel-item-focus{
+    border:red solid 1px;
+    background:#FF8C00;
+}
+.tangram-carousel-btn-base {
+    float:left;
+    width:20px;
+    height:20px;
+    font-size:12px;
+    text-align:center;
+}
 </style>
-<script src="http://fe.baidu.com/nighty/get/tangram/release/src/component/import.php?f=baidu.ui.get,baidu.ui.carousel.*"></script>
+<script src="../../../../src/import.php?f=baidu.ui.Carousel,baidu.ui.Carousel.Carousel$autoScroll"></script>
 </head>
 
 <body>
-<div id="carouselId-0"></div>
+<div id="carouselId"></div>
 </body>
 <script language="javascript">
-(function(){
-	var options = {contentText : [
-				{content:"TEXT-0"},
-				{content:"TEXT-1"},
-				{content:"TEXT-2"},
-				{content:"TEXT-3"},
-				{content:"TEXT-4"},
-				{content:"TEXT-5"},
-				{content:"TEXT-6"},
-				{content:"TEXT-7"},
-				{content:"TEXT-8"},
-				{content:"TEXT-9"}],
-			isCycle:true
-		},
-		c = baidu.ui.carousel.create(options);
-		c.render("carouselId-0");
-})();
+var c = new baidu.ui.Carousel({
+    contentText: [
+        {content:"TEXT-0"},
+        {content:"TEXT-1"},
+        {content:"TEXT-2"},
+        {content:"TEXT-3"},
+        {content:"TEXT-4"},
+        {content:"TEXT-5"},
+        {content:"TEXT-6"},
+        {content:"TEXT-7"},
+        {content:"TEXT-8"}
+    ],
+    flip: 'item',
+    autoScroll: {type: 'item', interval: 1000},
+    isCycle:true
+});
+c.render("carouselId");
+c.scrollTo(0);
 </script>
 </html>
