@@ -24,20 +24,21 @@
  * 弹出tip层,类似鼠标划过含title属性元素的效果
  * @class
  * @param       {Object}          options         选项.
- * @config      {Element}         contentElement  Tooltip元素的内部HTMLElement。
- * @config      {String}          content     Tooltip元素的内部HTML String。若target存在title，则以title为准
- * @config      {String}          width           宽度
- * @config      {String}          height          高度
- * @config      {Array|Object}    offset          偏移量。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
- * @config      {boolean}         single          是否全局单例。若该值为true，则全局共用唯一的浮起tooltip元素，默认为true。
- * @config      {Number}          zIndex          浮起tooltip层的z-index值，默认为3000。
- * @config      {String}          positionBy      浮起tooltip层的位置参考，取值['mouse','element']，分别对应针对鼠标位置或者element元素计算偏移，默认mouse。
- * @config      {Function}        onopen          打开tooltip时触发。
- * @config      {Function}        onclose         关闭tooltip时触发。
- * @config      {Function}        onbeforeopen    打开tooltip前触发。
- * @config      {Function}        onbeforeclose   关闭tooltip前触发。
- * @config      {Number}          showDelay       触发显示的延迟，默认为100毫秒。
- * @config      {Number}          hideDelay       触发隐藏的延迟，默认为500毫秒。
+ * @config      {String|Array}    target          目标元素或元素id。可直接设置多个目标元素
+ * @config      {String}          type            （可选）触发展开的类型，可以为:hover和click。默认为click
+ * @config      {Element}         contentElement  （可选）Tooltip元素的内部HTMLElement。
+ * @config      {String}          content         （可选）Tooltip元素的内部HTML String。若target存在title，则以title为准
+ * @config      {String}          width           （可选）宽度
+ * @config      {String}          height          （可选）高度
+ * @config      {Array|Object}    offset          （可选）偏移量。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
+ * @config      {boolean}         single          （可选）是否全局单例。若该值为true，则全局共用唯一的浮起tooltip元素，默认为true。
+ * @config      {Number}          zIndex          （可选）浮起tooltip层的z-index值，默认为3000。
+ * @config      {String}          positionBy      （可选）浮起tooltip层的位置参考，取值['mouse','element']，分别对应针对鼠标位置或者element元素计算偏移，默认mouse。
+ * @config      {Boolean}         autoRender       是否自动渲染。
+ * @config      {Function}        onopen          （可选）打开tooltip时触发。
+ * @config      {Function}        onclose         （可选）关闭tooltip时触发。
+ * @config      {Function}        onbeforeopen    （可选）打开tooltip前触发。
+ * @config      {Function}        onbeforeclose   （可选）关闭tooltip前触发。
  * @plugin      fx                Tooltip的展现和消失效果支持。
  * @return     {baidu.ui.Tooltip}        Tooltip实例
  */
@@ -95,7 +96,6 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
      * 渲染Tooltip到HTML
      * @public 
      * @param {String|HTMLElement} element  需要渲染到的元素或者id.
-     * @return {Null}
      */
     render: function(element) {
         var me = this,
@@ -119,8 +119,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 	/**
 	 * 打开tooltip
 	 * @public
-     * @param {HTMLElement} target 显示tooltip所参照的html元素
-     * @return {Null}
+     * @param {HTMLElement} [target] 显示tooltip所参照的html元素
 	 */
 	open: function(target) {
 		var me = this,
@@ -215,7 +214,6 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
      * 更新tooltip属性值
      * @private
      * @param {Object} options 属性集合
-     * @return {Null}
      */
     _update: function(options){
         var me = this,
@@ -241,20 +239,22 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     /**
      * 更新options
      * @public
-     * @param       {object}          options         选项.
-     * @config      {Element}         content         Tooltip元素的内部html。当指定target时，默认为target的title属性，否则默认为空。
-     * @config      {String}          width           宽度
-     * @config      {String}          height          高度
-     * @config      {Array|Object}    offset          偏移量。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
-     * @config      {boolean}         single          是否全局单例。若该值为true，则全局共用唯一的浮起tooltip元素，默认为true。
-     * @config      {Number}          zIndex          浮起tooltip层的z-index值，默认为3000。
-     * @config      {String}          positionBy      浮起tooltip层的位置参考，取值['mouse','element']，分别对应针对鼠标位置或者element元素计算偏移，默认mouse。
-     * @config      {Function}        onopen          打开tooltip时触发。
-     * @config      {Function}        onclose         关闭tooltip时触发。
-     * @config      {Function}        onbeforeopen    打开tooltip前触发。
-     * @config      {Function}        onbeforeclose   关闭tooltip前触发。
-     * @config      {Number}          showDelay       触发显示的延迟，默认为100毫秒。
-     * @config      {Number}          hideDelay       触发隐藏的延迟，默认为500毫秒。
+     * @param       {Object}          options         选项.
+     * @config      {String|Array}    target          目标元素或元素id。可直接设置多个目标元素
+     * @config      {String}          type            （可选）触发展开的类型，可以为:hover和click。默认为click
+     * @config      {Element}         contentElement  （可选）Tooltip元素的内部HTMLElement。
+     * @config      {String}          content         （可选）Tooltip元素的内部HTML String。若target存在title，则以title为准
+     * @config      {String}          width           （可选）宽度
+     * @config      {String}          height          （可选）高度
+     * @config      {Array|Object}    offset          （可选）偏移量。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
+     * @config      {boolean}         single          （可选）是否全局单例。若该值为true，则全局共用唯一的浮起tooltip元素，默认为true。
+     * @config      {Number}          zIndex          （可选）浮起tooltip层的z-index值，默认为3000。
+     * @config      {String}          positionBy      （可选）浮起tooltip层的位置参考，取值['mouse','element']，分别对应针对鼠标位置或者element元素计算偏移，默认mouse。
+     * @config      {Boolean}         autoRender       是否自动渲染。
+     * @config      {Function}        onopen          （可选）打开tooltip时触发。
+     * @config      {Function}        onclose         （可选）关闭tooltip时触发。
+     * @config      {Function}        onbeforeopen    （可选）打开tooltip前触发。
+     * @config      {Function}        onbeforeclose   （可选）关闭tooltip前触发。
      */
     update: function(options){
         var me = this;
@@ -266,7 +266,6 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     /**
      * 设置position
      * @private
-     * @return {Null}
      */
 	_setPosition: function() {
 		var me = this,
@@ -291,7 +290,6 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 	/**
 	 * 关闭tooltip
 	 * @public
-     * @return {Null}
 	 */
 	close: function() {
 		var me = this;
