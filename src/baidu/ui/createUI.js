@@ -12,7 +12,6 @@
 ///import baidu.ui.Base;
 ///import baidu.ui.create;
 ///import baidu.object.extend;
-///import baidu.object.merge;
 
 /**
  * 创建一个UI控件类
@@ -37,7 +36,8 @@ baidu.ui.createUI = function(constructor, options) {
             //扩展静态配置到this上
             baidu.object.extend(me, ui.options);
             //扩展当前options中的项到this上
-            baidu.object.merge(me, opt, {overwrite: true, recursive:true});
+            baidu.extend(me, opt);
+            //baidu.object.merge(me, opt, {overwrite: true, recursive:true});
 
             me.classPrefix = me.classPrefix || "tangram-" + me.uiType.toLowerCase();
 
