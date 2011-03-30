@@ -137,7 +137,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
      */
     itemClick: function(idx){
         var me = this;
-        me.close(true);
+        me._close();
         me.dispatchEvent("onitemclick", me.getItemEventData(idx));
     },
     
@@ -276,7 +276,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         if (!me.dispatchEvent("onbeforeopen")) 
             return;
         if (showing = baidu.ui.Menubar.showing) {
-            showing.close(true);
+            showing.close();
         }
         
         if (!me._initialized) { //如果已经初始化就不再重复update
@@ -285,8 +285,6 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         }
         
         var body = me.getBody();
-//        baidu.dom.addClass(body, me.getClass('open'));
-//        baidu.dom.removeClass(body, me.getClass('empty'));
         body.style.display = '';
         me.dispatchEvent("onopen");
         baidu.ui.Menubar.showing = me;
@@ -294,22 +292,27 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 关闭menubar
-     * @param {Boolean} directly 是否直接关闭
      */
-    close: function(directly){
+    close: function(){
         var me = this,
             body = me.getBody();
         if (!body) 
             return;
-        baidu.ui.Menubar.showing = null;
-        if (directly || me.dispatchEvent("onbeforeclose")) {
-//            baidu.dom.addClass(body, me.getClass('empty'));
-//            baidu.dom.removeClass(body, me.getClass('open'));
-            body.style.display = 'none';
+        
+        if (me.dispatchEvent("onbeforeclose")) {
+            me._close();
             me.dispatchEvent("onclose");
         }
     },
-    
+   
+    _close: function(){
+        var me = this,
+            body = me.getBody();
+        
+        baidu.ui.Menubar.showing = null;
+        body.style.display = 'none';
+    },
+
     /**
      * 销毁Menubar
      */
