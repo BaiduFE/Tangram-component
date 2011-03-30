@@ -29,7 +29,7 @@
 	}
 
 	test('初始化参数', function() {
-		expect(6);
+		expect(5);
 		var page = new baidu.ui.Pager();
 		page.render(te.dom[0]);
 		// page.render();
@@ -38,7 +38,6 @@
 		equal(page.itemCount, 10, 'default itemcount is 10');
 		equal(page.leftItemCount, 4, 'default leftItemCount is 4');
 		ok(page.getMain(), 'get main');
-		equal(page.getString(), page.getMain().innerHTML, 'getString');
 
 	})
 
