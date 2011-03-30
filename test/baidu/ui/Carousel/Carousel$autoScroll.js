@@ -1,9 +1,10 @@
 module('baidu.ui.Carousel.Carousel$autoScroll');
 
-function createCarousel(c, s) {
+function createCarousel(s) {
 
 	var op = {
-		target : c,
+		//target : c,
+		orientation: s ? 'vertical' : 'horizontal',
 		contentText : [ {
 			content : "item-0"
 		}, {
@@ -28,25 +29,21 @@ function createCarousel(c, s) {
 			type : 'item'
 		}
 	};
-	if (s === true)
-		op['orientation'] = 'vertical';
-	else if (s === false)
-		op['orientation'] = 'horizontal';
 	return new baidu.ui.Carousel(op);
-
 }
 
 test("autoScrollTo:H, index=1, time=4, type=item", function() {
     var cas, oitem, item, c;
-    cas = createCarousel(te.dom[0], false);
-	cas.render();
+    cas = createCarousel(false);
+	cas.render(te.dom[0]);
 	item = document.getElementById(cas.getId("item" + 2));
 	c = document.getElementById(cas.getId());
+	cas.scrollTo(0);
 	cas.focus(0);
 	stop();
-	cas.scrollTo(1);//scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
+	//scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
 	setTimeout(function(){
-		equals(c.scrollLeft, item.offsetWidth*5,"验证滚动距离是否为五个item的width");
+		equals(c.scrollLeft, item.offsetWidth * 4,"验证滚动距离是否为五个item的width");
 		cas.dispose();
 		start();
 	},450);
