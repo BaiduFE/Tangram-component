@@ -189,10 +189,8 @@ test("dispose", function() {
 	var div = document.body.appendChild(document.createElement("div"));
 	var cb = new baidu.ui.Combox(options);
 	cb.render(div);
-    var input = cb.getInput();
-	var arrow = cb.getArrow();
     cb.dispose();
     var ic = baidu.event._listeners.length;
-    ok(cb.getBody()==null,"element is removed");
-    equals(ic, ie , 'event is lose');
+    ok(cb.getBody() == null,"element is removed");
+    equals(ic, ie, 'event is lose');
 });

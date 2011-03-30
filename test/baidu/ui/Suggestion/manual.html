@@ -3,7 +3,7 @@
     <head>
         <title>suggestion manual test - by berg</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.create,baidu.ui.Suggestion,baidu.ui.Suggestion.*,baidu.object.each,baidu.lang.isObject,baidu.dom.insertHTML&path=../../tangram/src/'></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.create,baidu.ui.Suggestion,baidu.ui.Suggestion.*,baidu.object.each,baidu.lang.isObject,baidu.dom.insertHTML'></script>
 <style>
 #console{background-color:black;color:white;width:400px;position:absolute;right:0;top:0;height:500px;overflow-y:scroll;}
 
@@ -99,9 +99,6 @@
                 "ddx"
             ];
             var sug1 = baidu.ui.create('suggestion', {
-                onbeforepick: function(){
-                    console.log('-----')
-                },
                 autoRender: true,
                 element : baidu.g("suggestion1")
             });
