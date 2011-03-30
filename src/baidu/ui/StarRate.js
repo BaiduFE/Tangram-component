@@ -1,12 +1,8 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/StarRate.js
- * author: rocy
- * version: 1.0.0
- * date: 2010-07-20
  */
+
 ///import baidu.ui.createUI;
 
 ///import baidu.dom.g;
@@ -15,6 +11,7 @@
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.fn.bind;
+///import baidu.dom.remove;
 
 /**
  * @class 星级评价条
@@ -137,6 +134,11 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
     dispose:function(){
         var me = this;
         baidu.un(me.element, 'mouseout', me._mouseOutHandle);
+       
+        for(i=0; i < me.total; ++i){
+            baidu.dom.remove(me.getId(i));
+        }
+        
         me.dispatchEvent("ondispose");
         baidu.lang.Class.prototype.dispose.call(me);
     }
