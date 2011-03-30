@@ -36,7 +36,7 @@ test('校验事件序列', function() {
 		beforestart : function() {/* 初始设置启动高度为100 */
 			$(te.dom[0]).css('height', 100).css('background-color', 'red');
 		}
-	}).checkevents( {
+	}).checkevents({
 		onafterfinish : start
 	}, 4);
 });
@@ -47,8 +47,8 @@ test('校验时间序列', function() {
 		beforestart : function() {/* 初始设置启动高度为100 */
 			$(te.dom[0]).css('height', 100).css('background-color', 'red');
 		}
-	}).checktimeline(function(point) {/* 获取期望值 */
-		return Math.floor(50 * Math.sqrt(point));
+	}).checktimeline(function(point, timelinepoint) {/* 获取期望值 */
+		return Math.floor(100 * Math.sqrt(point / timelinepoint));//这是个抛物线
 	}, function() {/* 获取实际值 */
 		return parseInt($(te.dom[0]).css('height'));
 	});

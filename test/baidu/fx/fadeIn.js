@@ -10,10 +10,10 @@ var op = {/* fx效果方法依赖参数 */
 			this.checked = true;
 			if (baidu.browser.ie) {
 				var re = /opacity\:\d+/;
-				var opacity = re.exec($(te.dom[0]).css('filter')).toString().split(':')[1];
-				var a = opacity ;
-			}
-			else{			
+				var opacity = re.exec($(te.dom[0]).css('filter')).toString()
+						.split(':')[1];
+				var a = opacity;
+			} else {
 				var a = $(te.dom[0]).css('opacity') * 100;
 			}
 			ok(a < 5, '启动时显示为透明 : ' + a);
@@ -23,10 +23,10 @@ var op = {/* fx效果方法依赖参数 */
 	onafterfinish : function() {
 		if (baidu.browser.ie) {
 			var re = /opacity\:\d+/;
-			var opacity = re.exec($(te.dom[0]).css('filter')).toString().split(':')[1];
-			var a = opacity/100 ;
-		}
-		else{			
+			var opacity = re.exec($(te.dom[0]).css('filter')).toString().split(
+					':')[1];
+			var a = opacity / 100;
+		} else {
 			var a = $(te.dom[0]).css('opacity');
 		}
 		equal(a, 1, '校验结束时透明度1');
@@ -52,10 +52,10 @@ test('校验元素类型为dom', function() {
 test('校验事件序列', function() {
 	te.checkfx.create(te.dom[0], {
 		method : baidu.fx.fadeIn,
-		beforestart : function() { //初始设置启动高度为100 
+		beforestart : function() { // 初始设置启动高度为100
 			$(te.dom[0]).css('height', 100).css('background-color', 'red');
 		}
-	}).checkevents( {
+	}).checkevents({
 		onafterfinish : start
 	}, 4);
 });
@@ -63,26 +63,29 @@ test('校验事件序列', function() {
 test('校验时间序列', function() {
 	te.checkfx.create(te.dom[0], {
 		method : baidu.fx.fadeIn,
-		beforestart : function() { //初始设置启动高度为100 
+		beforestart : function() { // 初始设置启动高度为100
 			$(te.dom[0]).css('height', 100).css('background-color', 'red');
 		}
-	}).checktimeline(function(point) {
-		return 25 * point;
-	}, function() {
-		if (baidu.browser.ie) {
-			var re = /opacity\:\d+/;
-			var opacity = re.exec($(te.dom[0]).css('filter')).toString().split(':')[1];
-			var a = opacity ;
-			return a;
-		}
-		else return $(te.dom[0]).css('opacity') * 100; //为便于校验，放大100 
-	});
+	}).checktimeline(
+			function(point, timelinepoint) {
+				return 100 * point / timelinepoint;//均匀渐变
+			},
+			function() {
+				if (baidu.browser.ie) {
+					var re = /opacity\:\d+/;
+					var opacity = re.exec($(te.dom[0]).css('filter'))
+							.toString().split(':')[1];
+					var a = opacity;
+					return a;
+				} else
+					return $(te.dom[0]).css('opacity') * 100; // 为便于校验，放大100
+			});
 });
 
 test('校验cancel', function() {
 	te.checkfx.create(te.dom[0], {
 		method : baidu.fx.fadeIn,
-		beforestart : function() { //初始设置启动高度为100 
+		beforestart : function() { // 初始设置启动高度为100
 			$(te.dom[0]).css('height', 100).css('background-color', 'red');
 		}
 	}).checkcancel();
