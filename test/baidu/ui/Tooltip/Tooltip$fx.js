@@ -1,43 +1,5 @@
 module('baidu.ui.Tooltip.Tooltip$fx');
 
-test('Test the dispose()', function() {
- 	expect(3);
-	stop();
-	var check = function() {
-		var div = testingElement.dom[0];
-		var div1 = document.createElement("div");
-		document.body.appendChild(div1);
-		var ie = baidu.event._listeners.length;
-		var tp = new baidu.ui.Tooltip({
-			target : div1,
-	        showFxOptions : {
-	    	    	onafterfinish : function() {
-	    	    		tp.close();
-	    	    	}
-	    		},
-	    	hideFxOptions : {
-	    	    	onafterfinish : function() {
-	    	    		setTimeout(function(){
-	    	    			tp.dispose();
-	    	    		    ok(tp.getBody()==null,"element is removed");
-	    	    		    var ic = baidu.event._listeners.length;
-	    	    		    equals(ic, ie , 'event is lose');
-		    			    start();
-	    	    		}, 0);
-	    	    	}
-	    		}
-		});
-		tp.addEventListener('ondispose', function(){
-			setTimeout(function(){
-				equals(baidu.fx.current(tp.getMain()), null , 'fx is end');
-			}, 0);
-		});
-		tp.render(div);
-	    tp.open(div1);
-	};
-	ua.importsrc('baidu.fx.current', 
-			check ,'baidu.fx.current', 'baidu.ui.Tooltip.Tooltip$fx');
-});
 
 test('Open a common tooltip(fadeIn) and '
 		+'close a common tooltip(fadeOut)', function() {
@@ -152,4 +114,43 @@ test('Open a common tooltip(fadeIn) and '
 	tp.render(div);
     tp.open(div1);
     te.obj.push(tp);
+});
+
+test('Test the dispose() PUBLICGE-368 ', function() {
+ 	expect(3);
+	stop();
+	var check = function() {
+		var div = testingElement.dom[0];
+		var div1 = document.createElement("div");
+		document.body.appendChild(div1);
+		var ie = baidu.event._listeners.length;
+		var tp = new baidu.ui.Tooltip({
+			target : div1,
+	        showFxOptions : {
+	    	    	onafterfinish : function() {
+	    	    		tp.close();
+	    	    	}
+	    		},
+	    	hideFxOptions : {
+	    	    	onafterfinish : function() {
+	    	    		setTimeout(function(){
+	    	    			tp.dispose();
+	    	    		    ok(tp.getBody()==null,"element is removed");
+	    	    		    var ic = baidu.event._listeners.length;
+	    	    		    equals(ic, ie , 'event is lose');
+		    			    start();
+	    	    		}, 0);
+	    	    	}
+	    		}
+		});
+		tp.addEventListener('ondispose', function(){
+			setTimeout(function(){
+				equals(baidu.fx.current(tp.getMain()), null , 'fx is end');
+			}, 0);
+		});
+		tp.render(div);
+	    tp.open(div1);
+	};
+	ua.importsrc('baidu.fx.current', 
+			check ,'baidu.fx.current', 'baidu.ui.Tooltip.Tooltip$fx');
 });
