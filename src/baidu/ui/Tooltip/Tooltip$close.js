@@ -27,7 +27,7 @@ baidu.ui.Tooltip.register(function(me) {
         
         baidu.dom.insertHTML(me.getBody(), 'afterBegin', baidu.format(me.tplhead, {
             headClass: me.getClass('head'),
-            id: me.getId('head'),
+            id: me.getId('head')
         }));
 
         button = new baidu.ui.Button({
