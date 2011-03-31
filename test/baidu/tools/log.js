@@ -48,7 +48,7 @@ module('baidu.tools.log');
 		// 避免相互影响，全局修改必须干掉
 		baidu.log.setLogLevel('log', 'info', 'warn', 'error');
 		baidu.log.callBack = new Function;
-		baidu.log.setTimeStep(0);
+		baidu.log.setTimeInterval(0);
 	};
 
 })();
@@ -124,7 +124,7 @@ test('timer', function() {
 	baidu.log.callBack = function() {
 		var data = this[this.length - 1];
 		// 接受误差10
-		ok(Math.abs(data.data - expectList.shift()) < 10, '每次都是100');
+		ok(Math.abs(data.data-100)<10, '每次都是100');
 		equals(data.type, 'info', '输出接口是info');
 	};
 	baidu.log.time('a');// 启动计时器
@@ -141,7 +141,7 @@ test('timer', function() {
 });
 
 test('timeStep', function() {
-	baidu.log.setTimeStep(100);
+	baidu.log.setTimeInterval(100);
 	var dataList = [ {
 		type : 'error',
 		data : 'a',
