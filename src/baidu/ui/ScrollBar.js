@@ -71,8 +71,8 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
      * @param {String|HTMLElement} target 一个dom的id字符串或是dom对象.
      */
     render: function(target) {
-        if (!target) {return;}
         var me = this;
+        if (!target || me.getMain()) {return;}
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd',
             baidu.string.format(me.tplDOM, {
             id: me.getId(),
