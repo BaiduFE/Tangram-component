@@ -18,20 +18,20 @@
 		$(img).css('position', 'absolute');
 		te.dom.push(div2);
 
-		te.obj.push({
-			check : function(d, i, max, info, _check, c) {
-				var c = c || this.check;
-				if (i == max) {
-					start();
-				} else {
-					_check(i, max, info);
-
-					setTimeout(function() {
-						c(d, i + 1, max, info, _check, c);
-					}, d / max);
-				}
-			}
-		});
+//		te.obj.push({
+//			check : function(d, i, max, info, _check, c) {
+//				var c = c || this.check;
+//				if (i == max) {
+//					start();
+//				} else {
+//					_check(i, max, info);
+//
+//					setTimeout(function() {
+//						c(d, i + 1, max, info, _check, c);
+//					}, d / max);
+//				}
+//			}
+//		});
 		/**
 		 * 校验的对象方法，校验的运行方法 记录起始事件
 		 */
