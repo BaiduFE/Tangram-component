@@ -124,7 +124,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
         baidu.dom.insertHTML(me.renderMain(target || me.target), "beforeEnd", me.getString());
         me._createMenu(); //创建下拉menu
         me._enterTipMode();
-        me.position && me.setPosition(me.position,target); 
+        me.position && me.setPosition(me.position, target); 
         me.dispatchEvent("onload");
     },
 
@@ -164,7 +164,9 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
             arrow = me.getArrow(),
             menuOptions = {
                 width: me.width || body.offsetWidth,
-                onitemclick: me.onitemclick,
+                onitemclick: function(data){
+                    me.chooseItem(data);
+                },
                 element: body,
                 autoRender: true,
                 data: me.data,
@@ -173,16 +175,8 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
                 onbeforeopen: me.onbeforeopen,
                 onopen: me.onopen
             };
-                 
-        if (!me.menu) {
-            me.menu = baidu.ui.create(baidu.ui.menubar.Menubar, menuOptions);
-            baidu.un(body, 'click', me.targetOpenHandler);
-            me.menu.addEventListener("onitemclick", function(data){
-                me.chooseItem(data)
-            });
-        }
+        me.menu = baidu.ui.create(baidu.ui.Menubar, menuOptions);
         me.menu.close(true);
-
         me._showAllMenuHandler = baidu.fn.bind(function(){
             var me = this;
             me.menu.open();
@@ -211,12 +205,13 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
     },
 
     /**
-     * 响应条目被选择,并发出 onitemchosen 事件
+     * 响应条目被选择,并发出 onitemclick 事件
      * @param {Object} data 选中的数据
      */
     chooseItem : function(data){
         var me = this;
         me.getInput().value = data.value.content;
+        me.dispatchEvent('itemclick', data);
     },
 
     /**
@@ -240,7 +235,6 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
         if (me.getMain()) {
             baidu.dom.remove(me.getMain());
         }
-        me.dispatchEvent('ondispose');
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });

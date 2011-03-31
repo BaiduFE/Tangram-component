@@ -40,8 +40,16 @@
  */
 //TODO: 改成setup
 baidu.ui.combox.select = function(select,options){
-	select = baidu.g(select);
-	if('select' != select.tagName.toLowerCase()) return;
+    var select = me.select = baidu.dom.g(me.select),
+        pos;
+    if(!select
+        || me.type.toLowerCase() != 'select'
+        || select.tagName.toUpperCase() != 'SELECT'){return;}
+    
+    
+    
+    
+    
 	
 	options = options || {};
 	var menuData = [], oriPosition;

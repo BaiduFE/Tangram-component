@@ -155,7 +155,7 @@ baidu.object.extend(baidu.ui.suggestion.Suggestion.prototype, {
                 if (selected == 0) {
                     //把原始的内容放上去
                     me.pick(me.defaultIptValue);
-                    selected--;
+                    me.selectIndexByKeybord--;
                     return;
                 }
                 if (selected == -1)
@@ -165,7 +165,7 @@ baidu.object.extend(baidu.ui.suggestion.Suggestion.prototype, {
                 //最下面再按下
                 if (selected == currentData.length - 1) {
                     me.pick(me.defaultIptValue);
-                    selected = -1;
+                    me.selectIndexByKeybord = -1;
                     return;
                 }
                 selected++;
@@ -184,7 +184,7 @@ baidu.object.extend(baidu.ui.suggestion.Suggestion.prototype, {
                     break;
                 case 13:    //回车，默认为表单提交
                     baidu.event.preventDefault(e);
-                    me.confirm(me.selectIndexByKeybord < 0 ? me.getTarget().value : index, 'keyboard');
+                    me.confirm(me.selectIndexByKeybord < 0 ? me.getTarget().value : me.selectIndexByKeybord, 'keyboard');
                     break;
                 case 38:    //向上，在firefox下，按上会出现光标左移的现象
                     up = true;
