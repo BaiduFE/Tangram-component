@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/suggestion/Suggestion.js
- * author: berg
- * version: 1.1.0
- * date: 2010-06-01 庆祝儿童节，晚上升级suggestion
  */
 
 ///import baidu.dom.g;
@@ -108,10 +103,13 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function(options) {
      */
     render: function(target) {
         var me = this,
-            main;
-        if (me.getMain()) {
+            main,
+            target = baidu.g(target);
+        
+        if (me.getMain() || !target) {
             return;
         }
+
         if (target.id) {
             me.targetId = target.id;
         }else {

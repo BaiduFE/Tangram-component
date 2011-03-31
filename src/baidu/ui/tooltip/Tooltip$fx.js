@@ -20,15 +20,22 @@ baidu.object.extend(baidu.ui.tooltip.Tooltip.prototype,{
  */
 baidu.ui.tooltip.Tooltip.register(function(me){
 	if(me.enableFx){
-		me.addEventListener('onopen', function(){
+		var fxHandle = null;
+
+        me.addEventListener('onopen', function(){
 	        'function' == typeof me.showFx && me.showFx(me.getMain(),me.showFxOptions)
 	    });
-		me.addEventListener('beforeclose',function(e){
-	        me.hideFx(me.getMain(), me.hideFxOptions)
-	          .addEventListener('onafterfinish',function(){
-	              me._close();
-	          });
+		
+        me.addEventListener('beforeclose',function(e){
+	        fxHandle = me.hideFx(me.getMain(), me.hideFxOptions);
+            fxHandle.addEventListener('onafterfinish',function(){
+	            me._close();
+	        });
 	        e.returnValue = false;
 		});
+
+        me.addEventListener('ondispose', function(){
+            fxHandle && fxHandle.end();
+        });
 	}
 });

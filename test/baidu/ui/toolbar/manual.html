@@ -91,6 +91,7 @@
                             type:"toolbar-toolbar",
                             config:{
                                 title:"toolbar",
+                                position:"right",
                                 name:"toolbar2-1",
                                 items:[
                                     {config:{name:"button5",content:"<span class='in' style='width: 60px;'><strong>按钮</strong></span>"}},
@@ -113,7 +114,8 @@
                 }]
             };
             var toolbar = new baidu.ui.toolbar.Toolbar(options);
-            toolbar.render("toolBar-Container");
+            //toolbar.render("toolBar-Container");
+            toolbar.render();
         </script>
 
     </body>

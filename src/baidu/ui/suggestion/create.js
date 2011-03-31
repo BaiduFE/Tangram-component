@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/suggestion/create.js
- * author: berg
- * version: 1.0.0
- * date: 2010-06-01
  */
 
 ///import baidu.dom.g;

@@ -7,6 +7,7 @@
 ///import baidu.string.format;
 ///import baidu.object.extend;
 ///import baidu.ui.createUI;
+///import baidu.ui.toolbar;
 
 /**
  * @class Spacer类
@@ -16,12 +17,12 @@
  * @author  lixiaopeng
  */
 baidu.ui.toolbar.Spacer = baidu.ui.createUI(function(options) {
-}).extend({
-
+}).extend(
+   
     /*
      * @lends baidu.ui.toolbar.Spacer.prototype
-     */
-
+     */ 
+{
     /**
      * statable
      */

@@ -240,6 +240,7 @@ baidu.ui.combox.Combox = baidu.ui.createUI(function (options){
         if (me.getMain()) {
             baidu.dom.remove(me.getMain());
         }
+        me.dispatchEvent('ondispose');
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });
