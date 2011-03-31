@@ -56,6 +56,9 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     tplItem: '<li onmouseover="#{onmouseover}" onmouseout="#{onmouseout}"><a href="#" id="#{id}" class="#{class}" onclick="#{onclick}" title="#{title}">#{content}</a>#{branch}</li>',
     tplContent: '<span class="#{contentClass}">#{content}</span>',
     tplArrow: '<span class="#{arrow}"></span>',
+	/**
+	 * @private
+	 */
     toggle: function(){return true},
     posable: true,
     
@@ -137,14 +140,14 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
      */
     itemClick: function(idx){
         var me = this;
-        me.close(true);
+        me._close();
         me.dispatchEvent("onitemclick", me.getItemEventData(idx));
     },
     
     /**
      * 事件触发数据
      * @param {String} idx item索引
-     * @return {Object}
+     * @return {Object}   item对象
      */
     getItemEventData: function(idx){
         return {
@@ -232,7 +235,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     /**
      * 获取条目的元素id
      * @param {Number} idx 索引值
-     * @return {String}id
+     * @return {String} id    获取item的id
      */
     getItemId: function(idx){
         return this.getId("item-" + idx);
@@ -276,7 +279,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         if (!me.dispatchEvent("onbeforeopen")) 
             return;
         if (showing = baidu.ui.Menubar.showing) {
-            showing.close(true);
+            showing.close();
         }
         
         if (!me._initialized) { //如果已经初始化就不再重复update
@@ -285,8 +288,6 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         }
         
         var body = me.getBody();
-//        baidu.dom.addClass(body, me.getClass('open'));
-//        baidu.dom.removeClass(body, me.getClass('empty'));
         body.style.display = '';
         me.dispatchEvent("onopen");
         baidu.ui.Menubar.showing = me;
@@ -294,22 +295,27 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 关闭menubar
-     * @param {Boolean} directly 是否直接关闭
      */
-    close: function(directly){
+    close: function(){
         var me = this,
             body = me.getBody();
         if (!body) 
             return;
-        baidu.ui.Menubar.showing = null;
-        if (directly || me.dispatchEvent("onbeforeclose")) {
-//            baidu.dom.addClass(body, me.getClass('empty'));
-//            baidu.dom.removeClass(body, me.getClass('open'));
-            body.style.display = 'none';
+        
+        if (me.dispatchEvent("onbeforeclose")) {
+            me._close();
             me.dispatchEvent("onclose");
         }
     },
-    
+   
+    _close: function(){
+        var me = this,
+            body = me.getBody();
+        
+        baidu.ui.Menubar.showing = null;
+        body.style.display = 'none';
+    },
+
     /**
      * 销毁Menubar
      */

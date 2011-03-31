@@ -14,7 +14,8 @@ function isShown(o) {
 
 	if (o instanceof String || 'string' == typeof o)
 		o = document.getElementById(o);
-	if (o == document.body)
+	if (o == document.body || o.tagName == 'BODY')// IFrame中的body判断可能出错，by
+													// bell, 2011-03-29
 		return true;
 
 	if (o.style && "none" == o.style.display)
@@ -48,8 +49,10 @@ var testingElement = {}, te = testingElement;
 		 *            需要调用dispose的ui对象
 		 * @param eventLength
 		 *            ui启动前在baidu.event._listeners中的事件总数
-		 * @param dom 需要确认dom被干掉了
-		 * @param callback 回调函数，在dispose之后
+		 * @param dom
+		 *            需要确认dom被干掉了
+		 * @param callback
+		 *            回调函数，在dispose之后
 		 */
 		dispose : function(ui, eventLength, dom, callback) {
 			if (!ui.dispose || 'function' != typeof ui.dispose) {
