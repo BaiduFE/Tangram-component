@@ -14,18 +14,13 @@
 ///import baidu.ui.Menubar.Menubar$click;
 ///import baidu.ui.behavior.statable;
 ///import baidu.ui.behavior.posable;
-
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.g;
 ///import baidu.dom.remove;
-
 ///import baidu.array.each;
-
 ///import baidu.fn.bind;
-
 ///import baidu.event.on;
 ///import baidu.event.un;
-
 ///import baidu.string.format;
 
  /**
@@ -105,13 +100,13 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
             arrowClass: me.getClass('arrow'),
             inputid: me.getId("input"),
             arrowid: me.getId("arrow"),
-            stateHandler: me._getStateHandlerString() 
+            stateHandler: me._getStateHandlerString()
         });
     },
 
     /**
      * 渲染控件
-	 * @public
+     * @public
      * @param {Object} target 目标渲染对象
      */
     render: function(target){
@@ -124,7 +119,7 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
         baidu.dom.insertHTML(me.renderMain(target || me.target), "beforeEnd", me.getString());
         me._createMenu(); //创建下拉menu
         me._enterTipMode();
-        me.position && me.setPosition(me.position,target);
+        me.position && me.setPosition(me.position, target);
         me.dispatchEvent("onload");
     },
 
@@ -135,7 +130,6 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
     _enterTipMode : function(){
         var me = this, 
             input = me.getInput();
-
         me._showMenuHandler = baidu.fn.bind(function(){
             var me = this;
             var input = me.getInput();
@@ -146,11 +140,10 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
         }, me);
         
         baidu.on(input, "focus", me._showMenuHandler);
-		
         if(me.editable){
             input.readOnly = '';
             baidu.on(input, "keyup", me._showMenuHandler);
-		}
+        }
     },
 
     /**
@@ -164,7 +157,9 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
             arrow = me.getArrow(),
             menuOptions = {
                 width: me.width || body.offsetWidth,
-                onitemclick: me.onitemclick,
+                onitemclick: function(data){
+                    me.chooseItem(data);
+                },
                 element: body,
                 autoRender: true,
                 data: me.data,
@@ -174,15 +169,9 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
                 onopen: me.onopen
             };
                  
-        if (!me.menu) {
-            me.menu = baidu.ui.create(baidu.ui.Menubar, menuOptions);
-//            baidu.un(body, 'click', me.targetOpenHandler);
-            me.menu.addEventListener("onitemclick", function(data){
-                me.chooseItem(data)
-            });
-        }
+        me.menu = baidu.ui.create(baidu.ui.Menubar, menuOptions);
         me.menu.close(true);
-
+        
         me._showAllMenuHandler = baidu.fn.bind(function(){
             var me = this;
             me.menu.open();
@@ -211,12 +200,13 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
     },
 
     /**
-     * 响应条目被选择,并发出 onitemchosen 事件
+     * 响应条目被选择,并发出 onitemclick 事件
      * @param {Object} data 选中的数据
      */
     chooseItem : function(data){
         var me = this;
         me.getInput().value = data.value.content;
+        me.dispatchEvent('itemclick', data);
     },
 
     /**
@@ -229,17 +219,16 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
 
     /**
      * 销毁Combox
-	 * @public
+     * @public
      */
     dispose: function(){
         var me = this;
-        baidu.un(me.getInput(), "keyup", me._showMenuHandler);
-        baidu.un(me.getInput(), "focus", me._showMenuHandler);
+        baidu.un(me.getInput(), 'keyup', me._showMenuHandler);
+        baidu.un(me.getInput(), 'focus', me._showMenuHandler);
         baidu.un(me.getArrow(), 'click', me._showAllMenuHandler);
-
-        if (me.getMain()) {
-            baidu.dom.remove(me.getMain());
-        }
+        me.menu && me.menu.dispose();
+        me.getMain() && baidu.dom.remove(me.getMain());
+        me.dispatchEvent('ondispose');
         baidu.lang.Class.prototype.dispose.call(me);
     }
 });

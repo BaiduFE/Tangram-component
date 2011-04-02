@@ -36,7 +36,7 @@ test('校验事件序列', function() {
 		beforestart : function() {/* 初始设置启动高度为100 */
 			$(te.dom[0]).css('height', 100).css('background-color', 'red');
 		}
-	}).checkevents( {
+	}).checkevents({
 		onafterfinish : start
 	}, 4);
 });
@@ -49,8 +49,9 @@ test('校验时间序列', function() {
 				$(te.dom[0]).css('height', 100).css('background-color', 'red');
 			}
 		}
-	}).checktimeline(function(point) {
-		return Math.round(Math.pow(point - 4, 2) * 25 / 4);
+	}).checktimeline(function(point, timelinepoint) {
+		// 100*(1-per)2
+		return Math.round(100 * Math.pow(1 - point / timelinepoint, 2));
 	}, function() {
 		return parseInt($(te.dom[0]).css('height'));
 	});

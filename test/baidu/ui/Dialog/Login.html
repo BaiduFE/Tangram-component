@@ -2,16 +2,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/loader.js' ></script>
-        <script>
-            Include("baidu.ui.dialog.Dialog$draggable");
-            Include("baidu.ui.dialog.Dialog$smartCover");
-            Include("baidu.ui.dialog.Dialog$modal");
-            Include("baidu.ui.dialog.Dialog$keyboard");
-            Include("baidu.ui.dialog.Dialog$closeButton");
-        </script>
-        
-        <!--<script src='../../../../release/dialog_release.js' ></script>-->
+
+	<script src='../../../../src/import.php?f=baidu.ui.Dialog,baidu.ui.Dialog.Dialog$closeButton,baidu.ui.Dialog.Dialog$button,baidu.ui.Dialog.Dialog$modal,baidu.ui.Dialog.Dialog$draggable,baidu.ui.Login'></script> 
         <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
 <style>
 body{
@@ -31,7 +23,7 @@ h2{
     background:#dae4ff;
     color:#333;
     padding-bottom:18px;
-}
+    width:500px; }
 .tangram-dialog-title{
     background:url(img/bg1.gif) repeat-x;
     cursor:move;
@@ -49,10 +41,7 @@ h2{
 }
 .tangram-dialog-close{
     width:19px;
-    height:19px;
-    right: 8px;
-    top:8px;
-    position:absolute;
+    height:19px; right: 8px; top:8px; position:absolute;
     background:url(img/close.gif);
     cursor:pointer;
 }
@@ -61,8 +50,7 @@ h2{
     border:1px solid #c3cff2;
     background:#FFF;
     padding:5px;
-}
-/*confirm*/
+} /*confirm*/
 .tangram-dialog-buttons{
     text-align:right;
 }
@@ -143,19 +131,12 @@ h2{
         <link type="text/css" rel="stylesheet" media="all" href="css/passport.css" />
     </head>
     <body>
-		<h1>登陆框测试页面</h1>
-    	
-        <script type="text/javascript">
-	        Include("baidu.sio.callByServer");
-	        Include("baidu.sio.callByBrowser");
-	        Include("baidu.ui.dialog.login");
-        </script>
-        <!-- 
-        <script type="text/javascript" src="pass_api_source.js"></script>
-         -->
+		<h1>登录弹出窗口测试页面</h1>
+<script src='../../../../src/import.php?f=baidu.sio.callByServer,baidu.sio.callByBrowser'></script>  	
         <script>    
-	        var loginDialog = baidu.ui.dialog.login();
+	        var loginDialog = new baidu.ui.Login({"autoRender":true,"titleText":"登录窗口"});
 	        loginDialog.open();
+	
         </script>
     </body>
 </html>

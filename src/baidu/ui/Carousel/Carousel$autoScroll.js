@@ -12,6 +12,7 @@
  */
 baidu.ui.Carousel.register(function(me){
 	if(me.autoScroll){//如果存在表示要启动auto-scroll
+        me.onbeforestartscroll = function(evt){this.focus(evt.index);};
 		me.addEventListener("afterscroll", function(){
 			me.autoScroll.timeOut = setTimeout(function(){
 				var index, totalPage, currPage, page;

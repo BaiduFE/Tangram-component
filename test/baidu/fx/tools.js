@@ -18,20 +18,20 @@
 		$(img).css('position', 'absolute');
 		te.dom.push(div2);
 
-		te.obj.push( {
-			check : function(d, i, max, info, _check, c) {
-				var c = c || this.check;
-				if (i == max) {
-					start();
-				} else {
-					_check(i, max, info);
-
-					setTimeout(function() {
-						c(d, i + 1, max, info, _check, c);
-					}, d / max);
-				}
-			}
-		});
+//		te.obj.push({
+//			check : function(d, i, max, info, _check, c) {
+//				var c = c || this.check;
+//				if (i == max) {
+//					start();
+//				} else {
+//					_check(i, max, info);
+//
+//					setTimeout(function() {
+//						c(d, i + 1, max, info, _check, c);
+//					}, d / max);
+//				}
+//			}
+//		});
 		/**
 		 * 校验的对象方法，校验的运行方法 记录起始事件
 		 */
@@ -55,41 +55,39 @@
 					 * 校验时间点附近的期望值和实际值，时间点采用等分切割方式
 					 * <li>getexpect : 方法，获取每个时间点期望值
 					 * <li>getvalue : 方法，获取每个时间点实际值
-					 * <li>timelinepoint : 整形，定制检查的时间点，默认4
+					 * <li>timelinepoint : 整形，定制检查的时间点，默认2
 					 * <li>threshold : 整形，期望值与实际值之间的运行误差，默认为5
 					 */
 					checktimeline : function(getexpect, getvalue,
 							timelinepoint, threshold) {
 						var me = this;
-						var timelinepoint = timelinepoint || 4;
+						var timelinepoint = timelinepoint || 2;
 						var threshold = threshold === 0 ? 0
 								: threshold ? threshold : 5;
 						var actuallist = [];
 						var c = me.checkbase();
-						var timeline = function() {
-							setTimeout(
-									function() {
-										actuallist[actuallist.length] = getvalue();
-										if (new Date().getTime() < me.starttime
-												+ c.duration) {
-											timeline();
-										} else {
-											for ( var i = 0; i < actuallist.length; i++) {
-												var a = actuallist[i];
-												var e = getexpect(i + 1);/* 第一个抽样点不是0，而是1 */
-												ok(
-														Math.abs(a - e) < threshold,
-														'检测抽样点数值' + i + ' : e['
-																+ e + '] a['
-																+ a + ']');
-											}
-											expect(timelinepoint);
-											start();
-										}
-									}, c.duration / timelinepoint);
-						};
+						// var timeline = function() {
+						var h = setInterval(function() {
+							actuallist[actuallist.length] = getvalue();
+							if (new Date().getTime() > me.starttime
+									+ c.duration) {
+								// timeline();
+								// } else {
+								clearInterval(h);
+								for ( var i = 0; i < actuallist.length; i++) {
+									var a = actuallist[i];
+									var e = getexpect(i + 1, timelinepoint);/* 第一个抽样点不是0，而是1 */
+									ok(Math.abs(a - e) < threshold, '检测抽样点数值'
+											+ i + ' : e[' + e + '] a[' + a
+											+ ']');
+								}
+								expect(timelinepoint);
+								start();
+							}
+						}, c.duration / timelinepoint);
+						// };
 						starttime = new Date().getTime();
-						timeline();
+						// timeline();
 					},
 					/**
 					 * 校验事件序列，默认仅判定是否事件被正确触发，特定事件需要额外校验通过evcallbacks传入

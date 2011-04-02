@@ -22,14 +22,18 @@
 ///import baidu.ui.ItemSet;
 
 /**
- * 手风琴组件
+ * @class 手风琴组件
  * @param {Object}     [options] 选项
  * @param {HTMLElment} [options.target] 渲染的容器元素
  */
 baidu.ui.Accordion = baidu.ui.createUI(function (options){
     var me = this;
     me.items = me.items || [];//初始化防止空
-},{superClass:baidu.ui.ItemSet}).extend({
+},{superClass:baidu.ui.ItemSet}).extend(
+    /**
+     *  @lends baidu.ui.Accordion.prototype
+     */
+    {
     //ui控件的类型 **必须**
     uiType      : "accordion",
     //ui控件的class样式前缀 可选
@@ -47,7 +51,7 @@ baidu.ui.Accordion = baidu.ui.createUI(function (options){
             items = this.items,
             itemsStrAry = [];
         baidu.each(items, function(item, key){  
-            itemsStrAry.push(me._getHeadString(item,key) + me._getBodyString(item,key));
+            itemsStrAry.push(me._getHeadString(item) + me._getBodyString(item));
         });
         return baidu.format(this.tplDOM, {
             id      : me.getId(),
@@ -57,13 +61,18 @@ baidu.ui.Accordion = baidu.ui.createUI(function (options){
     },
     /**
      * 插入item html
-     * @param {Object} item
-     * @param {int} index
+     * @param {Object} item     插入项
+     * @param {number} index    索引，默认插入在最后一项
      */
-    insertItemHTML:function(item,index){
+    insertItemHTML:function(item, index){
         var me = this;
-        baidu.dom.insertHTML(me.getBody(), "beforeEnd", me._getHeadString(item,index));
-        baidu.dom.insertHTML(me.getBody(), "beforeEnd", me._getBodyString(item,index));
+            ids = me._headIds,
+            index = ids[index] ? index : ids.length,
+            container = baidu.dom.g(ids[index]) || me.getBody(),
+            pos = ids[index] ? 'beforeBegin' : 'beforeEnd';
+        baidu.dom.insertHTML(container, pos, me._getHeadString(item, index));
+        baidu.dom.insertHTML(container, pos, me._getBodyString(item, index));
+        me._addSwitchEvent(baidu.dom.g(ids[index]));
     },
     
     /**

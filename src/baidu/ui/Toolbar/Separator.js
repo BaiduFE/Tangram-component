@@ -4,6 +4,7 @@
  */
 
 ///import baidu.ui.createUI;
+///import baidu.ui.Toolbar;
 
 /**
  * @class Toolbar类
@@ -13,12 +14,11 @@
  * @author  lixiaopeng
  */
 baidu.ui.Toolbar.Separator = baidu.ui.createUI(function(options) {
-}).extend({
-  
+}).extend(
     /*
      * @lends baidu.ui.Toolbar.Separator.prototype
-     */
-
+     */   
+{
     /**
      * statable
      */
@@ -27,7 +27,7 @@ baidu.ui.Toolbar.Separator = baidu.ui.createUI(function(options) {
     /**
      * uiType
      */
-    uiType: 'toolbar-sepatator',
+    uiType: 'toolbar-separator',
 
     /**
      * 模板

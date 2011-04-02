@@ -114,11 +114,11 @@
             }
 
             function update(){
-                baidu.log.setTimeStep(1000);
+                baidu.log.setTimeInterval(1000);
                 baidu.log.setLogLevel('error','info');
 
                 baidu.log.callBack = function(){
-                    alert('this is callback');
+                    baidu.log('this is callback');
                 };
             }
 

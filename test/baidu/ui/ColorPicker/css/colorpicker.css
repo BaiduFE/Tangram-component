@@ -87,6 +87,7 @@
 	z-index:1000;
 }
 .tangram-colorpalette-sliderMain{
+    position: absolute;
     left: 171px;
     top: 10px;
     width: 35px;
@@ -112,7 +113,7 @@
 	left: 213px;
 	top: 13px;
 }
-.tangram-colorpalette-currentColor {
+.tangram-colorpalette-savedColor {
 	position: absolute;
 	width: 60px;
 	height: 30px;

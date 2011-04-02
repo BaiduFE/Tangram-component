@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- *
- * path: ui/Menubar.js
- * author: rocy
- * version: 1.0.0
- * date: 2010-12-09
  */
 
 ///import baidu.ui.createUI;
@@ -29,7 +24,7 @@
 ///import baidu.lang.isFunction;
 
 /**
- * Menubar 下拉菜单
+ * @class  Menubar 下拉菜单
  * @param {Object} [options]                             配置选项
  * @param {String} [options.width = '200']               选项宽度
  * @param {String} [options.height]                      选项高度
@@ -61,11 +56,15 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     tplItem: '<li onmouseover="#{onmouseover}" onmouseout="#{onmouseout}"><a href="#" id="#{id}" class="#{class}" onclick="#{onclick}" title="#{title}">#{content}</a>#{branch}</li>',
     tplContent: '<span class="#{contentClass}">#{content}</span>',
     tplArrow: '<span class="#{arrow}"></span>',
+	/**
+	 * @private
+	 */
     toggle: function(){return true},
     posable: true,
     
     /**
      * 获取Menubar组件的HTML String
+	 * @private
      * @return {String}
      */
     getString: function(){
@@ -80,6 +79,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 生成items字符串
+	 * @private
      * @param {Object} items 数据
      * @param {String} branchId 条目ID
      * @return {String}
@@ -140,14 +140,14 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
      */
     itemClick: function(idx){
         var me = this;
-        me.close(true);
+        me._close();
         me.dispatchEvent("onitemclick", me.getItemEventData(idx));
     },
     
     /**
      * 事件触发数据
      * @param {String} idx item索引
-     * @return {Object}
+     * @return {Object}   item对象
      */
     getItemEventData: function(idx){
         return {
@@ -158,7 +158,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 单个条目mouseover的响应
-     * @param {Object} idx
+     * @param {Object} idx     索引
      */
     itemMouseOver: function(idx){
         var me = this, 
@@ -191,7 +191,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 更新menubar
-     * @param {Object} options
+     * @param {Object} options    选项
      */
     update: function(options){
         var me = this, 
@@ -235,7 +235,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     /**
      * 获取条目的元素id
      * @param {Number} idx 索引值
-     * @return {String}id
+     * @return {String} id    获取item的id
      */
     getItemId: function(idx){
         return this.getId("item-" + idx);
@@ -251,7 +251,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     
     /**
      * 获取指定索引值的页面元素
-     * @param {Number} idx
+     * @param {Number} idx     索引
      * @return {HTMLElement} dom节点
      */
     getItem: function(idx){
@@ -279,7 +279,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         if (!me.dispatchEvent("onbeforeopen")) 
             return;
         if (showing = baidu.ui.Menubar.showing) {
-            showing.close(true);
+            showing.close();
         }
         
         if (!me._initialized) { //如果已经初始化就不再重复update
@@ -288,29 +288,34 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         }
         
         var body = me.getBody();
-        baidu.dom.addClass(body, me.getClass('open'));
-        baidu.dom.removeClass(body, me.getClass('empty'));
+        body.style.display = '';
         me.dispatchEvent("onopen");
         baidu.ui.Menubar.showing = me;
     },
     
     /**
      * 关闭menubar
-     * @param {Boolean} directly 是否直接关闭
      */
-    close: function(directly){
+    close: function(){
         var me = this,
             body = me.getBody();
         if (!body) 
             return;
-        baidu.ui.Menubar.showing = null;
-        if (directly || me.dispatchEvent("onbeforeclose")) {
-            baidu.dom.addClass(body, me.getClass('empty'));
-            baidu.dom.removeClass(body, me.getClass('open'));
+        
+        if (me.dispatchEvent("onbeforeclose")) {
+            me._close();
             me.dispatchEvent("onclose");
         }
     },
-    
+   
+    _close: function(){
+        var me = this,
+            body = me.getBody();
+        
+        baidu.ui.Menubar.showing = null;
+        body.style.display = 'none';
+    },
+
     /**
      * 销毁Menubar
      */

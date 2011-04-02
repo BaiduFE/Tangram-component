@@ -49,29 +49,19 @@ test('检测show及具体属性细节',
  */
 test('窗口scroll和resize测试', function() {
 	ua.frameExt(function(w, f) {
+		// f.style.borderWidth = f.style.margin = f.style.padding = 0;
 		var me = this;
 		var m = new w.baidu.ui.Modal();
 		m.render();
 		m.show();
 		mo = m.getMain();
-		$(f).css('width', 100);
-		equals(mo.offsetWidth, 100, '调整窗口宽度并确认Modal是否一致');
-
-		$(f).css('width', 200);
-		equals(mo.offsetWidth, 200, '调整窗口宽度并确认Modal是否一致');
-
-		var tdiv = w.document.createElement('div');
-		tdiv.style.width = 300;
-		tdiv.style.height = 10;
-		w.document.body.appendChild(tdiv);
-		equals(mo.offsetWidth, 200, '增加滚动条并确认Modal是否一致');
-
-		w.scrollTo(100, 0);
-		equals(mo.offsetLeft, 100, '滚动并确认Modal位置');
-
-		w.scrollTo(0, 0);
-		equals(mo.offsetLeft, 0, '滚动并确认Modal位置');
-		this.finish();
+		/*baidu.on(w, 'resize', function() {
+			setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
+				equals(mo.offsetWidth, 100, 'width change on window resize');
+//				me.finish();
+			}, 50);
+		});*/
+		$(f).css('width', "100px");
 	});
 });
 

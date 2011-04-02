@@ -1,7 +1,6 @@
 module('baidu.ui.Menubar');
 ua.importsrc("baidu.dom.getStyle");
 
-
 (function() {
 	function mySetup() {
 		var div = document.createElement('div');
@@ -21,11 +20,10 @@ ua.importsrc("baidu.dom.getStyle");
 
 	var s = QUnit.testStart;
 	QUnit.testStart = function() {
-		s.apply(this, arguments);;
+		s.apply(this, arguments);
 		mySetup();
-	}
+	};
 })();
-
 
 /**
  * dispose after update
@@ -62,32 +60,33 @@ test('getItem and item event', function() {
 			/* check event */
 			equals(event.type, type, 'check event type');
 			equals(event.index, '0-0', 'check event index');
-			equals(event.target, menu, 'check event target');
+			ok(event.target === menu, 'check event target');
 			equals(event.value.content, options.data[0].content,
 					'check event value');
 			callback();
 			equals(_step++, step, 'check event step');
-		}
+		};
 	}, item, options = {
 		data : [ {
 			content : 'm11'
 		} ],
 		target : testingElement.dom[0],
 		onitemmouseover : handle('onitemmouseover', 0, function() {
-			 /*check item class */
+			/* check item class */
 			equals(item.className,
 					'tangram-menubar-item tangram-menubar-item-hover',
 					'item class changed after mouse over');
 		}),
 		onitemmouseout : handle('onitemmouseout', 1, function() {
-			 /*check item class */
+			/* check item class */
 			equals(item.className, 'tangram-menubar-item',
 					'item class changed after mouse out');
 		}),
 		onitemclick : handle('onitemclick', 1, function() {
-			 /*check item disposed */
-			//ok(!isShown(menu.getBody()), 'item hide after click');
-			ok(menu.getBody().className.match('tangram-menubar-empty')&&!menu.getBody().className.match('tangram-menubar-open'),'class empty is add and class open is remove ');
+			/* check item disposed */
+			ok(!isShown(menu.getBody()), 'item hide after click');
+			// ok(menu.getBody().className.match('tangram-menubar-empty')&&!menu.getBody().className.match('tangram-menubar-open'),'class
+			// empty is add and class open is remove ');
 		})
 	};
 	var menu = new baidu.ui.Menubar(options);
@@ -96,13 +95,15 @@ test('getItem and item event', function() {
 	menu.update();
 	item = menu.getItem('0-0');
 	equals($(item).text(), menu.items['0-0'].content, 'get content');
-	ok(/itemClick\(\'0-0\'\)/.test(item.onclick), 'check item click');
-	ok(/itemMouseOver\(\'0-0\'\)/.test(item.parentNode.onmouseover), 'check item on hover');
-	ok(/itemMouseOut\(\'0-0\'\)/.test(item.parentNode.onmouseout), 'check item on mouse out');
+	// ok(/itemClick\(\'0-0\'\)/.test(item.onclick), 'check item click');
+	// ok(/itemMouseOver\(\'0-0\'\)/.test(item.parentNode.onmouseover), 'check
+	// item on hover');
+	// ok(/itemMouseOut\(\'0-0\'\)/.test(item.parentNode.onmouseout), 'check
+	// item on mouse out');
 	menu.open();
 	item = menu.getItem('0-0');
-//	UserAction.mouseover(item);
-//	UserAction.mouseout(item);
+	// UserAction.mouseover(item);
+	// UserAction.mouseout(item);
 	UserAction.click(item);
 });
 
@@ -122,20 +123,20 @@ test('update', function() {
 	testingElement.obj.push(menu);
 	menu.render(m1);
 	equals(menu.zIndex, 1000, 'zindex before update');
-	menu.update( {
+	menu.update({
 		zIndex : 1001
 	});
 	equals(menu.zIndex, 1001, 'zindex after update');
-})
+});
 
 test('data', function() {
 	var data = [ {
 		content : 'm11'
-	} ],options = {
-		data:data,
+	} ], options = {
+		data : data,
 		autoRender : true
-	}
-	var menu = baidu.ui.create(baidu.ui.Menubar,options);
+	};
+	var menu = baidu.ui.create(baidu.ui.Menubar, options);
 	testingElement.obj.push(menu);
 	equals(menu.data, data, 'check menu data');
 });
@@ -145,16 +146,16 @@ test('target', function() {
 		content : 'm11'
 	} ], options = {
 		element : testingElement.dom[0],
-		data:data,
+		data : data,
 		autoRender : true
 	};
-	var menu = baidu.ui.create(baidu.ui.Menubar,options);
+	var menu = baidu.ui.create(baidu.ui.Menubar, options);
 	testingElement.obj.push(menu);
 	equals(menu.target, options.target, 'check target');
 	menu.render(options.target);
 	menu.update();
 	ok(isShown(menu.getBody()), 'menu is shown');
-})
+});
 
 test('width and height', function() {
 	var options = {
@@ -166,7 +167,7 @@ test('width and height', function() {
 			content : 'm11'
 		} ]
 	};
-	var menu = baidu.ui.create(baidu.ui.Menubar,options);
+	var menu = baidu.ui.create(baidu.ui.Menubar, options);
 	testingElement.obj.push(menu);
 	menu.render(options.target);
 	menu.update();
@@ -174,7 +175,7 @@ test('width and height', function() {
 	equals(menu.height, options.height, 'check height');
 	equals(menu.getBody().style.width, options.width, 'menu is appended');
 	equals(menu.getBody().style.height, options.height, 'menu is appended');
-})
+});
 
 test('zindex', function() {
 	var options = {
@@ -185,12 +186,12 @@ test('zindex', function() {
 			content : 'm11'
 		} ]
 	};
-	var menu = baidu.ui.create(baidu.ui.Menubar,options);
+	var menu = baidu.ui.create(baidu.ui.Menubar, options);
 	testingElement.obj.push(menu);
 	equals(menu.zIndex, options.zIndex, 'check zIndex');
 	menu.render(options.target), menu.update();
 	equals(menu.getMain().style.zIndex, options.zIndex, 'check dom zIndex');
-})
+});
 
 test('onitemclick', function() {
 	expect(7);
@@ -208,10 +209,12 @@ test('onitemclick', function() {
 	}, check = function(e) {
 		equals(index, e.index, 'index in event');
 		equals(e.value, menu.items[index], 'data in event');
-	//	ok(!isShown(menu.getItem(index)), 'hide after on item click');
-		ok(menu.getBody().className.match('tangram-menubar-empty')&&!menu.getBody().className.match('tangram-menubar-open'),'hide after on item click');
+		ok(!isShown(menu.getItem(index)), 'hide after on item click');
+		// ok(menu.getBody().className.match('tangram-menubar-empty')
+		// && !menu.getBody().className.match('tangram-menubar-open'),
+		// 'hide after on item click');
 	};
-	var menu = baidu.ui.create(baidu.ui.Menubar,options);
+	var menu = baidu.ui.create(baidu.ui.Menubar, options);
 	testingElement.obj.push(menu);
 	menu.render(options.target);
 	menu.open();
@@ -224,17 +227,17 @@ test('onitemclick', function() {
 	UserAction.click(menu.getItem(index));
 	ok(menu.getBody().className, 'tangram-menubar tangram-menubar-empty',
 			'items removed for close');
-})
+});
 
 test('on status', function() {
 	var _index = 0, handle = function(type, index) {
 		return function() {
 			equals(_index++, index, 'check steps');
-			 /*check event*/ 
+			/* check event */
 			var event = arguments.callee.arguments[0];
 			equals(event.type, type, 'check type');
 
-		}
+		};
 	}, options = {
 		target : testingElement.dom[0],
 		oninit : handle('oninit', 0),
@@ -253,4 +256,4 @@ test('on status', function() {
 	menu.render(options.target);
 	menu.open();
 	menu.close(false);
-})
+});
