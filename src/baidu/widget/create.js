@@ -4,7 +4,6 @@
  */
 ///import baidu.widget;
 ///import baidu.widget.get;
-///import baidu.widget._add;
 ///import baidu.array.each;
 /**
  * 根据传入的widget名, 初始化方法等,创建widget.
@@ -12,14 +11,13 @@
  * @function
  * @grammar baidu.widget.create(name, main, [options])
  * @param {String} name widget名.
- * @param {Function} main widget的初始化方法,含两个参数:第一个为依赖widget的执行环境,第二个为baidu.lang.eventCenter.
+ * @param {Function} main widget的初始化方法,第一个参数为含依赖widget的执行环境.
  * @param {Object} [options] 配置参数.
  * @param {Array<String>|String} [options.depends] 依赖列表, 支持逗号分隔的字符串描述.
  * @param {Function} [options.dispose] 析构函数,在dispose时调用.
  * @param {Boolean} [options.lazyLoad] 延迟加载.该参数为true时不加载依赖模块,也不执行初始化方法,需显示调用 baidu.widget._add方法.
  * @remark
  *  widget的初始化方法中,可以直接调用依赖widget所提供的api方法,可以使用 this.apiMethod 的方式提供该widget的api方法.
- * 对非依赖widget的调用通过eventCenter的事件机制实现.
  *
  * 若存在同名widget,将直接覆盖.
  * @see baidu.widget
@@ -38,7 +36,7 @@ baidu.widget.create = function(name, main, options) {
         baidu.widget.load(widget.depends, function(context) {
             baidu.widget._widgetInUse[widget.name] = widget;
             widget.context = context || baidu.widget._defaultContext;
-            widget.main.call(widget, context, baidu.lang.eventCenter);
+            widget.main.call(widget, context);
         });
     }
     return widget;
