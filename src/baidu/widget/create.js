@@ -15,7 +15,7 @@
  * @param {Object} [options] 配置参数.
  * @param {Array<String>|String} [options.depends] 依赖列表, 支持逗号分隔的字符串描述.
  * @param {Function} [options.dispose] 析构函数,在dispose时调用.
- * @param {Boolean} [options.lazyLoad] 延迟加载.该参数为true时不加载依赖模块,也不执行初始化方法,需显示调用 baidu.widget._add方法.
+ * @param {Boolean} [options.lazyLoad] 延迟加载.该参数为true时不加载依赖模块,也不执行初始化方法,需显示调用 baidu.widget.load方法.
  * @remark
  *  widget的初始化方法中,可以直接调用依赖widget所提供的api方法,可以使用 this.apiMethod 的方式提供该widget的api方法.
  *
