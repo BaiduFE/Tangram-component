@@ -56,6 +56,9 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     tplItem: '<li onmouseover="#{onmouseover}" onmouseout="#{onmouseout}"><a href="#" id="#{id}" class="#{class}" onclick="#{onclick}" title="#{title}">#{content}</a>#{branch}</li>',
     tplContent: '<span class="#{contentClass}">#{content}</span>',
     tplArrow: '<span class="#{arrow}"></span>',
+	/**
+	 * @private
+	 */
     toggle: function(){return true},
     posable: true,
     
@@ -144,7 +147,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     /**
      * 事件触发数据
      * @param {String} idx item索引
-     * @return {Object}
+     * @return {Object}   item对象
      */
     getItemEventData: function(idx){
         return {
@@ -232,7 +235,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     /**
      * 获取条目的元素id
      * @param {Number} idx 索引值
-     * @return {String}id
+     * @return {String} id    获取item的id
      */
     getItemId: function(idx){
         return this.getId("item-" + idx);

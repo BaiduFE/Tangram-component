@@ -25,10 +25,7 @@ test("hide and show a select", function() {
 	};
 	
 	var select = document.createElement('select');
-	var option = document.createElement("option");  
-	option.text = 'content_a';  
-	option.value = 'value_a';  
-	select.add(option, null); 
+	select.options[select.options.length] = new Option('content_a', 'value_a');
 	document.body.appendChild(select);
 	te.dom.push(select);
 	sugg = new baidu.ui.Suggestion(options);
@@ -59,15 +56,9 @@ test("hide and show 2 selects", function() {
 	};
 	
 	var select = document.createElement('select');
-	var option = document.createElement("option");  
-	option.text = 'content_a';  
-	option.value = 'value_a';  
-	select.add(option, null);  
+	select.options[select.options.length] = new Option('content_a', 'value_a');
 	var select1 = document.createElement('select');
-	var option1 = document.createElement("option");  
-	option1.text = 'content_a';  
-	option1.value = 'value_a';  
-	select1.add(option1, null);  
+	select1.options[select1.options.length] = new Option('content_a', 'value_a');
 	document.body.appendChild(select);
 	document.body.appendChild(select1);
 	te.dom.push(select);

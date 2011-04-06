@@ -1,66 +1,4 @@
-
 module('baidu.ui.Combox');
-
-function mySetup() {
-	testingElement = {};
-	testingElement.dom = [];
-	testingElement.obj = [];
-	testingElement.evt = [];
-
-	var select = document.createElement('select');
-	select.id = "select_test";
-	document.body.appendChild(select);
-	testingElement.dom.push(select);
-
-//	testingElement.dom.push(link);
-	for ( var i = 0; i < baidu.event._listeners; i++)
-		testingElement.evt.push(baidu.event._listeners[i]);
-}
-
-function myTeardown() {
-	if (testingElement) {
-		if (testingElement.dom && testingElement.dom.length) {
-			for ( var i = 0; i < testingElement.dom.length; i++)
-				if (testingElement.dom[i] && testingElement.dom[i].parentNode)
-					testingElement.dom[i].parentNode
-							.removeChild(testingElement.dom[i]);
-		}
-		if (testingElement.obj && testingElement.obj.length) {
-			for ( var i = 0; i < testingElement.obj.length; i++) {
-				console.log(typeof testingElement.obj[i]);
-				if (testingElement.obj[i] && testingElement.obj[i].dispose)
-					testingElement.obj[i].dispose();
-			}
-		}
-
-		var indexof = function(array, item) {
-			for ( var i = 0; i < array.length; i++)
-				if (array[i] == item)
-					return i;
-			return -1;
-		};
-		if (testingElement.evt.length < baidu.event._listeners.length)
-			for ( var i = 0; i < baidu.event._listeners.length; i++) {
-				var evt = baidu.event._listeners[i];
-				if (indexof(testingElement.evt, evt) != -1)
-					continue;
-				baidu.event.un(evt[0], evt[1], evt[2]);
-			}
-	}
-}
-
-
-(function() {
-	var s = QUnit.testStart, e = QUnit.testDone, ms = QUnit.moduleStart, me = QUnit.moduleEnd, d = QUnit.done;
-	QUnit.testStart = function() {
-		mySetup(arguments[0]);
-		s.apply(this, arguments);;
-	};
-	QUnit.testDone = function() {
-		e.call(this, arguments);
-		myTeardown();
-	};
-})();
 
 test("createMenu", function() {
 	var options = {
@@ -171,7 +109,7 @@ test("events", function() {
 });
 
 test("dispose", function() {
-	expect(2);
+	expect(3);
 	var options = {
 		data : [ {
 			content : 'file',
@@ -189,10 +127,5 @@ test("dispose", function() {
 	var div = document.body.appendChild(document.createElement("div"));
 	var cb = new baidu.ui.Combox(options);
 	cb.render(div);
-    var input = cb.getInput();
-	var arrow = cb.getArrow();
-    cb.dispose();
-    var ic = baidu.event._listeners.length;
-    ok(cb.getBody()==null,"element is removed");
-    equals(ic, ie , 'event is lose');
+	te.checkUI.dispose(cb, ie);
 });

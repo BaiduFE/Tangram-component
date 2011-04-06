@@ -18,16 +18,16 @@ test('dom', function() {
 	var menu = new baidu.ui.Menubar(options);
 	testingElement.obj.push(menu);
 	var check = function() {
-		// ok(isShown(menu.getItem('0-0')), 'shown after hover');
-		ok(menu.getBody().className.match('tangram-menubar-open')
-				&& !menu.getBody().className.match('tangram-menubar-empty'),
-				'mouseover class open is add and class empty is remove ');
+		ok(isShown(menu.getItem('0-0')), 'shown after hover');
+		// ok(menu.getBody().className.match('tangram-menubar-open')
+		// && !menu.getBody().className.match('tangram-menubar-empty'),
+		// 'mouseover class open is add and class empty is remove ');
 		UserAction.mouseout(m1);
 		setTimeout(function() {
-			// ok(!isShown(menu.getItem('0-0')), 'hide after out');
-			ok(menu.getBody().className.match('tangram-menubar-empty')
-					&& !menu.getBody().className.match('tangram-menubar-open'),
-					'mouseover class empty is add and class open is remove ');
+			ok(!isShown(menu.getItem('0-0')), 'hide after out');
+			// ok(menu.getBody().className.match('tangram-menubar-empty')
+			// && !menu.getBody().className.match('tangram-menubar-open'),
+			// 'mouseover class empty is add and class open is remove ');
 			start();
 		}, menu.hideDelay);
 	};

@@ -27,7 +27,7 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
    me.element = null; 
 }).extend(
     /**
-     *  @lends baidu.ui.Suggestion.prototype
+     *  @lends baidu.ui.StarRate.prototype
      */ 
     {
     uiType  : "starRate",
@@ -130,7 +130,9 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
         var me = this;
         me.isDisable = false;
     },
-    
+    /**
+     * 销毁控件
+     */
     dispose:function(){
         var me = this;
         baidu.un(me.element, 'mouseout', me._mouseOutHandle);

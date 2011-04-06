@@ -351,8 +351,8 @@ test('TreeNode function collapseAll and expandAll', function() {
 	// 节点挂载，并显示
 	equals(tree.getTreeNodeById('a00').id, 'a00');
 	equals(tree.getTreeNodeById('a10').id, 'a10');
-	ok(isShown($('#a00')[0]), 'a00 shown');
-	ok(isShown($('#a10')[0]), 'a10 shown');
+	ok($('#a00')[0].style.display!='none', 'a00 shown');
+	ok($('#a10')[0].style.display!='none', 'a10 shown');
      
 	node.collapseAll();
 	ok(!isShown($('#a00')[0]), 'a00 hide');

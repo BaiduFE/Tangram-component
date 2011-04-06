@@ -1,19 +1,19 @@
 var UserAction = {
 
 	isf /* is function ? */: function(value) {
-		return value && (typeof value == 'function')
+		return value && (typeof value == 'function');
 	},
 	isb /* is boolean? */: function(value) {
-		return value && (typeof value == 'boolean')
+		return value && (typeof value == 'boolean');
 	},
 	iso /* is object? */: function(value) {
-		return value && (typeof value == 'object')
+		return value && (typeof value == 'object');
 	},
 	iss /* is string? */: function(value) {
-		return value && (typeof value == 'string')
+		return value && (typeof value == 'string');
 	},
 	isn /* is number? */: function(value) {
-		return value && (typeof value == 'number')
+		return value && (typeof value == 'number');
 	},
 	// --------------------------------------------------------------------------
 	// Generic event methods
@@ -733,9 +733,11 @@ var UserAction = {
 				: op.id, fid = 'iframe#' + id;
 
 		op.finish = function() {
-			// pw.$(fid).unbind();
-			// pw.$('div#d').remove();
-			start();
+			pw.$(fid).unbind();
+			setTimeout(function() {
+				pw.$('div#d').remove();
+				start();
+			}, 20);
 		};
 
 		if (pw.$(fid).length == 0) {

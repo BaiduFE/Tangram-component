@@ -34,8 +34,8 @@ module('baidu.ui.behavior.statable');
 					},
 					render : function(target) {
 						var me = this;
-						baidu.dom.insertHTML(me.renderMain(),
-								'beforeEnd', me._getString());
+						baidu.dom.insertHTML(me.renderMain(), 'beforeEnd', me
+								._getString());
 						this.getMain().appendChild(target);
 						me.disabled && me.setState('disabled');
 						me.dispatchEvent('onenable');
@@ -153,7 +153,9 @@ test('events', function() {
 	ua.mouseup(main, {
 		element : main
 	});
-	ui.dispatchEvent('ondisable', {element : ui.getBody()});
+	ui.dispatchEvent('ondisable', {
+		element : ui.getBody()
+	});
 	// check disabled
 	ua.mousedown(main, {
 		element : main
@@ -161,4 +163,25 @@ test('events', function() {
 	ua.mouseup(main, {
 		element : main
 	});
+});
+
+test('inner element', function() {
+
+	var ops = {
+		onmouseup : function() {
+			var c = main.className;
+			ok(!/press/.test(c), 'remove press');
+		}
+	};
+	var ui = te.getUI(ops).render(te.dom[0]);
+	var main = ui.getBody();
+	ui.getBody().innerHTML = '<span id="test_span">test</span>';
+	ua.mousedown('test_span');
+	ua.mouseup('test_span');
+	ui.dispatchEvent('ondisable', {
+		element : ui.getBody()
+	});
+	ua.mousedown('test_span');
+	ua.mouseup('test_span');
+	expect(1);// 这个地方，应该只有一次
 });
