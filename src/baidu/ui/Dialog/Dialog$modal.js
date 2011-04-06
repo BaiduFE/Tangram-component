@@ -3,13 +3,9 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Modal;
-/**
- * 为Dialog添加阴影遮罩
- * 
- */
+///import baidu.ui.Modal.Modal$coverable;
 
 baidu.extend(baidu.ui.Dialog.prototype, {
     modal : true,

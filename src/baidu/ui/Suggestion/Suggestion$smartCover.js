@@ -3,19 +3,25 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-
 ///import baidu.ui.Suggestion;
-///import baidu.ui.smartCover;
-/**
- * 智能遮罩，在ie6下遮住select等玩意儿
- * 当suggestion显示的时候显示遮罩，隐藏的时候同时隐藏
- * @author berg
- */
-baidu.ui.Suggestion.register(function(me) {
-    me.addEventListener('onshow', function() {
-        baidu.ui.smartCover.show(this);
-    });
-    me.addEventListener('onhide', function() {
-        baidu.ui.smartCover.hide(this);
-    });
+///import baidu.ui.behavior.coverable;
+
+baidu.extend(baidu.ui.Suggestion.prototype,{
+    coverable: true
+});
+
+baidu.ui.Suggestion.register(function(me){
+
+    if(me.coverable){
+
+        me.addEventListener("onopen", function(){
+            me.Coverable_show();
+        });
+
+        me.addEventListener("onclose", function(){
+            me.Coverable_hide();
+        });
+
+        //me.Coverable_update();
+    }
 });

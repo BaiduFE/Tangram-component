@@ -267,6 +267,7 @@ h2{
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:800, height: 800})'>big one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:200, height: 200})'>small one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({top:\"auto\", left : \"auto\"})'>go middle</a>, <select> <option>im in dialog</option> </select> ");
+                dialogContent.push('<object width="695" height="90" align="middle" id="flash2" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" style=""><param value="window" name="wmode"><param value="http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&amp;gp=402&amp;time=nHc4PjmzP16vn0.swf" name="movie"><embed width="695" height="90" align="middle" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" name="flash2" src="http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&amp;gp=402&amp;time=nHc4PjmzP16vn0.swf" wmode="window"></object>');
                 dialogContent = dialogContent.join('');
 
                 if(!type){
@@ -358,6 +359,7 @@ h2{
         </select>
         <div id="flashContainer1"></div>
         <div id="flashContainer2"></div>
+        <div id="flashContainer3"></div>
         <br />
         <br />
         <br />
@@ -407,21 +409,31 @@ h2{
         <br />
         <br />
         <script>
-            baidu.ui.smartCover.options.hideFlash = true;
-            baidu.ui.smartCover.options.hideSelect = true;
+            //baidu.ui.smartCover.options.hideFlash = false;
+            //baidu.ui.smartCover.options.hideSelect = true;
             baidu.swf.create({
-                id: "flash",
+                id: "flash1",
                 url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
                 width:695,
-                height:90
-
+                height:90,
+                wmode:'transparent'
             }, "flashContainer1");
+            
             baidu.swf.create({
-                id: "flash",
+                id: "flash2",
                 url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
                 width:695,
-                height:90
+                height:90,
+                wmode:'window'
             }, "flashContainer2");
+            
+            baidu.swf.create({
+                id: "flash3",
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90,
+                wmode:'opaque'
+            }, "flashContainer3");
         </script>
     </body>
 </html>

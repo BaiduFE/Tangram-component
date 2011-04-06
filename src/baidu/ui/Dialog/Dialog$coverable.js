@@ -3,14 +3,14 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-///import baidu.ui.Popup;
+///import baidu.ui.Dialog;
 ///import baidu.ui.behavior.coverable;
 
-baidu.extend(baidu.ui.Popup.prototype,{
+baidu.extend(baidu.ui.Dialog.prototype,{
     coverable: true
 });
 
-baidu.ui.Popup.register(function(me){
+baidu.ui.Dialog.register(function(me){
 
     if(me.coverable){
 
