@@ -3,6 +3,8 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
+///import baidu.dom.g;
+
 ///import baidu.ui.Suggestion;
 ///import baidu.ui.behavior.coverable;
 
@@ -14,14 +16,12 @@ baidu.ui.Suggestion.register(function(me){
 
     if(me.coverable){
 
-        me.addEventListener("onopen", function(){
+        me.addEventListener("onshow", function(){
             me.Coverable_show();
         });
 
-        me.addEventListener("onclose", function(){
+        me.addEventListener("onhide", function(){
             me.Coverable_hide();
         });
-
-        //me.Coverable_update();
     }
 });
