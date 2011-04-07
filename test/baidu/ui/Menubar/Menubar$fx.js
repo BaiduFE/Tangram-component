@@ -1,7 +1,6 @@
 module('baidu.ui.Menubar.Menubar$fx');
 
-test(
-		'Open a common Menubar(fadeIn) '
+test('Open a common Menubar(fadeIn) '
 				+ 'and close a common Menubar(fadeOut)',
 		function() {
 			expect(6);
@@ -13,7 +12,7 @@ test(
 					}, {
 						content : 'm12'
 					} ],
-					target : testingElement.dom[0],
+					target : te.dom[0],
 					showFx : baidu.fx.fadeIn,
 					hideFx : baidu.fx.fadeOut,
 					showFxOptions : {
@@ -48,7 +47,7 @@ test(
 					}
 				};
 				var menu = new baidu.ui.Menubar(options);
-				testingElement.obj.push(menu);
+				te.obj.push(menu);
 				menu.render(menu.target);
 				menu.open();
 			};
@@ -56,9 +55,8 @@ test(
 					check, 'baidu.fx.fadeIn', 'baidu.ui.Menubar.Menubar$fx');
 		});
 
-test(
-		'Open a common Menubar(expand) and'
-				+ ' close a common Menubar(collapse)',
+test('Open a common Menubar(expand) and'
+				+ ' close a common Menubar(collapse) PUBLICGE-368 ',
 		function() {
 			expect(2);
 			stop();
@@ -71,36 +69,33 @@ test(
 					} ],
 					target : te.dom[0],
 					showFx : baidu.fx.expand,
-					hideFx : baidu.fx.collapse
+					hideFx : baidu.fx.collapse,
+					showFxOptions : {
+						onafterfinish : function() {
+							var len = baidu.fx.current(menu.getBody()).length;
+							var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
+							var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
+							ok(fx == 'baidu.fx.expand_collapse',
+									'The menubar expand');
+							menu.close();
+						}
+					},
+					hideFxOptions : {
+						onafterfinish : function() {
+							var len = baidu.fx.current(menu.getBody()).length;
+							var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
+							var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
+							ok((fx == 'baidu.fx.expand_collapse')
+											&& guid != baidu.fx
+													.current(menu
+															.getBody())[len - 1]['_guid'],
+									'The menubar collapse');
+							start();
+						}
+					}
 				};
 				var menu = new baidu.ui.Menubar(options);
-				testingElement.obj.push(menu);
-				menu
-						.addEventListener(
-								'onopen',
-								function() {
-									var len = baidu.fx.current(menu.getBody()).length;
-									var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
-									var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
-									ok(fx == 'baidu.fx.expand_collapse',
-											'The menubar expand');
-									menu.close();
-								});
-				menu
-						.addEventListener(
-								'beforeclose',
-								function() {
-									var len = baidu.fx.current(menu.getBody()).length;
-									var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
-									var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
-									ok(
-											(fx == 'baidu.fx.expand_collapse')
-													&& guid != baidu.fx
-															.current(menu
-																	.getBody())[len - 1]['_guid'],
-											'The menubar collapse');
-									setTimeout(start, 500);
-								});
+				te.obj.push(menu);
 				menu.render(menu.target);
 				menu.open();
 			};
