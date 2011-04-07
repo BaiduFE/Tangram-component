@@ -87,6 +87,7 @@
 	z-index:1000;
 }
 .tangram-colorpalette-sliderMain{
+    position: absolute;
     left: 171px;
     top: 10px;
     width: 35px;

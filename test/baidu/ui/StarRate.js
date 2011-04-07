@@ -12,7 +12,7 @@ test('StarRate', function() {
 	expect(40);
 	var div = document.createElement('div');
 	document.body.appendChild(div);
-	te.obj.push(div);
+	
 	var i = 0;
 	var options = {
 		total : 10,
@@ -30,7 +30,8 @@ test('StarRate', function() {
 		}
 	};
 	var sRate = new baidu.ui.StarRate(options);
-	sRate.render(div);
+	te.obj.push(sRate);
+    sRate.render(div);
 	var spans = div.childNodes;
 	for (; i < spans.length; i++) {
 		var span = spans[i];
@@ -39,13 +40,13 @@ test('StarRate', function() {
 		UserAction.click(span);
 
 	}
+    sRate.dispose();
 });
 
 test('disable & enable', function() {
 	expect(25);
 	var div = document.createElement('div');
 	document.body.appendChild(div);
-	te.obj.push(div);
 	var i = 0;
 	var options = {
 		current : 3,
@@ -61,7 +62,8 @@ test('disable & enable', function() {
 	};
 	var sRate = new baidu.ui.StarRate(options);
 	sRate.render(div);
-	var spans = div.childNodes;
+	te.obj.push(sRate);
+    var spans = div.childNodes;
 	/* disable */
 	sRate.disable();
 	for (; i < spans.length; i++) {
@@ -79,6 +81,7 @@ test('disable & enable', function() {
 		/* 因为UserAction中模拟click事件分为3步，mousemove，mousedown，mouseup，因此mousemove会被触发，从而hover又被触发一次 */
 		UserAction.click(span);
 	}
+    sRate.dispose();
 });
 
 test('check dispose', function() {
