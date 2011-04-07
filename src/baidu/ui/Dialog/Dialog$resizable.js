@@ -61,8 +61,8 @@ baidu.ui.Dialog.register(function(me) {
             
             baidu.dom.setOuterWidth(body, bodyWidth + styles.current.width - styles.original.width);
             baidu.dom.setOuterHeight(body, bodyHeight + styles.current.height - styles.original.height);
-            //针对ie下的iframe进行更新
-            baidu.ui.smartCover && baidu.ui.smartCover.update(me);
+            
+            me.coverable && me.Coverable_update();
         });
 
         /**
