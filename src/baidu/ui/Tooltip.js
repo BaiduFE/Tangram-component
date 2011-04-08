@@ -33,7 +33,8 @@
  * @config      {Array|Object}    offset          （可选）偏移量。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
  * @config      {boolean}         single          （可选）是否全局单例。若该值为true，则全局共用唯一的浮起tooltip元素，默认为true。
  * @config      {Number}          zIndex          （可选）浮起tooltip层的z-index值，默认为3000。
- * @config      {String}          positionBy      （可选）浮起tooltip层的位置参考，取值['mouse','element']，分别对应针对鼠标位置或者element元素计算偏移，默认mouse。
+ * @config      {String}          positionBy      （可选）浮起tooltip层的位置参考，取值['mouse','element']，分别对应针对鼠标位置或者element元素计算偏移，默认mouse
+ * @config      {Element}         positionElement （可选）定位元素，设置此元素且positionBy为element时，根据改元素计算位置
  * @config      {Boolean}         autoRender       是否自动渲染。
  * @config      {Function}        onopen          （可选）打开tooltip时触发。
  * @config      {Function}        onclose         （可选）关闭tooltip时触发。
@@ -48,6 +49,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     var me = this;
     me.target = me.getTarget();
     me.offset = options.offset || [0, 0];
+    me.positionElement = null;
 
     baidu.ui.Tooltip._showingTooltip[me.guid] = me;
 
@@ -250,6 +252,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
      * @config      {boolean}         single          （可选）是否全局单例。若该值为true，则全局共用唯一的浮起tooltip元素，默认为true。
      * @config      {Number}          zIndex          （可选）浮起tooltip层的z-index值，默认为3000。
      * @config      {String}          positionBy      （可选）浮起tooltip层的位置参考，取值['mouse','element']，分别对应针对鼠标位置或者element元素计算偏移，默认mouse。
+     * @config      {Element}         positionElement （可选）定位元素，设置此元素且positionBy为element时，根据改元素计算位置
      * @config      {Boolean}         autoRender       是否自动渲染。
      * @config      {Function}        onopen          （可选）打开tooltip时触发。
      * @config      {Function}        onclose         （可选）关闭tooltip时触发。
@@ -277,10 +280,10 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 			};
 		switch (me.positionBy) {
 			case 'element':
-				me.setPositionByElement(me.currentTarget, me.getMain(), positionOptions);
+				me.setPositionByElement(me.positionElement || me.currentTarget, me.getMain(), positionOptions);
 				break;
 			case 'mouse':
-				me.setPositionByMouse(me.currentTarget, positionOptions);
+				me.setPositionByMouse(me.getMain(), positionOptions);
 				break;
 			default :
 				break;
