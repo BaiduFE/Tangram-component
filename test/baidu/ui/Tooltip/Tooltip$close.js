@@ -13,7 +13,7 @@ test('Close a common tooltip', function() {
     });
 	tp.render(div);
     tp.open(div1);
-    ok(isShown(tp.getMain().firstChild.nextSibling),
+    ok(isShown(tp.getBody()),
     		'The tooltip is created in the page');
     ua.click(baidu.g(tp.getId('head')).firstChild);
 });

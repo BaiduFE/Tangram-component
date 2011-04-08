@@ -153,4 +153,4 @@ test('Test the dispose() PUBLICGE-368 ', function() {
 	};
 	ua.importsrc('baidu.fx.current', 
 			check ,'baidu.fx.current', 'baidu.ui.Tooltip.Tooltip$fx');
-});
+}); 

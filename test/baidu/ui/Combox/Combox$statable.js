@@ -32,7 +32,7 @@ test('',function(){
 		//触发keyup事件，没有监听函数，menu没有打开且里面的值没变
 		var datalength = cb.menu.data.length;
 		ua.keyup(input);
-		ok(!cb.menu.getBody(),  'The menu is not open，此处应该有一个问题单，待杨博查明原因再提');
+		ok(!cb.menu.getBody(),  'The menu is not open');
 		ok((cb.menu.data.length == 3 && datalength == 3), "The keyup event of input is un");
 		
 		//触发click事件，没有监听函数，menu没有打开且里面的值没变
@@ -41,7 +41,7 @@ test('',function(){
 		} ];
 		datalength = cb.menu.data.length;
 	    ua.click(arrow);
-	    ok(!cb.menu.getBody(),  'The menu is not open');
+	    ok(!cb.menu.getBody(),  'The menu is not open PUBLICGE-369');
 	    ok((cb.menu.data.length == 1 && datalength == 1), "The click event of arrow is on");
 		cb.menu.data = [ {
 			content : 'a'
