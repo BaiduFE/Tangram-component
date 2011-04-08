@@ -47,14 +47,15 @@
 
         iframeContainer.appendChild(iframe);
         iframe.src = "javascript:void(0)";
-        baidu.dom.setStyles(iframe, {
+        baidu.dom.setStyles(iframe, baidu.extend({
             zIndex  : -1,
             display  : "block",
             border  : "none",
             width : container.offsetWidth,
             height : container.offsetHeight,
+            backgroundColor: 'white',
             filter : 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)'
-        });
+        },options));
 
         me.Coverable_isShowing = true;
     };
