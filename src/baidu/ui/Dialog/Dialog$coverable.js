@@ -7,7 +7,8 @@
 ///import baidu.ui.behavior.coverable;
 
 baidu.extend(baidu.ui.Dialog.prototype,{
-    coverable: true
+    coverable: true,
+    coverableOptions: {}
 });
 
 baidu.ui.Dialog.register(function(me){
@@ -22,7 +23,7 @@ baidu.ui.Dialog.register(function(me){
             me.Coverable_hide();
         });
 
-        me.addEventListeners("onupdate",function(){
+        me.addEventListener("onupdate",function(){
             me.Coverable_update();
         });
     }

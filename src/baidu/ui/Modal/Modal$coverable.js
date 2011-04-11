@@ -10,15 +10,21 @@
 ///import baidu.browser.isGecko;
 
 baidu.extend(baidu.ui.Modal.prototype,{
-    coverable: true
+    coverable: true,
+    coverableOptions: {}
 });
 
 baidu.ui.Modal.register(function(me){
 
     if(me.coverable){
+
         if(!baidu.browser.isWebkit && !baidu.browser.isGecko){
             me.addEventListener("onload", function(){
-                me.Coverable_show({container:me.getBody()});
+                me.coverableOptions = baidu.extend({
+                    container:me.getBody()
+                },me.coverableOptions);
+                
+                me.Coverable_show();
             });
 
             me.addEventListeners("onupdate",function(){

@@ -26,6 +26,8 @@
 ///import baidu.dom.getAttr;
 
 ///import baidu.dom.getAncestorBy;
+///import baidu.dom.getStyle;
+///import baidu.dom.getPosition;
 
 //添加对flash的隐藏和显示
 //在webkit中，使用iframe加div的方式遮罩wmode为window的flash会时性能下降到无法忍受的地步
@@ -299,8 +301,11 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
                 styles['left'] = parentPosition.left - offsetParentPosition.left + getStyleNum(offsetParent, 'marginLeft');
             }
         }else {
-            styles['width'] = baidu.page.getViewWidth();
-            styles['height'] = baidu.page.getViewHeight();
+            //styles['width'] = baidu.page.getViewWidth();
+            //styles['height'] = baidu.page.getViewHeight();
+
+            styles['width'] = '100%';
+            styles['height'] = '100%';
 
             //如果不是ie6,并且不是quirk模式，设置为fixed
             if ((!baidu.browser.ie || baidu.browser.ie >= 7) && document.compatMode != 'BackCompat') {

@@ -50,17 +50,16 @@ test('检测show及具体属性细节',
 test('窗口scroll和resize测试', function() {
 	ua.frameExt(function(w, f) {
 		// f.style.borderWidth = f.style.margin = f.style.padding = 0;
-		var me = this;
+		
+        baidu.on(w, 'resize', function() {
+		    console.log('onresize');
+        });
+        var me = this;
 		var m = new w.baidu.ui.Modal();
 		m.render();
 		m.show();
 		mo = m.getMain();
-		/*baidu.on(w, 'resize', function() {
-			setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
-				equals(mo.offsetWidth, 100, 'width change on window resize');
-//				me.finish();
-			}, 50);
-		});*/
+		
 		$(f).css('width', "100px");
 	});
 });

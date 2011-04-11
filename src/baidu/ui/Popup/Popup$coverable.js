@@ -7,7 +7,8 @@
 ///import baidu.ui.behavior.coverable;
 
 baidu.extend(baidu.ui.Popup.prototype,{
-    coverable: true
+    coverable: true,
+    coverableOptions: {}
 });
 
 baidu.ui.Popup.register(function(me){

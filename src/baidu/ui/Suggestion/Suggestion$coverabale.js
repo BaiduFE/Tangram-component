@@ -9,7 +9,8 @@
 ///import baidu.ui.behavior.coverable;
 
 baidu.extend(baidu.ui.Suggestion.prototype,{
-    coverable: true
+    coverable: true,
+    coverableOptions: {}
 });
 
 baidu.ui.Suggestion.register(function(me){

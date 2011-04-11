@@ -1,11 +1,10 @@
-<!doctype html>
 <html>
     <head>
         <title>modal manual test - by berg</title>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <script src='../../../tools/br/import.php?f=baidu.ui.Modal' ></script>
         <script>
-            var modal_array = [];
+            /*var modal_array = [];
             var modal_in_div = [];
             var color = ["red","black","yellow"],a=0,b=0;
             function showModal (){
@@ -14,7 +13,11 @@
                 modal.show({styles:{color:color[a]}});
                 modal_array.push(modal);
                 a++;
-            }
+            }*/
+
+            baidu.on(window, 'onresize', function(){
+                parent.console.log('onresize');
+            });
         </script>
     </head>
     <body>

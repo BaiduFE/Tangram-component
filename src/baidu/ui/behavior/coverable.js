@@ -18,11 +18,12 @@
     Coverable.Coverable_container;
     Coverable.Coverable_iframeContainer;
 
-    Coverable.Coverable_show = function(options){
+    Coverable.Coverable_show = function(){
         
         var me = this,
-            options = options || {},
-            container = me.Coverable_container = options.container || me.getMain(),
+            opt = me.coverableOptions || {},
+            container = me.Coverable_container = opt.container || me.getMain(),
+            color = opt.color || 'white',
             iframe = me.Coverable_iframe = document.createElement('iframe'),
             iframeContainer = me.Coverable_iframeContainer = document.createElement('div');
 
@@ -53,7 +54,7 @@
             border  : "none",
             width : container.offsetWidth,
             height : container.offsetHeight,
-            backgroundColor: 'white',
+            backgroundColor: color,
             filter : 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)'
         },options));
 
