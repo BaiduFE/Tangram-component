@@ -28,6 +28,7 @@
 ///import baidu.dom.getAncestorBy;
 ///import baidu.dom.getStyle;
 ///import baidu.dom.getPosition;
+///import baidu.dom.children;
 
 //添加对flash的隐藏和显示
 //在webkit中，使用iframe加div的方式遮罩wmode为window的flash会时性能下降到无法忍受的地步
@@ -339,8 +340,8 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
         baidu.each(elements, function(item){
             var isWinMode = true;
             
-            if(baidu.dom.getAncestorBy(item,function(elements){
-                if(baidu.getStyle(elements, 'zIndex') > me.styles.zIndex){
+            if(baidu.dom.getAncestorBy(item,function(element){
+                if(baidu.getStyle(element, 'zIndex') > me.styles.zIndex){
                     return true;
                 }
                 
@@ -349,7 +350,7 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
                 return;
             }
 
-            baidu.each(item.getElementsByTagName('param'), function(param){
+            baidu.each(baidu.dom.children(item), function(param){
                 if(baidu.getAttr(param, 'name') == 'wmode' && baidu.getAttr(param, 'value') != 'window'){
                     isWinMode = false;
                 }

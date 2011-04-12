@@ -21,13 +21,13 @@ baidu.ui.Modal.register(function(me){
         if(!baidu.browser.isWebkit && !baidu.browser.isGecko){
             me.addEventListener("onload", function(){
                 me.coverableOptions = baidu.extend({
-                    container:me.getBody()
+                    container:me.getContainer()
                 },me.coverableOptions);
                 
                 me.Coverable_show();
             });
 
-            me.addEventListeners("onupdate",function(){
+            me.addEventListener("onupdate",function(){
                 me.Coverable_update();
             });
         }

@@ -48,7 +48,7 @@
 
         iframeContainer.appendChild(iframe);
         iframe.src = "javascript:void(0)";
-        baidu.dom.setStyles(iframe, baidu.extend({
+        baidu.dom.setStyles(iframe,{
             zIndex  : -1,
             display  : "block",
             border  : "none",
@@ -56,7 +56,7 @@
             height : container.offsetHeight,
             backgroundColor: color,
             filter : 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)'
-        },options));
+        });
 
         me.Coverable_isShowing = true;
     };
