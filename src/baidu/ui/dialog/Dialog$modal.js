@@ -1,22 +1,12 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/dialog/Dialog$modal.js
- * author: berg
- * version: 1.0.0
- * date: 2010-05-18
  */
 
-
-///import baidu.ui.dialog.Dialog;
-///import baidu.ui.modal.create;
-/**
- * 为Dialog添加阴影遮罩
- * 
- */
-
+///import baidu.ui.Dialog.dialog;
 ///import baidu.ui.modal;
+///import baidu.ui.modal.create;
+///import baidu.ui.modal.Modal$coverable;
 
 baidu.extend(baidu.ui.dialog.Dialog.prototype, {
     modal : true,

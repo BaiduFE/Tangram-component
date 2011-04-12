@@ -1,21 +1,9 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/modal/Modal.js
- * author: berg,lixiaopeng
- * version: 1.0.0
- * date: 2010/07/23 
- */
-
-/**
- *
- * 遮罩层，遮罩层为单例
  */
 
 ///import baidu.ui.createUI;
-///import baidu.ui.modal;
-///import baidu.ui.smartCover;
 
 ///import baidu.dom.setAttr;
 ///import baidu.dom.setStyles;
@@ -27,274 +15,369 @@
 ///import baidu.browser.ie;
 ///import baidu.event.on;
 ///import baidu.event.un;
-///import baidu.page.getViewWidth;
-///import baidu.page.getViewHeight;
+
 ///import baidu.page.getScrollLeft;
 ///import baidu.page.getScrollTop;
 ///import baidu.lang.isNumber;
 ///import baidu.object.each;
 ///import baidu.object.extend;
 
+//在webkit中，使用iframe加div的方式遮罩wmode为window的flash会时性能下降到无法忍受的地步
+//在Gecko中，使用透明的iframe无法遮住wmode为window的flash
+//在其余浏览器引擎中wmode为window的flash会被遮罩，处于不可见状态
+//因此，直接将wmode为window的flash隐藏，保证页面最小限度的修改
 
-//存储所有的modal参数
-baidu.ui.modal.collection = {};
-baidu.ui.modal.Modal = baidu.ui.createUI(function (options){
-    var me = this,container = (options && options.container) ? baidu.g(options.container) : null;
+baidu.ui.modal.Modal = baidu.ui.createUI(function(options) {
+    var me = this,
+        container = (options && options.container) ? baidu.g(options.container) : null;
+
     !container && (container = document.body);
-    if(!container.id){
-        container.id = me.getId("container");
+    if (!container.id) {
+        container.id = me.getId('container');
     }
+
     me.containerId = container.id;
     me.styles = {
-        color:"#000000",
-        opacity:0.6,
-        zIndex:1000
+        color: '#000000',
+        opacity: 0.6,
+        zIndex: 1000
     };
-}).extend({
-    uiType    : "modal",
-    _showing  : false,
+
+}).extend(
+    /**
+     *  @lends baidu.ui.Dialog.prototype
+     */
+{
+    uiType: 'modal',
+    _showing: false,
 
     /**
      * 获取modal的Container
-     * @return {HTMLDom} container
-     * */
-    getContainer : function(){
+     * @public
+     * @return {HTMLElement} container.
+     */
+    getContainer: function() {
         var me = this;
         return baidu.g(me.containerId);
     },
-    
+
     /**
      * 渲染遮罩层
-     * @return void
-     * */
-    render : function(){
+     * @public
+     * @return {NULL}
+     */
+    render: function() {
         var me = this,
             modalInstance,
             style,
             main,
-            id=me.containerId,
+            id = me.containerId,
             container = baidu.g(me.containerId);
-        
+
         //当该container中已经存在modal时
         //将所需参数付给当前的modalInstance
-        if(modalInstance = baidu.ui.modal.collection[id]){
+        if (modalInstance = baidu.ui.modal.collection[id]) {
             me.mainId = modalInstance.mainId;
             main = me.getMain();
-        }else{
+        }else {
             //如果不存在modal,则创建新的modal
             main = me.renderMain();
-            if(container !== document.body){
+            if (container !== document.body) {
                 container.appendChild(main);
             }
             //将参数写入
             baidu.ui.modal.collection[id] = {
-                mainId:me.mainId,
-                instance:[]
-            };   
+                mainId: me.mainId,
+                instance: [],
+                flash:{}
+            };
         }
+
+        me.dispatchEvent('onload');
     },
-   
+
     /**
-     *
      * 显示遮罩层
-     * @param  {Object} options     显示选项,任何合法的style属性
-     * @return void
-     * */
-    show : function(options){
+     * @public
+     * @param  {Object} options     显示选项,任何合法的style属性.
+     * @return {NULL}
+     */
+    show: function(options) {
         var me = this,
             container = me.getContainer(),
             main = me.getMain(),
-            smartCoverOptions = {},
             containerId = me.containerId,
             modalInstanceOptions = baidu.ui.modal.collection[containerId],
             length = modalInstanceOptions.instance.length,
             lastTop;
-        
-        if(me._showing)
+
+        if (me._showing)
             return;
-        
-        if(length > 0){
+
+        if (length > 0) {
             lastTop = baidu.lang.instance(modalInstanceOptions.instance[length - 1]);
-            lastTop && lastTop._hide();
+            lastTop && lastTop._removeHandler();
         }
         options = options || {};
         me._show(options.styles || {});
-        
+        main.style.display = 'block';
+      
+        //将在此层中隐藏flash入库
+        modalInstanceOptions.flash[me.guid] = me._hideFlash();
+
         //将自己的guid加在guid最后
         modalInstanceOptions.instance.push(me.guid);
-        main.style.display = "block";
         me._showing = true;
 
-        //smartCover
-        if(me.targetUI){
-            smartCoverOptions = {container : container};
-            //如果是ie，隐藏所有的select，因为select遮不住
-            baidu.ie < 8 && (smartCoverOptions.hideSelect = true);
-            baidu.ui.smartCover.show(me.targetUI, smartCoverOptions);
-        }
-
-        me.dispatchEvent("onshow");
+        me.dispatchEvent('onshow');
     },
 
     /**
-     * 内部方法
+     * 更新遮罩层，绑定window.resize & window.scroll
+     * @private
      * @param {Object} styles
-     * @return void
-     * */
-    _show:function(styles){
+     * @return {NULL}
+     */
+    _show: function(styles) {
         var me = this;
 
         me._getModalStyles(styles || {});
         me._update();
-      
+
         me.windowHandler = me.getWindowHandle();
-        baidu.on(window,"resize",me.windowHandler);
-        baidu.on(window,"scroll",me.windowHandler);
+        baidu.on(window, 'resize', me.windowHandler);
+        baidu.on(window, 'scroll', me.windowHandler);
     },
 
     /**
      * 隐藏遮罩层
-     * @return void
+     * @public
+     * @return {NULL}
      */
-    hide : function(){
+    hide: function() {
+        var me = this;
+        me._hide(); 
+        me.dispatchEvent('onhide');
+    },
+
+    _hide: function(){
         var me = this,
             containerId = me.containerId,
             modalInstanceOptions = baidu.ui.modal.collection[containerId],
+            flash = modalInstanceOptions.flash[me.guid],
             main = me.getMain(),
             length = modalInstanceOptions.instance.length,
             lastTop;
 
-        if(!me._showing)
+        if (!me._showing)
             return;
 
-        for(var i=0;i<length;i++){
-            if(modalInstanceOptions.instance[i] == me.guid){
-                modalInstanceOptions.instance.splice(i,1);
+        for (var i = 0; i < length; i++) {
+            if (modalInstanceOptions.instance[i] == me.guid) {
+                modalInstanceOptions.instance.splice(i, 1);
                 break;
-            }   
-        }
-        length = modalInstanceOptions.instance.length;
-        if(i == length){
-            me._hide();
-            if(length > 0){
-                lastTop = baidu.lang.instance(modalInstanceOptions.instance[length - 1]);
-                lastTop && lastTop._show();
-            }else{
-                main.style.display = "none";
             }
         }
-        me._showing = false;
+        length = modalInstanceOptions.instance.length;
+        if (i == length) {
+            me._removeHandler();
+            if (length > 0) {
+                lastTop = baidu.lang.instance(modalInstanceOptions.instance[length - 1]);
+                lastTop && lastTop._show();
+            }else {
+                main.style.display = 'none';
+            }
 
-        if(me.targetUI){
-            baidu.ui.smartCover.hide(me.targetUI);
+            me._restoreFlash(flash);
+        }else{
+            //如果不是最后一个，就将该层对应的flash移动到下一层的数组中
+            lastTop = baidu.lang.instance(modalInstanceOptions.instance[length - 1]);
+            modalInstanceOptions.flash[lastTop.guid] = modalInstanceOptions.flash[lastTop.guid].concat(flash);
         }
-
-        me.dispatchEvent("onhide");
+        
+        modalInstanceOptions.flash[me.guid] = []; 
+        me._showing = false;
     },
 
     /**
-     * 内部方法
-     * @return void
-     * */
-    _hide:function(){
+     * 接触window.resize和window.scroll上的事件绑定
+     * @private
+     * @return {NULL}
+     */
+    _removeHandler: function() {
         var me = this;
-              
-        baidu.un(window,"resize",me.windowHandler);
-        baidu.un(window,"scroll",me.windowHandler);
+
+        baidu.un(window, 'resize', me.windowHandler);
+        baidu.un(window, 'scroll', me.windowHandler);
     },
-    
+
     /**
      * window.resize & window.scroll 事件调用的function
-     * @return void
-     * */
-    getWindowHandle:function(){
+     * @public
+     * @return {NULL}
+     */
+    getWindowHandle: function() {
         var me = this;
 
-        return function(){
+        return function() {
             var main = me;
             me._getModalStyles({});
-            me._update();         
+            me._update();
          };
     },
-    
+
     /**
      * 更新遮罩层
-     * @param  {Object} options 显示选项，同show
-     * */
-    update : function(options){
+     * @public
+     * @param  {Object} options 显示选项，同show.
+     * @return {NULL}
+     */
+    update: function(options) {
         options = options || {};
         var me = this,
             main = me.getMain(),
             modalInstanceOptions = baidu.ui.modal.collection[me.containerId];
-        
+
         options = options || {};
         baidu.extend(me, options);
 
         me._getModalStyles(options.styles || {});
-        me._update(); 
+        me._update();
         delete(options.styles);
         baidu.extend(me, options);
-        
-        me.dispatchEvent("onupdate");
+
+        me.dispatchEvent('onupdate');
     },
 
     /**
-     * 内部方法，更新样式
-     * @return void
-     * */
-    _update:function(){
-        var me = this,main = me.getMain();
-        baidu.dom.setStyles(main,me.styles);
+     * 更新样式
+     * @private
+     * @return {NULL}
+     */
+    _update: function() {
+        var me = this, main = me.getMain();
+        baidu.dom.setStyles(main, me.styles);
     },
 
     /**
      * 获取遮罩层相对container左上角的top和left
+     * @private
      * @options {object} show传入的styles
-     * */
-    _getModalStyles:function(styles){
+     * @return {NULL}
+     */
+    _getModalStyles: function(styles) {
         var me = this,
             main = me.getMain(),
             container = me.getContainer(),
             offsetParentPosition,
-            parentPosition,offsetParent;
-     
-        
-        function getStyleNum(d,style){
-            var result = parseInt(baidu.getStyle(d,style));
+            parentPosition, offsetParent;
+
+
+        function getStyleNum(d,style) {
+            var result = parseInt(baidu.getStyle(d, style));
             result = isNaN(result) ? 0 : result;
             result = baidu.lang.isNumber(result) ? result : 0;
             return result;
         }
 
-        if(container !== document.body){
-            styles["width"] = container.offsetWidth;
-            styles["height"] = container.offsetHeight;
+        if (container !== document.body) {
+            styles['width'] = container.offsetWidth;
+            styles['height'] = container.offsetHeight;
 
-            if(baidu.getStyle(container,"position") == "static"){
-                offsetParent = main.offsetParent || document.body; 
-                offsetParentPosition = baidu.dom.getPosition(offsetParent);   
+            if (baidu.getStyle(container, 'position') == 'static') {
+                offsetParent = main.offsetParent || document.body;
+                offsetParentPosition = baidu.dom.getPosition(offsetParent);
                 parentPosition = baidu.dom.getPosition(container);
-                styles["top"] = parentPosition.top - offsetParentPosition.top + getStyleNum(offsetParent,"marginTop");
-                styles["left"] = parentPosition.left - offsetParentPosition.left + getStyleNum(offsetParent,"marginLeft");   
+                styles['top'] = parentPosition.top - offsetParentPosition.top + getStyleNum(offsetParent, 'marginTop');
+                styles['left'] = parentPosition.left - offsetParentPosition.left + getStyleNum(offsetParent, 'marginLeft');
             }
-        }else{
-            styles["width"] = baidu.page.getViewWidth();
-            styles["height"] = baidu.page.getViewHeight();
-            
+        }else {
+            styles['width'] = '100%';
+            styles['height'] = '100%';
+
             //如果不是ie6,并且不是quirk模式，设置为fixed
-            if ((!baidu.browser.ie || baidu.browser.ie >= 7) && document.compatMode != "BackCompat") {
-                styles["position"]= "fixed";
-                styles["top"] = 0;
-                styles["left"] = 0;
-            }else{
-                styles["top"] = baidu.page.getScrollTop();
-                styles["left"] = baidu.page.getScrollLeft();
+            if ((!baidu.browser.ie || baidu.browser.ie >= 7) && document.compatMode != 'BackCompat') {
+                styles['position'] = 'fixed';
+                styles['top'] = 0;
+                styles['left'] = 0;
+            }else {
+                styles['top'] = baidu.page.getScrollTop();
+                styles['left'] = baidu.page.getScrollLeft();
             }
         }
 
         //更新styles
-        baidu.extend(me.styles,styles);
-        me.styles["backgroundColor"] = me.styles["color"] || me.styles["backgroundColor"];
-        delete(me.styles["color"]);
+        baidu.extend(me.styles, styles);
+        me.styles['backgroundColor'] = me.styles['color'] || me.styles['backgroundColor'];
+        delete(me.styles['color']);
+    },
+
+    /**
+     * 隐藏flash
+     * @private
+     * @return {Null}
+     */
+    _hideFlash: function(){
+        var me = this,
+            container = me.getContainer(),
+            elements = container.getElementsByTagName('object'),
+            result = [];
+
+        //只隐藏wmode = window的flash
+        baidu.each(elements, function(item){
+            var isWinMode = true;
+
+            if(baidu.dom.getAncestorBy(item,function(element){
+                if(baidu.getStyle(element, 'zIndex') > me.styles.zIndex){
+                    return true;
+                }
+
+                return false;
+            })){
+                return;
+            }
+
+            baidu.each(baidu.dom.children(item), function(param){
+                if(baidu.getAttr(param, 'name') == 'wmode' && baidu.getAttr(param, 'value') != 'window'){
+                    isWinMode = false;
+                }
+            });
+
+            if(isWinMode){
+                result.push([item,baidu.getStyle(item, 'visibility')]);
+                item.style.visibility = 'hidden';
+            }
+        });
+
+        return result;
+    },
+
+    /**
+     * 还原flash
+     * @private
+     * @return {Null}
+     */
+    _restoreFlash: function(flash){
+        baidu.each(flash, function(item){
+            if(item[0] != null){
+                item[0].style.visibility = item[1];
+            }
+        });  
+    },
+
+    /**
+     * 销毁
+     * @public
+     * @return {Null}
+     */
+    dispose: function(){
+        var me = this;
+
+        me._hide();
+        me.dispatchEvent('ondispose');
+        baidu.lang.Class.prototype.dispose.call(me);
     }
 });
+
+//存储所有的modal参数
+baidu.ui.modal.collection = {};
