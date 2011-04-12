@@ -101,17 +101,16 @@ baidu.ui.Carousel = baidu.ui.createUI(
     _resize : function(){
         var me = this,
             offset_x = me.axis[me.orientation].offsetSize,//由pageSize决定长度的一方
-            offset_y = me.axis["horizontal"==me.orientation ? "vertical" : "horizontal"].offsetSize,//直接设置成item长度的一方
+            offset_y = me.axis["horizontal" == me.orientation ? "vertical" : "horizontal"].offsetSize,//直接设置成item长度的一方
             item = me.getItem(0);
-        if(item && (me.getBody()[offset_x] < me.pageSize * item[offset_x] || me.getBody()[offset_y] < item[offset_y])){
-            me.offsetWidth = me.offsetWidth || item.offsetWidth;
-            me.offsetHeight = me.offsetHeight || item.offsetHeight;
-            //这里设置container的宽度和高度让用户可以看到一个按照pageSize和orientation计算出来的固定介面
-            baidu.dom.setStyles(me.getBody(), {
-                width : me.offsetWidth * ("horizontal" == me.orientation ? me.pageSize : 1) + "px",
-                height : me.offsetHeight * ("vertical" == me.orientation ? me.pageSize : 1) + "px"
-            });
-        }
+            
+        me.offsetWidth = me.offsetWidth || item.offsetWidth;
+        me.offsetHeight = me.offsetHeight || item.offsetHeight;
+        //这里设置container的宽度和高度让用户可以看到一个按照pageSize和orientation计算出来的固定介面
+        baidu.dom.setStyles(me.getBody(), {
+            width : me.offsetWidth * ("horizontal" == me.orientation ? me.pageSize : 1) + "px",
+            height : me.offsetHeight * ("vertical" == me.orientation ? me.pageSize : 1) + "px"
+        });
         //这里运算scrollContainer的宽度是为了让item都能展开排成一行
         if("horizontal" == me.orientation){
             baidu.setStyles(me.getScrollContainer(), {width : me.offsetWidth * me.totalCount + "px"});

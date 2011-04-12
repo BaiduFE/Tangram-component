@@ -73,9 +73,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
         var me = this;
         me.target = target;
         if (!target || me.getMain()) {return;}
-        var me = this,
-            target = me.getTarget();
-        baidu.dom.insertHTML(target, 'afterEnd', me.getString());
+        baidu.dom.insertHTML(me.getTarget(), 'afterEnd', me.getString());
         me.renderMain(me.getId('main'));
         me._renderUI();
     },
