@@ -61,10 +61,12 @@ test('检测show及具体属性细节',function() {
  */
 test('窗口resize测试（缩小）', function() {
 	expect(4);
+	stop();
 	ua.frameExt(function(w, f) {
 	    f.style.borderWidth = f.style.margin = f.style.padding = 0;
 		var me = this;
 		var m = new w.baidu.ui.Modal();
+		var flag = false;
 		m.getContainer().style.padding= 0;
 		m.render();
 		m.show();
@@ -75,24 +77,34 @@ test('窗口resize测试（缩小）', function() {
 		ok(Math.abs(mo.offsetHeight - f.offsetHeight) < 5, "The offsetHeight of modal is the same with the offsetHeight of frame");
 		baidu.on(w, 'resize', function() {
 			setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
-				ok(Math.abs(mo.offsetWidth - 100) < 5, 'width change on window resize PUBLICGE-381');
-				ok(Math.abs(mo.offsetHeight - 100) < 5, 'height change on window resize PUBLICGE-381');
-                te.obj.push(f);
-				m.dispose();
-				me.finish();
+				if(flag){
+					ok(Math.abs(mo.offsetHeight - 100) < 5, 'height change on window resize PUBLICGE-381');
+	                te.obj.push(f);
+					m.dispose();
+					me.finish();
+				}else{
+					ok(Math.abs(mo.offsetWidth - 100) < 5, 'width change on window resize PUBLICGE-381');
+					$(f).css('height', "100px");
+				}
+				flag = true;
 			}, 100);
 		});
 		$(f).css('width', "100px");
-		$(f).css('height', "100px");
 	});
 });
 
 test('窗口resize测试(放大)', function() {
 	expect(4);
+	stop();
 	ua.frameExt(function(w, f) {
-	    f.style.borderWidth = f.style.margin = f.style.padding = 0;
+	    var _s = function(dom){
+	    	dom.style.borderWidth = dom.style.margin = dom.style.padding = 0;
+	    }
+	    _s(f);
+	    _s(w.document.body);
 		var me = this;
 		var m = new w.baidu.ui.Modal();
+		var flag = false;
 		m.render();
 		m.show();
 		mo = m.getMain();
@@ -100,15 +112,19 @@ test('窗口resize测试(放大)', function() {
 		ok(Math.abs(mo.offsetHeight - f.offsetHeight) < 5, "The offsetHeight of modal is the same with the offsetHeight of frame");
 		baidu.on(w, 'resize', function() {
 			setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
-				ok(Math.abs(mo.offsetWidth - 500) < 5, 'width change on window resize');
-				ok(Math.abs(mo.offsetHeight - 500) < 5, 'height change on window resize');
-	            te.obj.push(f);
-				m.dispose();
-				me.finish();
+				if(flag){
+					ok(Math.abs(mo.offsetHeight - 500) < 5, 'height change on window resize');
+	                te.obj.push(f);
+					m.dispose();
+					me.finish();
+				}else{
+					flag=true;
+					ok(Math.abs(mo.offsetWidth - 500) < 5, 'width change on window resize');
+					$(f).css('height', "500px");
+				}
 			}, 100);
 		});
 		$(f).css('width', "500px");
-		$(f).css('height', "500px");
 	});
 });
 
@@ -116,6 +132,11 @@ test('部分遮罩（在iframe中）', function() {
 	/* 位置信息及css会引发用例情况异常，此用例在frame中运行 */
 	expect(4);
 	ua.frameExt(function(w, f) {
+	    var _s = function(dom){
+	    	dom.style.borderWidth = dom.style.margin = dom.style.padding = 0; s
+	    }
+	    _s(f);
+	    _s(w.document.body);
 		var tt = w.document.body.appendChild(w.document.createElement('div'));
 		w.$(tt).css('width', 200).css('height', 200).css('background-color',
 				'red');
