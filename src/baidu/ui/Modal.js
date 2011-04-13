@@ -233,7 +233,6 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
         var me = this;
 
         return function() {
-            var main = me;
             me._getModalStyles({});
             me._update();
          };
