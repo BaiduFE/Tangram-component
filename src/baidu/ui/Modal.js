@@ -235,6 +235,12 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
         return function() {
             me._getModalStyles({});
             me._update();
+
+            //TODO:iframe 补丁
+            window.top !== window.self && setTimeout(function(){
+                me._getModalStyles({});
+                me._update();
+            },16);
          };
     },
 
@@ -269,12 +275,6 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
     _update: function() {
         var me = this, main = me.getMain();
         baidu.dom.setStyles(main, me.styles);
-
-        //TODO:iframe 补丁
-        window.top !== window.self && setTimeout(function(){
-            me._getModalStyles({});
-            me._update();
-        },16);
     },
 
     /**
