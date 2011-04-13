@@ -133,7 +133,7 @@ test('部分遮罩（在iframe中）', function() {
 	expect(4);
 	ua.frameExt(function(w, f) {
 	    var _s = function(dom){
-	    	dom.style.borderWidth = dom.style.margin = dom.style.padding = 0; s
+	    	dom.style.borderWidth = dom.style.margin = dom.style.padding = 0;
 	    }
 	    _s(f);
 	    _s(w.document.body);
