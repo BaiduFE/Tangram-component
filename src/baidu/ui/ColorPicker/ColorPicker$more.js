@@ -38,17 +38,6 @@ baidu.ui.ColorPicker.extend({
     dialogOption: {},
     
     more: true,
-    
-    /**
-     * fix mouseUp没有响应
-     * @private
-     */
-    _fixMouseUp: function() {
-        var colorPalette = this.colorPalette;
-        baidu.event.un(document, 'mousemove', colorPalette._movePadDotHandler);
-        baidu.event.un(document, 'mouseup', colorPalette._upPadDotHandler);
-    },
-
     /**
      * 生成调色板对话框
      * @private
@@ -65,17 +54,15 @@ baidu.ui.ColorPicker.extend({
                 me.dispatchEvent('onchosen', {
                     color: me.colorPalette.hex
                 });
-                me._fixMouseUp();
             },
-            oncancel: function() {
-                me._fixMouseUp();
+            onclose: function(){
+                me.colorPalette._onPadDotMouseUp();
             },
             draggable: true,
             autoDispose: false,
             autoOpen: false,
             autoRender: true
         }, me.dialongOption || {}));
-        me.colorPaletteDialog.open();
     },
 
     /**

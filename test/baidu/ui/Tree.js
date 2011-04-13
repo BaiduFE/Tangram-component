@@ -74,7 +74,6 @@ test('参数：多个子节点', function() {
 			text : 'a',
 			children : [ {
 				text : 'a0',
-                type: 'trunk',
 				children : [ {
 					text : 'a00'
 				} ]
@@ -312,14 +311,11 @@ test('TreeNode function toggle, collapse and expand', function() {
 			+ node._getId('subNodeId');
 	// expand前，它是叶子
 	equals(node.getChildNodes().length, 0, 'size of child before expand');
-    
 	equals($(nodeid)[0].children.length, 0, 'size of subnode child');
-    document.getElementById(node._getId('subNodeId')).style.display="none";
     //TODO
-	//equals(parseInt($(nodeid).css('height')), 0, 'subnode is not shown');
-    equals(document.getElementById(node._getId('subNodeId')).offsetHeight, 0, 'subnode is not shown');
+	equals(parseInt($(nodeid).css('height')), 0, 'subnode is not shown');
 	node.expand();
-    equals(node.getChildNodes().length, 1, 'size of child after expand');
+	equals(node.getChildNodes().length, 1, 'size of child before expand');
 	equals($(nodeid)[0].children.length, 1, 'size of subnode child');
 	ok(parseInt($(nodeid).css('height')) > 0, 'subnode is shown');
 	equals($(nodeid).css('display'), 'block', 'subnode is shown');
@@ -338,14 +334,12 @@ test('TreeNode function collapseAll and expandAll', function() {
 			text : 'a',
 			children : [ {
 				text : 'a0',
-                type: 'trunk',
 				children : [ {
 					id : 'a00',
 					text : 'a00'
 				} ]
 			}, {
 				text : 'a1',
-                type: 'trunk',
 				children : [ {
 					id : 'a10',
 					text : 'a10'
@@ -353,13 +347,13 @@ test('TreeNode function collapseAll and expandAll', function() {
 			} ]
 		}
 	}), node = tree.getTreeNodeById('a');
-    node.expandAll();
-
+	node.expandAll();
 	// 节点挂载，并显示
 	equals(tree.getTreeNodeById('a00').id, 'a00');
 	equals(tree.getTreeNodeById('a10').id, 'a10');
-	ok(isShown($('#a00')[0]), 'a00 shown');
-	ok(isShown($('#a10')[0]), 'a10 shown');
+	ok($('#a00')[0].style.display!='none', 'a00 shown');
+	ok($('#a10')[0].style.display!='none', 'a10 shown');
+     
 	node.collapseAll();
 	ok(!isShown($('#a00')[0]), 'a00 hide');
 	ok(!isShown($('#a10')[0]), 'a10 hide');

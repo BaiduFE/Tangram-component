@@ -103,14 +103,15 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 	dispose : function(){
 		var me = this,
             body = me.getBody();
-
+        me.dispatchEvent('dispose');
        //删除当前实例上的方法
-       baidu.each(me._allEventsName, function(item,index) {
-           body['on' + item] = null;
-       });
-
+        baidu.each(me._allEventsName, function(item,index) {
+            body['on' + item] = null;
+        });
         baidu.dom.remove(body);
-		baidu.lang.Class.prototype.dispose.call(me);
+		
+        me.dispatchEvent('ondispose');
+        baidu.lang.Class.prototype.dispose.call(me);
 	},
 
     /**

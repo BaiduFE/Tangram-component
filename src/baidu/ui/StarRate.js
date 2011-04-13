@@ -1,18 +1,17 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/StarRate.js
- * author: rocy
- * version: 1.0.0
- * date: 2010-07-20
  */
+
 ///import baidu.ui.createUI;
 
 ///import baidu.dom.g;
 ///import baidu.dom.insertHTML;
 ///import baidu.string.format;
 ///import baidu.event.on;
+///import baidu.event.un;
+///import baidu.fn.bind;
+///import baidu.dom.remove;
 
 /**
  * @class 星级评价条
@@ -24,11 +23,11 @@
  */
 //TODO: 实现一个支持任意刻度的星的显示
 baidu.ui.StarRate = baidu.ui.createUI(function(options){
-    
-    
+   var me = this; 
+   me.element = null; 
 }).extend(
     /**
-     *  @lends baidu.ui.Suggestion.prototype
+     *  @lends baidu.ui.StarRate.prototype
      */ 
     {
     uiType  : "starRate",
@@ -70,10 +69,19 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
      * @param   {HTMLElement}   element       目标父级元素
      */
     render : function(element){
-        var me = this,element = baidu.g(element);
-        baidu.dom.insertHTML(element, "beforeEnd",me.getString());
-        baidu.on(element, 'mouseout', function(){me.starAt(me.current);me.dispatchEvent("onleave");});
+        var me = this;
+            me.element = baidu.g(element);
+        baidu.dom.insertHTML(me.element, "beforeEnd",me.getString());
+    
+        me._mouseOutHandle = baidu.fn.bind(function(){
+            var me = this;
+            me.starAt(me.current);
+            me.dispatchEvent("onleave");
+        },me);
+
+        baidu.on(me.element, 'mouseout', me._mouseOutHandle);
     },
+
     /**
      * 指定高亮几个星星
      * @public 
@@ -121,7 +129,19 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
     enable : function(){
         var me = this;
         me.isDisable = false;
+    },
+    /**
+     * 销毁控件
+     */
+    dispose:function(){
+        var me = this;
+        baidu.un(me.element, 'mouseout', me._mouseOutHandle);
+       
+        for(i=0; i < me.total; ++i){
+            baidu.dom.remove(me.getId(i));
+        }
+        
+        me.dispatchEvent("ondispose");
+        baidu.lang.Class.prototype.dispose.call(me);
     }
-    
-    
 });

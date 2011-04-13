@@ -308,6 +308,7 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
      */
     _onPadDotMouseUp: function() {
         var me = this;
+        if(!me._movePadDotHandler){return;}
         baidu.event.un(document, 'mousemove', me._movePadDotHandler);
         baidu.event.un(document, 'mouseup', me._upPadDotHandler);
     },

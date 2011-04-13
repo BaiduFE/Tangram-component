@@ -23,8 +23,17 @@
  * @class  Suggestion基类，建立一个Suggestion实例
  *
  * @author berg
- * @param  {Object}             options optional        选项参数.
- * @config {DOMElement}                 target          input框
+ * @param      {Object}                 [options]          选项.
+ * @config     {Function}               onshow             当显示时触发。
+ * @config     {Function}               onhide             当隐藏时触发，input或者整个window失去焦点，或者confirm以后会自动隐藏。
+ * @config     {Function}               onconfirm          当确认条目时触发，回车后，或者在条目上按鼠标会触发确认操作。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。。
+ * @config     {Function}               onbeforepick       使用方向键选中某一行，鼠标点击前触发。
+ * @config     {Function}               onpick             使用方向键选中某一行，鼠标点击时触发。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。
+ * @config     {Function}               onhighlight        当高亮时触发，使用方向键移过某一行，使用鼠标滑过某一行时会触发高亮。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。
+ * @config     {Function}               view               重新定位时，会调用这个方法来获取新的位置，传入的参数中会包括top、 left、width三个值。
+ * @config     {Function}               getData            在需要获取数据的时候会调用此函数来获取数据，传入的参数word是用户在input中输入的数据。
+ * @config     {String}                 prependHTML        写在下拉框列表前面的html
+ * @config     {String}                 appendHTML         写在下拉框列表后面的html
  */
 
 baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
@@ -60,7 +69,9 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
      * 计算view的函数
      */
     //view            : new Function(),
-
+    /**
+     * @private
+     */
     getData: function() {return []},
     prependHTML: '',
     appendHTML: '',
@@ -72,7 +83,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     tplBody: "<table cellspacing='0' cellpadding='2'><tbody>#{0}</tbody></table>",
     tplRow: '<tr><td id="#{0}" onmouseover="#{2}" onmouseout="#{3}" onmousedown="#{4}" onclick="#{5}">#{1}</td></tr>',
 
-    /*
+    /**
      * 获得suggestion的外框HTML string
      * @private
      */
@@ -91,8 +102,10 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
      */
     render: function(target) {
         var me = this,
-            main;
-        if (me.getMain()) {
+            main,
+            target = baidu.g(target);
+        
+        if (me.getMain() || !target) {
             return;
         }
         if (target.id) {
@@ -119,9 +132,10 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         return main && main.style.display != 'none';
     },
 
-    /*
+    /**
      * 把某个词放到input框中
      * @public
+	 * @param     {String}    index    条目索引.
      */
     pick: function(index) {
         var me = this,
@@ -139,12 +153,12 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         }
     },
 
-    /*
+    /**
      * 绘制suggestion
      * @public
-     * @param {string} word 触发sug的字符串
-     * @param {object} data sug数据
-     * @param {boolean} showEmpty optional 如果sug数据为空是否依然显示 默认为false
+     * @param {String}  word               触发sug的字符串.
+     * @param {Object}  data               suggestion数据.
+     * @param {Boolean} showEmpty optional 如果sug数据为空是否依然显示 默认为false.
      *
      */
     show: function(word, data, showEmpty) {
@@ -174,9 +188,10 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         }
     },
 
-    /*
+    /**
      * 高亮某个条目
      * @public
+	 * @param    {String}   index    条目索引.
      */
     highlight: function(index) {
         var me = this;
@@ -189,7 +204,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         });
     },
 
-    /*
+    /**
      * 隐藏suggestion
      * @public
      */
@@ -205,11 +220,12 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         me.dispatchEvent('onhide');
     },
 
-    /*
+    /**
      * confirm指定的条目
+	 * @public
      * @param {number|string} index or item
      * @param {string} source 事件来源
-     * @public
+     * 
      */
     confirm: function(index, source) {
         
@@ -235,7 +251,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         };
     },
 
-    /*
+    /**
      * 获得target的值
      * @public
      */
@@ -243,7 +259,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         return this.getTarget().value;
     },
 
-    /*
+    /**
      * 获得当前处于高亮状态的词索引
      * @private
      */
@@ -263,7 +279,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         return -1;
     },
 
-    /*
+    /**
      * 清除suggestion中全部tr的蓝色背景样式
      * @private
      */
@@ -278,15 +294,16 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         }
     },
 
-    /*
+    /**
      * 获得input框元素
      * @public
+	 * @return {HTMLElement}   input    输入框元素.
      */
     getTarget: function() {
         return baidu.g(this.targetId);
     },
 
-    /*
+    /**
      * 获得指定的条目
      * @private
      */
@@ -294,7 +311,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         return baidu.g(this.getId('item' + index));
     },
 
-    /*
+    /**
      * 渲染body部分的string
      * @private
      */
@@ -336,7 +353,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         return html;
     },
 
-    /*
+    /**
      * 当每一个项目over、out、down、click时调用的函数
      * 高亮某个条目
      * @private
@@ -345,14 +362,14 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         this.highlight(index);
     },
 
-    /*
+    /**
      * @private
      */
     itemOut: function() {
         this.clearHighlight();
     },
 
-    /*
+    /**
      * @private
      */
     itemDown: function(e, index) {
@@ -366,7 +383,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         }
     },
 
-    /*
+    /**
      * @private
      */
     itemClick: function(index) {
@@ -379,7 +396,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     },
 
 
-    /*
+    /**
      * 外部事件绑定
      * @private
      */
@@ -398,7 +415,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         };
     },
 
-    /*
+    /**
      * @private
      */
     getWindowBlurHandler: function() {

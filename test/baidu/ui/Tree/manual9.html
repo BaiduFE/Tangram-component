@@ -146,7 +146,7 @@
 	<h1>时间总共消耗<span id="div1" style="color:red"></span>毫秒
 	</h1>
 	<div id="treetest" >fdsafdsa</div>
-	
+	<div id="treetest1" >fdsafdsa</div>
 	
 	<input type="button" onclick="test()" value="加载节点"></input>
 	
@@ -155,6 +155,8 @@
 	<input type="button" onclick="addTrunk()" value="新增一个文件夹节点"></input>
 
 	<input type="button" onclick="addLeaf()" value="新增一个叶子节点"></input>
+
+	<input type="button" onclick="append1()" value="测试第三个节点"></input>
 
         <script type="text/javascript" >
 			/***********测试数据***********************/
@@ -247,11 +249,12 @@
 	}
 	
 	var data = {text:'根节点'};
-	var tree = new baidu.ui.Tree({data:json,onclick:function(){alert(1);}});
+	var tree = new baidu.ui.Tree({data:json,onclick:function(obj){alert(obj.treeNode.getIndex());}});
 	//var startTime = new Date().getTime();
 	tree.render("treetest");
+
 	
-	tree.getRootNode().expandAll();
+	//tree.getRootNode().expandAll();
 	//tree.getRootNode().collapseAll();
 
 	//document.title = new Date().getTime() - startTime;
@@ -273,12 +276,155 @@
 		var node = tree.getCurrentNode();
 		node.appendChild(new baidu.ui.Tree.TreeNode({text:'测试节点',type:'leaf'}));
 	}
-	var node3 = tree.getTreeNodeById('node3');
-	var node31 = tree.getTreeNodeById('node31');
-	var node21 = tree.getTreeNodeById('node21');
 
-	//tree.getRootNode().removeAllChildren();
+	function append1(){
+//		var node22 = tree.getTreeNodeById('node22');
+		
+//		var node21 = tree.getTreeNodeById('node21');
+//		node21.appendChild(new baidu.ui.Tree.TreeNode({text:'node211',id:'node211'}));
+//		console.log('----node3-----'+node3._children.length);
+//		var newNode = node3.appendChild(new baidu.ui.Tree.TreeNode({text:'nodetest'}),0);
+//		alert(newNode.getIndex());
+//		console.log('----node3-----'+node3._children.length);
+//
+//	    tree.getRootNode().appendChild(tree.getTreeNodeById('node2'));
+//		alert(tree.getTreeNodeById('node2'));
+//		tree1.getRootNode().appendChild(tree.getTreeNodeById('node2'));
+//		alert(tree.getTreeNodeById('node2'));
+//		node22.appendTo(node21);
+//		alert(node21.childNodes.length);
+//		var root = tree1.getRootNode();
+//		root.appendChild(new baidu.ui.Tree.TreeNode({
+//			id : 'a1',
+//			text : 'a1'
+//		}));
+//		
+//		drag('a1', 'b1');
+//		drag('a1', 'b');
+//		drag('a1','b');
+//		alert(root.getChildNodes().length);
+		var b1 = tree1.getTreeNodeById('b1');
+		b1.expand();
+		alert(tree1.getTreeNodeById('b12').isLastNode());
+		//alert(b1._getSubNodesContainer().offsetHeight);
+	}
+
+	function drag(id1,id2){
+		tree1.getTreeNodeById(id1).appendTo(tree1.getTreeNodeById(id2));
+	}
+	json1 = {
+		
+			id : 'b',
+			text : 'b',
+			children : [ {
+				id : 'b1',
+				text : 'b1',
+				type:'trunk',
+				children:[
+					{text:'b11',id:'b11'},
+					{text:'b12',id:'b12'}
+				]
+			} ]
+	}
+//	var tree1 = new baidu.ui.Tree({data:json1,onclick:function(obj){alert(obj.treeNode.getIndex());}});
+//	tree1.render('treetest1');
+//	tree1.getRootNode().expandAll();
+	//tree.getRootNode().expandAll();
+	
 	//test();
+	
+
+
+            //  自定义树的一级节点及其子节点
+            var sysManagment = {
+                id:'systemmanagment',
+                    text:'系统设置',
+                    children:[
+                        {id:'sitename',text:'网站名称',type:'leaf'},
+                        {id:'description',text:'站点描述',type:'leaf'},
+                        {id:'keywords',text:'关键字设置',type:'leaf'}
+                    ]
+                }
+                var userManagment ={
+                    id:'usermanagment',
+                    text:'账户管理',
+                    type:'trunk',
+                    children:[
+                        {id:'userlist',text:'管理员账户列表',type:'leaf'},
+                        {id:'createuser',text:'创建一个管理账户',type:'leaf'},
+                        {id:'myaccount',text:'个人信息管理',type:'leaf'},
+                        {id:'loginout',text:'注销登录',type:'leaf'}
+                    ]
+                }
+                var articleManagment ={
+                    id:'articlemanagment',
+                    text:'文章管理',
+                    type:'trunk',
+                    children:[
+                        {id:'categorys',text:'分类管理',type:'leaf'},
+                        {id:'newcategory',text:'新建一个分类',type:'leaf'},
+                        {id:'articles',text:'文章管理',type:'leaf'},
+                        {id:'newarticles',text:'新建文章',type:'leaf'}
+                    ]
+                }
+                //  汇总一级节点
+                var treeList = [ sysManagment,userManagment,articleManagment ]
+                //  当节点被单击时触发
+                var currId = '';
+                var nodeOnClick = function(n){
+                var nodeName = n.treeNode.text;
+                var nodeId = n.treeNode.id;
+                var nodeType = n.treeNode.type;
+                //  两次点击toggle节点
+                if( 'trunk' == nodeType && currId == nodeId ){
+                    currId = '';
+                    n.treeNode.toggle();
+                    return true;
+                }
+                currId = nodeId;
+            }
+            //  设置根节点
+            var root = {text:'网站管理目录'};
+            //  创建Tree的实例
+            var tree = new baidu.ui.Tree({data:root,onclick:nodeOnClick});
+            //  将Tree实例加载至DOM中
+            tree.render("treetest");
+			tree.getRootNode().appendData(treeList);
+			tree.getRootNode().expand();
+            //  在Tree实例中载入设置好的 节点序列
+            //tree.getRootNode().appendData([{id:'sitename',text:'网站名称',type:'leaf'},
+            //            {id:'description',text:'站点描述',type:'leaf'},
+            //            {id:'keywords',text:'关键字设置',type:'leaf'}]);
+            //  从根节点起展开所有节点
+            //tree.getRootNode().expand();
+			
+            function toggle(){
+                var node = tree.getCurrentNode() || tree.getRootNode();
+                if('leaf' == node.type){ node = node.parentNode; };
+                node.toggle();
+            }
+            function refresh(){
+                tree.getRootNode().removeAllChildren();
+                tree.getRootNode().appendData(treeList);
+                tree.getRootNode().expandAll();
+            }
+            function del(){
+                var node = tree.getCurrentNode();
+                if(!!!node){
+                    alert("请选择节点");
+                    return;
+                } 
+                node.getParentNode().removeChild(node);
+            }
+            function add(t){
+                var node = tree.getCurrentNode() || tree.getRootNode();
+                //  约定好参数t转换成的节点类型值
+                var type = ['trunk','leaf'];
+                var newName = baidu.dom.g('newname').value;
+                if('leaf' == node.type){ node = node.parentNode; }
+                node.appendChild(new baidu.ui.Tree.TreeNode({text:newName,type:type[t]}));
+            }
+
 		</script>
 
 	

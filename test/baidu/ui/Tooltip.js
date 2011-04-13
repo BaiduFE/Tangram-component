@@ -234,32 +234,40 @@ test('target title',function(){
 	target1.title = 'this is a title';  
 	contentElement.innerHTML = '提示';
 	var options = {
-		target : [target1]
-	}; 
-	var tp = new baidu.ui.Tooltip(options);
+		target : [target1],
+		contentElement : contentElement
+	};
+    var tp = new baidu.ui.Tooltip(options);    
 	tp.render(div);
+	tp.open();
+	equal(tp.getBody().firstChild,contentElement);
+	    
+	options = {
+		contentElement : null
+	}; 
+	tp.update(options);
 	equal(baidu.getAttr(tp.target[0], 'tangram-tooltip-title'),'this is a title');
 	ok(!tp.getTarget().title,'cancel title');
-	tp.open();
 	equal(tp.getBody().innerHTML,'this is a title');
-	options = {//设置contentElement ，应该显示contentElement
-		contentElement : contentElement,
-		content : 'content'
-	}
-	tp.update(options);
-	equal(tp.getBody().firstChild,contentElement);
+	
 	options = {//设置contentElement=null，应该显示content
-		contentElement : null,
 		content : 'content'
 	}
 	tp.update(options);
 	equal(tp.getBody().innerHTML,'content');
-	options = {//重新设置回contentElement，则应显示contentElement
-		contentElement : contentElement,
-		content : 'content'
-	}
+	
+	options = {
+		contentElement : contentElement
+	}; 
 	tp.update(options);
 	equal(tp.getBody().firstChild,contentElement);
+	
+	options = {
+		contentElement : null,
+		content : 'content'
+	}; 
+	tp.update(options);
+	equal(tp.getBody().innerHTML,'content');
 
 });
 

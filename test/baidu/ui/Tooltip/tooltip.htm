@@ -2,64 +2,107 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Tooltip</title>
-    <!-- 
-    <script type="text/javascript" src="http://img.baidu.com/js/tangram-1.1.1.js"></script>
-    <script language="JavaScript" src="../../../../baidu/baidu.js"></script>
-     -->
     <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Tooltip.*' ></script>
-    
-    <!-- 
-    <script language="JavaScript" src="../../../../src/baidu/ui.js"></script>
-    <script language="JavaScript" src="../../../../src/baidu/ui/tooltip.js"></script>
-    <script language="JavaScript" src="../../../../src/baidu/ui/tooltip/Tooltip.js"></script>
-    <script language="JavaScript" src="../../../../src/baidu/ui/tooltip/create.js"></script>
-     -->
-
     <link rel="stylesheet" href="css/reset.css" />
     <link href="css/demo.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
-    .tangram-tooltip{border:1px solid #666;background:#FFF;}
+        a {
+            cursor:pointer;
+        }
+        .tangram-tooltip{border:1px solid #666;background:#FFF;}
     </style>
 </head>
 <body>
-<div id="wrapper">
+    <input type="BUTTON" value="单例/多例切换" onclick="javascript:changeType();"/>
+    <span id='isSingleton'>多例</span>
+    <input type="BUTTON" value="update content" onclick="javascript:changeContent();"/>
+    <div class="wrapper">
 
-    <h1>Tooltip</h1>
-    <hr />
-    <a id="t0" href="javascript:void(0)" title="this is a title">Hover me</a><br>
-   	<a id="t1" href="javascript:void(0)" title="this is a title">Hover me1</a><br/>
-   	<a id="t2" href="javascript:void(0)" title="this is a title">Hover me2</a><br>
-   	<a id="t3" href="javascript:void(0)" title="this is a title">Hover me3</a><br>
-   	<a id="t4" href="javascript:void(0)" title="this is a title">Click me4</a><br>
-   	<a id="t5" href="javascript:void(0)" title="this is a title">Updatable tooltip</a><br/>
-   	<input type="text" id="i5" value="new content"/>
-   	<input type="button" onclick="tooltip5.update({content:baidu.g('i5').value})" value="update" /><br/>
-   	<a id="t6" href="javascript:void(0)" title="this is a title">Element content tooltip</a><br/>
-   	<div id="ele6" style="display:none">I am a element node.</div>
-    <div id="footer">
-        Tooltip &copy;
+
+        <span>
+            多个target使用统一个ToolTip实例<br/>
+            显示方式使用click
+        </span><br/>
+        <span>第一组</span><br/>
+        <a id='click1' title='click1'>click1</a><br/>
+        <a id='click2'>click2</a><br/>
+        <a id='click3' title='click3'>click3</a><br/>
+        <br/>
+
+        <span>第二组</span><br/>
+        <a id='click4'>click4</a><br/>
+        <a id='click5' title='click5'>click5</a><br/>
+        <a id='click6'>click6</a><br/>
+        <br/>
+
+        
     </div>
-    <div style="position:absolute; right:10px;top:100px;">
-    	<a id="t7" href="javascript:void(0)" title="this is a title">Right side tooltip</a><br/>
+    <div class="wrapper">
+        <span>
+            多个target使用统一个ToolTip实例<br/>
+            显示方式使用hover
+        </span><br/>
+        <span>第一组</span><br/>
+        <a id='hover1'>hover1</a><br/>
+        <a id='hover2' title='hover2'>hover2</a><br/>
+        <a id='hover3'>hover3</a><br/>
+        <br/>
+
+        <span>第二组</span><br/>
+        <a id='hover4'>hover4</a><br/>
+        <a id='hover5'>hover5</a><br/>
+        <a id='hover6'>hover6</a><br/>
+        <br/>
+
+        <span>第三组</span><br/>
+        <a id='hover7'>hover7</a><br/>
+        <a id='hover8' title='hover8'>hover8</a><br/>
+        <a id='hover9'>hover9</a><br/>
     </div>
-</div>
-<script language="JavaScript">
-baidu.ui.Tooltip.hover(baidu.g('t0'),{});
-baidu.ui.Tooltip.hover(baidu.g('t1'),{positionBy:'mouse',width:500,content:'<div style="width:200px;height:200px;">tip of t1</div>'});
-baidu.ui.Tooltip.hover(baidu.g('t2'),{positionBy:'element',offset:[10,40],content:'<div style="width:200px;height:200px;">tip of t2</div>'});
-baidu.ui.Tooltip.hover(baidu.g('t3'),{offset:[40,40],content:'<div style="width:200px;height:200px;">tip of t3</div>'});
-baidu.ui.Tooltip.click(baidu.g('t4'),{content:'<div style="width:300px;height:300px">click elsewhere to close me</div>'});
-var tooltip5 = baidu.ui.Tooltip.hover(baidu.g('t5'),{content:'update me!<br/>Input content and click "update"'});
-baidu.ui.Tooltip.hover(baidu.g('t6'),{contentElement:baidu.g('ele6'),content:'<div style="width:300px;height:300px">click elsewhere to close me</div>'});
+    <script type='text/javascript'>
+        function changeType(){
+            if(baidu.ui.Tooltip.isSingleton){
+                baidu.ui.Tooltip.isSingleton = false;
+                baidu.G('isSingleton').innerHTML = '多例';
+            }else{
+                baidu.ui.Tooltip.isSingleton = true;
+                baidu.G('isSingleton').innerHTML = '单例';
+            }
+        }
 
-baidu.on('ele6','click',function(){alert("Dom mode is working.")})
+        function changeContent(){
+            var options = {
+                content:'',
+                contentElement:null
+            };
 
-baidu.ui.Tooltip.hover('t7',{offset:[0,0],content:'<div style="width:200px;height:200px;">tip of t7</div>'});
+            tooltip_click1.update(options);
+        }
 
-//暴力分隔线，下面的请各位无视！
+        var tooltip_options = {
+            autoRender: true,
+            enableFx: true 
+        };
 
+        tooltip_options['type'] = 'click';
+        tooltip_options['target'] = ['click1','click2','click3'];
+        tooltip_options['content'] = '这是一个点击生成的tooltip';
+        var tooltip_click1 = new baidu.ui.Tooltip(tooltip_options);
 
-</script>
+        tooltip_options['target'] = ['click4','click5','click6'];
+        var tooltip_click2 = new baidu.ui.Tooltip(tooltip_options);
 
+        tooltip_options['target'] = ['hover1','hover2','hover3'];
+        tooltip_options['type'] = 'hover';
+        var tooltip_hover1 = new baidu.ui.Tooltip(tooltip_options);
+
+        tooltip_options['target'] = ['hover4','hover5','hover6'];
+        tooltip_options['type'] = 'hover';
+        var tooltip_hover2 = new baidu.ui.Tooltip(tooltip_options);
+
+        tooltip_options['target'] = ['hover7','hover8','hover9'];
+        delete(tooltip_options['content']);
+        var tooltip_click2 = new baidu.ui.Tooltip(tooltip_options);
+    </script>
 </body>
 </html>

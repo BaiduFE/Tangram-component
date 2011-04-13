@@ -105,7 +105,7 @@ baidu.ui.Base = {
      */
     on : function(element, type, listener){
         baidu.on(element, type, listener);
-        ui.addEventListener("ondispose", function(){
+        this.addEventListener("ondispose", function(){
             baidu.un(element, type, listener);
         });
     },

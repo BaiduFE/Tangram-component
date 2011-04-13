@@ -96,6 +96,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     isShown: function() {
         return baidu.ui.Dialog.instances[this.guid] == 'show';
     },
+    
     /**
      * 获取dialog的HTML字符串
      * @private
@@ -157,7 +158,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
 
         baidu.dom.setStyles(me.getMain(), {
             position: 'absolute',
-            zIndex: this.zIndex,
+            zIndex: me.zIndex,
             marginLeft: '-100000px'
         });
         //当居中时，窗口改变大小时候要重新计算位置
@@ -183,26 +184,24 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
 
         
         if(me.content && content.firstChild != me.content) {
-            //若存在me.content 并且该content和content里面的firstChlid不一样
+            //若存在me.content 并且该content和content里面的firstChild不一样
             content.innerHTML = '';
             content.appendChild(me.content);
+            me.content = content.firstChild;
         
-        }else if(options.content && options.content != me.content){
+        }else if(options.content){
             //若options.content存在，则认为用户向对content进行更新
-            //判断时候和原有content相同，不同则进行更新
             content.innerHTML = '';
             content.appendChild(options.content);
-        
-        }else if(options.contentText && options.contentText != me.contentText){
+            me.content = content.firstChild;
+        }else if(options.contentText){
             //若存在options.contentText，则认为用户相对contentText进行更新
-            //判断是否和原有contenText相同，不同则进行更新（包括原本不存在contentText）
             content.innerHTML = options.contentText;
-        
-        }else if(me.contentText) {
+        }else if(me.contentText && baidu.dom.children(content).length == 0 ) {
             //针对两种情况
             //1.第一次new dialog时传入contentText，进行渲染
             //2.new dialog时没有传入contentText的，之后使用dialogInstance.contentText = HTMLString；dialogInstance._update这样的情况进行更新
-            baidu.dom.children(content).length == 0 && (content.innerHTML = me.contentText);
+            content.innerHTML = me.contentText;
         }
         
         if(options.titleText && options.titleText != me.titleText){
@@ -341,11 +340,16 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
             bottom = '',
             left = '',
             content = me.getContent(),
-            body = me.getBody();
+            body = me.getBody(),
+            width,height;
 
         /*
+         * 添加默认值支持
+         * 当me.width或者me.height没有设置有效值时，不对其进行计算
+         *
          * 暂不支持百分比形式的寛高计算
          * 在render或者window resize时保证content上的寛高必有值
+         * TODO resizable如何适应dialog有默认值时的计算方法
          * 
          * 在webkit中，为保持dom的完整性，浏览器会自己计算一下css值
          * 例如：
@@ -365,18 +369,19 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
          * 之后更改content的寛高，再根据content当前的offset值与之前取得的属性值进行计算，获取body的寛高值
          */
 
-        me.width = parseFloat(me.width);
-        me.height = parseFloat(me.height);
+        width = parseFloat(me.width);
+        height = parseFloat(me.height);
         
         bodyOffset = me._getBodyOffset();
         
-        baidu.lang.isNumber(me.width) && baidu.dom.setOuterWidth(content,me.width);
-        baidu.lang.isNumber(me.height) && baidu.dom.setOuterHeight(content,me.height);
+        baidu.lang.isNumber(width) && baidu.dom.setOuterWidth(content,width);
+        baidu.lang.isNumber(height) && baidu.dom.setOuterHeight(content,height);
 
         bodyOffset.width += content.offsetWidth;
         bodyOffset.height += content.offsetHeight;
 
-        baidu.setStyles(body, bodyOffset);
+        me.width && baidu.setStyle(body, 'width', bodyOffset.width);
+        me.height && baidu.setStyle(body, 'height', bodyOffset.height);
 
         if ((me.left && me.left != 'auto') || (me.right && me.right != 'auto')) {
             //按照用户的值来设置

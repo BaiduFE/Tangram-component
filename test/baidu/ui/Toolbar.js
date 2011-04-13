@@ -145,10 +145,10 @@ test("direction vertical", function() {//纵向也测一下
         test_button3 = toolbar.getItemByName('test_button3'),
         container = baidu.g(toolbar.getId('tableInner'));
     equal(toolbar.direction,'vertical');
-    equal(toolbar.position,'top');        
-    ok(isShown(test_button1.getBody()), 'test_button1 created success');    
-    ok(isShown(test_button2.getBody()), 'test_button2 created success');  
-    ok(isShown(test_button3.getBody()), 'test_button3 created success'); 
+    equal(toolbar.position,'top');     
+    ok(test_button1.getBody(), 'test_button1 created success');    
+    ok(test_button2.getBody(), 'test_button2 created success');  
+    ok(test_button3.getBody(), 'test_button3 created success'); 
     equal(container.rows.length,3);
     
     options = {
@@ -189,7 +189,7 @@ test("add", function() {
         toolbar.render();
         var containerTR = baidu.g(toolbar.getId('tableInner')).rows[0];
         var test_button = toolbar.getItemByName('test_button');
-        ok(isShown(test_button.getBody()), 'test_button created success');
+        ok(test_button.getBody(), 'test_button created success');
         options = {
             type : 'button',
             config : {
@@ -199,7 +199,7 @@ test("add", function() {
         };
         toolbar.add(options);
         test_button = toolbar.getItemByName('test_button2');
-        ok(isShown(test_button.getBody()), 'test_button2 created success');
+        ok(test_button.getBody(), 'test_button2 created success');
         equal(test_button.getBody().parentNode,containerTR.cells[1],'check test_button2 position');
         
         var div = document.body.appendChild(document.createElement('div'));
@@ -213,10 +213,10 @@ test("add", function() {
         };
         toolbar.add(options,div);
         test_button = toolbar.getItemByName('test_button3');
-        ok(isShown(test_button.getBody()), 'test_button3 created success');    
+        ok(test_button.getBody(), 'test_button3 created success');    
         equal(test_button.getBody().parentNode,div,'check test_button2 position');
         te.dom.push(div);
-        te.obj.push(toolbar);;
+        te.obj.push(toolbar);
         start();
     });
 
@@ -282,17 +282,18 @@ test('addRow',function(){
             test_button2 = toolbar.getItemByName('test_button2'),
             test_button3 = toolbar.getItemByName('test_button3'),
             containerTR = baidu.g(toolbar.getId('tableInner')).rows[0];
-        ok(isShown(test_button.getBody()), 'test_button created success');    
-        ok(isShown(test_button2.getBody()), 'test_button2 created success');  
-        ok(isShown(test_button3.getBody()), 'test_button3 created success'); 
-
+        ok(test_button.getBody(), 'test_button created success');    
+        ok(test_button2.getBody(), 'test_button2 created success');  
+        ok(test_button3.getBody(), 'test_button3 created success'); 
+        
         toolbar.remove('test_button');
-        ok(!isShown(test_button.getBody()), 'test_button is removed success');  
-        ok(!containerTR.cells[0],'td[0] is removed');
+        ok(!(test_button.getBody()), 'test_button is removed success');  
+        ok(!baidu._g('tangram-toolbar--TANGRAM__1-cell-0'),'td[0] is removed');
         ok(!toolbar._itemObject['test_button'],'_itemObject[test_button] is removed');
         toolbar.removeAll();
-        ok(!isShown(test_button2.getBody()), 'test_button2 is removed success');  
-        ok(!isShown(test_button3.getBody()), 'test_button3 is removed success');  
+        
+        ok(!(test_button2.getBody()), 'test_button2 is removed success');  
+        ok(!(test_button3.getBody()), 'test_button3 is removed success');  
         ok(!containerTR.cells[1],'td[1] is removed');
         ok(!containerTR.cells[2],'td[2] is removed');
         ok(!toolbar._itemObject['test_button2'],'_itemObject[test_button2] is removed');
@@ -337,9 +338,9 @@ test('addRow',function(){
             test_button2 = toolbar.getItemByName('test_button2'),
             test_button3 = toolbar.getItemByName('test_button3'),
             containerTR = baidu.g(toolbar.getId('tableInner')).rows[0];
-        ok(isShown(test_button.getBody()), 'test_button created success');    
-        ok(isShown(test_button2.getBody()), 'test_button2 created success');  
-        ok(isShown(test_button3.getBody()), 'test_button3 created success'); 
+        ok(test_button.getBody(), 'test_button created success');    
+        ok(test_button2.getBody(), 'test_button2 created success');  
+        ok(test_button3.getBody(), 'test_button3 created success'); 
         toolbar.disable('test_button1');
         ok(test_button.getBody().className.match('disabled'), 'button1 is disable');  
         toolbar.enable('test_button1');
@@ -378,7 +379,7 @@ test('addRow',function(){
         toolbar.render();
         var test_button1 = toolbar.getItemByName('test_button1'),
             containerTR = baidu.g(toolbar.getId('tableInner')).rows[0];
-        ok(isShown(test_button1.getBody()), 'test_button created success');    
+        ok(test_button1.getBody(), 'test_button created success');    
         test_button1.setHighLight();
         test_button1.cancelHighLight();
         te.obj.push(toolbar);

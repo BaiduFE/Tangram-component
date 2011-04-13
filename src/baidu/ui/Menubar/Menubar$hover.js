@@ -7,7 +7,7 @@
  * version: 1.0.0
  * date: 2010-12-09
  */
-///improt baidu.ui.Menubar;
+///import baidu.ui.Menubar;
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.dom.g;

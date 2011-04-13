@@ -70,11 +70,10 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
      * @param {String|HTMLElement} target ScrollPanel依附于target来渲染.
      */
     render: function(target) {
-        this.target = target;
-        if (!target) {return;}
-        var me = this,
-            target = me.getTarget();
-        baidu.dom.insertHTML(target, 'afterEnd', me.getString());
+        var me = this;
+        me.target = target;
+        if (!target || me.getMain()) {return;}
+        baidu.dom.insertHTML(me.getTarget(), 'afterEnd', me.getString());
         me.renderMain(me.getId('main'));
         me._renderUI();
     },

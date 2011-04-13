@@ -158,7 +158,8 @@ baidu.ui.Suggestion.extend({
                 if (selected == 0) {
                     //把原始的内容放上去
                     me.pick(me.defaultIptValue);
-                    selected--;
+//                    selected--;
+                    me.selectIndexByKeybord--;
                     return;
                 }
                 if (selected == -1)
@@ -168,7 +169,8 @@ baidu.ui.Suggestion.extend({
                 //最下面再按下
                 if (selected == currentData.length - 1) {
                     me.pick(me.defaultIptValue);
-                    selected = -1;
+//                    selected = -1;
+                    me.selectIndexByKeybord = -1;
                     return;
                 }
                 selected++;
@@ -195,6 +197,8 @@ baidu.ui.Suggestion.extend({
                     baidu.event.preventDefault(e);
                     keyUpDown(up);
                     break;
+                default:
+                   me.selectIndexByKeybord = -1;
             }
         };
     },
