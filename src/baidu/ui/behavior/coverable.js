@@ -23,6 +23,7 @@
         var me = this,
             opt = me.coverableOptions || {},
             container = me.Coverable_container = opt.container || me.getMain(),
+            opacity = opt.opacity || '100',
             color = opt.color || 'white',
             iframe = me.Coverable_iframe = document.createElement('iframe'),
             iframeContainer = me.Coverable_iframeContainer = document.createElement('div');
@@ -55,7 +56,7 @@
             width : container.offsetWidth,
             height : container.offsetHeight,
             backgroundColor: color,
-            filter : 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)'
+            filter : 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=' + opacity  + ')'
         });
 
         me.Coverable_isShowing = true;
@@ -73,13 +74,19 @@
     };
 
     Coverable.Coverable_update = function(){
-        var me = this,
+       var me = this,
             container = me.Coverable_container,
+            iframeContainer = me.Coverable_iframeContainer,
             iframe = me.Coverable_iframe;
-    
+   
+        baidu.setStyles(iframeContainer,{
+            width: container.offsetWidth,
+            height: container.offsetHeight
+        });
+
         baidu.setStyles(iframe, {
             width : container.offsetWidth,
             height : container.offsetHeight
-        });
+        }); 
     };
 })();
