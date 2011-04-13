@@ -11,7 +11,9 @@
 
 baidu.extend(baidu.ui.Modal.prototype,{
     coverable: true,
-    coverableOptions: {}
+    coverableOptions: {
+        opacity: '0'
+    }
 });
 
 baidu.ui.Modal.register(function(me){
@@ -20,14 +22,10 @@ baidu.ui.Modal.register(function(me){
 
         if(!baidu.browser.isWebkit && !baidu.browser.isGecko){
             me.addEventListener("onload", function(){
-                me.coverableOptions = baidu.extend({
-                    container:me.getContainer()
-                },me.coverableOptions);
-                
                 me.Coverable_show();
             });
 
-            me.addEventListener("onupdate",function(){
+            me.addEventListeners("onshow,onupdate",function(){
                 me.Coverable_update();
             });
         }
