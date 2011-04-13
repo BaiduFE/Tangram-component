@@ -23,7 +23,7 @@ baidu.ui.Popup.register(function(me){
             me.Coverable_hide();
         });
 
-        me.addEventListeners("onupdate",function(){
+        me.addEventListener("onupdate",function(){
             me.Coverable_update();
         });
     }
