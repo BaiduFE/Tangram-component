@@ -2,11 +2,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script language='JavaScript' src='../../../../src/import.php?f=baidu.i18n.cultures.zh-CN,baidu.ui.Calendar,baidu.object.merge'></script>
 <title>Insert title here</title>
 <style type='text/css'>
-.tangram-calendar {
+.tangram-popup{
     border:red solid 1px;
+    width: 100%;
+    height: 100%;
+}
+/*calendar*/
+.tangram-calendar {
     width: 100%;
     height: 100%;
 }
@@ -45,14 +49,12 @@
 .tangram-calendar-table {
     font-size: 12px;
     text-align: center;
-    border: border-collapse:collapse;
     width: 100%;
     height: 100%;
 }
 .tangram-calendar-week td{
     cursor: default;
     font-weight: bold;
-    background: #ddd;
 }
 .tangram-calendar-date td{
     cursor:pointer;
@@ -66,7 +68,7 @@
 }
 
 .tangram-calendar-date-today{
-    border: blue solid 1px;
+    border: red solid 1px;
 }
 .tangram-calendar-date-highlight{
     background: yellow;
@@ -84,24 +86,30 @@
     background: black;
     color: white;
 }
-
-
 </style>
+<script language='JavaScript' src='../../../../src/import.php?f=baidu.i18n.cultures.zh-CN,baidu.ui.DatePicker'></script>
 </head>
 <body>
-<div id='calendarId' style='width:400px; height:300px; background:#eee;'></div>
+    <div style='height:800px;'></div>
+<input id='myinput' type='text' size='100'/>
+<div id='mydiv' style='height:2000px;'>
+    <div>
+        <div>
+            <div id='condiv'></div>
+        </div>
+        
+    </div>
+</div>
 </body>
 <script language='JavaScript'>
-var h = [new Date('2011/4/1')];
-
-
-var c = new baidu.ui.Calendar({
-    highlightDates: h,
-    disableDates: [new Date('2011/4/3'), new Date('2011/4/5'), {start: new Date('2011/4/21'), end: new Date('2011/4/27')} ],
-    onclickdate: function(evt){
-        //console.log(evt.date.toLocaleString());
+var d = new baidu.ui.DatePicker({
+    width: 320,
+    height: 240,
+    calendarOptions: {
+        disableDates: [{start: new Date(2011, 4, 1, 23, 59, 59), end: new Date(2011, 4, 3)}]
     }
+//    format: 'dd日MM月yyyy年, yy年MM月dd日'
 });
-c.render('calendarId');
+d.render('myinput');
 </script>
 </html>
