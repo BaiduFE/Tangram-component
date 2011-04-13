@@ -57,7 +57,8 @@
             </div>
         <SCRIPT>
             function init(e){
-            var w = e.target.contentWindow;
+            var e = document.getElementById('ff');
+            var w = e.contentWindow;
 
             var h = setInterval(function() {
                 if (w.baidu) {
@@ -67,7 +68,7 @@
                         modal.render();
                         modal.show({styles:{color:"blue"}});
 
-                        document.getElementById("ff").style.width = "100px";
+                     document.getElementById("ff").style.width = "100px";
                 }
             }, 20);
 

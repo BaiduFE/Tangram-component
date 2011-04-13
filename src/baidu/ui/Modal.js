@@ -30,6 +30,9 @@
 
 ///import baidu.lang.instance;
 
+///import baidu.page.getViewWidth;
+///import baidu.page.getViewHeight;
+
 //添加对flash的隐藏和显示
 //在webkit中，使用iframe加div的方式遮罩wmode为window的flash会时性能下降到无法忍受的地步
 //在Gecko中，使用透明的iframe无法遮住wmode为window的flash
@@ -267,6 +270,12 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
     _update: function() {
         var me = this, main = me.getMain();
         baidu.dom.setStyles(main, me.styles);
+
+        //TODO:iframe 补丁
+        window.top !== window.self && setTimeout(function(){
+            me._getModalStyles({});
+            me._update();
+        },16);
     },
 
     /**
@@ -281,7 +290,6 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
             container = me.getContainer(),
             offsetParentPosition,
             parentPosition, offsetParent;
-
 
         function getStyleNum(d,style) {
             var result = parseInt(baidu.getStyle(d, style));
@@ -302,20 +310,22 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
                 styles['left'] = parentPosition.left - offsetParentPosition.left + getStyleNum(offsetParent, 'marginLeft');
             }
         }else {
-            //styles['width'] = baidu.page.getViewWidth();
-            //styles['height'] = baidu.page.getViewHeight();
-
-            styles['width'] = '100%';
-            styles['height'] = '100%';
+            
 
             //如果不是ie6,并且不是quirk模式，设置为fixed
-            if ((!baidu.browser.ie || baidu.browser.ie >= 7) && document.compatMode != 'BackCompat') {
+            if ((baidu.browser.ie >= 7 || !baidu.browser.ie ) && document.compatMode != 'BackCompat') {
                 styles['position'] = 'fixed';
                 styles['top'] = 0;
                 styles['left'] = 0;
+
+                styles['width'] = '100%';
+                styles['height'] = '100%';
             }else {
                 styles['top'] = baidu.page.getScrollTop();
                 styles['left'] = baidu.page.getScrollLeft();
+
+                styles['width'] = baidu.page.getViewWidth();
+                styles['height'] = baidu.page.getViewHeight();
             }
         }
 
