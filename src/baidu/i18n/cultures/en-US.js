@@ -6,14 +6,14 @@
 ///import baidu.i18n.culture;
 ///import baidu.object.extend;
 /**
- * 一个中文的语言包
+ * 一个美语的语言包
  */
-baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] || {}, {
+baidu.i18n.cultures['en-US'] = baidu.object.extend(baidu.i18n.cultures['en-US'] || {}, {
     calendar: {
         dateFormat: 'yyyy-MM-dd',
-        titleNames: '#{yyyy}年&nbsp;#{MM}月',
-        monthNames: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
-        dayNames: {mon: '一', tue: '二', wed: '三', thu: '四', fri: '五', sat: '六', sun: '日'},
+        titleNames: '#{MM}&nbsp;#{yyyy}',
+        monthNames: ['January','February','March','April','May','June', 'July','August','September','October','November','December'],
+        dayNames: {mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun'},
         
         /**
          * 本地日历和格里高历相互转化的基础函数
@@ -24,7 +24,7 @@ baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] 
          */
         _basicDate: function(date, type){
             var timeZone = ('local' == type ? 1 : -1) * date.getTimezoneOffset(),
-                zone = 8,//时区
+                zone = -5,//时区
                 millisec = date.getTime();
             return new Date(timeZone / 60 != zone ? (millisec + timeZone * 60000 + 3600000 * zone)
                 : millisec);
@@ -57,4 +57,4 @@ baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] 
         }
     }
 });
-baidu.object.extend(baidu.i18n.culture, baidu.i18n.cultures['zh-CN']);
+baidu.object.extend(baidu.i18n.culture, baidu.i18n.cultures['en-US']);
