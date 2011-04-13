@@ -34,8 +34,8 @@ test('base', function() {
 
 		// 点击tab all查看数据
 		for ( var i = 4; i >= 0; i--) {
-			ua.click(dialog.tab.heads[i]);
-			ok(isShown(dialog.tab.bodies[i]), 'body ' + i + ' is shown');
+			ua.click(dialog.tab.getHeads()[i]);
+			ok(isShown(dialog.tab.getBodies()[i]), 'body ' + i + ' is shown');
 			// 校验值
 			var dd = data[i].data;
 			// 这个地方太恶心了，居然没有对外接口可以获得数据结构，只能用这种东西来校验

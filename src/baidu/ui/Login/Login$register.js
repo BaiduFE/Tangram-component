@@ -18,7 +18,7 @@
  * @config {Function}           onRegisterSuccess     注册成功回调函数
  * @config {Function}           onRegisterFailure     注册失败回调函数
  * @config {String}             defaultStatus         弹出时初始状态(登录或注册),取值 ['login','reg'],默认为 login
- 
+ */ 
 baidu.extend(baidu.ui.Login.prototype,{
 
      regPanelId: 'regPanel',
