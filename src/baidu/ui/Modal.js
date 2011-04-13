@@ -15,8 +15,6 @@
 ///import baidu.browser.ie;
 ///import baidu.event.on;
 ///import baidu.event.un;
-///import baidu.page.getViewWidth;
-///import baidu.page.getViewHeight;
 ///import baidu.page.getScrollLeft;
 ///import baidu.page.getScrollTop;
 ///import baidu.lang.isNumber;
@@ -29,6 +27,8 @@
 ///import baidu.dom.getStyle;
 ///import baidu.dom.getPosition;
 ///import baidu.dom.children;
+
+///import baidu.lang.instance;
 
 //添加对flash的隐藏和显示
 //在webkit中，使用iframe加div的方式遮罩wmode为window的flash会时性能下降到无法忍受的地步

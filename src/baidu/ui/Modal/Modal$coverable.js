@@ -8,6 +8,7 @@
 
 ///import baidu.browser.isWebkit;
 ///import baidu.browser.isGecko;
+///import baidu.lang.Class.addEventListeners;
 
 baidu.extend(baidu.ui.Modal.prototype,{
     coverable: true,
