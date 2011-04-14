@@ -3,6 +3,7 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
+///import baidu.ui.modal;
 ///import baidu.ui.createUI;
 
 ///import baidu.dom.setAttr;

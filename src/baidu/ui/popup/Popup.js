@@ -139,7 +139,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
         
         main.innerHTML = me.getString();
 
-		me.update(me);
+		me._update(me);
 
         baidu.dom.setStyles(me.getMain(), {
             position    : "absolute",
@@ -182,7 +182,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
     open : function(options){
         var me = this;
 
-        me.update(options);
+        me._update(options);
 
         me.getMain().style.marginLeft = "auto";
         
