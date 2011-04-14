@@ -30,7 +30,7 @@
 
 ///import baidu.dom.getAncestorBy;
 ///import baidu.page.getViewWidth;
-///import baidu.page.getViewWidth;
+///import baidu.page.getViewHeight;
 ///import baidu.dom.getPosition;
 ///import baidu.dom.children;
 
