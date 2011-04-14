@@ -56,15 +56,12 @@
             height: container.offsetHeight
         });
 
-        iframeContainer.appendChild(iframe);
         
-        me.on(iframe,'onload', function(){
-            iframe.contentWindow.document.body.style.overflow = 'hidden';
-            iframe.contentWindow.document.body.style.border = 'none';
+        baidu.dom.setBorderBoxSize(iframe,{
+            width: iframeContainer.offsetWidth,
+            height: iframeContainer.offsetHeight
         });
-        iframe.src = "javascript:void(0)";
-        iframe.frameBorder = '0';
-        iframe.scrolling = 'no';
+
         baidu.dom.setStyles(iframe,{
             zIndex  : -1,
             display  : "block",
@@ -72,12 +69,15 @@
             backgroundColor: color,
             filter : 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=' + opacity + ')'
         });
-
-        baidu.dom.setBorderBoxSize(iframe,{
-            width: iframeContainer.offsetWidth,
-            height: iframeContainer.offsetHeight
+        iframeContainer.appendChild(iframe);
+        me.on(iframe,'onload', function(){
+            iframe.contentWindow.document.body.style.overflow = 'hidden';
+            iframe.contentWindow.document.body.style.border = 'none';
         });
-
+        
+        iframe.src = "javascript:void(0)";
+        iframe.frameBorder = '0';
+        iframe.scrolling = 'no';
         me.Coverable_isShowing = true;
     };
 
