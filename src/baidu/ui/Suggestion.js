@@ -78,7 +78,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
 
     currentData: {},
 
-    tplDOM: "<div id='#{0}' class='#{1}'></div>",
+    tplDOM: "<div id='#{0}' class='#{1}' style='position:relative; top:0px; left:0px'></div>",
     tplPrependAppend: "<div id='#{0}' class='#{1}'>#{2}</div>",
     tplBody: "<table cellspacing='0' cellpadding='2'><tbody>#{0}</tbody></table>",
     tplRow: '<tr><td id="#{0}" onmouseover="#{2}" onmouseout="#{3}" onmousedown="#{4}" onclick="#{5}">#{1}</td></tr>',
