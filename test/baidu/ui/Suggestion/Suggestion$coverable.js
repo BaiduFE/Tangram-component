@@ -77,7 +77,7 @@ test("hide and show a flash", function() {
 		document.body.appendChild(div);
 		baidu.swf.create({
             id: "flash1",
-            url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+            url: upath + 'flash/test_flash.swf',
             width:695,
             height:90,
             wmode:'window'

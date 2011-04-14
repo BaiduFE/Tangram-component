@@ -111,14 +111,14 @@ test('hide two-layer flash',function() {
 		ua.loadcss(upath + 'css/style.css', function() {
 				var options = {
 					titleText : "title",
-					contentText : '<object width="695" height="90" align="middle" id="flash4" style=""><embed width="695" height="90" align="middle" pluginspage="http://www.macromedia.com/go/getflashplayer" name="flash4" src="http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&amp;gp=402&amp;time=nHc4PjmzP16vn0.swf" wmode="window"></object>'
+					contentText : '<object width="695" height="90" align="middle" id="flash4" style=""><embed width="695" height="90" align="middle" pluginspage="http://www.macromedia.com/go/getflashplayer" name="flash4" src=' + upath + "flash/test_flash.swf" + ' wmode="window"></object>'
 				};
 				var div1 = document.createElement('div');
 				div1.id = 'flashContainer1';
 				document.body.appendChild(div1);
 				baidu.swf.create({
 			        id: "flash1",
-			        url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+			        url: upath + 'flash/test_flash.swf',
 			        width:695,
 			        height:90,
 			        wmode:'transparent'
@@ -128,7 +128,7 @@ test('hide two-layer flash',function() {
 				document.body.appendChild(div2);
 				baidu.swf.create({
 			        id: "flash2",
-			        url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+			        url: upath + 'flash/test_flash.swf',
 			        width:695,
 			        height:90,
 			        wmode:'window'
@@ -138,7 +138,7 @@ test('hide two-layer flash',function() {
 				document.body.appendChild(div3);
 				baidu.swf.create({
 			        id: "flash3",
-			        url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+			        url: upath + 'flash/test_flash.swf',
 			        width:695,
 			        height:90,
 			        wmode:'opaque'
