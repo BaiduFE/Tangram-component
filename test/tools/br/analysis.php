@@ -22,6 +22,7 @@ class Analysis{
 		$root = '../../../..';
 		if(sizeof(self::$projpath) == 0){
 			//			array_push(self::$projpath, "/$proj/src");
+			array_push(self::$projpath, "../../../src");
 			array_push(self::$projpath, "../../../../base-me/src");
 			array_push(self::$projpath, "../../../../Tangram-base/src");
 			array_push(self::$projpath, "../../../../ui-me/src");
