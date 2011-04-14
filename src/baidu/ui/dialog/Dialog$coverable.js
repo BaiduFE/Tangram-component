@@ -5,6 +5,7 @@
 
 ///import baidu.ui.dialog.Dialog;
 ///import baidu.ui.behavior.coverable;
+///import baidu.lang.Class.addEventListeners;
 
 baidu.extend(baidu.ui.dialog.Dialog.prototype,{
     coverable: true,
@@ -15,7 +16,7 @@ baidu.ui.dialog.Dialog.register(function(me){
 
     if(me.coverable){
 
-        me.addEventListener("onopen", function(){
+        me.addEventListeners("onopen,onload", function(){
             me.Coverable_show();
         });
 
