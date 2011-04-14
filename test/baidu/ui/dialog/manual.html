@@ -362,6 +362,7 @@ h2{
         </select>
         <div id="flashContainer1"></div>
         <div id="flashContainer2"></div>
+        <div id="flashContainer3"></div>
         <br />
         <br />
         <br />
@@ -411,8 +412,6 @@ h2{
         <br />
         <br />
         <script>
-            baidu.ui.smartCover.options.hideFlash = true;
-            baidu.ui.smartCover.options.hideSelect = true;
             baidu.swf.create({
                 id: "flash",
                 url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
@@ -425,7 +424,14 @@ h2{
                 url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
                 width:695,
                 height:90
+
             }, "flashContainer2");
+            baidu.swf.create({
+                id: "flash",
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90
+            }, "flashContainer3");
         </script>
     </body>
 </html>
