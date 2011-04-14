@@ -11,6 +11,7 @@
 ///import baidu.dom.setStyles;
 ///import baidu.object.extend;
 ///import baidu.dom.setBorderBoxSize;
+///import baidu.event.on;
 
 (function(){
     var Coverable = baidu.ui.behavior.coverable = function() {};
@@ -70,7 +71,7 @@
             filter : 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=' + opacity + ')'
         });
         iframeContainer.appendChild(iframe);
-        me.on(iframe,'onload', function(){
+        baidu.on(iframe,'onload', function(){
             iframe.contentWindow.document.body.style.overflow = 'hidden';
             iframe.contentWindow.document.body.style.border = 'none';
         });

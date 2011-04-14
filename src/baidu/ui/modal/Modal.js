@@ -27,6 +27,8 @@
 ///import baidu.dom.getStyle;
 ///import baidu.array.each;
 
+///import baidu.dom.getAncestorBy;
+
 //在webkit中，使用iframe加div的方式遮罩wmode为window的flash会时性能下降到无法忍受的地步
 //在Gecko中，使用透明的iframe无法遮住wmode为window的flash
 //在其余浏览器引擎中wmode为window的flash会被遮罩，处于不可见状态

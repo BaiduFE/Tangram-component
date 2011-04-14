@@ -232,7 +232,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
      * @config {Function}           ondragend             draggable模块支持，拖拽结束时触发
      *
      */
-    update : function(options){
+    _update : function(options){
         options = options || {};
         var me = this, contentWrapper = me.getBody();
 
@@ -252,9 +252,13 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
         }
 		me._updateSize();
         me._updatePosition();
-        me.dispatchEvent("onupdate");
     },
-    
+
+    update: function(options){
+        var me = this;
+        me._update(options);
+        me.dispatchEvent('onupdate');
+    },
     /**
 	 * 更新大小,子类可以通过同名方法覆盖;
 	 * 默认实现为使用参数的width和height赋值
