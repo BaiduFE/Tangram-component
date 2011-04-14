@@ -5,7 +5,7 @@ test('shown on open and hidden on close',function() {
 	ua.loadcss(upath + 'css/style.css', function() {
 			var options = {
 				titleText : "title",
-				contentText : '<object width="695" height="90" align="middle" id="flash4" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" style=""><param value="window" name="wmode"><param value="http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&amp;gp=402&amp;time=nHc4PjmzP16vn0.swf" name="movie"><embed width="695" height="90" align="middle" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" name="flash2" src="http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&amp;gp=402&amp;time=nHc4PjmzP16vn0.swf" wmode="window"></object>'
+				contentText : "contentText"
 			};
 
             var d = new baidu.ui.Dialog(options);
@@ -169,7 +169,7 @@ test('hide two-layer flash',function() {
 				d_new.open();
 				var m_new = d_new.modalInstance.getMain();
 				ok(isShown(m_new), 'modal shown on all dialogs open');
-				equals(baidu.g("flash4").style.visibility, "hidden", "The window flash is shown PUBLICGE-383");
+				equals(baidu.g("flash4").style.visibility, "hidden", "The window flash is hidden");
 				d_new.close();
 				ok(isShown(m_new), 'modal shown after 1 dialog close');
 				ok(baidu.g("flash4").style.visibility == "visible" || baidu.g("flash4").style.visibility == "inherit", "The window flash is shown");
