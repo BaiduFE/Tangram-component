@@ -29,6 +29,10 @@
 ///import baidu.array.each;
 
 ///import baidu.dom.getAncestorBy;
+///import baidu.page.getViewWidth;
+///import baidu.page.getViewWidth;
+///import baidu.dom.getPosition;
+///import baidu.dom.children;
 
 //在webkit中，使用iframe加div的方式遮罩wmode为window的flash会时性能下降到无法忍受的地步
 //在Gecko中，使用透明的iframe无法遮住wmode为window的flash
