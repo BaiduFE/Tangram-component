@@ -116,6 +116,62 @@ test('type enter', function() {
 	sugg.show('a', [ 'aa', 'ab' ]);
 });
 
+test('problem', function() {
+	stop();
+	var te = testingElement, input = te.dom[0], sugg, step = 1;
+	var check = function(callback) {
+		setTimeout(callback, 0);
+	};
+	var options = {
+		onshow : function() {
+			if (step++ == 0) {
+				/* keydown with selected -1 */
+				UserAction.keydown(input, {
+					keyCode : 13
+				});
+			} else if(step == 3){
+				UserAction.keydown(input, {
+					keyCode : 13
+				});
+			} else {
+				/* keydown with selected 0 */
+				UserAction.keydown(input, {
+					keyCode : 40
+				});
+				UserAction.keydown(input, {
+					keyCode : 13
+				});
+			}
+		},
+		onhide : function() {
+			if (step == 2) {
+				setTimeout(function() {
+					equals(input.value, 'aa', 'type enter with select 0');
+					input.value = 'a';
+					sugg.show('a', [ 'aa', 'ab' ]);
+				}, 0);
+			} else if (step == 1) {
+				setTimeout(function() {
+					equals(input.value, 'a', 'type enter with no select');
+					input.value = 'a';
+					sugg.show('a', [ 'aa', 'ab' ]);
+				}, 0);
+			} else{
+				setTimeout(function() {
+					equals(input.value, 'a', 'type enter with no select after some selects PUBLICGE-373');
+					start();
+				}, 0);
+			}
+		}
+	};
+	sugg = new baidu.ui.Suggestion(options);
+	sugg.render(input);
+	te.obj.push(sugg);
+	input.focus();
+	input.value = 'a';
+	sugg.show('a', [ 'aa', 'ab' ]);
+});
+
 test('type tab and esc', function() {
 	stop();
 	var te = testingElement, input = te.dom[0], sugg, handle, step = 0;

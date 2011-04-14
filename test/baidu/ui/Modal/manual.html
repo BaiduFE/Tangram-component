@@ -51,16 +51,27 @@
                 <OPTION>aaaaa</OPTION>
             </select>
         </div>
-        </div>
-        <IFRAME onload="javascript:init();" src="manual2.html" style="position:absolute; top:500px;" id="ff"></IFRAME>
+    </div>
+        <div style="position:absolute; top:500px">
+            <IFRAME onload="javascript:init(event);" src="manual2.html" id="ff"></IFRAME>
+            </div>
         <SCRIPT>
-            function init(){
-                var w = frames[0];
-                var modal = new w.baidu.ui.Modal();
-                modal.render();
-                modal.show({styles:{color:"blue"}});
+            function init(e){
+            var e = document.getElementById('ff');
+            var w = e.contentWindow;
 
-                document.getElementById("ff").style.width = "100px";
+            var h = setInterval(function() {
+                if (w.baidu) {
+                    clearInterval(h);
+                    
+                        var modal = new w.baidu.ui.Modal();
+                        modal.render();
+                        modal.show({styles:{color:"blue"}});
+
+                     document.getElementById("ff").style.width = "100px";
+                }
+            }, 20);
+
             } 
         </SCRIPT>
 

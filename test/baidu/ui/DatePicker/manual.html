@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style type='text/css'>
+.tangram-popup{
+    border:red solid 1px;
+    width: 100%;
+    height: 100%;
+}
+/*calendar*/
+.tangram-calendar {
+    width: 100%;
+    height: 100%;
+}
+
+.tangram-calendar-title {
+    position: relative;
+    background: blue;
+}
+.tangram-calendar-label{
+    text-align: center;
+    width: 100%;/*ie必要*/
+    background: green;
+}
+
+.tangram-calendar-prev {
+    position: absolute;
+    text-align: center;
+    background: silver;
+    cursor: pointer;
+    left: 0px;
+    top: 0px;
+    width: 30px;
+}
+.tangram-calendar-next{
+    position: absolute;
+    text-align: center;
+    background: silver;
+    cursor: pointer;
+    right: 0px;
+    top: 0px;
+    width: 30px;
+}
+.tangram-calendar-content{
+    background: pink;
+}
+.tangram-calendar-table {
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+.tangram-calendar-week td{
+    cursor: default;
+    font-weight: bold;
+}
+.tangram-calendar-date td{
+    cursor:pointer;
+}
+
+.tangram-calendar-date-current{
+    background: green;
+}
+.tangram-calendar-date-other{
+    color: #ccc;
+}
+
+.tangram-calendar-date-today{
+    border: red solid 1px;
+}
+.tangram-calendar-date-highlight{
+    background: yellow;
+}
+
+.tangram-calendar-disabled{
+    background: gray;
+}
+
+.tangram-calendar-date-disable{
+    background: gray;
+}
+
+.tangram-calendar-hover{
+    background: black;
+    color: white;
+}
+</style>
+<script language='JavaScript' src='../../../../src/import.php?f=baidu.i18n.cultures.zh-CN,baidu.ui.DatePicker'></script>
+</head>
+<body>
+    <div style='height:800px;'></div>
+<input id='myinput' type='text' size='100'/>
+<div id='mydiv' style='height:2000px;'>
+    <div>
+        <div>
+            <div id='condiv'></div>
+        </div>
+        
+    </div>
+</div>
+</body>
+<script language='JavaScript'>
+var d = new baidu.ui.DatePicker({
+    width: 320,
+    height: 240,
+    calendarOptions: {
+        disableDates: [{start: new Date(2011, 4, 1, 23, 59, 59), end: new Date(2011, 4, 3)}]
+    }
+//    format: 'dd日MM月yyyy年, yy年MM月dd日'
+});
+d.render('myinput');
+</script>
+</html>

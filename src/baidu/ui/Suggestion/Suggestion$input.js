@@ -197,6 +197,8 @@ baidu.ui.Suggestion.extend({
                     baidu.event.preventDefault(e);
                     keyUpDown(up);
                     break;
+                default:
+                   me.selectIndexByKeybord = -1;
             }
         };
     },
