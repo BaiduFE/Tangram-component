@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: tools/log$dDialog.js
- * author: lixiaopeng
- * version: 1.0.0
- * date: 2011/2/28
  */
 
 ///import baidu.object.extend;
@@ -220,7 +215,3 @@ baidu.tools.log.Dialog.prototype = {
         return data.toString(); 
     }
 };
-
-baidu.dom.ready(function(){
-    baidu.tools.log.DInstance = new baidu.tools.log.Dialog();
-});

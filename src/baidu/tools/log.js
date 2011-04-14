@@ -1,11 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: tools/log.js
- * author: lixiaopeng
- * version: 1.0.0
- * date: 2011/2/28
  */
 
 ///import baidu.object.extend;
@@ -29,9 +24,10 @@
 
         timeInterval = 0,
     
-        _logLevel = parseInt('1111',2);
+        _logLevel = parseInt('1111',2),
 
-        
+        _enableDialg = false,
+        _dialog = null;
      
     /**
      * 打印log
@@ -143,8 +139,11 @@
         //清空栈
         _logStack = [];
 
-        //dialog对话框
-        baidu.tools.log.DInstance && baidu.tools.log.DInstance.push(data);
+        if(_enableDialg){
+            !_dialog && baidu.tools.log.Dialog ? (_dialog = new baidu.tools.log.Dialog());
+            _dialog.push(data);
+        }
+
         me.callBack.call(data);
     };
 
