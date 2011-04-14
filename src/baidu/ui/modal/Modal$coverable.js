@@ -10,11 +10,11 @@
 ///import baidu.browser.isWebkit;
 ///import baidu.browser.isGecko;
 
+///import baidu.lang.Class.addEventListeners;
+
 baidu.extend(baidu.ui.modal.Modal.prototype,{
     coverable: true,
-    coverableOptions: {
-        opactiy: 0
-    }
+    coverableOptions: {}
 });
 
 baidu.ui.modal.Modal.register(function(me){
@@ -26,7 +26,7 @@ baidu.ui.modal.Modal.register(function(me){
                 me.Coverable_show();
             });
 
-            me.addEventListener("onupdate",function(){
+            me.addEventListeners("onupdate,onshow",function(){
                 me.Coverable_update();
             });
         }

@@ -98,7 +98,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
     //onupdate        : function(){},
 
 
-    tplBody          : "<div id='#{id}' class='#{class}'></div>",
+    tplBody          : "<div id='#{id}' class='#{class}' style='position:relative; top:0px; left:0px;'></div>",
 
     /**
      * 查询当前窗口是否处于显示状态
