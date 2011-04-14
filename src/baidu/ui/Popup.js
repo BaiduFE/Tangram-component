@@ -134,7 +134,7 @@ baidu.ui.Popup = baidu.ui.createUI(function (options){
         
         main.innerHTML = me.getString();
 
-        me.update(me);
+        me._update(me);
 
         baidu.dom.setStyles(me.getMain(), {
             position    : "absolute",
@@ -177,7 +177,7 @@ baidu.ui.Popup = baidu.ui.createUI(function (options){
     open : function(options){
         var me = this;
 
-        me.update(options);
+        me._update(options);
 
         me.getMain().style.marginLeft = "auto";
         
@@ -228,28 +228,33 @@ baidu.ui.Popup = baidu.ui.createUI(function (options){
      *
      */
     update : function(options){
-        options = options || {};
-        var me = this, contentWrapper = me.getBody();
-
-        //扩展options属性
-        baidu.object.extend(me, options);
-
-        //更新内容
-        if(options.content){
-            //content优先
-            if(contentWrapper.firstChild != options.content){
-                contentWrapper.innerHTML = "";
-                contentWrapper.appendChild(options.content);
-            }
-        }else if(options.contentText){
-            //建议popup不要支持text
-            contentWrapper.innerHTML = options.contentText;
-        }
-        me._updateSize();
-        me._updatePosition();
+        var me = this;
+        me._update(options);
         me.dispatchEvent("onupdate");
     },
-    
+   
+    _update: function(options){
+         options = options || {};                                                                                                                          
+         var me = this, contentWrapper = me.getBody();                                                                                                     
+                                                                                                                                                           
+         //扩展options属性                                                                                                                                 
+         baidu.object.extend(me, options);                                                                                                                 
+                                                                                                                                                           
+         //更新内容                                                                                                                                        
+         if(options.content){                                                                                                                              
+             //content优先                                                                                                                                 
+             if(contentWrapper.firstChild != options.content){                                                                                             
+                 contentWrapper.innerHTML = "";                                                                                                            
+                 contentWrapper.appendChild(options.content);                                                                                              
+             }                                                                                                                                             
+         }else if(options.contentText){                                                                                                                    
+             //建议popup不要支持text                                                                                                                       
+             contentWrapper.innerHTML = options.contentText;                                                                                               
+         }                                                                                                                                                 
+         me._updateSize();                                                                                                                                 
+         me._updatePosition();                                                                                                                             
+    },
+
     /**
      * 更新大小,子类可以通过同名方法覆盖;
      * 默认实现为使用参数的width和height赋值
