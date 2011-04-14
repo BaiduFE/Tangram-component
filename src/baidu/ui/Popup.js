@@ -1,15 +1,8 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * 
- * path: ui/Popup.js
- * author: berg,rocy
- * version: 1.0.0
- * date: 2010-05-18
  */
 
-
-//依赖包
 ///import baidu.ui.createUI;
 ///import baidu.page.getViewWidth;
 ///import baidu.page.getViewHeight;
@@ -93,7 +86,7 @@ baidu.ui.Popup = baidu.ui.createUI(function (options){
     //onupdate        : function(){},
 
 
-    tplBody          : "<div id='#{id}' class='#{class}'></div>",
+    tplBody          : "<div id='#{id}' class='#{class}' style='position:relative; top:0px; left:0px;'></div>",
 
     /**
      * 查询当前窗口是否处于显示状态

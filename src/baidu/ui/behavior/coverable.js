@@ -19,19 +19,19 @@
     Coverable.Coverable_iframeContainer;
 
     Coverable.Coverable_show = function(){
+        var me = this;
+        if(me.Coverable_iframe){
+            me.Coverable_update();
+            baidu.setStyle(me.Coverable_iframe, 'display', 'block'); 
+            return;
+        }
         
-        var me = this,
-            opt = me.coverableOptions || {},
+        var opt = me.coverableOptions || {},
             container = me.Coverable_container = opt.container || me.getMain(),
             opacity = opt.opacity || '100',
             color = opt.color || 'white',
             iframe = me.Coverable_iframe = document.createElement('iframe'),
             iframeContainer = me.Coverable_iframeContainer = document.createElement('div');
-
-        if(me.Coverable_isShowing){
-            me.Coverable_update();
-            return;
-        }
 
         //append iframe container
         baidu.dom.children(container).length > 0 ?
@@ -71,6 +71,7 @@
         }
         
         baidu.setStyle(iframe, 'display', 'none');
+        me.Coverable_isShowing = false;
     };
 
     Coverable.Coverable_update = function(){
