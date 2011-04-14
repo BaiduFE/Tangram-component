@@ -12,9 +12,7 @@
 
 baidu.extend(baidu.ui.Modal.prototype,{
     coverable: true,
-    coverableOptions: {
-        opacity: '0'
-    }
+    coverableOptions: {}
 });
 
 baidu.ui.Modal.register(function(me){

@@ -35,7 +35,7 @@
         
         var opt = me.coverableOptions || {},
             container = me.Coverable_container = opt.container || me.getMain(),
-            opacity = opt.opacity || '100',
+            opacity = opt.opacity || '0',
             color = opt.color || '',
             iframe = me.Coverable_iframe = document.createElement('iframe'),
             iframeContainer = me.Coverable_iframeContainer = document.createElement('div');
