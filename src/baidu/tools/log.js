@@ -140,7 +140,7 @@
         _logStack = [];
 
         if(_enableDialg){
-            !_dialog && baidu.tools.log.Dialog ? (_dialog = new baidu.tools.log.Dialog());
+            (!_dialog && baidu.tools.log.Dialog) && (_dialog = new baidu.tools.log.Dialog());
             _dialog.push(data);
         }
 
