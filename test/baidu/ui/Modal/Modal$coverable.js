@@ -10,7 +10,7 @@ test('hide select',function(){
 		var mo = m.getMain();
 		ok(isShown(mo), '调用show之后modal应该展示');
 		if(!baidu.browser.isWebkit && !baidu.browser.isGecko){
-			ok(m.getMain().firstChild.firstChild.style['backgroundColor'] ,'The iframe is not transparent PUBLICGE-375');
+			ok(!m.getMain().firstChild.firstChild.style['backgroundColor'] ,'The iframe is transparent');
 			equals(m.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 			equals(m.getMain().firstChild.firstChild.style.width, m.getMain().offsetWidth + 'px', 'The width of the iframe is right');
 			equals(m.getMain().firstChild.firstChild.style.height, m.getMain().offsetHeight + 'px', 'The Height of the iframe is right');
@@ -42,7 +42,7 @@ test('在div中遮罩 hide select', function() {
 	var mo = m.getMain();
 	ok(isShown(mo), '调用show之后modal应该展示');
 	if(!baidu.browser.isWebkit && !baidu.browser.isGecko){
-		ok(m.getMain().firstChild.firstChild.style['backgroundColor'] ,'The iframe is not transparent PUBLICGE-375');
+		ok(!m.getMain().firstChild.firstChild.style['backgroundColor'] ,'The iframe is transparent');
 		equals(m.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 		equals(m.getMain().firstChild.firstChild.style.width, m.getMain().offsetWidth + 'px', 'The width of the iframe is right');
 		equals(m.getMain().firstChild.firstChild.style.height, m.getMain().offsetHeight + 'px', 'The Height of the iframe is right');
