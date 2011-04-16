@@ -98,7 +98,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
     //onupdate        : function(){},
 
 
-    tplBody          : "<div id='#{id}' class='#{class}'></div>",
+    tplBody          : "<div id='#{id}' class='#{class}' style='position:relative; top:0px; left:0px;'></div>",
 
     /**
      * 查询当前窗口是否处于显示状态
@@ -139,7 +139,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
         
         main.innerHTML = me.getString();
 
-		me.update(me);
+		me._update(me);
 
         baidu.dom.setStyles(me.getMain(), {
             position    : "absolute",
@@ -182,7 +182,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
     open : function(options){
         var me = this;
 
-        me.update(options);
+        me._update(options);
 
         me.getMain().style.marginLeft = "auto";
         
@@ -232,7 +232,7 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
      * @config {Function}           ondragend             draggable模块支持，拖拽结束时触发
      *
      */
-    update : function(options){
+    _update : function(options){
         options = options || {};
         var me = this, contentWrapper = me.getBody();
 
@@ -252,9 +252,13 @@ baidu.ui.popup.Popup = baidu.ui.createUI(function (options){
         }
 		me._updateSize();
         me._updatePosition();
-        me.dispatchEvent("onupdate");
     },
-    
+
+    update: function(options){
+        var me = this;
+        me._update(options);
+        me.dispatchEvent('onupdate');
+    },
     /**
 	 * 更新大小,子类可以通过同名方法覆盖;
 	 * 默认实现为使用参数的width和height赋值
