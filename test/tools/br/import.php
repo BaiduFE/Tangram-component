@@ -39,7 +39,7 @@ function importSrc($d){
 	return "";
 	array_push($IGNORE, $d);
 	$ccnt = Analysis::get_src_cnt($d);
-	$content = trim(preg_replace("/\/\*(.*?)\*\//ies", "", $ccnt['c']));
-	return preg_replace("/\/\/\/import\s+([\w\-\$]+(\.[\w\-\$]+)*);?/ies", "importSrc('\\1')", $content);
+	//$content = trim(preg_replace("/\/\*(.*?)\*\//ies", "", $ccnt['c']));
+	return preg_replace("/\/\/\/import\s+([\w\-\$]+(\.[\w\-\$]+)*);?/ies", "importSrc('\\1')", $ccnt['c']);
 }
 ?>

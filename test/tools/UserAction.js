@@ -1069,6 +1069,35 @@ var UserAction = {
 			}
 		};
 		return check;
+	},
+	
+	/* 用于加载css文件，如果没有加载完毕则不执行回调函数 */
+	loadcss : function(url, callback, classname, style, value) {
+		var links = document.getElementsByTagName('link');
+		for ( var link in links) {
+			if (link.href == url) {
+				callback();
+				return;
+			}
+		}
+		var head = document.getElementsByTagName('head')[0];
+		var link = head.appendChild(document.createElement('link'));
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("type", "text/css");
+		link.setAttribute("href", url);
+		var div = document.body.appendChild(document.createElement("div"));
+		$(document).ready(
+				function() {
+					div.className = classname || 'cssloaded';
+					var h = setInterval(function() {
+						if ($(div).css(style || 'width') == value
+								|| $(div).css(style || 'width') == '20px') {
+							clearInterval(h);
+							document.body.removeChild(div);
+							setTimeout(callback, 20);
+						}
+					}, 20);
+				});
 	}
 };
 var ua = UserAction;
