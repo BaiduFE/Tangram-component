@@ -102,6 +102,9 @@ baidu.ui.Base = {
 
     /**
      * 添加事件. 避免析构中漏掉注销事件.
+     * @param {HTMLElement|string|window} element 目标元素或目标元素id
+     * @param {string} type 事件类型
+     * @param {Function} listener 需要添加的监听器
      */
     on : function(element, type, listener){
         baidu.on(element, type, listener);
