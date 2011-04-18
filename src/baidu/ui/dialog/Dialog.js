@@ -344,9 +344,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             left = '',
             content = me.getContent(),
             body = me.getBody(),
-            ow = content.offsetWidth,
-            oh = content.offsetHeight;
-
+            width,height;
         /*
          * 暂不支持百分比形式的寛高计算
          * 在render或者window resize时保证content上的寛高必有值
@@ -368,16 +366,19 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
          * 针对这个问题，调成程序执行顺序，先取得所有相关的css属性值
          * 之后更改content的寛高，再根据content当前的offset值与之前取得的属性值进行计算，获取body的寛高值
          */
-        me.width = parseFloat(me.width);
-        me.height = parseFloat(me.height);
+        width = parseFloat(me.width);
+        height = parseFloat(me.height);
         
         bodyOffset = me._getBodyOffset();
         
-        baidu.lang.isNumber(me.width) && baidu.dom.setOuterWidth(content,me.width);
-        baidu.lang.isNumber(me.height) && baidu.dom.setOuterHeight(content,me.height);
+        baidu.lang.isNumber(width) && baidu.dom.setOuterWidth(content,width);
+        baidu.lang.isNumber(height) && baidu.dom.setOuterHeight(content,height);
         
         bodyOffset.width += content.offsetWidth;
         bodyOffset.height += content.offsetHeight;
+
+        me.width && baidu.setStyle(body, 'width', bodyOffset.width);
+        me.height && baidu.setStyle(body, 'height', bodyOffset.height);
         
         baidu.setStyles(body, bodyOffset);
         
