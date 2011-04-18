@@ -55,26 +55,19 @@ baidu.ui.Tooltip.register(function(me) {
         //显示tooltip
         function showFn(e){
             hideHandle && clearTimeout(hideHandle);
-
-            var e = e || window.event,
-                target = baidu.event.getTarget(e);
-            
-            me.open(target);
+            me.open(this);
             
             //停止默认事件及事件传播
-            baidu.event.stop(e);
+            baidu.event.stop(e || window.event);
         }
 
         //隐藏tooltip
         function hideFn(e){
-            var e = e || window.event,
-                target = baidu.event.getTarget(e);
-
             hideHandle = setTimeout(function(){
                 me.close();
 
                 //停止默认事件及事件传播
-                baidu.event.stop(e);   
+                baidu.event.stop(e || window.event);   
             },me.hideDelay);
         }
     }
