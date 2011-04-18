@@ -68,6 +68,7 @@
 baidu.ui.Dialog = baidu.ui.createUI(function (options){
 
     var me = this;
+    me._content = 'initElement';
     me.content = me.content || null;
     
     me._contentText = 'initText';
@@ -190,7 +191,8 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         var me = this,
             content = me.getContent(),
             options = options || {},
-            title = me.getTitleInner();
+            title = me.getTitleInner(),
+            setText = false;
       
         if(typeof options.titleText != 'undefined'){
             //当options中存在titleText时,认为用户需要更新titleText，直接更新
@@ -214,13 +216,17 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
                 me.content = content.firstChild;
                 return;
             }
-        }else if(me.content && me.content !== content.firstChild){
-            //第一次new dialog时，若存在content，则进入该分支
+            setText = true;
+        }else if(me.content !== me._content){
+            //第一次new dialog时，进入该分支
             //若采用dialog.content = HTMLElement;dialog.update();的方式进行更新，进去该分支
             content.innerHTML = '';
-            content.appendChild(me.content);
-            me.content = content.firstChild;
-            return;
+            if(me.content !== null){
+                content.appendChild(me.content);
+                me.content = content.firstChild;
+                return;
+            }
+            setText = true;
         }
 
         if(typeof options.contentText != 'undefined'){
@@ -228,7 +234,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
             content.innerHTML = options.contentText;
             me.contentText = me._contentText = options.contentText;
             me.content = content.firstChild;
-        }else if(me.contentText != me._contentText){
+        }else if((me.contentText != me._contentText) || setText){
             //当new dialog时，无论是否传入contentText,都会进入该分支
             //若才用dialog.contentText = '***';dialog.update()进行更新，也会进入该分支
             content.innerHTML = me.contentText;
