@@ -5,6 +5,7 @@
  */
 ///import baidu.widget;
 ///import baidu.lang.isString;
+///import baidu.lang.isObject;
 ///import baidu.lang.isFunction;
 /**
  * 检查传入对象是否为widget
@@ -19,7 +20,8 @@
  */
 baidu.widget._isWidget = function(widget) {
     if (!widget ||
-        !baidu.lang.isString(widget.name) ||
+        !baidu.lang.isString(widget.id) ||
+        !baidu.lang.isObject(widget.exports) ||
         !baidu.lang.isFunction(widget.main)) {
         return false;
     }

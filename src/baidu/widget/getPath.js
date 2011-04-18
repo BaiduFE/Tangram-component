@@ -18,5 +18,6 @@
  * @author rocy
  */
 baidu.widget.getPath = function(name) {
-    return baidu.widget._pathInfo[name] || name.replace(/\./g, '/') + '.js';
+    return baidu.widget._basePath + 
+    	(baidu.widget._pathInfo[name] || (name.replace(/\./g, '/') + '.js'));
 };

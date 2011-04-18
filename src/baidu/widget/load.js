@@ -17,12 +17,23 @@
  * @function
  * @grammar baidu.widget.load(widgets, executer)
  * @param {Array<String>|String} widgets widget名称数组.
- * @param {Function} executer widget加载完成时执行,第一个参数为所加载widget的context.
+ * @param {Function} executer widget加载完成时执行,第一个参数为获取widget API的方法(require).
  * @author rocy
  */
 baidu.widget.load = function(widgets, executer) {
     var files = [],
         executer = executer || baidu.fn.blank,
+        makeRequire = function(context){
+            var ret = function (id){
+                var widget = ret.context[id];
+                if(!baidu.widget._isWidget(widget)){
+                    return {};
+                }
+                return widget.exports;
+            };
+            ret.context = context;
+            return ret;
+        },
         realCallback = function() {
             var i = 0,
                 length = widgets.length,
@@ -45,15 +56,16 @@ baidu.widget.load = function(widgets, executer) {
                 if (baidu.widget._isWidget(widget)) {
                     //累加依赖模块的context,并将依赖模块置于context中.
                     baidu.extend(context, widget.context);
-                    baidu.lang.module(widgetName, widget, context);
+                    //baidu.extend(context, widget.exports);
+                    //无需注入到相应的名字空间 context.xx.yy
+                    //baidu.lang.module(widgetName, widget, context);
                     context[widgetName] = widget;
                 }
             }
-            executer(context);
+            executer(makeRequire(context));
         };
-
     if (!widgets) {
-        executer(baidu.widget._defaultContext);
+        executer(makeRequire(baidu.widget._defaultContext));
     }
     //widget列表支持逗号分隔的字符串描述
     if (baidu.lang.isString(widgets)) {
@@ -67,5 +79,5 @@ baidu.widget.load = function(widgets, executer) {
     });
     files.length ?
         baidu.page.load(files, {onload: realCallback}) :
-        executer(baidu.widget._defaultContext);
+        executer(makeRequire(baidu.widget._defaultContext));
 };

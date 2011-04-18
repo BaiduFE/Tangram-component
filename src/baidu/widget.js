@@ -18,6 +18,10 @@
  */
 baidu.widget = baidu.widget || {
     _pathInfo : {},
+    /**
+     * widget url查找的根路径, 相对根路径或绝对根路径皆可.
+     */
+    _basePath : '',
     _widgetInUse : {},
     _widgetLoading : {},
     _defaultContext : {}
