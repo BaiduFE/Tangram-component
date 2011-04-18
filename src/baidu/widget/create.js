@@ -12,7 +12,7 @@
  * @function
  * @grammar baidu.widget.create(id, main, [options])
  * @param {String} id widget名.
- * @param {Function} main widget的初始化方法,第一个参数为获取依赖widget API的方法(require), 第二个参数为API挂载点(exports), 第三个参数是widget本身.
+ * @param {Function} main widget的初始化方法,第一个参数为获取依赖widget API的方法(require), 第二个参数为API挂载点(exports).
  * @param {Object} [options] 配置参数.
  * @param {Array<String>|String} [options.depends] 依赖列表, 支持逗号分隔的字符串描述.
  * @param {Function} [options.dispose] 析构函数,在dispose时调用.
@@ -38,7 +38,7 @@ baidu.widget.create = function(id, main, options) {
             baidu.widget._widgetInUse[widget.id] = widget;
             widget.context = require.context || baidu.widget._defaultContext;
             widget.exports = {};
-            widget.main.call(widget, require, widget.exports, widget);
+            widget.main.call(widget, require, widget.exports);
         });
     }
     return widget;

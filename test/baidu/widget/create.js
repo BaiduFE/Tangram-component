@@ -7,13 +7,12 @@ test("参数类型验证", function(){
     baidu.widget.create("widget1", function(require, exports, thisPtr){
         equal(typeof require, "function", "require类型为function");
         equal(typeof exports, "object", "exports 类型为object");
-        equal(thisPtr.exports, exports, "第三个参数是本身");
     });
 });
 
 test("依赖验证", function(){
     stop();
-    baidu.widget.create("widget2", function(require, exports, thisPtr){
+    baidu.widget.create("widget2", function(require, exports){
         var uibase = require('uibase');
         equal(uibase.create(),'uibase_create',"测试api方法调用");
         start();
@@ -26,7 +25,7 @@ baidu.widget._pathInfo = {
 }
 test("多个依赖widget验证", function(){
     stop();
-    baidu.widget.create("widget2", function(require, exports, thisPtr){
+    baidu.widget.create("widget2", function(require, exports){
         var dialog = require('dialog');
         equal(dialog.create(),'dialog_create',"测试api方法调用");
         var dialogBase = require('dialogBase');
