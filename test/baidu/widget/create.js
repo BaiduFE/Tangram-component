@@ -1,5 +1,5 @@
 module("baidu.widget.create");
-
+// The "require" function accepts a module identifier.
 test("参数类型验证", function() {
 	// 指定相对根路径
 	baidu.widget._basePath = '../../baidu/widget/';
@@ -56,4 +56,52 @@ test("lazy load", function() {
 		lazyLoad : false
 	});
 	equals(count, 2, 'before load');
+});
+
+test("不存在的资源", function() {
+	expect(1);
+	var w1 = baidu.widget.create("widget4_1", function(require, exports) {
+		try {// 当前情况不抛错误
+			var dd = require('notexist');
+			ok(false, "见 说明 wiki.commonjs.org/wiki/Modules/1.1.1");
+		} catch (e) {
+			ok(e.message.indexOf("notexist") >= 0, 'message信息包含不存在资源');
+		}
+	});
+});
+
+/*
+ * If there is a dependency cycle, the foreign module may not have finished
+ * executing at the time it is required by one of its transitive dependencies;
+ * in this case, the object returned by "require" must contain at least the
+ * exports that the foreign module has prepared before the call to require that
+ * led to the current module's execution.
+ */
+test("cycle dependency", function() {
+	// a->b->a
+});
+
+/**
+ * The "require" function may have a "paths" attribute, that is a prioritized
+ * Array of path Strings, from high to low, of paths to top-level module
+ * directories.
+ * <li>The "paths" property must not exist in "sandbox" (a secured module
+ * system).
+ * <li>The "paths" attribute must be referentially identical in all modules.
+ * <li>Replacing the "paths" object with an alternate object may have no
+ * effect.
+ * <li>If the "paths" attribute exists, in-place modification of the contents
+ * of "paths" must be reflected by corresponding module search behavior.
+ * <li>If the "paths" attribute exists, it may not be an exhaustive list of
+ * search paths, as the loader may internally look in other locations before or
+ * after the mentioned paths.
+ * <li>If the "paths" attribute exists, it is the loader's prorogative to
+ * resolve, normalize, or canonicalize the paths provided.
+ */
+test("require and exports", function() {
+	expect(1);
+	baidu.widget.load(['a'], function(require, exports) {
+		var a = require('a');
+		equals(a.a(), "b");
+	});
 });
