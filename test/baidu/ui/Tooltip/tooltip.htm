@@ -24,7 +24,7 @@
             显示方式使用click
         </span><br/>
         <span>第一组</span><br/>
-        <a id='click1' title='click1'>click1</a><br/>
+        <div id='click1' style='height:100px; background-color:yellow'><br/><br/><div style='height:50px;background-color:red'>click1</div></div><br/>
         <a id='click2'>click2</a><br/>
         <a id='click3' title='click3'>click3</a><br/>
         <br/>
@@ -43,9 +43,9 @@
             显示方式使用hover
         </span><br/>
         <span>第一组</span><br/>
-        <a id='hover1'>hover1</a><br/>
-        <a id='hover2' title='hover2'>hover2</a><br/>
-        <a id='hover3'>hover3</a><br/>
+        <div id='hover1' style='height:100px; background-color:yellow'><br/><br/><div style='height:50px;background-color:red'>hover1</div></div><br/>
+        <a id='hover2' title='hover2'><span>hover2</span></a><br/>
+        <a id='hover3'><span>hover3</span></a><br/>
         <br/>
 
         <span>第二组</span><br/>
@@ -87,6 +87,7 @@
         tooltip_options['type'] = 'click';
         tooltip_options['target'] = ['click1','click2','click3'];
         tooltip_options['content'] = '这是一个点击生成的tooltip';
+        tooltip_options['offset'] = [10,10];
         var tooltip_click1 = new baidu.ui.Tooltip(tooltip_options);
 
         tooltip_options['target'] = ['click4','click5','click6'];

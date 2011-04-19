@@ -272,11 +272,12 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
      */
 	_setPosition: function() {
 		var me = this,
+            insideScreen = typeof me.insideScreen == 'String' ? me.insideScreen : '',
 			positionOptions = {
 				once: true,
 				offset: me.offset,
 				position: me.offsetPosition,
-				insideScreen: 'surround'
+				insideScreen:insideScreen 
 			};
 		switch (me.positionBy) {
 			case 'element':
