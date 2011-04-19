@@ -73,7 +73,7 @@
             parentPos = (!offsetParent || offsetParent == document.body) ? {left: 0, top: 0} : baidu.dom.getPosition(offsetParent);
 
         //兼容position大小写
-        options.position = options.position ? options.position.toLowerCase() : 'bottomright';
+        options.position = (typeof options.position !== 'undefined') ? options.position.toLowerCase() : 'bottomright';
 
         coordinate = _formatCoordinate(coordinate || [0, 0]);
         options.offset = _formatCoordinate(options.offset || [0, 0]);
