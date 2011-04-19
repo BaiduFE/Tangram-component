@@ -5,6 +5,7 @@
 
 ///import baidu.ui.Popup;
 ///import baidu.ui.behavior.coverable;
+///import baidu.lang.Class.addEventListeners;
 
 baidu.extend(baidu.ui.Popup.prototype,{
     coverable: true,
@@ -15,7 +16,7 @@ baidu.ui.Popup.register(function(me){
 
     if(me.coverable){
 
-        me.addEventListener("onopen", function(){
+        me.addEventListeners("onopen,onload", function(){
             me.Coverable_show();
         });
 
