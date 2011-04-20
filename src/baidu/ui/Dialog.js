@@ -213,7 +213,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
             //若content为null。则代表删除content属性
             if(options.content !== null){
                 content.appendChild(options.content);
-                me.content = content.firstChild;
+                me.content = me._content = content.firstChild;
                 return;
             }
             setText = true;
@@ -223,7 +223,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
             content.innerHTML = '';
             if(me.content !== null){
                 content.appendChild(me.content);
-                me.content = content.firstChild;
+                me.content = me._content = content.firstChild;
                 return;
             }
             setText = true;
@@ -233,13 +233,13 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
             //当options中存在contentText，则认为用户要更新contentText，直接更新
             content.innerHTML = options.contentText;
             me.contentText = me._contentText = options.contentText;
-            me.content = content.firstChild;
+            me.content = me._content = content.firstChild;
         }else if((me.contentText != me._contentText) || setText){
             //当new dialog时，无论是否传入contentText,都会进入该分支
             //若才用dialog.contentText = '***';dialog.update()进行更新，也会进入该分支
             content.innerHTML = me.contentText;
             me._contentText = me.contentText;
-            me.content = content.firstChild;
+            me.content = me._content = content.firstChild;
         }
         
         delete(options.content);
