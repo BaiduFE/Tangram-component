@@ -27,33 +27,27 @@ test('检测render方法', function() {
 
 test('检测show及具体属性细节',function() {
     expect(8);
-    stop();
-	var check = function(){
-		var m = new baidu.ui.Modal();
-		m.render();
-		m.show();
-		var mo = m.getMain();
-		ok(isShown(mo), '调用show之后应该展示');
-		equals(mo.offsetWidth, baidu.page.getViewWidth(),
-				'展示后的宽度');
-		equals(mo.offsetHeight, baidu.page.getViewHeight(),
-				'展示后的高度');
-		equals(mo.offsetTop, baidu.page.getScrollTop(),
-				'展示后的top');
-		equals(mo.offsetLeft, baidu.page.getScrollLeft(),
-				'展示后的left');
-		equals($(mo).css('zIndex'), 1000, 'check z index');
-	
-		m.hide();
-		ok(!isShown(mo), 'hide after hide');
-		m.show();
-		ok(isShown(mo), 'shown after show');// 这儿有问题，见问题单PUBLICGE-218
-		m.hide();
-	    m.dispose();
-	    start();
-	}
-    ua.importsrc('baidu.page.getViewWidth,baidu.page.getViewHeight,baidu.page.getScrollTop,baidu.page.getScrollLeft', 
-			check ,'baidu.page.getViewWidth', 'baidu.ui.Suggestion.Suggestion$coverable');
+	var m = new baidu.ui.Modal();
+	m.render();
+	m.show();
+	var mo = m.getMain();
+	ok(isShown(mo), '调用show之后应该展示');
+	equals(mo.offsetWidth, baidu.page.getViewWidth(),
+			'展示后的宽度');
+	equals(mo.offsetHeight, baidu.page.getViewHeight(),
+			'展示后的高度');
+	equals(mo.offsetTop, baidu.page.getScrollTop(),
+			'展示后的top');
+	equals(mo.offsetLeft, baidu.page.getScrollLeft(),
+			'展示后的left');
+	equals($(mo).css('zIndex'), 1000, 'check z index');
+
+	m.hide();
+	ok(!isShown(mo), 'hide after hide');
+	m.show();
+	ok(isShown(mo), 'shown after show');// 这儿有问题，见问题单PUBLICGE-218
+	m.hide();
+    m.dispose();
 });
 
 /**
@@ -168,8 +162,8 @@ test('部分遮罩（在windows中）', function() {
 	});
 	m1.render();
 	m1.show();// 标准模式下，此处计算位置会出错 PUBLICGE-221
-	equals(m1.getMain().offsetTop, tt.offsetTop, '遮罩元素top检测()');
-	equals(m1.getMain().offsetLeft, tt.offsetLeft, '遮罩元素left检测()');
+	equals(baidu.dom.getPosition(m1.getMain()).top, baidu.dom.getPosition(tt).top, '遮罩元素top检测()');
+	equals(baidu.dom.getPosition(m1.getMain()).left, baidu.dom.getPosition(tt).left, '遮罩元素left检测()');
     equals(tt.offsetWidth, m1.getMain().offsetWidth, '遮罩元素width检测');
     equals(tt.offsetHeight, m1.getMain().offsetHeight, '遮罩元素height检测');
     m1.dispose();
@@ -185,8 +179,8 @@ test('多个遮罩依次显示及隐藏', function() {
 		m.render();
 		m.show();
 		var position = baidu.dom.getPosition(m.getMain());
-		equals(position.top, dom.offsetTop, '遮罩元素top检测');// 考虑使用底层接口进行位置计算，此处不做位置信息的覆盖
-		equals(position.left, dom.offsetLeft, '遮罩元素left检测');
+		equals(position.top, baidu.dom.getPosition(dom).top, '遮罩元素top检测');// 考虑使用底层接口进行位置计算，此处不做位置信息的覆盖
+		equals(position.left, baidu.dom.getPosition(dom).left, '遮罩元素left检测');
 		return m;
 	};
 	var wd = document;
@@ -228,7 +222,7 @@ test('hide flash', function() {
 		document.body.appendChild(div1);
 		baidu.swf.create({
 	        id: "flash1",
-	        url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+	        url: upath + 'Modal/flash/test_flash.swf',
 	        width:695,
 	        height:90,
 	        wmode:'transparent'
@@ -238,7 +232,7 @@ test('hide flash', function() {
 		document.body.appendChild(div2);
 		baidu.swf.create({
 	        id: "flash2",
-	        url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+	        url: upath + 'Modal/flash/test_flash.swf',
 	        width:695,
 	        height:90,
 	        wmode:'window'
@@ -248,7 +242,7 @@ test('hide flash', function() {
 		document.body.appendChild(div3);
 		baidu.swf.create({
 	        id: "flash3",
-	        url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+	        url: upath + 'Modal/flash/test_flash.swf',
 	        width:695,
 	        height:90,
 	        wmode:'opaque'
@@ -282,7 +276,7 @@ test('hide flash', function() {
 	    start();
 	}
     ua.importsrc('baidu.swf.create', 
-			check ,'baidu.swf.create', 'baidu.ui.Suggestion.Suggestion$coverable');
+			check ,'baidu.swf.create', 'baidu.ui.Modal');
 });
 
 test('Check update', function() {
@@ -352,7 +346,7 @@ test('hide select', function() {
 	    start();
 	}
     ua.importsrc('baidu.swf.create,baidu.page.getViewWidth,baidu.page.getViewHeight,baidu.page.getScrollTop,baidu.page.getScrollLeft', 
-			check ,'baidu.swf.create', 'baidu.ui.Suggestion.Suggestion$coverable');
+			check ,'baidu.swf.create', 'baidu.ui.Modal');
 });
 
 //test('窗口scroll测试', function() {

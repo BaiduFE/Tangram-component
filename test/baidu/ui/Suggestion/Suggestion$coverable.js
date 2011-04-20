@@ -7,11 +7,11 @@ test("hide and show a select", function() {
 		var te = testingElement, sugg, input = te.dom[0], options = {
 			onshow : function() {
 				setTimeout(function(){
-					ok(sugg.getMain().firstChild.firstChild.style['backgroundColor'] ,'The iframe is not transparent PUBLICGE-375');
+					ok(!sugg.getMain().firstChild.firstChild.style['backgroundColor'] ,'The iframe is transparent');
 					equals(sugg.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-					equals(sugg.getMain().firstChild.firstChild.style.width, sugg.getMain().offsetWidth + 'px', 'The width of the iframe is right');
-					equals(sugg.getMain().firstChild.firstChild.style.height, sugg.getMain().offsetHeight + 'px', 'The Height of the iframe is right');
-					sugg.hide();
+					ok(Math.abs(sugg.getMain().firstChild.firstChild.offsetWidth - sugg.getMain().offsetWidth) < 5, 'The width of the iframe is right');
+		            ok(Math.abs(sugg.getMain().firstChild.firstChild.offsetHeight - sugg.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+		            sugg.hide();
 				},0);
 			},
 			onhide : function() {
@@ -39,7 +39,7 @@ test("hide and show a select", function() {
 		baidu.dom.setPosition(select_b, {left: 300, top : 600});
 		sugg = new baidu.ui.Suggestion(options);
 		sugg.render(input);
-		sugg.show('a', [ 'ab', 'ac' ]);
+		sugg.show('a', [ 'abbbbbbbbbbbbbb', 'accccccccccccc' ]);
 	};
 	ua.importsrc('baidu.dom.setPosition', 
 			check ,'baidu.dom.setPosition', 'baidu.ui.Suggestion.Suggestion$coverable');
@@ -52,11 +52,11 @@ test("hide and show a flash", function() {
 		var te = testingElement, sugg, input = te.dom[0], options = {
 			onshow : function() {
 				setTimeout(function(){
-					ok(sugg.getMain().firstChild.firstChild.style['backgroundColor'] != 0 ,'The iframe is not transparent PUBLICGE-375');
+					ok(!sugg.getMain().firstChild.firstChild.style['backgroundColor'] != 0 ,'The iframe is transparent');
 					equals(sugg.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-					equals(sugg.getMain().firstChild.firstChild.style.width, sugg.getMain().offsetWidth + 'px', 'The width of the iframe is right');
-					equals(sugg.getMain().firstChild.firstChild.style.height, sugg.getMain().offsetHeight + 'px', 'The Height of the iframe is right');
-					sugg.hide();
+					ok(Math.abs(sugg.getMain().firstChild.firstChild.offsetWidth - sugg.getMain().offsetWidth) < 5, 'The width of the iframe is right');
+		            ok(Math.abs(sugg.getMain().firstChild.firstChild.offsetHeight - sugg.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+		            sugg.hide();
 				},0);
 			},
 			onhide : function() {
@@ -77,7 +77,7 @@ test("hide and show a flash", function() {
 		document.body.appendChild(div);
 		baidu.swf.create({
             id: "flash1",
-            url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+            url: upath + 'flash/test_flash.swf',
             width:695,
             height:90,
             wmode:'window'
