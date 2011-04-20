@@ -5,7 +5,10 @@
 
 ///import baidu.ui.createUI;
 ///import baidu.object.merge;
-///import baidu.ui.Popup.Popup$smartCover;
+
+///import baidu.ui.Popup.Popup$coverable;
+///import baidu.ui.Popup;
+
 ///import baidu.ui.Calendar;
 ///import baidu.event.on;
 ///import baidu.event.un;
