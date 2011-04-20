@@ -1,7 +1,7 @@
 module('baidu.widget.dispose');
 
 test('base', function() {
-	expect(5);
+	expect(4);
 	stop();
 	baidu.widget._basePath = upath;
 	ua.importsrc('baidu.widget.create', function() {
