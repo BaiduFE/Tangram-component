@@ -86,3 +86,29 @@ test('options', function() {
 		this.finish();
 	});
 });
+
+test('options.position', function() {
+
+	var div0 = document.body.appendChild(document.createElement('div')), 
+	div1 = document.body.appendChild(document.createElement('div')),
+	ui = {
+		dispatchEvent : function(type) {
+		}
+	};
+	$(document.body).css('margin', 0).css('padding', 0).css('borderWidth', 0);// 这个必须
+	$(div0).css('position', 'absolute').css('left', 20).css('top', 20).css(
+			'width', 10).css('height', 10)
+			.css('background-color', 'yellow').attr('id', 'div0');
+	$(div1).css('width', 10).css('height', 10).css('background-color',
+			'blue').css('position', 'absolute').attr('id', 'div1');
+	for ( var key in baidu.ui.behavior.posable)
+		// ui extend posable
+		ui[key] = baidu.ui.behavior.posable[key];
+	ui.setPositionByElement(div0, div1, {
+		once : true,
+		position : 'lefttop'
+	});
+	
+	equals(parseInt(div1.style.left), parseInt(div0.style.left), 'check left');
+	equals(parseInt(div1.style.top), parseInt(div0.style.top), 'check top');
+});
