@@ -9,9 +9,9 @@ test("hide and show a select", function() {
 				setTimeout(function(){
 					ok(!sugg.getMain().firstChild.firstChild.style['backgroundColor'] ,'The iframe is transparent');
 					equals(sugg.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-					equals(sugg.getMain().firstChild.firstChild.style.width, sugg.getMain().offsetWidth + 'px', 'The width of the iframe is right');
-					equals(sugg.getMain().firstChild.firstChild.style.height, sugg.getMain().offsetHeight + 'px', 'The Height of the iframe is right');
-					sugg.hide();
+					ok(Math.abs(sugg.getMain().firstChild.firstChild.offsetWidth - sugg.getMain().offsetWidth) < 5, 'The width of the iframe is right');
+		            ok(Math.abs(sugg.getMain().firstChild.firstChild.offsetHeight - sugg.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+		            sugg.hide();
 				},0);
 			},
 			onhide : function() {
@@ -54,9 +54,9 @@ test("hide and show a flash", function() {
 				setTimeout(function(){
 					ok(!sugg.getMain().firstChild.firstChild.style['backgroundColor'] != 0 ,'The iframe is transparent');
 					equals(sugg.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-					equals(sugg.getMain().firstChild.firstChild.style.width, sugg.getMain().offsetWidth + 'px', 'The width of the iframe is right');
-					equals(sugg.getMain().firstChild.firstChild.style.height, sugg.getMain().offsetHeight + 'px', 'The Height of the iframe is right');
-					sugg.hide();
+					ok(Math.abs(sugg.getMain().firstChild.firstChild.offsetWidth - sugg.getMain().offsetWidth) < 5, 'The width of the iframe is right');
+		            ok(Math.abs(sugg.getMain().firstChild.firstChild.offsetHeight - sugg.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+		            sugg.hide();
 				},0);
 			},
 			onhide : function() {

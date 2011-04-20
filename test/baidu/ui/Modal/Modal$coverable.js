@@ -28,35 +28,51 @@ test('hide select',function(){
 
 test('在div中遮罩 hide select', function() {
 	/* 位置信息及css会引发用例情况异常，此用例在frame中运行 */
-	var tt = document.body.appendChild(document.createElement('div'));
-	$(tt).css('width', 200).css('height', 200).css('background-color',
-			'red');
-    var select_a = document.createElement('select');
-	select_a.options[select_a.options.length] = new Option('content_a', 'value_a');
-	tt.appendChild(select_a);
-	var m = new baidu.ui.Modal({
-		container : tt
-	});
-	m.render();
-	m.show();
-	var mo = m.getMain();
-	ok(isShown(mo), '调用show之后modal应该展示');
-	if(!baidu.browser.isWebkit && !baidu.browser.isGecko){
-		ok(!m.getMain().firstChild.firstChild.style['backgroundColor'] ,'The iframe is transparent');
-		equals(m.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-		equals(m.getMain().firstChild.firstChild.offsetWidth, m.getMain().offsetWidth, 'The width of the iframe is right');
-		equals(m.getMain().firstChild.firstChild.offsetHeight, m.getMain().offsetHeight, 'The Height of the iframe is right');
-		equals(baidu.dom.getPosition(m.getMain().firstChild.firstChild).top, m.getMain().offsetTop, 'The top of the iframe is right PUBLICGE-391');
-		equals(baidu.dom.getPosition(m.getMain().firstChild.firstChild).left, m.getMain().offsetLeft, 'The left of the iframe is right');
+	stop();
+	var check = function(){
+		var tt = document.body.appendChild(document.createElement('div'));
+		$(tt).css('width', 200).css('height', 200).css('background-color',
+				'red');
+	    var select_a = document.createElement('select');
+		select_a.options[select_a.options.length] = new Option('content_a', 'value_a');
+		tt.appendChild(select_a);
+		var select_b = document.createElement('select');
+		select_b.options[select_b.options.length] = new Option('content_b', 'value_b');
+		select_b.style.position = 'absolute';
+		document.body.appendChild(select_b);
+		baidu.dom.setPosition(select_b, {left: 210, top : 160});
+		var m = new baidu.ui.Modal({
+			container : tt,
+			coverableOptions : {
+				color : 'white',
+				opacity : 100
+			}
+		});
+		m.render();
+		m.show();
+		var mo = m.getMain();
+		ok(isShown(mo), '调用show之后modal应该展示');
+		if(!baidu.browser.isWebkit && !baidu.browser.isGecko){
+			ok(m.getMain().firstChild.firstChild.style['backgroundColor'] == 'white' || m.getMain().firstChild.firstChild.style['backgroundColor'] == '#ffffff','The iframe is transparent');
+			equals(m.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
+			equals(m.getMain().firstChild.firstChild.offsetWidth, m.getMain().offsetWidth, 'The width of the iframe is right');
+			equals(m.getMain().firstChild.firstChild.offsetHeight, m.getMain().offsetHeight, 'The Height of the iframe is right');
+			equals(baidu.dom.getPosition(m.getMain().firstChild.firstChild).top, m.getMain().offsetTop, 'The top of the iframe is right PUBLICGE-391');
+			equals(baidu.dom.getPosition(m.getMain().firstChild.firstChild).left, m.getMain().offsetLeft, 'The left of the iframe is right');
+		}
+		m.hide();
+		ok(!isShown(mo), 'hide after hide');
+		if(!baidu.browser.isWebkit && !baidu.browser.isGecko){
+			ok(!isShown(m.getMain().firstChild.firstChild) ,'The iframe is hidden');
+		}
+	    m.dispose();
+	    tt.removeChild(select_a);
+	    document.body.removeChild(select_b);
+	    document.body.removeChild(tt);
+	    start();
 	}
-	m.hide();
-	ok(!isShown(mo), 'hide after hide');
-	if(!baidu.browser.isWebkit && !baidu.browser.isGecko){
-		ok(!isShown(m.getMain().firstChild.firstChild) ,'The iframe is hidden');
-	}
-    m.dispose();
-    tt.removeChild(select_a);
-    document.body.removeChild(tt);
+	ua.importsrc('baidu.dom.setPosition', 
+			check ,'baidu.dom.setPosition', 'baidu.ui.Modal.Modal$coverable');
 });
 
 //test('update modal',function(){

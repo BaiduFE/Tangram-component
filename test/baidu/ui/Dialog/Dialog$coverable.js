@@ -24,11 +24,12 @@ test('onopen, hide select,transparent smartCover',function(){
 			};
 		var d = new baidu.ui.Dialog(options);
 		d.render();
+		d.padding = d.border = d.margin = 0;
 		d.open();
 		ok(!d.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is transparent');
 		equals(d.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-		equals(d.getMain().firstChild.firstChild.style.width, d.getBody().style.width, 'The width of the iframe is right');
-		equals(d.getMain().firstChild.firstChild.style.height, d.getBody().style.height, 'The Height of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetWidth - d.getBody().offsetWidth) < 5, 'The width of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetHeight - d.getBody().offsetHeight) < 5, 'The Height of the iframe is right');
 		te.obj.push(d);
 		document.body.removeChild(select_a);
 		document.body.removeChild(select_b);
@@ -65,10 +66,10 @@ test('onopen, hide select,transparent smartCover, red dialog',function(){
 		$(d.getMain()).css('backgroundColor', "red");
 		d.open();
 		ok(!d.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is transparent');
-		equals(d.getMain().style['backgroundColor'], 'red', 'The table is red');
+		ok(d.getMain().style['backgroundColor'] == 'red' || d.getMain().style['backgroundColor'] == '#ff0000', 'The table is red');
 		equals(d.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-		equals(d.getMain().firstChild.firstChild.style.width, d.getBody().style.width, 'The width of the iframe is right');
-		equals(d.getMain().firstChild.firstChild.style.height, d.getBody().style.height, 'The Height of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetWidth - d.getBody().offsetWidth) < 5, 'The width of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetHeight - d.getBody().offsetHeight) < 5, 'The Height of the iframe is right');
 		te.obj.push(d);
 		document.body.removeChild(select_a);
 		document.body.removeChild(select_b);
@@ -114,10 +115,10 @@ test('onopen, hide select,white smartCover',function(){
 		var d = new baidu.ui.Dialog(options);
 		d.render();
 		d.open();
-		equals(d.getMain().firstChild.firstChild.style['backgroundColor'], 'white', 'The iframe is not transparent PUBLICGE-375');
+		ok(d.getMain().firstChild.firstChild.style['backgroundColor'] == 'white' || d.getMain().firstChild.firstChild.style['backgroundColor'] == '#ffffff', 'The iframe is not transparent PUBLICGE-375');
 		equals(d.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-		equals(d.getMain().firstChild.firstChild.style.width, d.getBody().style.width, 'The width of the iframe is right');
-		equals(d.getMain().firstChild.firstChild.style.height, d.getBody().style.height, 'The Height of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetWidth - d.getBody().offsetWidth) < 5, 'The width of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetHeight - d.getBody().offsetHeight) < 5, 'The Height of the iframe is right');
 		te.obj.push(d);
 		document.body.removeChild(select_a);
 		document.body.removeChild(select_b);
@@ -189,8 +190,8 @@ test('onopen, hide flash, transparent smartCover',function(){
 		d.open();
 		ok(!d.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is transparent');
 		equals(d.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-		equals(d.getMain().firstChild.firstChild.style.width, d.getBody().style.width, 'The width of the iframe is right');
-		equals(d.getMain().firstChild.firstChild.style.height, d.getBody().style.height, 'The Height of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetWidth - d.getBody().offsetWidth) < 5, 'The width of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetHeight - d.getBody().offsetHeight) < 5, 'The Height of the iframe is right');
 		te.obj.push(d);
 		document.body.removeChild(div);
 		document.body.removeChild(div2);
@@ -237,10 +238,10 @@ test('onopen, hide flash, transparent smartCover, red dialog',function(){
         }, "flashContainer2");
 		d.open();
 		ok(!d.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is transparent');
-		equals(d.getMain().style['backgroundColor'], 'red', 'The table is red');
+		ok(d.getMain().style['backgroundColor'] == 'red' || d.getMain().style['backgroundColor'] == '#ff0000', 'The table is red');
 		equals(d.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-		equals(d.getMain().firstChild.firstChild.style.width, d.getBody().style.width, 'The width of the iframe is right');
-		equals(d.getMain().firstChild.firstChild.style.height, d.getBody().style.height, 'The Height of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetWidth - d.getBody().offsetWidth) < 5, 'The width of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetHeight - d.getBody().offsetHeight) < 5, 'The Height of the iframe is right');
 		te.obj.push(d);
 		document.body.removeChild(div);
 		document.body.removeChild(div2);
@@ -298,8 +299,8 @@ test('onopen, hide flash, white smartCover',function(){
 		d.open();
 		ok(d.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is not transparent');
 		equals(d.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-		equals(d.getMain().firstChild.firstChild.style.width, d.getBody().style.width, 'The width of the iframe is right');
-		equals(d.getMain().firstChild.firstChild.style.height, d.getBody().style.height, 'The Height of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetWidth - d.getBody().offsetWidth) < 5, 'The width of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetHeight - d.getBody().offsetHeight) < 5, 'The Height of the iframe is right');
 		te.obj.push(d);
 		document.body.removeChild(div);
 		document.body.removeChild(div2);
@@ -372,8 +373,8 @@ test('onupdate, hide select',function(){
 		d.open();
 		ok(!d.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is transparent');
 		equals(d.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
-		equals(d.getMain().firstChild.firstChild.style.width, d.getBody().style.width, 'The width of the iframe is right');
-		equals(d.getMain().firstChild.firstChild.style.height, d.getBody().style.height, 'The Height of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetWidth - d.getBody().offsetWidth) < 5, 'The width of the iframe is right');
+		ok(Math.abs(d.getMain().firstChild.firstChild.offsetHeight - d.getBody().offsetHeight) < 5, 'The Height of the iframe is right');
 		equals(baidu.dom.getPosition(d.getMain().firstChild.firstChild).top + 'px', d.getMain().style.top, 'The top of the iframe is right');
 		equals(baidu.dom.getPosition(d.getMain().firstChild.firstChild).left+ 'px', d.getMain().style.left, 'The left of the iframe is right');
 		var options_update = {

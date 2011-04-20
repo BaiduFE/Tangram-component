@@ -109,9 +109,20 @@ test('hide two-layer flash',function() {
 	stop();
 	var check = function(){
 		ua.loadcss(upath + 'css/style.css', function() {
+			var div4 = document.createElement('div');
+			div4.id = 'flashContainer4';
+			document.body.appendChild(div4);
+			baidu.swf.create({
+		        id: "flash4",
+		        url: upath + 'flash/test_flash.swf',
+		        width:695,
+		        height:90,
+		        wmode:'window'
+		    }, "flashContainer4");
+			document.body.removeChild(div4);
 				var options = {
 					titleText : "title",
-					contentText : '<object width="695" height="90" align="middle" id="flash4" style=""><embed width="695" height="90" align="middle" pluginspage="http://www.macromedia.com/go/getflashplayer" name="flash4" src=' + upath + "flash/test_flash.swf" + ' wmode="window"></object>'
+					contentText : div4.outerHTML
 				};
 				var div1 = document.createElement('div');
 				div1.id = 'flashContainer1';
@@ -162,17 +173,19 @@ test('hide two-layer flash',function() {
 				var options_new = {
 						titleText : "title",
 						contentText : "contentText",
-						zIndex : d.getMain().style["zIndex"] +1
+						zIndex : d.getMain().style["zIndex"] +10
 					};
 				var d_new= new baidu.ui.Dialog(options_new);
 				d_new.render();
 				d_new.open();
 				var m_new = d_new.modalInstance.getMain();
 				ok(isShown(m_new), 'modal shown on all dialogs open');
-				equals(baidu.g("flash4").style.visibility, "hidden", "The window flash is hidden");
+				equal(baidu.g("flash4").style.visibility , "hidden", "The window flash is hidden");
 				d_new.close();
 				ok(isShown(m_new), 'modal shown after 1 dialog close');
-				ok(baidu.g("flash4").style.visibility == "visible" || baidu.g("flash4").style.visibility == "inherit", "The window flash is shown");
+				ok(baidu.g("flash4").style.visibility == "visible" 
+					|| baidu.g("flash4").style.visibility == "inherit"
+						|| baidu.g("flash4").style.visibility == "", "The window flash is shown");
 				//第二个Dialog end
 				d.close();
 				ok(!isShown(m), 'modal hide after all dialogs close');
