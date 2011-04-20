@@ -38,7 +38,8 @@ baidu.ui.behavior.posable._setPositionByElement = function(target, element, opti
     var targetPos = baidu.dom.getPosition(target),
         scrollPos = {left: baidu.page.getScrollLeft(), top: baidu.page.getScrollTop()},
         viewSize = {width: baidu.page.getViewWidth(), height: baidu.page.getViewHeight()};
-        
+    options.once = false;
+    options.position && (options.position = options.position.toLowerCase());
     function getPosition(type){
         var val = 0,
             axis = {
