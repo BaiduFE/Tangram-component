@@ -175,3 +175,107 @@ test('default height',function(){
 	equals(baidu.dom.getStyle(d.getContent(),'height'),d.height+'px');
 });
 
+
+test('test update',function(){
+	expect(14);
+	var d = new baidu.ui.Dialog();
+	d.render();
+	d.open();
+	equals(d.getTitle().firstChild.innerHTML, '', 'The titleText is null when create a dialog with no options');
+	equals(d.getContent().innerHTML, '', 'The contentText is null when create a dialog with no options');
+	
+	var options = {
+	};
+	d.update(options);
+	equals(d.getTitle().firstChild.innerHTML, '', 'The titleText is null when update a dialog with no options');
+	equals(d.getContent().innerHTML, '', 'The contentText is null when update a dialog with no options');
+	
+	var options = {
+			titleText : 'initText',
+			contentText : 'initText' 
+	};
+	d.update(options);
+	equals(d.getTitle().firstChild.innerHTML, 'initText', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, 'initText', 'The contentText is right when update');
+	
+	var options = {
+			titleText : 'myTitleText',
+			contentText : 'myContentText' 
+	};
+	d.update(options);
+	equals(d.getTitle().firstChild.innerHTML, 'myTitleText', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, 'myContentText', 'The contentText is right when update');
+	
+	var options = {
+	};
+	d.update(options);
+	equals(d.getTitle().firstChild.innerHTML, 'myTitleText', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, 'myContentText', 'The contentText is right when update');
+	
+	var options = {
+			titleText : '',
+			contentText : '' 
+	};
+	d.update(options);
+	equals(d.getTitle().firstChild.innerHTML, '', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, '', 'The contentText is right when update');
+	
+	var div = document.createElement('div');
+	div.innerHTML = 'myContent';
+	var options = {
+			content : div
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, 'myContent', 'The content is right when update');
+	
+	var div2 = document.createElement('div');
+	div2.innerHTML = 'myAnotherContent';
+	var options = {
+			content : div2
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, 'myAnotherContent', 'The content is right when update');
+	
+	te.obj.push(d);
+});
+
+test('test update without update()',function(){
+	expect(10);
+	var d = new baidu.ui.Dialog();
+	d.render();
+	d.open();
+	equals(d.getTitle().firstChild.innerHTML, '', 'The titleText is null when create a dialog with no options');
+	equals(d.getContent().innerHTML, '', 'The contentText is null when create a dialog with no options');
+	
+	d.titleText = 'initText';
+	d.contentText = 'initText';
+	d.update();
+	equals(d.getTitle().firstChild.innerHTML, 'initText', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, 'initText', 'The contentText is right when update');
+	
+	d.titleText = 'myTitleText';
+	d.contentText = 'myContentText'; 
+	d.update();
+	equals(d.getTitle().firstChild.innerHTML, 'myTitleText', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, 'myContentText', 'The contentText is right when update');
+
+	d.titleText = '';
+	d.contentText = '';
+	d.update();
+	equals(d.getTitle().firstChild.innerHTML, '', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, '', 'The contentText is right when update');
+	
+	var div = document.createElement('div');
+	div.innerHTML = 'myContent';
+	d.content = div;
+	d.update();
+	equals(d.getContent().firstChild.innerHTML, 'myContent', 'The content is right when update');
+	
+	div.innerHTML = 'myAnotherContent';
+	d.content = div;
+	d.update();
+	equals(d.getContent().firstChild.innerHTML, 'myAnotherContent', 'The content is right when update');
+	
+	te.obj.push(d);
+});
+
