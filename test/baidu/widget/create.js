@@ -117,13 +117,16 @@ test("exports and cycle", function() {
 });
 
 test('test load', function() {
+	stop();
 	// load loaded
 	baidu.widget.load(['a'], function(r, e) {//已经加载的项会有问题
 		equals(r('a').a(), 'b', 'load');
 		equals(r('b').b(), 'b', 'load depends');
-	});
-	baidu.widget.load(['c'], function(){
-		
+
+		baidu.widget.load(['c'], function(){//不存在的项的加载
+
+			start();
+		});
 	});
 });
 
