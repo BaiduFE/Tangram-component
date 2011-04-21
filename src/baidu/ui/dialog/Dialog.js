@@ -69,6 +69,17 @@
  */
 
 baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
+
+    var me = this;
+    me._content = 'initElement';
+    me.content = me.content || null;
+    
+    me._contentText = 'initText';
+    me.contentText = me.contentText || '';
+    
+    me._titleText = 'initText';
+    me.titleText = me.titleText || '';
+
 }).extend(
     /**
      *  @lends baidu.ui.dialog.Dialog.prototype
@@ -183,35 +194,61 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
         var me = this,
             content = me.getContent(),
             options = options || {},
-            title = me.getTitleInner();
+            title = me.getTitleInner(),
+            setText = false;
 
-        
-        if(me.content && content.firstChild != me.content) {
-            //若存在me.content 并且该content和content里面的firstChild不一样
-            content.innerHTML = '';
-            content.appendChild(me.content);
-            me.content = content.firstChild 
-        }else if(options.content){
-            //若options.content存在，则认为用户向对content进行更新
-            content.innerHTML = '';
-            content.appendChild(options.content);
-            me.content = content.firstChild;
-        }else if(options.contentText){
-            //若存在options.contentText，则认为用户相对contentText进行更新
-            content.innerHTML = options.contentText;
-        }else if(me.contentText) {
-            //针对两种情况
-            //1.第一次new dialog时传入contentText，进行渲染
-            //2.new dialog时没有传入contentText的，之后使用dialogInstance.contentText = HTMLString；dialogInstance._update这样的情况进行更新
-            baidu.dom.children(content).length == 0 && (content.innerHTML = me.contentText);
-        }
-        
-        if(options.titleText && options.titleText != me.titleText){
+       if(typeof options.titleText != 'undefined'){
+            //当options中存在titleText时,认为用户需要更新titleText，直接更新
             title.innerHTML = options.titleText;
-        }else if(me.titleText){
-            (me.titleText != title.innerHTML) &&  (title.innerHTML = me.titleText);
+            me.titleText = me._titleText = options.titleText;
+        }else if (me.titleText != me._titleText){
+            //当第一次创建dialog时，无论是否传入titleText，都会走入该分支
+            //之后若采用dialog.titleText = '***'；dialog.update();方式更新，也会进入该分支
+            title.innerHTML = me.titleText;
+            me._titleText = me.titleText;
+        } 
+
+        //content优先级大于contentText
+        if(typeof options.content != 'undefined'){
+            //当options中存在content，认为用户需要更新content,直接更新
+            content.innerHTML = '';
+            me.content = options.content;
+            //若content为null。则代表删除content属性
+            if(options.content !== null){
+                content.appendChild(options.content);
+                me.content = me._content = content.firstChild;
+                return;
+            }
+            setText = true;
+        }else if(me.content !== me._content){
+            //第一次new dialog时，进入该分支
+            //若采用dialog.content = HTMLElement;dialog.update();的方式进行更新，进去该分支
+            content.innerHTML = '';
+            if(me.content !== null){
+                content.appendChild(me.content);
+                me.content = me._content = content.firstChild;
+                return;
+            }
+            setText = true;
         }
-        baidu.extend(me,options);
+
+        if(typeof options.contentText != 'undefined'){
+            //当options中存在contentText，则认为用户要更新contentText，直接更新
+            content.innerHTML = options.contentText;
+            me.contentText = me._contentText = options.contentText;
+            me.content = me._content = content.firstChild;
+        }else if((me.contentText != me._contentText) || setText){
+            //当new dialog时，无论是否传入contentText,都会进入该分支
+            //若才用dialog.contentText = '***';dialog.update()进行更新，也会进入该分支
+            content.innerHTML = me.contentText;
+            me._contentText = me.contentText;
+            me.content = me._content = content.firstChild;
+        }
+        
+        delete(options.content);
+        delete(options.contentText);
+        delete(options.titleText);
+        baidu.extend(me,options); 
     },
 
     /**
