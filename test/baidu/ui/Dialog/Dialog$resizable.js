@@ -12,10 +12,10 @@ test("Test the 3 new elements : s, e, se", function() {
 
 	equals(d.getMain().childNodes.length, 4, '默认添加了三个子元素，用于实现拖拽');
 	var s = d.getMain().childNodes[1], e = d.getMain().childNodes[2], se = d.getMain().childNodes[3];
-	ok($(s).css("height") == '100%' || s.style.width == d.getBody().style.width,
+	ok($(s).css("width") == '100%' || s.style.width == d.getBody().offsetWidth + 'px',
 			"元素s宽度与目标元素一致");
 	equals($(s).css("cursor"), "s-resize", "校验cursor");
-	ok($(e).css("width") == '100%' || e.style.height == d.getBody().style.height,
+	ok($(e).css("height") == '100%' || e.style.height == d.getBody().offsetHeight + 'px',
 			"元素e高度与目标元素一致");
 	equals($(e).css("cursor"), "e-resize", "校验cursor");
 	equals($(se).css("cursor"), "se-resize", "校验se元素cursor");
@@ -188,15 +188,15 @@ test("update", function() {
 			height : 100
 		};
 	var s = d.getMain().childNodes[1], e = d.getMain().childNodes[2], se = d.getMain().childNodes[3];
-	ok($(s).css("height") == '100%' || s.style.width == d.getBody().style.width,
+	ok($(s).css("width") == '100%' || s.style.width == d.getBody().offsetWidth + 'px',
 	"update前，元素s宽度与目标元素一致");
-	ok($(e).css("width") == '100%' || e.style.height == d.getBody().style.height,
+	ok($(e).css("height") == '100%' || e.style.height == d.getBody().offsetHeight + 'px',
 	"update前，元素e高度与目标元素一致");
 	d.update(newoptions);
 	s = d.getMain().childNodes[1], e = d.getMain().childNodes[2], se = d.getMain().childNodes[3];
-	ok($(s).css("height") == '100%' || s.style.width == d.getBody().style.width,
+	ok($(s).css("width") == '100%' || s.style.width == d.getBody().style.width,
 	"update后，元素s宽度与目标元素一致");
-	ok($(e).css("width") == '100%' || e.style.height == d.getBody().style.height,
+	ok($(e).css("height") == '100%' || e.style.height == d.getBody().style.height,
 	"update后，元素e高度与目标元素一致");
 	d.close();
 	d.dispose();
