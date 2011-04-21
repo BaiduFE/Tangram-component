@@ -1,10 +1,17 @@
 module("baidu.widget.create");
+
+(function() {
+	// 添加路径配置信息
+	baidu.widget._pathInfo = {
+		'dialogBase' : 'dialog.js'
+	};
+	baidu.widget._basePath = upath;
+})();
+
 // The "require" function accepts a module identifier.
 test("参数类型验证", function() {
 	// 指定相对根路径
-	baidu.widget._basePath = '../../baidu/widget/';
-
-	baidu.widget.create("widget1", function(require, exports, thisPtr) {
+	var w = baidu.widget.create("t1", function(require, exports) {
 		equal(typeof require, "function", "require类型为function");
 		equal(typeof exports, "object", "exports 类型为object");
 	});
@@ -12,7 +19,7 @@ test("参数类型验证", function() {
 
 test("依赖验证", function() {
 	stop();
-	baidu.widget.create("widget2", function(require, exports) {
+	baidu.widget.create("t2", function(require, exports) {
 		var uibase = require('uibase');
 		equal(uibase.create(), 'uibase_create', "测试api方法调用");
 		start();
@@ -21,14 +28,9 @@ test("依赖验证", function() {
 	});
 });
 
-// 添加路径配置信息
-baidu.widget._pathInfo = {
-	'dialogBase' : 'dialog.js'
-};
-
-test("多个依赖widget验证", function() {
+test("多个依赖widget验证", function() {// 这个用例同步验证了重复加载的处理逻辑
 	stop();
-	baidu.widget.create("widget2", function(require, exports) {
+	baidu.widget.create("t3", function(require, exports) {
 		var dialog = require('dialog');
 		equal(dialog.create(), 'dialog_create', "测试api方法调用");
 		var dialogBase = require('dialogBase');
@@ -42,7 +44,7 @@ test("多个依赖widget验证", function() {
 test("lazy load", function() {
 	var count = 0,
 	//
-	w1 = baidu.widget.create("widget3_1", function() {
+	w1 = baidu.widget.create("t4", function() {
 		count++;
 	}, {
 		lazyLoad : true
@@ -50,7 +52,7 @@ test("lazy load", function() {
 	equals(count, 0, 'before load');
 	baidu.widget.load([], w1.main);
 	equals(count, 1, 'before load');
-	baidu.widget.create("widget3_2", function() {
+	baidu.widget.create("t5", function() {
 		count++;
 	}, {
 		lazyLoad : false
@@ -60,6 +62,7 @@ test("lazy load", function() {
 
 test("不存在的资源", function() {
 	expect(1);
+	stop();
 	var w1 = baidu.widget.create("widget4_1", function(require, exports) {
 		try {// 当前情况不抛错误
 			var dd = require('notexist');
@@ -67,20 +70,21 @@ test("不存在的资源", function() {
 		} catch (e) {
 			ok(e.message.indexOf("notexist") >= 0, 'message信息包含不存在资源');
 		}
+		start();
 	});
 });
-
-/*
- * If there is a dependency cycle, the foreign module may not have finished
- * executing at the time it is required by one of its transitive dependencies;
- * in this case, the object returned by "require" must contain at least the
- * exports that the foreign module has prepared before the call to require that
- * led to the current module's execution.
- */
-test("cycle dependency", function() {
-	// a->b->a
-});
-
+//
+// /*
+// * If there is a dependency cycle, the foreign module may not have finished
+// * executing at the time it is required by one of its transitive dependencies;
+// * in this case, the object returned by "require" must contain at least the
+// * exports that the foreign module has prepared before the call to require
+// that
+// * led to the current module's execution.
+// */
+// // test("cycle dependency", function() {
+// // // a->b->a
+// // });
 /**
  * The "require" function may have a "paths" attribute, that is a prioritized
  * Array of path Strings, from high to low, of paths to top-level module
@@ -98,10 +102,31 @@ test("cycle dependency", function() {
  * <li>If the "paths" attribute exists, it is the loader's prorogative to
  * resolve, normalize, or canonicalize the paths provided.
  */
-test("require and exports", function() {
-	expect(1);
-	baidu.widget.load(['a'], function(require, exports) {
-		var a = require('a');
-		equals(a.a(), "b");
+test("exports and cycle", function() {
+	expect(2);
+	stop();
+	baidu.widget.create('c', function(r, e) {
+		var b = r('b');
+		equals(r('b').b(), "b", "check exports");
+		var a = r('a');
+		equals(r('a').a(), "b", "check exports");
+		start();
+	}, {
+		depends : 'a'
 	});
+});
+
+test('test load', function() {
+	// load loaded
+	baidu.widget.load(['a'], function(r, e) {//已经加载的项会有问题
+		equals(r('a').a(), 'b', 'load');
+		equals(r('b').b(), 'b', 'load depends');
+	});
+	baidu.widget.load(['c'], function(){
+		
+	});
+});
+
+test('test get', function(){
+	
 });
