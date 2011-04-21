@@ -10,6 +10,7 @@
 ///import baidu.ui.Toolbar;
 
 /**
+ * @private
  * @class Spacer类
  * @param   {Object}    options config参数.
  * @config  {String}    [name="ToolBar_item_xxx"]   ui控件的唯一标识符.
