@@ -52,7 +52,6 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function(options) {
     me.windowBlurHandler = me.getWindowBlurHandler();
 
 }).extend({
-    event: new Object,
 
     uiType: 'suggestion',
     onbeforepick: new Function,
@@ -90,9 +89,9 @@ baidu.ui.suggestion.Suggestion = baidu.ui.createUI(function(options) {
         var me = this;
         return baidu.format(
             me.tplDOM,
-                me.getId(),
-                me.getClass(),
-                me.guid
+            me.getId(),
+            me.getClass(),
+            me.guid
         );
     },
 
