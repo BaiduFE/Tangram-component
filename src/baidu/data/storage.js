@@ -233,7 +233,7 @@ baidu.data.storage = baidu.data.storage || (function(){
          * @param {String} key 一个键名称.
          * @param {Function} callback 一个回调函数，函数的第一参数返回该次存储的状态码，各状码表示{0: 成功, 1: 失败, 2: 溢出}，第二参数返回当次的value.
          */
-        get: function(){
+        get: function(key, callback){
             var me = this;
             !me._storage && (me._storage = _getInstance());
             me._storage.get.apply(me._storage, arguments);
@@ -244,7 +244,7 @@ baidu.data.storage = baidu.data.storage || (function(){
          * @param {String} key 一个键名称.
          * @param {Function} callback 一个回调函数，函数的第一参数返回该次存储的状态码，各状码表示{0: 成功, 1: 失败, 2: 溢出}，第二参数返回当次的value.
          */
-        remove: function(){
+        remove: function(key, callback){
             var me = this;
             !me._storage && (me._storage = _getInstance());
             me._storage.del.apply(me._storage, arguments);
