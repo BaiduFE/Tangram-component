@@ -33,13 +33,17 @@ baidu.widget.create = function(id, main, options) {
         dispose: options.dispose
     };
     baidu.widget._widgetLoading[id] = widget;
-    if (!options.lazyLoad) {
+    widget.load = function() {
+        var widget = this;
         baidu.widget.load(widget.depends, function(require) {
             baidu.widget._widgetInUse[widget.id] = widget;
             widget.context = require.context || baidu.widget._defaultContext;
             widget.exports = {};
             widget.main.call(widget, require, widget.exports);
         });
+    };
+    if (!options.lazyLoad) {
+        widget.load();
     }
     return widget;
 };

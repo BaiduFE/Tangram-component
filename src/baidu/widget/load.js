@@ -27,7 +27,7 @@ baidu.widget.load = function(widgets, executer) {
             var ret = function (id){
                 var widget = ret.context[id];
                 if(!baidu.widget._isWidget(widget)){
-                    return {};
+                    throw "NO DEPENDS declare for: " + id;
                 }
                 return widget.exports;
             };
@@ -79,5 +79,5 @@ baidu.widget.load = function(widgets, executer) {
     });
     files.length ?
         baidu.page.load(files, {onload: realCallback}) :
-        executer(makeRequire(baidu.widget._defaultContext));
+        realCallback();
 };
