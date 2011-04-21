@@ -175,7 +175,7 @@ baidu.data.storage = baidu.data.storage || (function(){
                     status = _status.FAILURE;
                 }
                 if (val) {
-                    val = val.substring(val.indexOf('|'), val.length);
+                    val = val.substring(val.indexOf('|') + 1, val.length);
                     status = _status[val ? 'SUCCESS' : 'FAILURE'];
                     val && storage.removeItem(newKey);
                 }else {
