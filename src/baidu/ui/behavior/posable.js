@@ -60,7 +60,7 @@
     Posable._positionByCoordinate = function(source, coordinate, options, _scrollJustify) {
         coordinate = coordinate || [0, 0];
         options = options || {};
-
+        
         var me = this,
             elementStyle = {},
             cH = baidu.page.getViewHeight(),
@@ -77,7 +77,6 @@
 
         coordinate = _formatCoordinate(coordinate || [0, 0]);
         options.offset = _formatCoordinate(options.offset || [0, 0]);
-
         elementStyle.left = coordinate.x + options.offset.x - parentPos.left;
         elementStyle.top = coordinate.y + options.offset.y - parentPos.top;
 
@@ -103,6 +102,25 @@
                             baidu.page.getViewHeight() - sourceHeight - parentPos.top
                             )
                         );
+                break;
+            case 'verge':
+                var offset = {
+                    width: (options.position.indexOf('right') > -1 ? coordinate.width : 0),//是否放在原点的下方
+                    height: (options.position.indexOf('bottom') > -1 ? coordinate.height : 0)//是否放在原点的右方
+                },
+                optOffset = {
+                    width: (options.position.indexOf('bottom') > -1 ? coordinate.width : 0),
+                    height: (options.position.indexOf('right') > -1 ? coordinate.height : 0)
+                };
+                
+                
+                
+                
+                
+                elementStyle.left += elementStyle.left + offset.width + sourceWidth - scrollLeft > cW - parentPos.left ?
+                    optOffset.width - sourceWidth : offset.width;
+                elementStyle.top += elementStyle.top + offset.height + sourceHeight - scrollTop > cH - parentPos.top ?
+                    optOffset.height - sourceHeight : offset.height;
                 break;
         }
         baidu.dom.setPosition(source, elementStyle);
