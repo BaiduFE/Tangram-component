@@ -25,6 +25,7 @@ module("baidu.widget.create");
 		},
 		end : function() {
 			var c = this;
+			clearTimeout(c.timeout);
 			if (c.expect)
 				window.QUnit.expect(c.expect);
 			c.expect = 0;
