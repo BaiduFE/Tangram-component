@@ -73,20 +73,20 @@
             parentPos = (!offsetParent || offsetParent == document.body) ? {left: 0, top: 0} : baidu.dom.getPosition(offsetParent);
 
         //兼容position大小写
-        options.position = options.position ? options.position.toLowerCase() : 'bottomright';
+        options.position = (typeof options.position !== 'undefined') ? options.position.toLowerCase() : 'bottomright';
 
         coordinate = _formatCoordinate(coordinate || [0, 0]);
         options.offset = _formatCoordinate(options.offset || [0, 0]);
 
-        elementStyle.left = coordinate.x + options.offset.x - parentPos.left - (options.position.indexOf('left') >= 0 ? sourceWidth : 0);
-        elementStyle.top = coordinate.y + options.offset.y - parentPos.top - (options.position.indexOf('top') >= 0 ? sourceHeight : 0);
+        elementStyle.left = coordinate.x + options.offset.x - parentPos.left;
+        elementStyle.top = coordinate.y + options.offset.y - parentPos.top;
 
         switch (options.insideScreen) {
            case "surround" :
                 elementStyle.left += elementStyle.left < scrollLeft ? sourceWidth  : 
-                                        ((elementStyle.left + sourceWidth ) > (scrollLeft + cW) ? -sourceWidth : 0);
+                                        ((elementStyle.left + sourceWidth ) > (scrollLeft + cW) ? - sourceWidth : 0);
                 elementStyle.top  += elementStyle.top  < scrollTop  ? sourceHeight :
-                                        ((elementStyle.top  + sourceHeight) > (scrollTop  + cH) ? -sourceHeight : 0);
+                                        ((elementStyle.top  + sourceHeight) > (scrollTop  + cH) ? - sourceHeight : 0);
                 break;
             case 'fix' :
                 elementStyle.left = Math.max(
