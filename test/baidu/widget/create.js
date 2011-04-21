@@ -124,12 +124,14 @@ test('test load', function() {
 		equals(r('b').b(), 'b', 'load depends');
 
 		baidu.widget.load(['c'], function(){//不存在的项的加载
-
+			//TODO根据实际设计确认
 			start();
 		});
 	});
 });
 
 test('test get', function(){
-	
+	equals(baidu.widget.get('notexist'), undefined);
+	equals(baidu.widget.get('a').exports.a(), 'b');
+	equals(baidu.widget.get('b').exports.b(), 'b');
 });
