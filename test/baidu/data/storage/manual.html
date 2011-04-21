@@ -1,28 +1,22 @@
-<!DOCTYPE html>
-
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <script src='../../../../src/loader.js' ></script>
-        <script>
-            Include("baidu.data.storage");
-            //“≥√Ê“¿¿µ
-            Include("baidu.dom.ready");
-        </script>
-        <link type="text/css" rel="stylesheet" media="all" href="css/reset.css" />
-    </head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script language='JavaScript' src='../../../../src/import.php?f=baidu.data.storage'></script>
+</head>
+<body>
 
-    
-    <body>
-        <div id="result"></div>
-        <script>
-            baidu.dom.ready(function(){
-                baidu.data.storage.set("berg", "god here");
-                baidu.data.storage.get("berg", function(status, value){
-                    document.getElementById("result").innerHTML = value;
-                });
-            });
-        </script>
-    </body>
+</body>
+<script language='JavaScript'>
+    baidu.data.storage.set('Tangram', 'storage here', function(s, v){
+        alert(v);
+    });
+  
+
+    baidu.data.storage.remove('Tangram');
+    baidu.data.storage.get('Tangram', function(status, val){
+        alert(val);
+    });
+</script>
 </html>
