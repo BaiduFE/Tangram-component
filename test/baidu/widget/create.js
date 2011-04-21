@@ -1,14 +1,57 @@
 module("baidu.widget.create");
 
 (function() {
-	// 添加路径配置信息
+	// 添加路径配置信息，并迁移所有用例依赖到单独的js目录中
 	baidu.widget._pathInfo = {
 		'dialogBase' : 'dialog.js'
 	};
-	baidu.widget._basePath = upath;
+	baidu.widget._basePath = upath + "js/";
+	te.fnQueue = {
+		q : [],
+		ci : 0,
+		next : function() {// 每个单独项仅能运行2秒，超时就直接下一个了
+			var c = this;
+			clearTimeout(c.timeout);
+			c.timeout = setTimeout(function() {
+				c.end();
+			}, 1000);
+			try {
+				(c.q.shift() || c.end)();
+			} catch (e) {
+				console && console.log && console.log(e);
+				// setTimeout(c.next, 1);
+				c.end();
+			}
+		},
+		end : function() {
+			var c = this;
+			if (c.expect)
+				window.QUnit.expect(c.expect);
+			c.expect = 0;
+			c.q = [];
+			start();
+		},
+		/**
+		 * 添加一个函数到队列并添加期待校验数
+		 * 
+		 * @param fn
+		 * @param ex
+		 */
+		add : function(fn, ex) {
+			var c = this;
+			c.q.push(fn);
+			ex && (c.expect = c.expect + ex);
+		},
+		expect : 0,
+		start : function() {
+			var c = this;
+			stop();
+			c.next();
+		}
+	};
 })();
 
-// The "require" function accepts a module identifier.
+ // The "require" function accepts a module identifier.
 test("参数类型验证", function() {
 	// 指定相对根路径
 	var w = baidu.widget.create("t1", function(require, exports) {
@@ -63,14 +106,16 @@ test("lazy load", function() {
 test("不存在的资源", function() {
 	expect(1);
 	stop();
-	var w1 = baidu.widget.create("widget4_1", function(require, exports) {
+	var w1 = baidu.widget.create("t1", function(require, exports) {
 		try {// 当前情况不抛错误
-			var dd = require('notexist');
+			var dd = require('t5_notexist');
 			ok(false, "见 说明 wiki.commonjs.org/wiki/Modules/1.1.1");
 		} catch (e) {
 			ok(e.message.indexOf("notexist") >= 0, 'message信息包含不存在资源');
 		}
 		start();
+	}, {
+		depends : [ 't5_notexist' ]
 	});
 });
 //
@@ -102,36 +147,62 @@ test("不存在的资源", function() {
  * <li>If the "paths" attribute exists, it is the loader's prorogative to
  * resolve, normalize, or canonicalize the paths provided.
  */
-test("exports and cycle", function() {
-	expect(2);
-	stop();
-	baidu.widget.create('c', function(r, e) {
-		var b = r('b');
-		equals(r('b').b(), "b", "check exports");
-		var a = r('a');
-		equals(r('a').a(), "b", "check exports");
-		start();
-	}, {
-		depends : 'a'
-	});
+
+test('depends', function() {
+	var c = te.fnQueue;
+	c.add(function() {// 递归加载
+		baidu.widget.create('t7', function(r, e) {
+			expect += 2;
+			equals(r('t7_2').exec(), "2", "t7_2");
+			equals(r('t7_1').exec(), "12", "t7_1依赖t7_2");
+			c.next();
+		}, {
+			depends : 't7_1'
+		});
+	}, 2);
+
+	c.add(function() {// 加载过的module再次加载并执行
+		baidu.widget.create('t8', function(r, e) {
+			equals(r('t7_2').exec(), "exec", "t8依赖已经加载过的项");
+			c.next();
+		}, {
+			depends : 't7_2'
+		});
+	}, 1);
+
+	c.add(function() {// 前后颠倒一下,http://icafe.baidu.com:8100/jtrac/app/item/PUBLICGE-408/
+		baidu.widget.create('t6', function(r, e) {
+			equals(r('t6_2').exec(), "t6_2", "check exports");
+			equals(r('t6_1').exec(), "t6_2", "check exports");// 这地方抛异常
+			c.next();
+		}, {// 前后颠倒的依赖关系
+			depends : [ 't6_2', 't6_1' ]
+		});
+	}, 2);
+
+	c.start();
 });
 
 test('test load', function() {
-	stop();
-	// load loaded
-	baidu.widget.load(['a'], function(r, e) {//已经加载的项会有问题
-		equals(r('a').a(), 'b', 'load');
-		equals(r('b').b(), 'b', 'load depends');
-
-		baidu.widget.load(['c'], function(){//不存在的项的加载
-			//TODO根据实际设计确认
-			start();
+	var c = te.fnQueue;
+	c.add(function() {//load
+		baidu.widget.load([ 't9_1' ], function(r, e) {// 加载
+			equal(r('t9_2'), 1);
+			equal(r('t9_1'), 3);
+			c.next();
 		});
-	});
+	}, 2);
+	c.add(function() {//load loaded
+		baidu.widget.load([ 't7_1' ], function(r, e) {// 加载
+			equal(r('t7_2').exec(), 1);
+			equal(r('t7_1').exec(), 3);
+			c.next();
+		});
+	}, 2);
+	c.start();
 });
 
-test('test get', function(){
+test('test get', function() {
 	equals(baidu.widget.get('notexist'), undefined);
-	equals(baidu.widget.get('a').exports.a(), 'b');
-	equals(baidu.widget.get('b').exports.b(), 'b');
+	equals(baidu.widget.get('t9_2').exports.exec(), 2);
 });
