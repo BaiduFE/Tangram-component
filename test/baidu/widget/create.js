@@ -24,7 +24,7 @@ module("baidu.widget.create");
 			}
 		},
 		end : function() {
-			var c = this;
+			var c = te.fnQueue;
 			clearTimeout(c.timeout);
 			if (c.expect)
 				window.QUnit.expect(c.expect);
@@ -52,7 +52,7 @@ module("baidu.widget.create");
 	};
 })();
 
- // The "require" function accepts a module identifier.
+// The "require" function accepts a module identifier.
 test("参数类型验证", function() {
 	// 指定相对根路径
 	var w = baidu.widget.create("t1", function(require, exports) {
@@ -94,7 +94,7 @@ test("lazy load", function() {
 		lazyLoad : true
 	});
 	equals(count, 0, 'before load');
-	baidu.widget.load([], w1.main);
+	w1.load();
 	equals(count, 1, 'before load');
 	baidu.widget.create("t5", function() {
 		count++;
@@ -104,21 +104,6 @@ test("lazy load", function() {
 	equals(count, 2, 'before load');
 });
 
-test("不存在的资源", function() {
-	expect(1);
-	stop();
-	var w1 = baidu.widget.create("t1", function(require, exports) {
-		try {// 当前情况不抛错误
-			var dd = require('t5_notexist');
-			ok(false, "见 说明 wiki.commonjs.org/wiki/Modules/1.1.1");
-		} catch (e) {
-			ok(e.message.indexOf("notexist") >= 0, 'message信息包含不存在资源');
-		}
-		start();
-	}, {
-		depends : [ 't5_notexist' ]
-	});
-});
 //
 // /*
 // * If there is a dependency cycle, the foreign module may not have finished
@@ -153,18 +138,18 @@ test('depends', function() {
 	var c = te.fnQueue;
 	c.add(function() {// 递归加载
 		baidu.widget.create('t7', function(r, e) {
-			expect += 2;
-			equals(r('t7_2').exec(), "2", "t7_2");
-			equals(r('t7_1').exec(), "12", "t7_1依赖t7_2");
+			equals(r('t7_2').exec(), 2, "t7_2");
+			equals(r('t7_1').exec(), 3, "t7_1依赖t7_2");
+			equals(r('t7_1').exec1(), 3, "t7_1依赖t7_2");
 			c.next();
 		}, {
 			depends : 't7_1'
 		});
-	}, 2);
+	}, 3);
 
 	c.add(function() {// 加载过的module再次加载并执行
 		baidu.widget.create('t8', function(r, e) {
-			equals(r('t7_2').exec(), "exec", "t8依赖已经加载过的项");
+			equals(r('t7_2').exec(), 2, "t8依赖已经加载过的项");
 			c.next();
 		}, {
 			depends : 't7_2'
@@ -186,16 +171,16 @@ test('depends', function() {
 
 test('test load', function() {
 	var c = te.fnQueue;
-	c.add(function() {//load
-		baidu.widget.load([ 't9_1' ], function(r, e) {// 加载
-			equal(r('t9_2'), 1);
-			equal(r('t9_1'), 3);
+	c.add(function() {// load
+		baidu.widget.load('t9_1,t9_2', function(r, e) {// 加载
+			equal(r('t9_1').exec(), 3);
+			equal(r('t9_2').exec(), 2);
 			c.next();
 		});
 	}, 2);
-	c.add(function() {//load loaded
+	c.add(function() {// load loaded
 		baidu.widget.load([ 't7_1' ], function(r, e) {// 加载
-			equal(r('t7_2').exec(), 1);
+			equal(r('t7_2').exec(), 2);
 			equal(r('t7_1').exec(), 3);
 			c.next();
 		});
@@ -206,4 +191,20 @@ test('test load', function() {
 test('test get', function() {
 	equals(baidu.widget.get('notexist'), undefined);
 	equals(baidu.widget.get('t9_2').exports.exec(), 2);
+});
+
+test("不存在的资源", function() {
+	expect(1);
+	stop();
+	var w1 = baidu.widget.create("t1", function(require, exports) {
+		var dd = require('t5_notexist');
+		ok(false, "见 说明 wiki.commonjs.org/wiki/Modules/1.1.1");
+		start();
+	}, {
+		depends : [ 't5_notexist' ]
+	});
+	setTimeout(function(){
+		ok(true, "抛错误了。。。");
+		start();
+	}, 500);
 });

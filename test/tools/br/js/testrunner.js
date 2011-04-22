@@ -92,7 +92,7 @@ var QUnit = {
 
 		synchronize(function() {
 			QUnit.testStart( testName );
-             
+			
 			// 田丽丽添加对test的timeout处理 start
 			if(/batchrun=true/.test(location.search))
 			config.testTimeout = window.setTimeout(function(){
