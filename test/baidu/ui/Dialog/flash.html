@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <script src='../../../../src/import.php?f=baidu.swf.create' type="text/javascript" ></script>
+    </head>
+    <body>
+        <div id="flashContainer1"></div>
+        <div id="flashContainer2"></div>
+        <div id="flashContainer3"></div>
+        <script>
+            //baidu.ui.smartCover.options.hideFlash = false;
+            //baidu.ui.smartCover.options.hideSelect = true;
+            baidu.swf.create({
+                id: "flash1",
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90,
+                wmode:'transparent'
+            }, "flashContainer1");
+            
+            baidu.swf.create({
+                id: "flash2",
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90,
+                wmode:'window'
+            }, "flashContainer2");
+            
+            baidu.swf.create({
+                id: "flash3",
+                url: "http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&gp=402&time=nHc4PjmzP16vn0.swf",
+                width:695,
+                height:90,
+                wmode:'opaque'
+            }, "flashContainer3");
+        </script>
+    </body>
+</html>

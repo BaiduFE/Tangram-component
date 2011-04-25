@@ -92,14 +92,14 @@ var QUnit = {
 
 		synchronize(function() {
 			QUnit.testStart( testName );
-             
-			//田丽丽添加对test的timeout处理 start
-			config.testTimeout = window.setTimeout(function(){
-				config.blocking = false;
-				config.testTimeoutFlag = true;
-			    process();
-			}, 3000);
-			//田丽丽添加对test的timeout处理 end
+//             
+//			//田丽丽添加对test的timeout处理 start
+//			config.testTimeout = window.setTimeout(function(){
+//				config.blocking = false;
+//				config.testTimeoutFlag = true;
+//			    process();
+//			}, 3000);
+//			//田丽丽添加对test的timeout处理 end
 			
 			testEnvironment = extend({
 				setup: function() {},
@@ -224,9 +224,9 @@ var QUnit = {
 
 				var li = document.createElement("li");
 				
-				//li.className = bad ? "fail" : "pass";
-				//田丽丽修改  原本的逻辑见上一行代码，现在改为test超时，也将此test的显示结果设为false
-				li.className = (bad || config.testTimeoutFlag) ? "fail" : "pass";
+				li.className = bad ? "fail" : "pass";
+//				//田丽丽修改  原本的逻辑见上一行代码，现在改为test超时，也将此test的显示结果设为false
+//				li.className = (bad || config.testTimeoutFlag) ? "fail" : "pass";
 				li.appendChild( b );
 				li.appendChild( ol );
 				tests.appendChild( li );

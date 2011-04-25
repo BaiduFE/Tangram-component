@@ -111,6 +111,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
         return "window['$BAIDU$']._instances['" + this.id + "']";
     },
     /**
+     * @private
      * 获得TreeNode dom的html string
      * @return {String} htmlstring.
      */
@@ -173,6 +174,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
         var me = this;
         baidu.dom.insertHTML(me._getSubNodesContainer(), 'beforeEnd'
         , me._getSubNodeString(childrenData));
+        me._isRenderChildren = true;
     },
     /**
      * 取得所有子节点返回的HTMLString
@@ -475,7 +477,6 @@ baidu.ui.Tree.TreeNode.prototype =  {
         var me = this;
         if (!me._isRenderChildren) {
             me.appendData(me.children);
-            me._isRenderChildren = true;
         }
         me._switchToggleState('block', 'Lminus', 'Tminus', true);
     },

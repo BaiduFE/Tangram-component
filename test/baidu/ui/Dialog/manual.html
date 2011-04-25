@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>dialog manual test - by berg</title>
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta http-equiv="Content-Type" charset="utf-8" content="text/html;charset=utf-8">
         <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*,baidu.ui.legacy' ></script>
         
         <script src='../../../../src/import.php?f=baidu.ui.behavior.decorator' ></script>
@@ -275,15 +275,9 @@ h2{
                     var dialog = new baidu.ui.Dialog(options);
                     dialog.open();
                 }else if(type == 'iframe'){
-                    options['type'] = type;
-                    options['iframeSrc'] = 'inner.html';
-                    var dialog = new baidu.ui.Dialog(options);
-                    dialog.open();
+                    var dialog = new baidu.ui.Dialog.iframe("inner.html", options);
                 }else{
-                    options['type'] = type;
-                    options['contentText'] = dialogContent;
-                    var dialog = new baidu.ui.Dialog(options);
-                    dialog.open();
+                    var dialog = baidu.ui.Dialog[type](dialogContent, options);
                 }
                 var table = document.getElementById("dialog_instances");
                 dialogPool.push(dialog);
@@ -360,6 +354,7 @@ h2{
         <div id="flashContainer1"></div>
         <div id="flashContainer2"></div>
         <div id="flashContainer3"></div>
+        <iframe src='flash.html' width="100%" height="300px"></iframe>
         <br />
         <br />
         <br />
