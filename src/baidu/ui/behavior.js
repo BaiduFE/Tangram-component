@@ -13,4 +13,9 @@
 /**
  * 定义名字空间
  */
+ 
+ /**
+ * 为各个控件增加装饰器。
+ * @class Behavior类
+ */
 baidu.ui.behavior = baidu.ui.behavior || {};
