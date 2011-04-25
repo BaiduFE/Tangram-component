@@ -30,18 +30,11 @@ baidu.ui.behavior.posable.setPositionByElement =
  * @param {HTMLElement|string} element optional 要对齐的元素或元素id，如果不指定，默认为当前控件的主元素.
  * @param {Object} options optional 选项，同setPosition方法.
  */
-baidu.ui.behavior.posable._setPositionByElement =
-    function(target, element, options) {
-        options.once = false;
-        var targetPos = baidu.dom.getPosition(target),
-            coordinate = {};
-
-        options.position && (options.position = options.position.toLowerCase());
-
-        coordinate['x'] = targetPos.left +
-                            (options.position.indexOf('right') >= 0 ? target.offsetWidth : 0);
-        coordinate['y'] = targetPos.top +
-                            (options.position.indexOf('bottom') >= 0 ? target.offsetHeight : 0);
-
-        this._positionByCoordinate(element, coordinate, options);
-    };
+baidu.ui.behavior.posable._setPositionByElement = function(target, element, options){
+    var targetPos = baidu.dom.getPosition(target);
+    options.once = false;
+    options.insideScreen = 'verge';
+    targetPos.width = target.offsetWidth;
+    targetPos.height = target.offsetHeight;
+    this._positionByCoordinate(element, targetPos, options, true);
+}

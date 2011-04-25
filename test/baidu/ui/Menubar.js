@@ -257,3 +257,55 @@ test('on status', function() {
 	menu.open();
 	menu.close(false);
 });
+
+test('setPositionByElement',function() {
+	stop();
+	ua.frameExt(function(w, f) {
+		var me = this;
+		$(f).css('width', 400).css('height', 230);
+		document.body.removeChild(baidu.g('div_test'));
+		te.loadcss(w, upath+'Menubar/css/menu.css',function(w){
+			var data = [{
+			    label: "复制",
+			    icon: "-176px -128px",
+			    title: "复制当前单元格",
+			    items: [{
+			        label: '复制1',
+			        icon: "-96px -96px"
+			    },{
+			        label: '复制2'
+			    }]
+			}];
+			var options = {
+			    width: 180,
+			    height: 28,
+				data:data,
+				type:'click',
+				element:'clickmenu',
+				autoRender : true
+			};
+			var menu = new w.baidu.ui.Menubar(options);
+			menu.render(menu.target);
+			menu.open();	
+			$(menu.getMain()).css('position', 'absolute').css('left', 200).css('top', 200);
+			var check = function() {
+				ok(Math.abs(baidu.dom.getPosition(menu.getItem('0-0')).left 
+						- baidu.dom.getPosition(menu.getItem('0-0-1')).left - 180) < 5,
+						'The second layer menubar is on the left');
+				ok(Math.abs(baidu.dom.getPosition(menu.getItem('0-0')).top 
+						- baidu.dom.getPosition(menu.getItem('0-0-0')).top 
+						- menu.getItem('0-0-0').offsetHeight) < 5,
+						'The second layer menubar is on the top');
+				menu.close();
+				menu.dispose();
+				te.obj.push(f);
+				me.finish();
+			};
+			if(baidu.browser.ie)
+				w.document.getElementsByTagName('li')[0].fireEvent('onmouseover');
+			else
+				ua.mouseover(menu.getItem("0-0"));
+			setTimeout(check, menu.showDelay);
+		});
+	});
+});

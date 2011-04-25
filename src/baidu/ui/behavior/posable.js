@@ -60,7 +60,7 @@
     Posable._positionByCoordinate = function(source, coordinate, options, _scrollJustify) {
         coordinate = coordinate || [0, 0];
         options = options || {};
-
+        
         var me = this,
             elementStyle = {},
             cH = baidu.page.getViewHeight(),
@@ -73,20 +73,19 @@
             parentPos = (!offsetParent || offsetParent == document.body) ? {left: 0, top: 0} : baidu.dom.getPosition(offsetParent);
 
         //兼容position大小写
-        options.position = options.position ? options.position.toLowerCase() : 'bottomright';
+        options.position = (typeof options.position !== 'undefined') ? options.position.toLowerCase() : 'bottomright';
 
         coordinate = _formatCoordinate(coordinate || [0, 0]);
         options.offset = _formatCoordinate(options.offset || [0, 0]);
-
-        elementStyle.left = coordinate.x + options.offset.x - parentPos.left - (options.position.indexOf('left') >= 0 ? sourceWidth : 0);
-        elementStyle.top = coordinate.y + options.offset.y - parentPos.top - (options.position.indexOf('top') >= 0 ? sourceHeight : 0);
+        elementStyle.left = coordinate.x + options.offset.x - parentPos.left;
+        elementStyle.top = coordinate.y + options.offset.y - parentPos.top;
 
         switch (options.insideScreen) {
            case "surround" :
                 elementStyle.left += elementStyle.left < scrollLeft ? sourceWidth  : 
-                                        ((elementStyle.left + sourceWidth ) > (scrollLeft + cW) ? -sourceWidth : 0);
+                                        ((elementStyle.left + sourceWidth ) > (scrollLeft + cW) ? - sourceWidth : 0);
                 elementStyle.top  += elementStyle.top  < scrollTop  ? sourceHeight :
-                                        ((elementStyle.top  + sourceHeight) > (scrollTop  + cH) ? -sourceHeight : 0);
+                                        ((elementStyle.top  + sourceHeight) > (scrollTop  + cH) ? - sourceHeight : 0);
                 break;
             case 'fix' :
                 elementStyle.left = Math.max(
@@ -103,6 +102,25 @@
                             baidu.page.getViewHeight() - sourceHeight - parentPos.top
                             )
                         );
+                break;
+            case 'verge':
+                var offset = {
+                    width: (options.position.indexOf('right') > -1 ? coordinate.width : 0),//是否放在原点的下方
+                    height: (options.position.indexOf('bottom') > -1 ? coordinate.height : 0)//是否放在原点的右方
+                },
+                optOffset = {
+                    width: (options.position.indexOf('bottom') > -1 ? coordinate.width : 0),
+                    height: (options.position.indexOf('right') > -1 ? coordinate.height : 0)
+                };
+                
+                
+                
+                
+                
+                elementStyle.left += elementStyle.left + offset.width + sourceWidth - scrollLeft > cW - parentPos.left ?
+                    optOffset.width - sourceWidth : offset.width;
+                elementStyle.top += elementStyle.top + offset.height + sourceHeight - scrollTop > cH - parentPos.top ?
+                    optOffset.height - sourceHeight : offset.height;
                 break;
         }
         baidu.dom.setPosition(source, elementStyle);

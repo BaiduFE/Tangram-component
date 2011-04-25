@@ -52,8 +52,8 @@
             left: '0px'
         });
         baidu.dom.setBorderBoxSize(iframeContainer,{
-            width: container.offsetWidth,
-            height: container.offsetHeight
+            width: container.offsetWidth//,
+            //height: container.offsetHeight
         });
 
         
@@ -70,14 +70,15 @@
             filter : 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=' + opacity + ')'
         });
         iframeContainer.appendChild(iframe);
-        me.on(iframe,'onload', function(){
-            iframe.contentWindow.document.body.style.overflow = 'hidden';
-            iframe.contentWindow.document.body.style.border = 'none';
-        });
+        //me.on(iframe,'onload', function(){
+        //    iframe.contentWindow.document.body.style.overflow = 'hidden';
+        //    iframe.contentWindow.document.body.style.border = 'none';
+        //});
         
         iframe.src = "javascript:void(0)";
         iframe.frameBorder = '0';
         iframe.scrolling = 'no';
+        iframe.height = '97%';
         me.Coverable_isShowing = true;
     };
 
@@ -118,8 +119,8 @@
         });
 
         baidu.dom.setBorderBoxSize(iframe,baidu.extend({
-            width: iframeContainer.offsetWidth,
-            height: iframeContainer.offsetHeight
+            width: iframeContainer.offsetWidth//,
+            //height: iframeContainer.offsetHeight
         },options));
     };
 })();

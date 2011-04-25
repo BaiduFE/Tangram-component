@@ -42,7 +42,6 @@ baidu.ui.Tooltip.register(function(me) {
 
         //tooltip打开时，绑定和解除方法
         me.addEventListener('onopen', function(){
-            baidu.un(me.currentTarget, 'mouseover', showFn);
             baidu.on(me.currentTarget, 'mouseout', hideFn);
         });
 
@@ -55,27 +54,20 @@ baidu.ui.Tooltip.register(function(me) {
         //显示tooltip
         function showFn(e){
             hideHandle && clearTimeout(hideHandle);
+            me.open(this);
 
-            var e = e || window.event,
-                target = baidu.event.getTarget(e);
-            
-            me.open(target);
-            
             //停止默认事件及事件传播
-            baidu.event.stop(e);
+            baidu.event.stop(e || window.event);
         }
 
         //隐藏tooltip
         function hideFn(e){
-            var e = e || window.event,
-                target = baidu.event.getTarget(e);
-
             hideHandle = setTimeout(function(){
                 me.close();
-
-                //停止默认事件及事件传播
-                baidu.event.stop(e);   
             },me.hideDelay);
+
+            //停止默认事件及事件传播
+            baidu.event.stop(e || window.event); 
         }
     }
 });
