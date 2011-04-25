@@ -3,6 +3,8 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
+
+
 ///import baidu.ui.createUI;
 
 ///import baidu.dom.setAttr;
@@ -38,6 +40,13 @@
 //在Gecko中，使用透明的iframe无法遮住wmode为window的flash
 //在其余浏览器引擎中wmode为window的flash会被遮罩，处于不可见状态
 //因此，直接将wmode为window的flash隐藏，保证页面最小限度的修改
+
+
+/**
+* 为控件增加遮罩。
+* @class Modal类
+*/
+
 
 baidu.ui.Modal = baidu.ui.createUI(function(options) {
     var me = this,
