@@ -44,7 +44,11 @@ baidu.ui.DatePicker = baidu.ui.createUI(function(options){
     me._calendar.addEventListener('clickdate', function(evt){
         me.pick(evt.date);
     });
-}).extend({
+}).extend(
+/**
+ *  @lends baidu.ui.DatePicker.prototype
+ */
+{
     uiType: 'datePicker',
     /**
      * 取得从input到得字符按format分析得到的日期对象
@@ -129,7 +133,10 @@ baidu.ui.DatePicker = baidu.ui.createUI(function(options){
             doc = document[baidu.browser.isStrict ? 'documentElement' : 'body'],
             inputHeight = me.input.offsetHeight,
             popupHeight = me._popup.getBody().offsetHeight;
-        me._calendar.update({initDate: me._getInputDate() || calendar._toLocalDate(new Date())});
+        me._calendar.setDate(me._getInputDate() || calendar._toLocalDate(new Date()));
+        me._calendar.renderTitle();
+        me._calendar._renderDate();
+//        me._calendar.update({initDate: me._getInputDate() || calendar._toLocalDate(new Date())});
         pos.top += (pos.top + inputHeight + popupHeight - doc.scrollTop > doc.clientHeight) ? -popupHeight
             : inputHeight;
         me._popup.open(pos);

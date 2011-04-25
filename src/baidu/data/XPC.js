@@ -5,8 +5,8 @@
 
 ///import baidu.data;
 ///import baidu.dom.setStyles;
-///import baidu.on;
-///import baidu.un;
+///import baidu.event.on;
+///import baidu.event.un;
 ///import baidu.lang.createClass;
 ///import baidu.fn.bind;
 

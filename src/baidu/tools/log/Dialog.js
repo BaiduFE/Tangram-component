@@ -20,7 +20,7 @@
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Dialog.Dialog$resizable;
 ///import baidu.ui.Dialog.Dialog$draggable;
-///import baidu.ui.Dialog.Dialog$smartCover;
+///import baidu.ui.Dialog.Dialog$coverable;
 ///import baidu.ui.Dialog.Dialog$closeButton;
 
 ///import baidu.ui.Tab;
