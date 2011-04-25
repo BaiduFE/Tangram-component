@@ -119,8 +119,8 @@
         });
 
         baidu.dom.setBorderBoxSize(iframe,baidu.extend({
-            width: iframeContainer.offsetWidth,
-            height: iframeContainer.offsetHeight
+            width: iframeContainer.offsetWidth//,
+            //height: iframeContainer.offsetHeight
         },options));
     };
 })();
