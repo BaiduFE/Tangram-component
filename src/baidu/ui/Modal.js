@@ -43,9 +43,9 @@
 
 
 /**
-* 为控件增加遮罩。
-* @class Modal类
-*/
+ * 为控件增加遮罩。
+ * @class Modal类
+ */
 
 
 baidu.ui.Modal = baidu.ui.createUI(function(options) {
