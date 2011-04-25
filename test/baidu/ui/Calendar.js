@@ -60,11 +60,14 @@ module('baidu.ui.Calendar');
 		te.update();
 		// te.checkDate(de, da);
 		// check title
-		ok(te.doms.title.label.html().indexOf(de.getFullYear() + '年') >= 0,
+		ok(te.doms.title.label.html().indexOf(de.getFullYear() + '年') >= 0 ||
+				te.doms.title.label.html().indexOf(de.getFullYear()) > 0,
 				'check label year in title : ' + de.getFullYear());
 		ok(te.doms.title.label.html().indexOf(
-				te.doms._monthName[de.getMonth()] + '月') >= 0,
-				'check label month in title : ' + de.getMonth());
+				te.doms._monthName[de.getMonth()] + '月') >= 0 ||
+				te.doms.title.label.html().indexOf(
+						te.translate_month(te.doms._monthName[de.getMonth()])) >= 0,
+						'check label month in title : ' + de.getMonth());
 		// check date
 		$(te.doms.content.dates).each(
 				function(idx, item) {
@@ -80,10 +83,13 @@ module('baidu.ui.Calendar');
 
 	te.simplecheck = function(de) {
 		te.update();
-		ok(te.doms.title.label.html().indexOf(de.getFullYear() + '年') >= 0,
+		ok(te.doms.title.label.html().indexOf(de.getFullYear() + '年') >= 0
+				|| te.doms.title.label.html().indexOf(de.getFullYear()) >= 0,
 				'check label year in title : ' + de.getFullYear());
 		ok(te.doms.title.label.html().indexOf(
-				te.doms._monthName[de.getMonth()] + '月') >= 0,
+				te.doms._monthName[de.getMonth()] + '月') >= 0 
+				|| te.doms.title.label.html().indexOf(
+						te.translate_month(te.doms._monthName[de.getMonth()])) >= 0,
 				'check label month in title : ' + de.getMonth());
 	};
 
@@ -120,6 +126,56 @@ module('baidu.ui.Calendar');
 		return ui;
 	};
 
+	te.translate_month = function(ch_month) {
+		switch(ch_month){
+		case '一': 
+			return 'January';
+		case '二': 
+			return 'February';
+		case '三': 
+			return 'March';
+		case '四': 
+			return 'April';
+		case '五': 
+			return 'May';
+		case '六': 
+			return 'June';
+		case '七': 
+			return 'July';
+		case '八': 
+			return 'August';
+		case '九': 
+			return 'September';
+		case '十': 
+			return 'October';
+		case '十一': 
+			return 'November';
+		case '十二': 
+			return 'December';
+			break;
+		}
+	};
+	
+	te.translate_week = function(ch_week) {
+		switch(ch_week){
+		case '一': 
+			return 'Mon';
+		case '二': 
+			return 'Tue';
+		case '三': 
+			return 'Wed';
+		case '四': 
+			return 'Thu';
+		case '五': 
+			return 'Fri';
+		case '六': 
+			return 'Sat';
+		case '日': 
+			return 'Sun';
+			break;
+		}
+	};
+	
 	te.update = function() {
 		var ui = te.obj[te.obj.length - 1];
 		var g = function(id, child) {
@@ -158,12 +214,12 @@ module('baidu.ui.Calendar');
 	};
 	var ts = QUnit.testStart, td = QUnit.testDone;
 	QUnit.testStart = function() {
-		ts.apply(arguments);
+		ts.apply(this, arguments);
 		te.dom.push(document.body.appendChild(document.createElement('div')));
 	};
 	QUnit.testDone = function() {
 		delete te.doms;
-		td.apply(arguments);
+		td.apply(this, arguments);
 	};
 
 })();
@@ -215,10 +271,10 @@ test('界面操作', function() {
 
 	// 点击一个日期，翻页后需要update
 	te.update();
-	item = te.doms.content.dates[15];// 需要计算时间
+//	item = te.doms.content.dates[15];// 需要计算时间
 	var d = te.getDates(te.getDate('2000-1-1'))[15];// 这个是当前第15个日期
 	te.checkEvent(ui, 'onclickdate', d);
-	ua.click(item);
+	ua.click(te.doms.content.dates[15]);
 
 	// 下翻一页
 	ua.click(te.doms.title.next[0]);// 实际1月10日，显示2月
@@ -240,9 +296,9 @@ test('界面操作', function() {
 
 	te.update();
 	// 点到第一个元素是什么情况。。。
-	item = te.doms.content.dates[0];// 需要计算时间
+//	item = te.doms.content.dates[0];// 需要计算时间
 	te.checkEvent(ui, 'onclickdate', te.getDates(d)[0]);
-	ua.click(item);// 实际11月，显示11月
+	ua.click(te.doms.content.dates[0]);// 实际11月，显示11月
 });
 
 test('开放参数', function() {
@@ -267,7 +323,7 @@ test('开放参数', function() {
 	// 可能是一个日期
 	});
 	equals(ui.weekStart, 'mon');
-	equals(te.doms.title.prev.html(), '<p>prev</p>', 'prev set');
+	equals(te.doms.title.prev.html().toLowerCase(), '<p>prev</p>', 'prev set');
 	equals(te.doms.title.next.html(), '&gt;', 'next not set');
 	te.check(ui, te.getDate('2012-12-21'), true);
 	// te.simplecheck(te.getDate('2012-12-21'));
@@ -357,7 +413,7 @@ test('开放API', function() {
 	var d = te.getDate('1999-1-1');
 	ui.gotoDate(d);
 	te.update();
-	te.check(ui, te.getDate('1999-1-1'), false);
+	te.check(ui, te.getDate('1999-1-1'), true);
 	// te.simplecheck(d);
 
 	d.setDate(28);
@@ -406,5 +462,78 @@ test('开放API', function() {
 // FIXME 关于按钮不松就一直换月，这个就不测了，以后再补
 
 test('en-US', function() {
+	stop();
+	// 默认值取当前日期
+	ua.importsrc('baidu.i18n.cultures.en-US', te.check);
+});
 
+test('英文版界面操作', function() {
+	var ui = te.getUI(false, null, {
+		initDate : te.getDate('2000-1-1'),
+		onclickdate : function(date) {
+			ok('onclickdate', 'click date');
+		}
+	});
+	equals(ui.uiType, 'calendar', 'check ui type');
+	equals(ui.weekStart, 'sun', 'check week start');
+
+	// 默认星期，第一排是周
+	for (i = 0; i < 7; i++)
+		ok(
+				te.doms.content.weeks[i].innerHTML
+						.indexOf(te.translate_week(te.doms._weekName[i])) >= 0,
+				'check week head : ' + te.translate_week(te.doms._weekName[i]));
+
+	// 悬停所有日期
+	var _c = ui.getClass('hover');
+	$(te.doms.content.dates).each(function() {
+		ua.mouseover(this);
+		!($(this).hasClass(_c)) && fail('should have class hover');
+	});
+
+	// 上翻一页
+	ua.click(te.doms.title.prev[0]);
+	te.check(ui, te.getDate('1999-12-1'), true);
+	ua.click(te.doms.title.prev[0]);
+	te.simplecheck(te.getDate('1999-11-1'));
+	// te.checkDate(ui.getDate(), te.getDate('1999-11-1'), true);
+
+	// 下翻一页
+	ua.click(te.doms.title.next[0]);
+	// te.checkDate(ui.getDate(), te.getDate('1999-12-1'), true);
+	te.simplecheck(te.getDate('1999-12-1'));
+	ua.click(te.doms.title.next[0]);
+	// te.checkDate(ui.getDate(), te.getDate('2000-1-1'), true);
+	te.simplecheck(te.getDate('2000-1-1'));
+
+	// 点击一个日期，翻页后需要update
+	te.update();
+//	item = te.doms.content.dates[15];// 需要计算时间
+	var d = te.getDates(te.getDate('2000-1-1'))[15];// 这个是当前第15个日期
+	te.checkEvent(ui, 'onclickdate', d);
+	ua.click(te.doms.content.dates[15]);
+
+	// 下翻一页
+	ua.click(te.doms.title.next[0]);// 实际1月10日，显示2月
+	d.setMonth(d.getMonth() + 1);
+	// te.checkDate(ui.getDate(), d, true);
+	te.simplecheck(d);
+	// console.log(d);
+
+	ua.click(te.doms.title.prev[0]);// 实际1月10日，显示1月
+	d.setMonth(d.getMonth() - 1);
+	// te.checkDate(ui.getDate(), d, true);
+	te.simplecheck(d);
+	// console.log(d);
+
+	ua.click(te.doms.title.prev[0]);// 实际1月10日，显示12月
+	d.setMonth(d.getMonth() - 1);
+	// te.checkDate(ui.getDate(), d, true);
+	te.simplecheck(d);
+
+	te.update();
+	// 点到第一个元素是什么情况。。。
+//	item = te.doms.content.dates[0];// 需要计算时间
+	te.checkEvent(ui, 'onclickdate', te.getDates(d)[0]);
+	ua.click(te.doms.content.dates[0]);// 实际11月，显示11月
 });

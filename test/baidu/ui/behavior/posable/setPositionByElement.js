@@ -68,9 +68,9 @@ test('options', function() {
 		};
 		$(doc.body).css('margin', 0).css('padding', 0).css('borderWidth', 0);// 这个必须
 		$(div0).css('position', 'absolute').css('left', 10).css('top', 10).css(
-				'width', 10).css('height', 10)
+				'width', 20).css('height', 20)
 				.css('background-color', 'yellow').attr('id', 'div0');
-		$(div1).css('width', 10).css('height', 10).css('background-color',
+		$(div1).css('width', 20).css('height', 20).css('background-color',
 				'blue').attr('id', 'div1');
 		for ( var key in w.baidu.ui.behavior.posable)
 			// ui extend posable
@@ -98,7 +98,7 @@ test('options.position, lefttop', function() {
 	$(div0).css('position', 'absolute').css('left', 20).css('top', 20).css(
 			'width', 20).css('height', 20)
 			.css('background-color', 'yellow').attr('id', 'div0');
-	$(div1).css('width', 10).css('height', 10).css('background-color',
+	$(div1).css('width', 20).css('height', 20).css('background-color',
 			'blue').css('position', 'absolute').attr('id', 'div1');
 	for ( var key in baidu.ui.behavior.posable)
 		// ui extend posable
@@ -124,7 +124,7 @@ test('options.position, rightbottom', function() {
 	$(div0).css('position', 'absolute').css('left', 20).css('top', 20).css(
 			'width', 20).css('height', 20)
 			.css('background-color', 'yellow').attr('id', 'div0');
-	$(div1).css('width', 10).css('height', 10).css('background-color',
+	$(div1).css('width', 20).css('height', 20).css('background-color',
 			'blue').css('position', 'absolute').attr('id', 'div1');
 	for ( var key in baidu.ui.behavior.posable)
 		// ui extend posable
@@ -139,7 +139,7 @@ test('options.position, rightbottom', function() {
 	document.body.removeChild(div1);
 });
 
-test('test in a small iframe, lefttop, small element', function() {
+test('test in a small iframe, lefttop', function() {
 	ua.frameExt(function(w, f) {
 		$(f).css('width', 100).css('height', 100);
 		var doc = w.document, div0 = doc.body.appendChild(doc
@@ -152,12 +152,42 @@ test('test in a small iframe, lefttop, small element', function() {
 		$(div0).css('position', 'absolute').css('left', 100).css('top', 100).css(
 				'width', 20).css('height', 20)
 				.css('background-color', 'yellow').attr('id', 'div0');
-		$(div1).css('width', 10).css('height', 10).css('position', 'absolute').css('background-color',
+		$(div1).css('width', 20).css('height', 20).css('position', 'absolute').css('background-color',
 				'blue').attr('id', 'div1');
 		for ( var key in w.baidu.ui.behavior.posable)
 			// ui extend posable
 			ui[key] = w.baidu.ui.behavior.posable[key];
-//		w.scrollTo(100,100);
+		ui.setPositionByElement(div0, div1, {
+			once : true,
+			position : ''
+		});
+		equals(parseInt(div1.style.left), parseInt(div0.style.left) - parseInt(div1.style.width), 'check left');
+		equals(parseInt(div1.style.top), parseInt(div0.style.top) - parseInt(div1.style.height), 'check top');
+		doc.body.removeChild(div0);
+		doc.body.removeChild(div1);
+		te.obj.push(f);
+		this.finish();
+	});
+});
+
+test('test in a big iframe, lefttop', function() {
+	ua.frameExt(function(w, f) {
+		$(f).css('width', 150).css('height', 150);
+		var doc = w.document, div0 = doc.body.appendChild(doc
+				.createElement('div')), div1 = doc.body.appendChild(doc
+				.createElement('div')), ui = {
+			dispatchEvent : function(type) {
+			}
+		};
+		$(doc.body).css('margin', 0).css('padding', 0).css('borderWidth', 0);// 这个必须
+		$(div0).css('position', 'absolute').css('left', 100).css('top', 100).css(
+				'width', 20).css('height', 20)
+				.css('background-color', 'yellow').attr('id', 'div0');
+		$(div1).css('width', 20).css('height', 20).css('position', 'absolute').css('background-color',
+				'blue').attr('id', 'div1');
+		for ( var key in w.baidu.ui.behavior.posable)
+			// ui extend posable
+			ui[key] = w.baidu.ui.behavior.posable[key];
 		ui.setPositionByElement(div0, div1, {
 			once : true,
 			position : ''
@@ -171,39 +201,8 @@ test('test in a small iframe, lefttop, small element', function() {
 	});
 });
 
-test('test in a small iframe, lefttop, big element', function() {
-	ua.frameExt(function(w, f) {
-		$(f).css('width', 100).css('height', 100);
-		var doc = w.document, div0 = doc.body.appendChild(doc
-				.createElement('div')), div1 = doc.body.appendChild(doc
-				.createElement('div')), ui = {
-			dispatchEvent : function(type) {
-			}
-		};
-		$(doc.body).css('margin', 0).css('padding', 0).css('borderWidth', 0);// 这个必须
-		$(div0).css('position', 'absolute').css('left', 10).css('top', 10).css(
-				'width', 100).css('height', 100)
-				.css('background-color', 'yellow').attr('id', 'div0');
-		$(div1).css('width', 10).css('height', 10).css('position', 'absolute').css('background-color',
-				'blue').attr('id', 'div1');
-		for ( var key in w.baidu.ui.behavior.posable)
-			// ui extend posable
-			ui[key] = w.baidu.ui.behavior.posable[key];
-		w.scrollTo(100,100);
-		ui.setPositionByElement(div0, div1, {
-			once : true,
-			position : ''
-		});
-		equals(parseInt(div1.style.left), parseInt(div0.style.left), 'check left');
-		equals(parseInt(div1.style.top), parseInt(div0.style.top), 'check top');
-		doc.body.removeChild(div0);
-		doc.body.removeChild(div1);
-		te.obj.push(f);
-		this.finish();
-	});
-});
 
-test('test in a small iframe, bottomright, small element', function() {
+test('test in a small iframe, bottomright', function() {
 	ua.frameExt(function(w, f) {
 		$(f).css('width', 100).css('height', 100);
 		var doc = w.document, div0 = doc.body.appendChild(doc
@@ -216,7 +215,7 @@ test('test in a small iframe, bottomright, small element', function() {
 		$(div0).css('position', 'absolute').css('left', 100).css('top', 100).css(
 				'width', 20).css('height', 20)
 				.css('background-color', 'yellow').attr('id', 'div0');
-		$(div1).css('width', 10).css('height', 10).css('position', 'absolute').css('background-color',
+		$(div1).css('width', 20).css('height', 20).css('position', 'absolute').css('background-color',
 				'blue').attr('id', 'div1');
 		for ( var key in w.baidu.ui.behavior.posable)
 			// ui extend posable
@@ -226,8 +225,8 @@ test('test in a small iframe, bottomright, small element', function() {
 			once : true,
 			position : 'bottomright'
 		});
-		equals(parseInt(div1.style.left), parseInt(div0.style.left) + parseInt(div0.style.width), 'check left');
-		equals(parseInt(div1.style.top), parseInt(div0.style.top)+ parseInt(div0.style.height), 'check top');
+		equals(parseInt(div1.style.left), parseInt(div0.style.left) + parseInt(div0.style.width) - parseInt(div1.style.width), 'check left');
+		equals(parseInt(div1.style.top), parseInt(div0.style.top) + parseInt(div0.style.height) - parseInt(div1.style.height), 'check top');
 		doc.body.removeChild(div0);
 		doc.body.removeChild(div1);
 		te.obj.push(f);
@@ -235,9 +234,9 @@ test('test in a small iframe, bottomright, small element', function() {
 	});
 });
 
-test('test in a small iframe, bottomright, big element', function() {
+test('test in a big iframe, bottomright', function() {
 	ua.frameExt(function(w, f) {
-		$(f).css('width', 100).css('height', 100);
+		$(f).css('width', 150).css('height', 150);
 		var doc = w.document, div0 = doc.body.appendChild(doc
 				.createElement('div')), div1 = doc.body.appendChild(doc
 				.createElement('div')), ui = {
@@ -248,7 +247,7 @@ test('test in a small iframe, bottomright, big element', function() {
 		$(div0).css('position', 'absolute').css('left', 10).css('top', 10).css(
 				'width', 100).css('height', 100)
 				.css('background-color', 'yellow').attr('id', 'div0');
-		$(div1).css('width', 10).css('height', 10).css('position', 'absolute').css('background-color',
+		$(div1).css('width', 20).css('height', 20).css('position', 'absolute').css('background-color',
 				'blue').attr('id', 'div1');
 		for ( var key in w.baidu.ui.behavior.posable)
 			// ui extend posable
