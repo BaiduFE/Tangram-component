@@ -114,120 +114,135 @@ test("set,get,remove between iframes", function() {
 
 test("set,get,remove a lot of data", function() {
 	expect(6);
-	var storage = baidu.data.storage;
-	var flag = 0;
-	var value_flag = 0;
-	for(var i = 0; i < 50; i++){
-		storage.set('key' + i, 'value' + i, function(status, value){
-			if(status != 0)
-				flag = status;
-			if(value != 'value' + i)
-				value_flag = value;
-		});
-		if(flag != 0 || value_flag != 0)
-			break;
-	}
-	if(flag == 0){
-	    ok(true, 'set successfully');
-	}
-	else{
-		ok(false, 'set unsuccessfully, the status is ' + flag);
-	}
-	if(value_flag == 0){
-	    ok(true, 'set successfully');
-	}
-	else{
-		ok(false, 'set unsuccessfully, the value is ' + value_flag);
-	}
-
-	flag = 0;
-	value_flag = 0;
-	for(var i = 0; i < 50; i++){
-		storage.get('key' + i, function(status, value){
-			if(status != 0)
-				flag = status;
-			if(value != 'value' + i)
-				value_flag = value;
-		});
-		if(flag != 0 || value_flag != 0)
-			break;
-	}
-	if(flag == 0){
-	    ok(true, 'get successfully');
-	}
-	else{
-		ok(false, 'get unsuccessfully, the status is ' + flag);
-	}
-	if(value_flag == 0){
-	    ok(true, 'get successfully');
-	}
-	else{
-		ok(false, 'get unsuccessfully, the value is ' + value_flag);
-	}
-	
-	flag = 0;
-	value_flag = 0;
-	for(var i = 0; i < 50; i++){
-		storage.remove('key' + i, function(status, value){
-			if(status != 0)
-				flag = status;
-			if(value != 'value' + i)
-				value_flag = value;
-		});
-		if(flag != 0 || value_flag != 0)
-			break;
-	}
-	if(flag == 0){
-	    ok(true, 'remove successfully');
-	}
-	else{
-		ok(false, 'remove unsuccessfully, the status is ' + flag);
-	}
-	if(value_flag == 0){
-	    ok(true, 'remove successfully');
-	}
-	else{
-		ok(false, 'remove unsuccessfully, the value is ' + value_flag);
-	}
-});
-
-test("overflow", function() {
-	expect(1);
 	stop();
 	var check = function(){
 		var storage = baidu.data.storage;
 		var flag = 0;
 		var value_flag = 0;
-		var key = '';
-		var value = '';
-		for(var i = 0; i < 3000; i++)
-			key += 'key';
-		for(var i = 0; i < 3000; i++)
-			value += 'value';
-		var times = 5;
-		if(baidu.browser.chrome || baidu.browser.opera || baidu.browser.firefox)
-			times = 100;
+		var times = 50;
+		if(baidu.browser.firefox)
+			times = 10;
 		for(var i = 0; i < times; i++){
-			storage.set(key + i, value + i, function(status, value){
-				if(status == 2)
+			storage.set('key' + i, 'value' + i, function(status, value){
+				if(status != 0)
 					flag = status;
+				if(value != 'value' + i)
+					value_flag = value;
 			});
-			if(flag == 2)
+			if(flag != 0 || value_flag != 0)
 				break;
 		}
+		if(flag == 0){
+		    ok(true, 'set successfully');
+		}
+		else{
+			ok(false, 'set unsuccessfully, the status is ' + flag);
+		}
+		if(value_flag == 0){
+		    ok(true, 'set successfully');
+		}
+		else{
+			ok(false, 'set unsuccessfully, the value is ' + value_flag);
+		}
+	
+		flag = 0;
+		value_flag = 0;
+		for(var i = 0; i < times; i++){
+			storage.get('key' + i, function(status, value){
+				if(status != 0)
+					flag = status;
+				if(value != 'value' + i)
+					value_flag = value;
+			});
+			if(flag != 0 || value_flag != 0)
+				break;
+		}
+		if(flag == 0){
+		    ok(true, 'get successfully');
+		}
+		else{
+			ok(false, 'get unsuccessfully, the status is ' + flag);
+		}
+		if(value_flag == 0){
+		    ok(true, 'get successfully');
+		}
+		else{
+			ok(false, 'get unsuccessfully, the value is ' + value_flag);
+		}
+		
+		flag = 0;
+		value_flag = 0;
+		for(var i = 0; i < times; i++){
+			storage.remove('key' + i, function(status, value){
+				if(status != 0)
+					flag = status;
+				if(value != 'value' + i)
+					value_flag = value;
+			});
+			if(flag != 0 || value_flag != 0)
+				break;
+		}
+		if(flag == 0){
+		    ok(true, 'remove successfully');
+		}
+		else{
+			ok(false, 'remove unsuccessfully, the status is ' + flag);
+		}
+		if(value_flag == 0){
+		    ok(true, 'remove successfully');
+		}
+		else{
+			ok(false, 'remove unsuccessfully, the value is ' + value_flag);
+		}
+		start();
+	};
+	ua.importsrc('baidu.browser,baidu.browser.chrome,baidu.browser.opera,baidu.browser.firefox', 
+			check ,'baidu.browser', 'baidu.data.storage');
+});
+
+test("overflow", function() {
+	expect(1);
+	var storage = baidu.data.storage;
+	var flag = 0;
+	var value_flag = 0;
+	var key = '';
+	var value = '';
+	for(var i = 0; i < 3000; i++)
+		key += 'key';
+	for(var i = 0; i < 3000; i++)
+		value += 'value';
+	var times = 5;
+	if(baidu.browser.chrome || baidu.browser.opera || baidu.browser.firefox)
+		times = 100;
+	if(baidu.browser.firefox)//FF太慢，所以不测overflow
+		times = 1;
+	for(var i = 0; i < times; i++){
+		storage.set(key + i, value + i, function(status, value){
+			if(status == 2)
+				flag = status;
+		});
+		if(flag == 2)
+			break;
+	}
+	if(baidu.browser.firefox){
+		if(flag == 0){
+		    ok(true, 'check overflow successfully');
+		}
+		else{
+			ok(false, 'check overflow unsuccessfully, the status is ' + flag);
+		}
+	}
+	else{
 		if(flag == 2){
 		    ok(true, 'check overflow successfully');
 		}
 		else{
 			ok(false, 'check overflow unsuccessfully, the status is ' + flag);
 		}
-	
-		for(var i = 0; i < times; i++){
-			storage.remove(key + i, function(status, value){
-			});
-		}
-		start();
-	};
-	ua.importsrc('baidu.browser,baidu.browser.chrome,baidu.browser.opera,baidu.browser.firefox', 
-			check ,'baidu.browser', 'baidu.data.storage');
+	}
+
+	for(var i = 0; i < times; i++){
+		storage.remove(key + i, function(status, value){
+		});
+	}
 });

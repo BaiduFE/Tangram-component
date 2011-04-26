@@ -101,3 +101,9 @@
     width: 16px;
 }
 
+div#test {
+	width: 20px;
+	height: 20px;
+	background-color: #AAA;
+	position : absolute;
+}
