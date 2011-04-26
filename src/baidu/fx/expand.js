@@ -24,6 +24,7 @@
  * @param     {Object}                options            选项。参数的详细说明如下表所示
  * @config    {Number}                duration           500,//效果持续时间，默认值为500ms
  * @config    {Number}                interval           16, //动画帧间隔时间，默认值为16ms
+ * @config    {String}                orientation        动画展开方向，取值：horizontal（默认），vertical
  * @config    {Function}              transition         function(schedule){return schedule;},时间线函数
  * @config    {Function}              onbeforestart      function(){},//效果开始前执行的回调函数
  * @config    {Function}              onbeforeupdate     function(){},//每次刷新画面之前会调用的回调函数
@@ -36,17 +37,33 @@
 baidu.fx.expand = function(element, options) {
     if (!(element = baidu.dom.g(element))) return null;
 
-    var e = element, offsetHeight, height, 
-        stylesValue = ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"];
+    var e = element, 
+        value, 
+        attr,
+        attrHV = {
+            "horizontal": {
+                value: 'height',
+                offset: 'offsetHeight',
+                stylesValue: ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"]
+            },
+            "vertical": {
+                value: 'width',
+                offset: 'offsetWidth',
+                stylesValue: ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"]
+            }
+        };
 
     var fx = baidu.fx.create(e, baidu.object.extend({
+        orientation: 'horizontal'
+        
         //[Implement Interface] initialize
-        initialize : function() {
+        ,initialize : function() {
+            attr = attrHV[this.orientation];
             baidu.dom.show(e);
-            this.protect("height");
+            this.protect(attr.value);
             this.protect("overflow");
             this.restoreAfterFinish = true;
-            height = offsetHeight = e.offsetHeight;
+            value = e[attr.offset];
             
             function getStyleNum(d,style){
                 var result = parseInt(baidu.getStyle(d,style));
@@ -55,11 +72,11 @@ baidu.fx.expand = function(element, options) {
                 return result;
             }
             
-            baidu.each(stylesValue,function(item){
-                height -= getStyleNum(e,item);
+            baidu.each(attr.stylesValue, function(item){
+                value -= getStyleNum(e,item);
             });
             e.style.overflow = "hidden";
-            e.style.height = "1px";
+            e.style[attr.value] = "1px";
         }
 
         //[Implement Interface] transition
@@ -67,7 +84,7 @@ baidu.fx.expand = function(element, options) {
 
         //[Implement Interface] render
         ,render : function(schedule) {
-            e.style.height = Math.floor(schedule * height) +"px";
+            e.style[attr.value] = Math.floor(schedule * value) +"px";
         }
     }, options || {}), "baidu.fx.expand_collapse");
 
