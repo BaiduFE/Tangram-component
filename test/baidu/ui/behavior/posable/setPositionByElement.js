@@ -43,11 +43,11 @@ test('base', function() {
 		te.dom.push(document.body.appendChild(document.createElement('div')));
 		var ui = te.getUI(), m = ui.getMain();
 		$(te.dom[0]).css('position', 'absolute').css('left', 10).css('top', 10)
-				.css('width', 10).css('height', 10).css('background-color',
+				.css('width', 20).css('height', 20).css('background-color',
 						'red');
 		ui.open(te.dom[0]);
-		equals(parseInt($(m).css('left')), 20);
-		equals(parseInt($(m).css('top')), 20);
+		equals(parseInt($(m).css('left')), 30);
+		equals(parseInt($(m).css('top')), 30);
 
 		start();
 	}, 0, 'baidu.ui.behavior.posable.setPositionByElement');
@@ -79,10 +79,9 @@ test('options', function() {
 			once : true,
 			position : 'bottomright'
 		});
-		equals(parseInt(div1.style.left), parseInt(div0.offsetLeft)
-				+ parseInt(div0.style.left), 'check left');
-		equals(parseInt(div1.style.top), 20, 'check top');
-
+		equals(parseInt(div1.style.left), parseInt(div0.style.left) + parseInt(div0.style.width), 'check left');
+		equals(parseInt(div1.style.top), parseInt(div0.style.top)+ parseInt(div0.style.height), 'check top');
+		
 		this.finish();
 	});
 });
