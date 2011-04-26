@@ -15,8 +15,6 @@
 ///import baidu.array.each;
 ///import baidu.dom.getStyle;
 ///import baidu.lang.isNumber;
-///import baidu.dom.setBorderBoxHeight;
-///import baidu.dom.setBorderBoxWidth;
 
  
 /**
@@ -39,39 +37,56 @@
 baidu.fx.expand = function(element, options) {
     if (!(element = baidu.dom.g(element))) return null;
 
-    var e = element, width, height;
+    var e = element, 
+        value, 
+        stylesH = ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"],
+        stylesV = ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"],
+        attr,
+        attrHV = {
+            "horizontal": {
+                value: 'height',
+                offset: 'offsetHeight',
+                stylesValue: stylesH
+            },
+            "vertical": {
+                value: 'width',
+                offset: 'offsetWidth',
+                stylesValue: stylesV
+            }
+        };
 
     var fx = baidu.fx.create(e, baidu.object.extend({
-        orientation: 'horizontal',
+        orientation: 'horizontal'
         
         //[Implement Interface] initialize
-        initialize : function() {
+        ,initialize : function() {
+            attr = attrHV[this.orientation];
             baidu.dom.show(e);
+            this.protect(attr.value);
             this.protect("overflow");
-            e.style.overflow = "hidden";
             this.restoreAfterFinish = true;
+            value = e[attr.offset];
             
-            if(this.orientation == 'horizontal'){
-                this.protect("height");
-                height = e.offsetHeight;
-                e.style.height = "1px";
-            }else{
-                this.protect("width");
-                width = e.offsetWidth;
-                e.style.width = "1px";
+            function getStyleNum(d,style){
+                var result = parseInt(baidu.getStyle(d,style));
+                result = isNaN(result) ? 0 : result;
+                result = baidu.lang.isNumber(result) ? result : 0;
+                return result;
             }
-        },
+            
+            baidu.each(attr.stylesValue, function(item){
+                value -= getStyleNum(e,item);
+            });
+            e.style.overflow = "hidden";
+            e.style[attr.value] = "1px";
+        }
 
         //[Implement Interface] transition
-        transition : function(percent) {return Math.sqrt(percent);},
+        ,transition : function(percent) {return Math.sqrt(percent);}
 
         //[Implement Interface] render
-        render : function(schedule) {
-            if(this.orientation == 'horizontal'){
-                 baidu.dom.setBorderBoxHeight(e, Math.floor(schedule * height));
-            }else{
-                baidu.dom.setBorderBoxWidth(e, Math.floor(schedule * width));
-            } 
+        ,render : function(schedule) {
+            e.style[attr.value] = Math.floor(schedule * value) +"px";
         }
     }, options || {}), "baidu.fx.expand_collapse");
 

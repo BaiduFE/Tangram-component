@@ -16,6 +16,23 @@ var op = {/* fx效果方法依赖参数 */
 	}
 };
 
+var opV = {/* fx效果方法依赖参数 */
+    orientation: 'vertical',
+    onbeforestart : function() {/* 初始设置启动宽度为100 */
+        $(te.dom[0]).css('width', 100).css('height', 100).css('background-color', 'red');
+    },
+    onbeforeupdate : function() {
+        if (!this.checked) {
+            this.checked = true;
+            equals(parseInt($(te.dom[0]).css('width')), 100, '校验对象宽度在开始时是否为1');/* 校验对象最后宽度是否为100 */
+        }
+    },
+    onafterfinish : function() {
+        equals(parseInt($(te.dom[0]).css('width')), 0, '校验对象宽度在结束时是否为100');/* 校验对象最后宽度是否为0 */
+        start();
+    }
+};
+
 test('校验元素类型为id', function() {
 	te.checkfx.create(te.dom[0].id, {
 		method : baidu.fx.collapse,
@@ -30,13 +47,20 @@ test('校验元素类型为dom', function() {
 	}).checkbase();
 });
 
+test('校验orientation 为vertical', function() {
+    te.checkfx.create(te.dom[0].id, {
+        method : baidu.fx.collapse,
+        options : opV
+    }).checkbase();
+});
+
 test('校验事件序列', function() {
 	te.checkfx.create(te.dom[0], {
 		method : baidu.fx.collapse,
 		beforestart : function() {/* 初始设置启动高度为100 */
 			$(te.dom[0]).css('height', 100).css('background-color', 'red');
 		}
-	}).checkevents({
+	}).checkevents( {
 		onafterfinish : start
 	}, 4);
 });
@@ -49,9 +73,8 @@ test('校验时间序列', function() {
 				$(te.dom[0]).css('height', 100).css('background-color', 'red');
 			}
 		}
-	}).checktimeline(function(point, timelinepoint) {
-		// 100*(1-per)2
-		return Math.round(100 * Math.pow(1 - point / timelinepoint, 2));
+	}).checktimeline(function(point) {
+		return Math.round(Math.pow(point - 4, 2) * 25 / 4);
 	}, function() {
 		return parseInt($(te.dom[0]).css('height'));
 	});

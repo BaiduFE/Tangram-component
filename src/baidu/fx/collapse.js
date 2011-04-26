@@ -11,8 +11,6 @@
 ///import baidu.dom.hide;
 ///import baidu.object.extend;
 ///import baidu.fx.create;
-///import baidu.dom.setBorderBoxHeight;
-///import baidu.dom.setBorderBoxWidth;
 
 /**
  * 从下向上收拢DOM元素的效果。
@@ -34,36 +32,47 @@
 baidu.fx.collapse = function(element, options) {
     if (!(element = baidu.dom.g(element))) return null;
 
-    var e = element, height, width;
+    var e = element, 
+        value, 
+        stylesH = ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"],
+        stylesV = ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"],
+        attr,
+        attrHV = {
+            "horizontal": {
+                value: 'height',
+                offset: 'offsetHeight',
+                stylesValue: stylesH
+            },
+            "vertical": {
+                value: 'width',
+                offset: 'offsetWidth',
+                stylesValue: stylesV
+            }
+        };
 
     var fx = baidu.fx.create(e, baidu.object.extend({
-        orientation: 'horizontal',
+        orientation: 'horizontal'
         
         //[Implement Interface] initialize
-        initialize : function() {
-            this.protect("width");
-            this.protect("height");
+        ,initialize : function() {
+            attr = attrHV[this.orientation];
+            this.protect(attr.value);
             this.protect("overflow");
             this.restoreAfterFinish = true;
-            height = e.offsetHeight;
-            width = e.offsetWidth;
+            value = e[attr.offset];
             e.style.overflow = "hidden";
-        },
+        }
 
         //[Implement Interface] transition
-        transition : function(percent) {return Math.pow(1 - percent, 2);},
+        ,transition : function(percent) {return Math.pow(1 - percent, 2);}
 
         //[Implement Interface] render
-        render : function(schedule) {
-            if(this.orientation == 'horizontal'){
-                 baidu.dom.setBorderBoxHeight(e, Math.floor(schedule * height));
-            }else{
-                baidu.dom.setBorderBoxWidth(e, Math.floor(schedule * width));
-            } 
-        },
+        ,render : function(schedule) {
+            e.style[attr.value] = Math.floor(schedule * value) +"px";
+        }
 
         //[Implement Interface] finish
-        finish : function(){baidu.dom.hide(e);}
+        ,finish : function(){baidu.dom.hide(e);}
     }, options || {}), "baidu.fx.expand_collapse");
 
     return fx.launch();
