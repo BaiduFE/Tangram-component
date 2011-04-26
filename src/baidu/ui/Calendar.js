@@ -333,7 +333,8 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
         me._initialize();
         me.renderTitle();
         me._renderDate();
-        baidu.dom.g(me.getId('content')).style.height = me.getBody().clientHeight
+        baidu.dom.g(me.getId('content')).style.height = 
+            (me.getBody().clientHeight || me.getBody().offsetHeight)
             - baidu.dom.g(me.getId('title')).offsetHeight + 'px';
         me.dispatchEvent('onload');
     },
