@@ -19,9 +19,6 @@
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.remove;
 
-//声明包
-///import baidu.ui.input;
-
 
 /**
  * Input基类，创建一个input实例。

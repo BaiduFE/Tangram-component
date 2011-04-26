@@ -51,9 +51,7 @@
  * @plugin table                          让跑马灯支持多行多列
  */
 
-baidu.ui.Carousel = baidu.ui.createUI(
-    
-    function(opts){
+baidu.ui.Carousel = baidu.ui.createUI(function(opts){
     this.contentText = opts.contentText || [];  //数组或对象在prototype中定义时会造成新建对象共用数据
 }).extend(
     /**
@@ -128,7 +126,7 @@ baidu.ui.Carousel = baidu.ui.createUI(
             itemStr.push(baidu.format(me.tplItem, {
                 id : me.getId("item" + me.itemCount),//这里的编号只是一个识别符，不包含任何业务联系
                 "class" : me.getClass("item"),
-                handler : me.getCallString("focus", me.getId("item" + me.itemCount)),
+                handler : me.getCallString("_onItemClick", me.getId("item" + me.itemCount)),
                 mouseoverHandler : me.getCallString("_onMouse", me.getId("item" + me.itemCount)),
                 mouseoutHandler : me.getCallString("_onMouse",  me.getId("item" + me.itemCount++)),
                 content : item.content
@@ -173,14 +171,16 @@ baidu.ui.Carousel = baidu.ui.createUI(
     addItem : function(ele, index) {
 
         var me = this,
-
+            
+            axis = me.axis[me.orientation],
+            
             item = baidu.format(me.tplItem, {
 
                 id : me.getId("item" + me.itemCount),
 
                 "class" : me.getClass("item"),
 
-                handler : me.getCallString("focus", me.getId("item" + me.itemCount)),
+                handler : me.getCallString("_onItemClick", me.getId("item" + me.itemCount)),
                 mouseoverHandler : me.getCallString("_onMouse", 'over', me.getId("item" + me.itemCount)),
                 mouseoutHandler : me.getCallString("_onMouse", 'out',  me.getId("item" + me.itemCount++)),
 
@@ -192,7 +192,9 @@ baidu.ui.Carousel = baidu.ui.createUI(
             baidu.dom.insertHTML(me.getItem(index), "beforeBegin", item);
 
             index <= me.scrollIndex && me.scrollIndex++;//当插入一个item，需要更新原来的scrollIndex
-
+            
+            index < me.scrollIndex && (me.getBody()[axis.scroll] += me[axis.offsetSize]);
+            
         }else{
 
             baidu.dom.insertHTML(me.getScrollContainer(), "beforeEnd", item);
@@ -217,21 +219,27 @@ baidu.ui.Carousel = baidu.ui.createUI(
     removeItem : function(index) {
 
         var me = this,
-
+            
+            axis = me.axis[me.orientation],
+            
+            currIndex = me.scrollIndex,
+            
+            lastIndex = me.totalCount - 1,
+            
             item = me.getItem(index);
 
         if(item){
-
             baidu.dom.remove(item.id);
-
-            me.scrollIndex = (index == me.scrollIndex) ? 0 : (index<me.scrollIndex ? me.scrollIndex-1 : me.scrollIndex);
-
+            index < currIndex && (me.getBody()[axis.scroll] -= me[axis.offsetSize]);
+            if( index < currIndex
+                || currIndex >= me.totalCount - me.pageSize
+                && index == lastIndex){//当前位置正好处于最后时，当删除最后一个项时，FF内核浏览器不会自动填充可视区
+                me.getBody()[axis.scroll] -= me[axis.offsetSize];
+            }
+            index == currIndex && me.focus(0 == currIndex ? 0 : currIndex - 1);
+            index < currIndex && (me.scrollIndex -= 1);
             me.totalCount--;
-//          if("horizontal" == me.orientation){
-//              baidu.setStyles(me.getScrollContainer(), {width : me.getScrollContainer().offsetWidth - me.offsetWidth + "px"});
-//          }
             me._resize();
-
         }
         return item;
 
@@ -274,6 +282,11 @@ baidu.ui.Carousel = baidu.ui.createUI(
         }
     },
     
+    _onItemClick: function(rsid){
+        var me = this;
+        me.focus(rsid);
+        me.dispatchEvent("onitemclick");
+    },
     /**
      * 设置索引对应的item的焦点
      * @param {Number} index 目标索引
@@ -303,18 +316,18 @@ baidu.ui.Carousel = baidu.ui.createUI(
 
         item = me.getItem(index);
 
-        if(item && me.scrollIndex != index){
+        if(item){
 
             me._blur();
 
             baidu.dom.addClass(item, me.getClass("item-focus"));
 
             me.scrollIndex = index;
+            
+            me.dispatchEvent('onfocus');
 
         }
         
-        me.dispatchEvent("onitemclick");
-
     },
     
     /**

@@ -4,24 +4,23 @@
  */
 
 ///import baidu.ui.createUI;
-
 ///import baidu.lang.Event;
-
 ///import baidu.object.extend;
 ///import baidu.object.each;
-
 ///import baidu.dom.g;
 ///import baidu.dom.remove;
+///import baidu.dom._styleFilter.px;
 ///import baidu.dom.setStyles;
 ///import baidu.dom.addClass;
 ///import baidu.dom.removeClass;
 ///import baidu.ui.behavior.posable.setPositionByElement;
-
+///import baidu.dom.show;
+///import baidu.dom.hide;
 ///import baidu.string.format;
-
 ///import baidu.array.each;
-
 ///import baidu.lang.isFunction;
+///import baidu.event.getTarget;
+///import baidu.dom.getAncestorByTag;
 
 /**
  * @class  Menubar 下拉菜单
@@ -46,7 +45,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
      */
 {
     uiType: "menubar",
-    width: '200',
+    width: 200,//这个地方不要写成字符串
     height: '',
     zIndex: 1200,
     hideDelay: 300,
@@ -106,8 +105,8 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
                 id: me.getItemId(itemId),
                 "class": (itemData.disabled ? (me.getClass("item") + ' ' + me.getClass("item-disabled")) : me.getClass("item")),
                 onclick: me.getCallString("itemClick", itemId),
-                onmouseover: itemData.disabled || me.getCallString("itemMouseOver", itemId),
-                onmouseout: itemData.disabled || me.getCallString("itemMouseOut", itemId),
+                onmouseover: itemData.disabled || me.getCallRef() + ".itemMouseOver(event, '" + itemId + "')",
+                onmouseout: itemData.disabled || me.getCallRef() + ".itemMouseOut(event, '" + itemId + "')",
                 content: itemArr.join(''),
                 branch: itemData.items ? me.getItemsString(itemData.items, itemId) : '',
                 title: itemData.title
@@ -160,12 +159,24 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
      * 单个条目mouseover的响应
      * @param {Object} idx     索引
      */
-    itemMouseOver: function(idx){
-        var me = this, 
+    itemMouseOver: function(evt, idx){
+        var me = this,
+            target = baidu.event.getTarget(evt),
             itemData = me.getItemData(idx), 
-            itemDom = me.getItem(idx);
+            itemDom = me.getItem(idx),
+            subItem;
         baidu.dom.addClass(itemDom, me.getClass("item-hover"));
-        itemData.items && baidu.dom.show(me.getBranchId(idx)); //如果有子菜单，显示子菜单
+        if(itemData.items){//如果有子菜单，先运算子菜单的打开位置
+            subItem = baidu.dom.g(me.getBranchId(idx));
+            if(subItem.style.display == 'none'){
+                baidu.dom.show(subItem);
+                target.tagName.toUpperCase() != 'LI' && (target = baidu.dom.getAncestorByTag(target, 'LI'));//如果换了tplItem这里就会有问题;
+                me.setPositionByElement(target, subItem, {
+                    position: 'rightCenter',
+                    once: true
+                });
+            }
+        }
         itemData.showing = true;//记录显示状态，为延迟关闭功能使用
         me.dispatchEvent("onitemmouseover", me.getItemEventData(idx));
     },
@@ -174,8 +185,9 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
      * 单个条目mouseout的响应
      * @param {Object} idx item索引
      */
-    itemMouseOut: function(idx){
-        var me = this, 
+    itemMouseOut: function(evt, idx){
+        var me = this,
+            target = baidu.event.getTarget(evt),
             itemData = me.getItemData(idx), 
             itemDom = me.getItem(idx);
         baidu.dom.removeClass(me.getItem(idx), me.getClass("item-hover"));
@@ -216,7 +228,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         baidu.object.each(me.items, function(item, key){
             if (item.items) {//判断是否有子菜单
                 baidu.dom.setStyles(me.getBranchId(key), {
-                    left: me.width,
+//                    left: me.width,//这句运算子标签的出现位置
                     width: me.width,
                     position: 'absolute',
                     display: 'none'
@@ -271,7 +283,9 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
      * 打开menubar
      */
     open: function(){
-        var me = this, 
+        var me = this,
+            target = me.getTarget(),
+            body = me.getBody(),
             showing;
         if (baidu.lang.isFunction(me.toggle) && !me.toggle()) {
             return;
@@ -281,14 +295,18 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         if (showing = baidu.ui.Menubar.showing) {
             showing.close();
         }
-        
-        if (!me._initialized) { //如果已经初始化就不再重复update
+        body && (body.style.display = '');
+        if (!me._initialized) {//如果已经初始化就不再重复update
             me.update();
             me._initialized = true;
+        }else{
+            if(target){
+                me.setPositionByElement(target, me.getMain(), {
+                    position: me.position,
+                    once: true
+                });
+            }
         }
-        
-        var body = me.getBody();
-        body.style.display = '';
         me.dispatchEvent("onopen");
         baidu.ui.Menubar.showing = me;
     },

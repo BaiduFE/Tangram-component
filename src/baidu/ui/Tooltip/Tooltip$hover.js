@@ -53,10 +53,9 @@ baidu.ui.Tooltip.register(function(me) {
 
         //显示tooltip
         function showFn(e){
-            //console.log('in');
             hideHandle && clearTimeout(hideHandle);
             me.open(this);
-            
+
             //停止默认事件及事件传播
             baidu.event.stop(e || window.event);
         }
@@ -65,10 +64,10 @@ baidu.ui.Tooltip.register(function(me) {
         function hideFn(e){
             hideHandle = setTimeout(function(){
                 me.close();
-
-                //停止默认事件及事件传播
-                baidu.event.stop(e || window.event);   
             },me.hideDelay);
+
+            //停止默认事件及事件传播
+            baidu.event.stop(e || window.event); 
         }
     }
 });

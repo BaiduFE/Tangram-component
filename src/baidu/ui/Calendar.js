@@ -47,7 +47,11 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
         baidu.dom.addClass(baidu.dom.g(ele), me.getClass('date-current'));
         me.dispatchEvent('clickdate', {date: date});
     });
-}).extend({
+}).extend(
+/**
+ *  @lends baidu.ui.Calendar.prototype
+ */
+{
     uiType: 'calendar',
     weekStart: 'Sun',//定义周的第一天
     statable: true,
@@ -266,7 +270,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
     },
     
     /**
-     * 渲染日历表的标题说明
+     * 渲染日历表的标题说明，如果对标题说明有特列要求，可以覆盖方法来实现
      */
     renderTitle: function(){
         var me = this, prev, next,
@@ -319,7 +323,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
     
     /**
      * 渲染日期组件到参数指定的容器中
-     * @param {HTMLElement} target
+     * @param {HTMLElement} target 一个用来存放组件的容器对象
      */
     render: function(target){
         var me = this,
@@ -336,7 +340,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
     
     /**
      * 更新日期的参数
-     * @param {Object} options
+     * @param {Object} options 参数，具体请参照构造中的options
      */
     update: function(options){
         var me = this;
@@ -399,6 +403,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
     
     /**
      * 取得一个本地化的当天的日期
+     * @return {Date} 返回一个本地当天的时间
      */
     getToday: function(){
         return me._toLocalDate(new Date());
@@ -406,7 +411,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
     
     /**
      * 返回一个当前选中的当地日期对象
-     * @return {Date}
+     * @return {Date} 返回一个本地日期对象
      */
     getDate: function(){
         return new Date(this._initDate.getTime());
