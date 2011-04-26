@@ -39,19 +39,17 @@ baidu.fx.expand = function(element, options) {
 
     var e = element, 
         value, 
-        stylesH = ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"],
-        stylesV = ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"],
         attr,
         attrHV = {
             "horizontal": {
                 value: 'height',
                 offset: 'offsetHeight',
-                stylesValue: stylesH
+                stylesValue: ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"]
             },
             "vertical": {
                 value: 'width',
                 offset: 'offsetWidth',
-                stylesValue: stylesV
+                stylesValue: ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"]
             }
         };
 
