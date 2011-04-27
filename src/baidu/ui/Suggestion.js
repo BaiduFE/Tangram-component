@@ -17,6 +17,7 @@
 
 ///import baidu.array.each;
 ///import baidu.array.contains;
+///import baidu.array.indexOf;
 
 ///import baidu.string.format;
 ///import baidu.object.extend;
@@ -30,20 +31,23 @@
 /**
  * @class  Suggestion基类，建立一个Suggestion实例
  *
- * @author berg
- * @param      {Object}                 [options]          选项.
- * @config     {Function}               onshow             当显示时触发。
- * @config     {Function}               onhide             当隐藏时触发，input或者整个window失去焦点，或者confirm以后会自动隐藏。
- * @config     {Function}               onconfirm          当确认条目时触发，回车后，或者在条目上按鼠标会触发确认操作。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。。
- * @config     {Function}               onbeforepick       使用方向键选中某一行，鼠标点击前触发。
- * @config     {Function}               onpick             使用方向键选中某一行，鼠标点击时触发。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。
- * @config     {Function}               onhighlight        当高亮时触发，使用方向键移过某一行，使用鼠标滑过某一行时会触发高亮。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。
- * @config     {Function}               view               重新定位时，会调用这个方法来获取新的位置，传入的参数中会包括top、 left、width三个值。
- * @config     {Function}               getData            在需要获取数据的时候会调用此函数来获取数据，传入的参数word是用户在input中输入的数据。
- * @config     {String}                 prependHTML        写在下拉框列表前面的html
- * @config     {String}                 appendHTML         写在下拉框列表后面的html
+ * @param  {Object}   [options]        选项.
+ * @config {Function} onshow           当显示时触发。
+ * @config {Function} onhide           当隐藏时触发，input或者整个window失去焦点，或者confirm以后会自动隐藏。
+ * @config {Function} onconfirm        当确认条目时触发，回车后，或者在条目上按鼠标会触发确认操作。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。。
+ * @config {Function} onbeforepick     使用方向键选中某一行，鼠标点击前触发。
+ * @config {Function} onpick           使用方向键选中某一行，鼠标点击时触发。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。
+ * @config {Function} onhighlight      当高亮时触发，使用方向键移过某一行，使用鼠标滑过某一行时会触发高亮。参数是event对象，其中有data属性，包括item和index值。item为当前确认的条目，index是条目索引。
+ * @config {Function} onload
+ * @config {Function} onmouseoveritem
+ * @config {Function} onmouseoutitem
+ * @config {Function} onmousedownitem
+ * @config {Function} onitemclick
+ * @config {Function} view             重新定位时，会调用这个方法来获取新的位置，传入的参数中会包括top、 left、width三个值。
+ * @config {Function} getData          在需要获取数据的时候会调用此函数来获取数据，传入的参数word是用户在input中输入的数据。
+ * @config {String}   prependHTML      写在下拉框列表前面的html
+ * @config {String}   appendHTML       写在下拉框列表后面的html
  */
-
 baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     var me = this;
 
@@ -56,16 +60,18 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     });
 
     //初始化dom事件函数
-    me.documentMousedownHandler = me.getDocumentMousedownHandler();
-    me.windowBlurHandler = me.getWindowBlurHandler();
+    me.documentMousedownHandler = me._getDocumentMousedownHandler();
+    me.windowBlurHandler = me._getWindowBlurHandler();
 
+    //value为在data中的value
     me.enableIndex = [];
-    me.disableIndex = [];
+    //这个index指的是当前高亮条目在enableIndex中的index而非真正在data中的index
+    me.currentIndex = -1;
 
 }).extend(
     /**
      *  @lends baidu.ui.Suggestion.prototype
-     */    
+     */
 {
     uiType: 'suggestion',
     onbeforepick: new Function,
@@ -92,6 +98,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 获得suggestion的外框HTML string
      * @private
+     * @return {String}
      */
     getString: function() {
         var me = this;
@@ -113,7 +120,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         var me = this,
             main,
             target = baidu.g(target);
-        
+
         if (me.getMain() || !target) {
             return;
         }
@@ -134,8 +141,9 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 当前suggestion是否处于显示状态
      * @private
+     * @return {Boolean}
      */
-    isShowing: function() {
+    _isShowing: function() {
         var me = this,
             main = me.getMain();
         return main && main.style.display != 'none';
@@ -144,7 +152,8 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 把某个词放到input框中
      * @public
-	 * @param     {String}    index    条目索引.
+	 * @param {String} index 条目索引.
+     * @return {Null}
      */
     pick: function(index) {
         var me = this,
@@ -156,7 +165,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
                     index: index
                 }
             };
-        
+
         if (me.dispatchEvent('onbeforepick', eventData)) {
             me.dispatchEvent('onpick', eventData);
         }
@@ -165,19 +174,19 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 绘制suggestion
      * @public
-     * @param {String}  word               触发sug的字符串.
-     * @param {Object}  data               suggestion数据.
-     * @param {Boolean} showEmpty optional 如果sug数据为空是否依然显示 默认为false.
+     * @param {String}  word 触发sug的字符串.
+     * @param {Object}  data suggestion数据.
+     * @param {Boolean} [showEmpty] 如果sug数据为空是否依然显示 默认为false.
      * @return {Null}
      */
     show: function(word, data, showEmpty) {
-        
+
         var i = 0,
             len = data.length,
             me = this;
 
-        me.disableIndex = [];
         me.enableIndex = [];
+        me.currentIndex = -1;
 
         if (len == 0 && !showEmpty) {
             me.hide();
@@ -192,31 +201,15 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
                         content: data[i]
                     });
                 }
-                data[i]['disable'] ? me.disableIndex.push(i) : me.enableIndex.push(i);
+                if (typeof data[i]['disable'] == 'undefined' || data[i]['disable'] == false) {
+                    me.enableIndex.push(i);
+                }
             }
 
-            me.getBody().innerHTML = me.getBodyString();
+            me.getBody().innerHTML = me._getBodyString();
             me.getMain().style.display = 'block';
             me.dispatchEvent('onshow');
         }
-    },
-    
-    /**
-     * 高亮某个条目
-     * @public
-	 * @param    {String}   index    条目索引.
-     */
-    highlight: function(index) {
-        var me = this;
-        
-        baidu.each(me.enableIndex,function(i){
-            me._clearHighlight(i); 
-        });
-        baidu.addClass(me.getItem(index),me.getClass('current'));
-        
-        me.dispatchEvent('onhighlight', {
-            data: this.getDataByIndex(index)
-        });
     },
 
     /**
@@ -225,29 +218,91 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
      * @return {Null}
      */
     hide: function() {
-        
         var me = this;
-        
+
         //如果已经是隐藏状态就不用派发后面的事件了
-        if (!me.isShowing())
+        if (!me._isShowing())
             return;
-        
+
         me.getMain().style.display = 'none';
         me.dispatchEvent('onhide');
     },
 
     /**
+     * 高亮某个条目
+     * @public
+	 * @param {String} index 条目索引.
+     * @return {Null}
+     */
+    highLight: function(index) {
+        var me = this,
+            enableIndex = me.enableIndex,
+            item = null;
+
+        //若需要高亮的item被设置了disable，则直接返回
+        if (!me._isEnable(index)) return;
+
+        me.currentIndex >= 0 && me._clearHighLight();
+        item = me._getItem(index);
+        baidu.addClass(item, me.getClass('current'));
+        me.currentIndex = baidu.array.indexOf(enableIndex, index);
+
+        me.dispatchEvent('onhighlight', {
+            index: index,
+            data: me.getDataByIndex(index)
+        });
+    },
+
+    /**
+     * 清除item高亮状态
+     * @public
+     * @return {Null}
+     */
+    clearHighLight: function() {
+        var me = this,
+            currentIndex = me.currentIndex;
+
+        //若当前没有元素处于高亮状态，则不发出事件
+        me._clearHighLight() && me.dispatchEvent('onclearhighlight', {
+            index: currentIndex,
+            data: me.getDataByIndex(currentIndex)
+        });
+    },
+
+    /**
+     * 清除suggestion中tr的背景样式
+     * @private
+     * @return {Boolean} bool 当前有item处于高亮状态并成功进行clear highlight,返回true，否则返回false.
+     */
+    _clearHighLight: function() {
+        var me = this,
+            currentIndex = me.currentIndex,
+            enableIndex = me.enableIndex,
+            item = null;
+
+        if (currentIndex >= 0) {
+            item = me._getItem(enableIndex[currentIndex]);
+            baidu.removeClass(item, me.getClass('current'));
+            me.currentIndex = -1;
+            return true;
+        }
+        return false;
+    },
+
+    /**
      * confirm指定的条目
 	 * @public
-     * @param {Number|String} index or item
-     * @param {String} source 事件来源
-     * @return {Null} 
+     * @param {Number|String} index or item.
+     * @param {String} source 事件来源.
+     * @return {Null}
      */
     confirm: function(index, source) {
         var me = this;
 
-        if(!baidu.array.contains(me.enableIndex, index)) return;
-        
+        if (source != 'keyboard') {
+            if (!me._isEnable(index)) return;
+        }
+
         me.pick(index);
         me.dispatchEvent('onconfirm', {
             data: me.getDataByIndex(index) || index,
@@ -259,9 +314,12 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 根据index拿到传给event的data数据
      * @private
+     * @return {Object}
+     * @config {HTMLElement} item
+     * @config {Number} index
      */
     getDataByIndex: function(index) {
-        
+
         return {
             item: this.currentData[index],
             index: index
@@ -271,46 +329,16 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 获得target的值
      * @public
+     * @return {String}
      */
     getTargetValue: function() {
         return this.getTarget().value;
     },
 
     /**
-     * 获得当前处于高亮状态的词索引
-     * @private
-     */
-    getHighlightIndex: function() {
-        
-        var me = this,
-            len = me.currentData.length,
-            i = 0;
-        
-        if (len && me.isShowing()) {
-            for (; i < len; i++) {
-                if (baidu.dom.hasClass(me.getItem(i), me.getClass('current')))
-                    return i;
-            }
-        }
-        
-        return -1;
-    },
-
-    /**
-     * 清除suggestion中tr的背景样式
-     * @private
-     * @param {Number} index
-     * @return {Null}
-     */
-    _clearHighlight: function(index) {
-        var me = this;
-        baidu.removeClass(me.getItem(index),me.getClass('current'));
-    },
-
-    /**
      * 获得input框元素
      * @public
-	 * @return {HTMLElement}   input    输入框元素.
+	 * @return {HTMLElement}
      */
     getTarget: function() {
         return baidu.g(this.targetId);
@@ -319,19 +347,19 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 获得指定的条目
      * @private
-     * @return {HTMLElement} item
+     * @return {HTMLElement}
      */
-    getItem: function(index) {
+    _getItem: function(index) {
         return baidu.g(this.getId('item' + index));
     },
 
     /**
      * 渲染body部分的string
      * @private
-     * @return {String} htmlString
+     * @return {String}
      */
-    getBodyString: function() {
-        
+    _getBodyString: function() {
+
         var me = this,
             html = '',
             itemsHTML = [],
@@ -379,7 +407,12 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     _itemOver: function(e, index) {
         var me = this;
         baidu.event.stop(e || window.event);
-        me._isEnable(index) && me.highlight(index);
+        me._isEnable(index) && me.highLight(index);
+
+        me.dispatchEvent('onmouseoveritem', {
+            index: index,
+            data: me.getDataByIndex(index)
+        });
     },
 
     /**
@@ -392,7 +425,12 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     _itemOut: function(e, index) {
         var me = this;
         baidu.event.stop(e || window.event);
-        me._isEnable(index) && me._clearHighlight(index);
+        me._isEnable(index) && me.clearHighLight();
+
+        me.dispatchEvent('onmouseoutitem', {
+            index: index,
+            data: me.getDataByIndex(index)
+        });
     },
 
     /**
@@ -405,8 +443,9 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     _itemDown: function(e, index) {
         var me = this;
         baidu.event.stop(e || window.event);
-        
-        me._isEnable(index) && me.dispatchEvent('onmousedownitem', {
+
+        me.dispatchEvent('onmousedownitem', {
+            index: index,
             data: me.getDataByIndex(index)
         });
     },
@@ -421,32 +460,31 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     _itemClick: function(e, index) {
         var me = this;
         baidu.event.stop(e || window.event);
-       
-        if(!me._isEnable(index)){
-            return;
-        }
-        
+
         me.dispatchEvent('onitemclick', {
+            index: index,
             data: me.getDataByIndex(index)
         });
-        me.confirm(index, 'mouse');
+
+        me._isEnable(index) && me.confirm(index, 'mouse');
     },
 
-    _isEnable: function(index){
+    /**
+     * 判断item是否处于enable状态
+     * @param {Number} index 索引，和传入的data中相同.
+     * @return {Boolean}
+     */
+    _isEnable: function(index) {
         var me = this;
         return baidu.array.contains(me.enableIndex, index);
-    },
-
-    _isDisable: function(index){
-        var me = this;
-        return baidu.array.contains(me.disableIndex, index);
     },
 
     /**
      * 外部事件绑定
      * @private
+     * @return {Function}
      */
-    getDocumentMousedownHandler: function() {
+    _getDocumentMousedownHandler: function() {
         var me = this;
         return function(e) {
             // todo : baidu.event.getTarget();
@@ -462,9 +500,11 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     },
 
     /**
+     * 外部事件绑定
      * @private
+     * @return {Function}
      */
-    getWindowBlurHandler: function() {
+    _getWindowBlurHandler: function() {
         var me = this;
         return function() {
             me.hide();
@@ -474,6 +514,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 销毁suggesiton
      * @public
+     * @return {Null}
      */
     dispose: function() {
         var me = this;
