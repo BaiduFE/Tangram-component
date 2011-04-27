@@ -152,13 +152,15 @@ baidu.ui.Suggestion.extend({
                 return;
             }
             selected = me.getHighlightIndex();
-            me.clearHighlight();
+            baidu.each(me.enableIndex,function(i){
+                me._clearHighlight(i); 
+            });
+            
             if (up) {
                 //最上面再按上
                 if (selected == 0) {
                     //把原始的内容放上去
                     me.pick(me.defaultIptValue);
-//                    selected--;
                     me.selectIndexByKeybord--;
                     return;
                 }
@@ -169,7 +171,6 @@ baidu.ui.Suggestion.extend({
                 //最下面再按下
                 if (selected == currentData.length - 1) {
                     me.pick(me.defaultIptValue);
-//                    selected = -1;
                     me.selectIndexByKeybord = -1;
                     return;
                 }

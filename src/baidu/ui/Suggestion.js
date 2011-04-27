@@ -1,18 +1,26 @@
 /*
- * Tangram
+ * Sangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
 ///import baidu.dom.g;
 ///import baidu.dom.getPosition;
 ///import baidu.dom.remove;
+///import baidu.dom.addClass;
+///import baidu.dom.removeClass;
+///import baidu.dom.hasClass;
 
-///import baidu.string.format;
 ///import baidu.event.on;
 ///import baidu.event.un;
+///import baidu.event.stop;
+///import baidu.event.preventDefault;
+
+///import baidu.array.each;
+///import baidu.array.contains;
+
+///import baidu.string.format;
 ///import baidu.object.extend;
 ///import baidu.browser.ie;
-///import baidu.event.preventDefault;
 
 ///import baidu.lang.Event;
 
@@ -51,6 +59,9 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     me.documentMousedownHandler = me.getDocumentMousedownHandler();
     me.windowBlurHandler = me.getWindowBlurHandler();
 
+    me.enableIndex = [];
+    me.disableIndex = [];
+
 }).extend(
     /**
      *  @lends baidu.ui.Suggestion.prototype
@@ -64,11 +75,6 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     onshow: new Function,
     onhide: new Function,
 
-
-    /*
-     * 计算view的函数
-     */
-    //view            : new Function(),
     /**
      * @private
      */
@@ -81,7 +87,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     tplDOM: "<div id='#{0}' class='#{1}' style='position:relative; top:0px; left:0px'></div>",
     tplPrependAppend: "<div id='#{0}' class='#{1}'>#{2}</div>",
     tplBody: "<table cellspacing='0' cellpadding='2'><tbody>#{0}</tbody></table>",
-    tplRow: '<tr><td id="#{0}" onmouseover="#{2}" onmouseout="#{3}" onmousedown="#{4}" onclick="#{5}">#{1}</td></tr>',
+    tplRow: '<tr><td id="#{0}" onmouseover="#{2}" onmouseout="#{3}" onmousedown="#{4}" onclick="#{5}" class="#{6}">#{1}</td></tr>',
 
     /**
      * 获得suggestion的外框HTML string
@@ -99,6 +105,9 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
 
     /**
      * 将suggestion渲染到dom树中
+     * @public
+     * @param {HTMLElement} target
+     * @return {Null}
      */
     render: function(target) {
         var me = this,
@@ -159,13 +168,16 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
      * @param {String}  word               触发sug的字符串.
      * @param {Object}  data               suggestion数据.
      * @param {Boolean} showEmpty optional 如果sug数据为空是否依然显示 默认为false.
-     *
+     * @return {Null}
      */
     show: function(word, data, showEmpty) {
         
         var i = 0,
             len = data.length,
             me = this;
+
+        me.disableIndex = [];
+        me.enableIndex = [];
 
         if (len == 0 && !showEmpty) {
             me.hide();
@@ -180,14 +192,15 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
                         content: data[i]
                     });
                 }
+                data[i]['disable'] ? me.disableIndex.push(i) : me.enableIndex.push(i);
             }
-            
+
             me.getBody().innerHTML = me.getBodyString();
             me.getMain().style.display = 'block';
             me.dispatchEvent('onshow');
         }
     },
-
+    
     /**
      * 高亮某个条目
      * @public
@@ -196,10 +209,12 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     highlight: function(index) {
         var me = this;
         
-        me.clearHighlight();
-        me.getItem(index).className = me.getClass('current');
+        baidu.each(me.enableIndex,function(i){
+            me._clearHighlight(i); 
+        });
+        baidu.addClass(me.getItem(index),me.getClass('current'));
         
-        this.dispatchEvent('onhighlight', {
+        me.dispatchEvent('onhighlight', {
             data: this.getDataByIndex(index)
         });
     },
@@ -207,6 +222,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 隐藏suggestion
      * @public
+     * @return {Null}
      */
     hide: function() {
         
@@ -223,14 +239,15 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * confirm指定的条目
 	 * @public
-     * @param {number|string} index or item
-     * @param {string} source 事件来源
-     * 
+     * @param {Number|String} index or item
+     * @param {String} source 事件来源
+     * @return {Null} 
      */
     confirm: function(index, source) {
-        
         var me = this;
 
+        if(!baidu.array.contains(me.enableIndex, index)) return;
+        
         me.pick(index);
         me.dispatchEvent('onconfirm', {
             data: me.getDataByIndex(index) || index,
@@ -271,7 +288,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         
         if (len && me.isShowing()) {
             for (; i < len; i++) {
-                if (me.getItem(i).className == me.getClass('current'))
+                if (baidu.dom.hasClass(me.getItem(i), me.getClass('current')))
                     return i;
             }
         }
@@ -280,18 +297,14 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     },
 
     /**
-     * 清除suggestion中全部tr的蓝色背景样式
+     * 清除suggestion中tr的背景样式
      * @private
+     * @param {Number} index
+     * @return {Null}
      */
-    clearHighlight: function() {
-        
-        var me = this,
-            i = 0,
-            len = me.currentData.length;
-        
-        for (; i < len; i++) {
-            me.getItem(i).className = '';
-        }
+    _clearHighlight: function(index) {
+        var me = this;
+        baidu.removeClass(me.getItem(index),me.getClass('current'));
     },
 
     /**
@@ -306,6 +319,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 获得指定的条目
      * @private
+     * @return {HTMLElement} item
      */
     getItem: function(index) {
         return baidu.g(this.getId('item' + index));
@@ -314,6 +328,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 渲染body部分的string
      * @private
+     * @return {String} htmlString
      */
     getBodyString: function() {
         
@@ -341,10 +356,11 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
                 me.tplRow,
                 me.getId('item' + i),
                 data[i].content,
-                me.getCallString('itemOver', i),
-                me.getCallString('itemOut'),
-                me.getCallRef() + '.itemDown(event, ' + i + ')',
-                me.getCallString('itemClick', i)
+                me.getCallString('_itemOver', 'event', i),
+                me.getCallString('_itemOut', 'event', i),
+                me.getCallString('_itemDown', 'event', i),
+                me.getCallString('_itemClick', 'event', i),
+                (typeof data[i]['disable'] == 'undefined' || data[i]['disable'] == false) ? '' : me.getClass('disable')
             ));
         }
 
@@ -354,47 +370,77 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     },
 
     /**
-     * 当每一个项目over、out、down、click时调用的函数
-     * 高亮某个条目
+     * 当焦点通过鼠标或键盘移动到某个条目
      * @private
+     * @param {Event} e
+     * @param {Number} index
+     * @return {Null}
      */
-    itemOver: function(index) {
-        this.highlight(index);
-    },
-
-    /**
-     * @private
-     */
-    itemOut: function() {
-        this.clearHighlight();
-    },
-
-    /**
-     * @private
-     */
-    itemDown: function(e, index) {
-        this.dispatchEvent('onmousedownitem', {
-            data: this.getDataByIndex(index)
-        });
-        if (!baidu.ie) {
-            e.stopPropagation();
-            e.preventDefault();
-            return false;
-        }
-    },
-
-    /**
-     * @private
-     */
-    itemClick: function(index) {
+    _itemOver: function(e, index) {
         var me = this;
+        baidu.event.stop(e || window.event);
+        me._isEnable(index) && me.highlight(index);
+    },
 
+    /**
+     * 当焦点通过鼠标或键盘移出某个条目
+     * @private
+     * @param {Event} e
+     * @param {Number} index
+     * @return {Null}
+     */
+    _itemOut: function(e, index) {
+        var me = this;
+        baidu.event.stop(e || window.event);
+        me._isEnable(index) && me._clearHighlight(index);
+    },
+
+    /**
+     * 当通过鼠标选中某个条目
+     * @private
+     * @param {Event} e
+     * @param {Number} index
+     * @return {Null}
+     */
+    _itemDown: function(e, index) {
+        var me = this;
+        baidu.event.stop(e || window.event);
+        
+        me._isEnable(index) && me.dispatchEvent('onmousedownitem', {
+            data: me.getDataByIndex(index)
+        });
+    },
+
+    /**
+     * 当鼠标点击某个条目
+     * @private
+     * @param {Event} e
+     * @param {Number} index
+     * @return {Null}
+     */
+    _itemClick: function(e, index) {
+        var me = this;
+        baidu.event.stop(e || window.event);
+       
+        if(!me._isEnable(index)){
+            return;
+        }
+        
         me.dispatchEvent('onitemclick', {
             data: me.getDataByIndex(index)
         });
         me.confirm(index, 'mouse');
     },
 
+    _isEnable: function(index){
+        var me = this;
+        return baidu.array.contains(me.enableIndex, index);
+    },
+
+    _isDisable: function(index){
+        var me = this;
+        return baidu.array.contains(me.disableIndex, index);
+    },
 
     /**
      * 外部事件绑定

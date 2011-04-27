@@ -16,6 +16,7 @@ baidu.ui.Suggestion.extend({
      * 设置一组数据给suggestion
      * 调用者可以选择是否立即显示这组数据: noShow
      * @public
+     * @return {null}
      */
     setData: function(word, data, noShow) {
         var me = this;
