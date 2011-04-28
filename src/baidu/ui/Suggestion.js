@@ -249,7 +249,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
 
         me.dispatchEvent('onhighlight', {
             index: index,
-            data: me.getDataByIndex(index)
+            data: me.getDataByIndex(me.currentIndex)
         });
     },
 
@@ -264,8 +264,8 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
 
         //若当前没有元素处于高亮状态，则不发出事件
         me._clearHighLight() && me.dispatchEvent('onclearhighlight', {
-            index: currentIndex,
-            data: me.getDataByIndex(currentIndex)
+            index: index,
+            data: me.getDataByIndex(me.enableIndex[currentIndex])
         });
     },
 
