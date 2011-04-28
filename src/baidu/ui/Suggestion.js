@@ -386,10 +386,10 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
                 me.tplRow,
                 me.getId('item' + i),
                 data[i].content,
-                me.getCallRef() + '._itemOver(event' + i + ')',
-                me.getCallRef() + '._itemOut(event' + i + ')',
-                me.getCallRef() + '._itemDown(event' + i + ')',
-                me.getCallRef() + '._itemClick(event' + i + ')',
+                me.getCallRef() + '._itemOver(event, ' + i + ')',
+                me.getCallRef() + '._itemOut(event, ' + i + ')',
+                me.getCallRef() + '._itemDown(event, ' + i + ')',
+                me.getCallRef() + '._itemClick(event, ' + i + ')',
                 (typeof data[i]['disable'] == 'undefined' || data[i]['disable'] == false) ? '' : me.getClass('disable')
             ));
         }
