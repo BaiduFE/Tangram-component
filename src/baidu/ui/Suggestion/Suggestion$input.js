@@ -113,10 +113,6 @@ baidu.ui.Suggestion.register(function(me) {
 });
 
 baidu.ui.Suggestion.extend({
-    //鼠标上下移动时
-    selectIndexByKeybord: -1,
-
-
     /*
      * IE和M$输入法打架的问题
      * 在失去焦点的时候，如果是点击在了suggestion上面，那就取消其默认动作(默认动作会把字上屏)
@@ -186,7 +182,6 @@ baidu.ui.Suggestion.extend({
                 }
             }
             me.currentIndex = currentIndex;
-            me.selectIndexByKeybord = enableIndex[currentIndex];
         }
         return function(e) {
             var up = false, index;
@@ -198,7 +193,7 @@ baidu.ui.Suggestion.extend({
                     break;
                 case 13:    //回车，默认为表单提交
                     baidu.event.stop(e);
-                    me.confirm(me.selectIndexByKeybord < 0 ? me.getTarget().value : me.selectIndexByKeybord, 'keyboard');
+                    me.confirm( me.currentIndex == -1 ? me.getTarget().value : me.enableIndex[me.currentIndex], 'keyboard');
                     break;
                 case 38:    //向上，在firefox下，按上会出现光标左移的现象
                     up = true;
@@ -207,7 +202,7 @@ baidu.ui.Suggestion.extend({
                     keyUpDown(up);
                     break;
                 default:
-                   me.selectIndexByKeybord = -1;
+                   me.currentIndex = -1;
             }
         };
     },

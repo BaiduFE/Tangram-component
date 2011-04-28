@@ -309,6 +309,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
             data: me.getDataByIndex(index) || index,
             source: source
         });
+        me.currentIndex = -1;
         me.hide();
     },
 
