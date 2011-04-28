@@ -19,6 +19,28 @@ module("baidu.ui.Suggestion");
 		input.type = "text";
 		document.body.appendChild(input);
 		te.dom.push(input);
+		
+		te.defaultData = [ {
+	        "content":"ab",
+	        "value":"ab",
+	        "disable": true
+	    }, {
+	        "content":"ac",
+	        "value":"ac",
+	        "disable": false
+	    },{
+	        "content":"ad",
+	        "value":"ad",
+	        "disable": true
+	    },{
+	        "content":"ae",
+	        "value":"ae",
+	        "disable": true
+	    },{
+	        "content":"af",
+	        "value":"af",
+	        "disable": false
+	    }];
 	}
 
 	var s = QUnit.testStart;
@@ -74,7 +96,7 @@ test("event list", function() {
 		onshow : onHandle("show", 0, function() {
 			/* call mouse over for highlight on item 0 when shown */
 			// ua.click(sugg.getItem(0));
-			ua.mouseover(sugg.getItem(0));
+			ua.mouseover(sugg._getItem(0));
 		}),
 		onhighlight : onHandle("highlight", 1, function(event) {
 			check(event, 0, "ab", "ab", "at highlight");
@@ -84,7 +106,7 @@ test("event list", function() {
 		}),
 		onbeforepick : onHandle("beforepick", 2, function(event) {
 			/* check highlight */
-			equals(sugg.getItem(0).className, "tangram-suggestion-current",
+			equals(sugg._getItem(0).className, "tangram-suggestion-current",
 					"check highlight class name");
 		}),
 		onpick : onHandle("pick", 3, function(event) {
@@ -179,10 +201,10 @@ test("highlight", function() {
 	stop();
 	var te = testingElement, input = te.dom[0], sugg, options = {
 		onshow : function() {
-			equals(sugg.getItem(0).className, '',
+			equals(sugg._getItem(0).className, '',
 					'check class name before highlight');
-			sugg.highlight(0);
-			equals(sugg.getItem(0).className, 'tangram-suggestion-current',
+			sugg.highLight(0);
+			equals(sugg._getItem(0).className, 'tangram-suggestion-current',
 					'check class name after highlight');
 			start();
 		}
@@ -232,8 +254,8 @@ test("show", function() {
 	var te = testingElement, input = te.dom[0], sugg, options = {
 		onshow : function() {
 			ok(isShown(sugg.getMain()), 'element shown');
-			equals(sugg.getItem(0).innerHTML, 'ab', 'check shown item');
-			equals(sugg.getItem(1).innerHTML, 'ac', 'check shown item');
+			equals(sugg._getItem(0).innerHTML, 'ab', 'check shown item');
+			equals(sugg._getItem(1).innerHTML, 'ac', 'check shown item');
 			start();
 		}
 	};
@@ -249,25 +271,25 @@ test(
 			stop();
 			var te = testingElement, input = te.dom[0], sugg, count = 0, options = {
 				onshow : function() {
-					var me = this, item = me.getItem(0);
-					ok(/itemOver\(0\)/.test(item.onmouseover),
+					var me = this, item = me._getItem(0);
+					ok(/_itemOver\(event, 0\)/.test(item.onmouseover),
 							'check mouse over event');
-					ok(/itemOut\(\)/.test(item.onmouseout),
+					ok(/_itemOut\(event, 0\)/.test(item.onmouseout),
 							'check mouse out event');
 					/* PUBLICGE-102 */
-					ok(/itemDown\(event, 0\)/.test(item.onmousedown),
+					ok(/_itemDown\(event, 0\)/.test(item.onmousedown),
 							'check mouse down event : ' + item.onmousedown);
-					ok(/itemClick\(0\)/.test(item.onclick),
+					ok(/_itemClick\(event, 0\)/.test(item.onclick),
 							'check mouse click event');
-					item = me.getItem(1);
-					ok(/itemOver\(1\)/.test(item.onmouseover),
+					item = me._getItem(1);
+					ok(/_itemOver\(event, 1\)/.test(item.onmouseover),
 							'check mouse over event');
-					ok(/itemOut\(\)/.test(item.onmouseout),
+					ok(/_itemOut\(event, 1\)/.test(item.onmouseout),
 							'check mouse out event');
 					/* PUBLICGE-102 */
-					ok(/itemDown\(event, 1\)/.test(item.onmousedown),
+					ok(/_itemDown\(event, 1\)/.test(item.onmousedown),
 							'check mouse down event');
-					ok(/itemClick\(1\)/.test(item.onclick),
+					ok(/_itemClick\(event, 1\)/.test(item.onclick),
 							'check mouse click event');
 					me.hide();
 				},
@@ -280,3 +302,88 @@ test(
 			te.obj.push(sugg);
 			sugg.show('a', [ 'ab', 'ac' ]);
 		});
+
+test("highlight with disabled items", function() {
+	stop();
+	var te = testingElement, input = te.dom[0], sugg, options = {
+		onshow : function() {
+			equals(sugg._getItem(0).className, 'tangram-suggestion-disable',
+					'check class name before highlight');
+			sugg.highLight(0);
+			equals(sugg._getItem(0).className, 'tangram-suggestion-disable',
+					'check class name after highlight');
+			
+			equals(sugg._getItem(1).className, '',
+			'check class name before highlight');
+	        sugg.highLight(1);
+	        equals(sugg._getItem(1).className, 'tangram-suggestion-current',
+			'check class name after highlight');
+	        
+	        equals(sugg._getItem(3).className, 'tangram-suggestion-disable',
+			'check class name before highlight');
+	        sugg.highLight(3);
+	        equals(sugg._getItem(3).className, 'tangram-suggestion-disable',
+			'check class name after highlight');
+		},
+	    onhighlight : function(index, data) {
+	    	equals(index.index, 1,
+				'Only item1 is highlight');
+			start();
+		}
+	};
+	sugg = new baidu.ui.Suggestion(options);
+	sugg.render(input);
+	te.obj.push(sugg);
+	sugg.show('a', te.defaultData);
+});
+
+test("show with disabled item", function() {
+	stop();
+	var te = testingElement, input = te.dom[0], sugg, options = {
+		onshow : function() {
+			ok(isShown(sugg.getMain()), 'element shown');
+			equals(sugg._getItem(0).innerHTML, 'ab', 'check shown item');
+			equals(sugg._getItem(1).innerHTML, 'ac', 'check shown item');
+			equals(sugg.enableIndex[0], 1, 'check enableIndex');
+			equals(sugg.enableIndex[1], 4, 'check enableIndex');
+			start();
+		}
+	};
+	sugg = new baidu.ui.Suggestion(options);
+	sugg.render(input);
+	te.obj.push(sugg);
+	sugg.show('a', te.defaultData);
+});
+
+test("clearhighlight with disabled items", function() {
+	stop();
+	var te = testingElement, input = te.dom[0], sugg, options = {
+		onshow : function() {
+			equals(sugg._getItem(4).className, '',
+			'check class name before highlight');
+	        sugg.highLight(4);
+		},
+	    onhighlight : function(index, data) {
+	        equals(sugg._getItem(4).className, 'tangram-suggestion-current',
+			'check class name after highlight');
+	    	equals(index.index, 4,
+				'item4 is highlight');
+	    	equals(sugg.currentIndex, 1,
+			'check currentIndex after highlight');
+	    	sugg.clearHighLight();
+		},
+		onclearhighlight : function(index, data){
+			 equals(sugg._getItem(4).className, '',
+				'check class name after clearhighlight');
+			 equals(index.index, 4,
+				'item4 is clearhighlight');
+			 equals(sugg.currentIndex, -1,
+				'check currentIndex after clearhighlight');
+			 start();
+		}
+	};
+	sugg = new baidu.ui.Suggestion(options);
+	sugg.render(input);
+	te.obj.push(sugg);
+	sugg.show('a', te.defaultData);
+});
