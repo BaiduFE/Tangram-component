@@ -17,7 +17,7 @@ var op = {/* fx效果方法依赖参数 */
 };
 
 var opV = {/* fx效果方法依赖参数 */
-    orientation: 'vertical',
+    orientation: 'horizontal',
     onbeforestart : function() {
         $(te.dom[0]).css('height', 100).css('width', 100).css('background-color', 'red');
     },
