@@ -85,9 +85,9 @@ baidu.ui.Login = baidu.ui.createUI(function(options){ },{superClass:baidu.ui.Dia
 	            <div id="regDiv">\
                     <hr size="0" style="border-top:1px solid #AAAAAA">\
                     <div class="reg">没有百度账号？<a href="https://passport.baidu.com/?reg&tpl=mn" target="_self">立即注册百度账号</a></div>\
-\
                 </div>\
             </div>\
+        </div>\
            ' ,
 
     getString: function() {

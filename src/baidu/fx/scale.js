@@ -27,6 +27,7 @@
  * @config      {Number}                  duration              500,//效果持续时间，默认值为500ms。
  * @config      {Number}                  interval              16, //动画帧间隔时间，默认值为16ms。
  * @config      {Function}                transition            function(schedule){return schedule;},时间线函数
+ * @config      {Boolean}                 fade                  true，//渐变，默认为true
  * @config      {Function}                onbeforestart         function(){},//效果开始前执行的回调函数
  * @config      {Function}                onbeforeupdate        function(){},//每次刷新画面之前会调用的回调函数
  * @config      {Function}                onafterupdate         function(){},//每次刷新画面之后会调用的回调函数
@@ -43,6 +44,8 @@ baidu.fx.scale = function(element, options) {
 
     var original = {},
         fx = baidu.fx.create(element, baidu.object.extend({
+        fade: true,
+            
         //[Implement Interface] initialize
         initialize : function() {
             baidu.dom.show(element);
@@ -127,8 +130,11 @@ baidu.fx.scale = function(element, options) {
 
             if (baidu.browser.ie) {
                 s.zoom = n;
-                s.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity:"+
-                    Math.floor(p * 100) +")";
+                if(this.fade){
+                    s.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity:"+
+                        Math.floor(p * 100) +")";
+                }
+                
                 // IE 下得计算 transform-origin 变化
                 s.top = this.offsetY + original.cy * (1 - n);
                 s.left= this.offsetX + original.cx * (1 - n);
@@ -137,7 +143,9 @@ baidu.fx.scale = function(element, options) {
                     s.MozTransform =
                     s.OTransform =
                     s.transform = "scale("+ n +")";
-                s.KHTMLOpacity = s.opacity = p;
+                if(this.fade){
+                    s.KHTMLOpacity = s.opacity = p;
+                }
             }
         }
     }, options), "baidu.fx.scale");

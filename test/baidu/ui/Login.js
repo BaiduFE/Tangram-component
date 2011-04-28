@@ -6,7 +6,8 @@ test("Basic test", function() {
 	ua.loadcss(upath + 'Login/css/style.css', function() {
 		var options = {
 			autoRender : true,
-			titleText : "登录窗口"
+			titleText : "登录窗口",
+			loginURL : upath + "Login/login.php" // 打个桩,干掉跨域
 		};
 		var l = baidu.event._listeners.length;
 		var login = new baidu.ui.Login(options);

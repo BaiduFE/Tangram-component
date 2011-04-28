@@ -55,7 +55,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(opts){
     this.contentText = opts.contentText || [];  //数组或对象在prototype中定义时会造成新建对象共用数据
 }).extend(
     /**
-     *  @lends baidu.ui.carousel.Carousel.prototype
+     *  @lends baidu.ui.Carousel.prototype
      */
 {
     

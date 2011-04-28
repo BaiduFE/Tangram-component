@@ -23,6 +23,36 @@ ua.importsrc("baidu.dom.getStyle");
 		s.apply(this, arguments);
 		mySetup();
 	};
+	
+	te.loadcss = function(w, url, callback, classname, style, value) {
+		var doc = w.document;
+		var div = doc.body.appendChild(doc.createElement("div"));
+		div.id = "test";
+		var links = doc.getElementsByTagName('link');
+		for ( var link in links) {
+			if (link.href == url) {
+				callback();
+				return;
+			}
+		}
+		var head = doc.getElementsByTagName('head')[0];
+		var link = head.appendChild(doc.createElement('link'));
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("type", "text/css");
+		link.setAttribute("href", url);
+		w.$(doc).ready(
+				function() {
+					div.className = classname || 'cssloaded';
+					var h = setInterval(function() {
+						if (w.$(div).css(style || 'width') == value 
+								|| w.$(div).css(style || 'width') == '20px') {
+							clearInterval(h);
+							doc.body.removeChild(div);
+							setTimeout(function(){callback(w);}, 20);
+						}
+					}, 20);
+				});
+	}
 })();
 
 /**

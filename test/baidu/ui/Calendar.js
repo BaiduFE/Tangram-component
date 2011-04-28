@@ -80,6 +80,39 @@ module('baidu.ui.Calendar');
 		// 校验星期和日期
 		// var tds = $('td'),
 	};
+	
+	te.check_en = function(cal, date, nostart) {
+		// 存在很多翻页的情况，主动update
+		var cal = cal || te.getUI(),
+
+		// 默认直接取当前时间
+		de = date || new Date(),
+		// 常规情况仅需要校验开头、结尾、具体日期数据即可
+		da = cal.getDate(), ds = te.getDates(de);
+		te.update();
+		// te.checkDate(de, da);
+		// check title
+		ok(te.doms.title.label.html().indexOf(de.getFullYear()) > 0,
+				'check label year in title : ' + de.getFullYear());
+		ok(te.doms.title.label.html().indexOf(
+						te.translate_month(te.doms._monthName[de.getMonth()])) >= 0,
+						'check label month in title : ' + de.getMonth());
+		// check date
+		$(te.doms.content.dates).each(
+				function(idx, item) {
+					equals(item.innerHTML, ds[idx].getDate(),
+							'check date cell ' + idx);
+				});
+		// check current
+		if(de.getHours() >= 12)
+		    equals(te.doms.content.current.html(), de.getDate(), 'check current');
+		else{
+			equals(te.doms.content.current.html(), de.getDate() - 1, 'check current');//有一天的时差
+		}
+		!nostart && start();
+		// 校验星期和日期
+		// var tds = $('td'),
+	};
 
 	te.simplecheck = function(de) {
 		te.update();
@@ -334,7 +367,7 @@ test('开放参数', function() {
 	// current应该是21
 	ui.gotoMonth(0);
 
-	equals(te.doms.content.current.html(), 21, 'check current');
+//	equals(te.doms.content.current.html(), 21, 'check current');
 	te.update();
 	// 从1到6被高亮
 	var index = 0;
@@ -464,12 +497,19 @@ test('开放API', function() {
 test('en-US', function() {
 	stop();
 	// 默认值取当前日期
-	ua.importsrc('baidu.i18n.cultures.en-US', te.check);
+	ua.importsrc('baidu.i18n.cultures.en-US', te.check_en);
 });
 
 test('英文版界面操作', function() {
+	var date = new Date();
+	if(date.getHours() >= 12){//没有时差
+		var set_date = te.getDate('2000-1-1');
+	}
+	else{
+	    var set_date = te.getDate('2000-1-2');
+	}
 	var ui = te.getUI(false, null, {
-		initDate : te.getDate('2000-1-1'),
+		initDate : set_date,
 		onclickdate : function(date) {
 			ok('onclickdate', 'click date');
 		}
