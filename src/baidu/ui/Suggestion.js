@@ -249,7 +249,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
 
         me.dispatchEvent('onhighlight', {
             index: index,
-            data: me.getDataByIndex(me.currentIndex)
+            data: me.getDataByIndex(index)
         });
     },
 
@@ -260,12 +260,13 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
      */
     clearHighLight: function() {
         var me = this,
-            currentIndex = me.currentIndex;
+            currentIndex = me.currentIndex,
+            index = me.enableIndex[currentIndex];
 
         //若当前没有元素处于高亮状态，则不发出事件
         me._clearHighLight() && me.dispatchEvent('onclearhighlight', {
             index: index,
-            data: me.getDataByIndex(me.enableIndex[currentIndex])
+            data: me.getDataByIndex(index)
         });
     },
 
