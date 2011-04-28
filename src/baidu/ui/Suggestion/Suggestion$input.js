@@ -3,22 +3,15 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-
-/**
- * 为Suggestion提供输入框监控功能
- * @author berg
- */
-
 ///import baidu.ui.Suggestion;
-///import baidu.event.preventDefault;
-///import baidu.event.stopPropagation;
+///import baidu.event.stop;
 ///import baidu.dom.g;
 ///import baidu.event.on;
 ///import baidu.event.un;
 
 baidu.ui.Suggestion.register(function(me) {
     var target,
-        
+
         //每次轮询获得的value
         oldValue = '',
 
@@ -120,10 +113,6 @@ baidu.ui.Suggestion.register(function(me) {
 });
 
 baidu.ui.Suggestion.extend({
-    //鼠标上下移动时
-    selectIndexByKeybord: -1,
-
-
     /*
      * IE和M$输入法打架的问题
      * 在失去焦点的时候，如果是点击在了suggestion上面，那就取消其默认动作(默认动作会把字上屏)
@@ -144,40 +133,55 @@ baidu.ui.Suggestion.extend({
          * 上下键对suggestion的处理
          */
         function keyUpDown(up) {
-            var currentData = me.currentData,
-                selected;
-            //如果当前没有显示，就重新去获取一次数据
-            if (!me.isShowing()) {
+
+            if (!me._isShowing()) {
                 me.dispatchEvent('onneeddata', me.getTargetValue());
                 return;
             }
-            selected = me.getHighlightIndex();
-            me.clearHighlight();
+
+            var enableIndex = me.enableIndex,
+                currentIndex = me.currentIndex;
+
+            //当所有的data都处于disable状态。直接返回
+            if (enableIndex.length == 0) return;
             if (up) {
-                //最上面再按上
-                if (selected == 0) {
-                    //把原始的内容放上去
-                    me.pick(me.defaultIptValue);
-//                    selected--;
-                    me.selectIndexByKeybord--;
-                    return;
+                switch (currentIndex) {
+                    case -1:
+                        currentIndex = enableIndex.length - 1;
+                        me.pick(enableIndex[currentIndex]);
+                        me.highLight(enableIndex[currentIndex]);
+                        break;
+                    case 0:
+                        currentIndex = -1;
+                        me.pick(me.defaultIptValue);
+                        me.clearHighLight();
+                        break;
+                    default:
+                        currentIndex--;
+                        me.pick(enableIndex[currentIndex]);
+                        me.highLight(enableIndex[currentIndex]);
+                        break;
                 }
-                if (selected == -1)
-                    selected = currentData.length;
-                selected--;
             }else {
-                //最下面再按下
-                if (selected == currentData.length - 1) {
-                    me.pick(me.defaultIptValue);
-//                    selected = -1;
-                    me.selectIndexByKeybord = -1;
-                    return;
+                switch (currentIndex) {
+                    case -1:
+                        currentIndex = 0;
+                        me.pick(enableIndex[currentIndex]);
+                        me.highLight(enableIndex[currentIndex]);
+                        break;
+                    case enableIndex.length - 1:
+                        currentIndex = -1;
+                        me.pick(me.defaultIptValue);
+                        me.clearHighLight();
+                        break;
+                    default:
+                        currentIndex++;
+                        me.pick(enableIndex[currentIndex]);
+                        me.highLight(enableIndex[currentIndex]);
+                        break;
                 }
-                selected++;
             }
-            me.highlight(selected);
-            me.pick(selected);
-            me.selectIndexByKeybord = selected;
+            me.currentIndex = currentIndex;
         }
         return function(e) {
             var up = false, index;
@@ -188,17 +192,17 @@ baidu.ui.Suggestion.extend({
                     me.hide();
                     break;
                 case 13:    //回车，默认为表单提交
-                    baidu.event.preventDefault(e);
-                    me.confirm(me.selectIndexByKeybord < 0 ? me.getTarget().value : me.selectIndexByKeybord, 'keyboard');
+                    baidu.event.stop(e);
+                    me.confirm( me.currentIndex == -1 ? me.getTarget().value : me.enableIndex[me.currentIndex], 'keyboard');
                     break;
                 case 38:    //向上，在firefox下，按上会出现光标左移的现象
                     up = true;
                 case 40:    //向下
-                    baidu.event.preventDefault(e);
+                    baidu.event.stop(e);
                     keyUpDown(up);
                     break;
                 default:
-                   me.selectIndexByKeybord = -1;
+                   me.currentIndex = -1;
             }
         };
     },
