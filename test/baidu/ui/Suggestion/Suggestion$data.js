@@ -30,9 +30,9 @@ test("support chinese", function() {
 	stop();
 	var te = testingElement, input = te.dom[0], sugg, options = {
 		onshow : function() {
-			equals(sugg.getItem(0).innerHTML, '无我相');
-			equals(sugg.getItem(1).innerHTML, '无他相');
-			equals(sugg.getItem(2).innerHTML, '无众生相');
+			equals(sugg._getItem(0).innerHTML, '无我相');
+			equals(sugg._getItem(1).innerHTML, '无他相');
+			equals(sugg._getItem(2).innerHTML, '无众生相');
 			sugg.hide();
 			start();
 		}
@@ -52,7 +52,7 @@ test("10 item", function() {
 	var datas = new Array(), sugg = new baidu.ui.Suggestion( {
 		onshow : function() {
 			for ( var i = 0; i < 10; i++) {
-				equals(sugg.getItem(i).innerHTML, 'a' + i, 'check many item');
+				equals(sugg._getItem(i).innerHTML, 'a' + i, 'check many item');
 			}
 			sugg.hide();
 			start();
@@ -73,7 +73,7 @@ test("overwrite data", function() {
 	var input = testingElement.dom[0], datas = new Array(), step = 0;
 	var sugg = new baidu.ui.Suggestion( {
 		onshow : function() {
-			equals(sugg.getItem(0).innerHTML, 'a' + step, 'check overwrite');
+			equals(sugg._getItem(0).innerHTML, 'a' + step, 'check overwrite');
 			sugg.hide();
 		},
 		onhide : function() {
@@ -98,7 +98,7 @@ test('coninuously input', function() {
 	var input = testingElement.dom[0], word = 'a', data = [ 'aa', 'ab' ];
 	var sugg = new baidu.ui.Suggestion( {
 		onshow : function() {
-			equals(sugg.getItem(0).innerHTML, word + 'a', 'coninuously input');
+			equals(sugg._getItem(0).innerHTML, word + 'a', 'coninuously input');
 			sugg.hide();
 		},
 		onhide : function() {
@@ -171,7 +171,7 @@ test('multi instance', function() {
 	testingElement.dom.push(div);
 	sugg1 = new baidu.ui.Suggestion({
 		onshow : function() {
-			equals(sugg1.getItem(0).innerHTML, 'aa',
+			equals(sugg1._getItem(0).innerHTML, 'aa',
 					'check data in multi instance');
 			this.hide();
 			sugg2.setData('a', [ 'ab', 'ac' ]);
@@ -179,7 +179,7 @@ test('multi instance', function() {
 	});
 	sugg2 = new baidu.ui.Suggestion({
 		onshow : function() {
-			equals(sugg2.getItem(0).innerHTML, 'ab',
+			equals(sugg2._getItem(0).innerHTML, 'ab',
 					'check data in multi instance');
 			this.hide();
 			start();
