@@ -147,7 +147,7 @@ baidu.ui.Suggestion.extend({
                 currentIndex = me.currentIndex;
 
             //当所有的data都处于disable状态。直接返回
-            if (currentIndex.length == 0) return;
+            if (enableIndex.length == 0) return;
             if (up) {
                 switch (currentIndex) {
                     case -1:
