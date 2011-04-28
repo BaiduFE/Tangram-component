@@ -217,6 +217,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             if(options.content !== null){
                 content.appendChild(options.content);
                 me.content = me._content = content.firstChild;
+                me.contentText = me._contentText = content.innerHTML;
                 return;
             }
             setText = true;
@@ -227,6 +228,7 @@ baidu.ui.dialog.Dialog = baidu.ui.createUI(function (options){
             if(me.content !== null){
                 content.appendChild(me.content);
                 me.content = me._content = content.firstChild;
+                me.contentText = me._contentText = content.innerHTML;
                 return;
             }
             setText = true;
