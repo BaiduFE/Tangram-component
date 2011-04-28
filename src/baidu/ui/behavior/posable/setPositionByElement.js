@@ -37,4 +37,4 @@ baidu.ui.behavior.posable._setPositionByElement = function(target, element, opti
     targetPos.width = target.offsetWidth;
     targetPos.height = target.offsetHeight;
     this._positionByCoordinate(element, targetPos, options, true);
-}
+};
