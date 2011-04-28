@@ -177,7 +177,7 @@ test('default height',function(){
 
 
 test('test update',function(){
-	expect(14);
+	expect(16);
 	var d = new baidu.ui.Dialog();
 	d.render();
 	d.open();
@@ -220,6 +220,14 @@ test('test update',function(){
 	equals(d.getTitle().firstChild.innerHTML, '', 'The titleText is right when update');
 	equals(d.getContent().innerHTML, '', 'The contentText is right when update');
 	
+	var options = {
+			titleText : 'myTitleText',
+			contentText : 'myContentText' 
+	};
+	d.update(options);
+	equals(d.getTitle().firstChild.innerHTML, 'myTitleText', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, 'myContentText', 'The contentText is right when update');
+	
 	var div = document.createElement('div');
 	div.innerHTML = 'myContent';
 	var options = {
@@ -240,7 +248,7 @@ test('test update',function(){
 });
 
 test('test update without update()',function(){
-	expect(10);
+	expect(12);
 	var d = new baidu.ui.Dialog();
 	d.render();
 	d.open();
@@ -265,6 +273,12 @@ test('test update without update()',function(){
 	equals(d.getTitle().firstChild.innerHTML, '', 'The titleText is right when update');
 	equals(d.getContent().innerHTML, '', 'The contentText is right when update');
 	
+	d.titleText = 'myTitleText';
+	d.contentText = 'myContentText'; 
+	d.update();
+	equals(d.getTitle().firstChild.innerHTML, 'myTitleText', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, 'myContentText', 'The contentText is right when update');
+	
 	var div = document.createElement('div');
 	div.innerHTML = 'myContent';
 	d.content = div;
@@ -279,3 +293,178 @@ test('test update without update()',function(){
 	te.obj.push(d);
 });
 
+
+test('test update content and position',function(){
+	expect();
+	var div = document.createElement('div');
+	div.innerHTML = 'myContent';
+	var options = {
+			left : 10,
+			top  : 10,
+			titleText : 'initText',
+			content : div
+	};
+	var d = new baidu.ui.Dialog(options);
+	d.render();
+	d.open();
+	equals(d.getTitle().firstChild.innerHTML, 'initText', 'The titleText is right when create a dialog');
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when create a dialog');
+	equals(d.getMain().style.left, '10px', 'The left is right when create a dialog');
+	equals(d.getMain().style.top, '10px', 'The top is right when create a dialog');
+	
+	var options = {
+			left : 100,
+			top  : 100,
+			width : 100,
+			height  : 100
+	};
+	d.update(options);
+	equals(d.getTitle().firstChild.innerHTML, 'initText', 'The titleText is right when update');
+	equals(d.getContent().firstChild.innerHTML ,div.innerHTML, 'The content is right when update');
+	equals(d.getMain().style.left, '100px', 'The left is right when update');
+	equals(d.getMain().style.top, '100px', 'The top is right when update');
+	equals(d.getContent().offsetWidth, '100', 'The width is right when update');
+	equals(d.getContent().offsetHeight, '100', 'The height is right when update');
+	
+	te.obj.push(d);
+});
+
+test('test update contextText and position',function(){
+	expect(10);
+	var div = document.createElement('div');
+	div.innerHTML = 'myContent';
+	var options = {
+			left : 10,
+			top  : 10,
+			titleText : 'initText',
+			contentText : 'initText'
+	};
+	var d = new baidu.ui.Dialog(options);
+	d.render();
+	d.open();
+	equals(d.getTitle().firstChild.innerHTML, 'initText', 'The titleText is right when create a dialog');
+	equals(d.getContent().innerHTML, 'initText', 'The content is right when create a dialog');
+	equals(d.getMain().style.left, '10px', 'The left is right when create a dialog');
+	equals(d.getMain().style.top, '10px', 'The top is right when create a dialog');
+	
+	var options = {
+			left : 100,
+			top  : 100,
+			width : 100,
+			height  : 100
+	};
+	d.update(options);
+	equals(d.getTitle().firstChild.innerHTML, 'initText', 'The titleText is right when update');
+	equals(d.getContent().innerHTML, 'initText', 'The content is right when update');
+	equals(d.getMain().style.left, '100px', 'The left is right when update');
+	equals(d.getMain().style.top, '100px', 'The top is right when update');
+	equals(d.getContent().offsetWidth, '100', 'The width is right when update');
+	equals(d.getContent().offsetHeight, '100', 'The height is right when update');
+	
+	te.obj.push(d);
+});
+
+test('test update contextText and content',function(){
+	expect(16);
+	var d = new baidu.ui.Dialog();
+	d.render();
+	d.open();
+	equals(d.getContent().innerHTML, '', 'The content is right when create a dialog');
+	
+	var options = {
+			contentText : 'initText'
+	};
+	d.update(options);
+	equals(d.getContent().innerHTML, 'initText', 'The contentText is right when update');
+	
+	var div = document.createElement('div');
+	div.innerHTML = 'myContent';
+	var options = {
+			content : div
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML ,div.innerHTML, 'The content is right when update');
+	
+	var options = {
+			contentText : 'initText'
+	};
+	d.update(options);
+	equals(d.getContent().innerHTML, 'initText', 'The contentText is right when update');
+	
+	var options = {
+			contentText : 'initText',
+			content : div
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when update');
+	
+	d.update();
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when update');
+	
+	var options = {
+			contentText : 'initText',
+			content : div
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when update');
+	
+	var options = {
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when update');
+	
+	var options = {
+			contentText : 'initText',
+			content : div
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when update');
+	
+	var options = {
+			content : div
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when update');
+	
+	var options = {
+			contentText : 'initText',
+			content : div
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when update');
+	
+	var options = {
+			contentText : 'initText'
+	};
+	d.update(options);
+	equals(d.getContent().innerHTML, 'initText', 'The content is right when update');
+	
+	var options = {
+			contentText : 'initText',
+			content : div
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when update');
+	
+	var options = {
+			contentText : ''
+	};
+	d.update(options);
+	equals(d.getContent().innerHTML, '', 'The content is right when update');
+	
+	var options = {
+			contentText : 'initText',
+			content : div
+	};
+	d.update(options);
+	equals(d.getContent().firstChild.innerHTML, div.innerHTML, 'The content is right when update');
+	
+	var options = {
+			content : null,
+			contentText : '',
+	};
+	d.update(options);
+	equals(d.getContent().innerHTML, '', 'The content is right when update');
+	
+	te.obj.push(d);
+});
