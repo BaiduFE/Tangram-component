@@ -97,9 +97,8 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     /**
      * 渲染Tooltip到HTML
      * @public 
-     * @param {String|HTMLElement} element  需要渲染到的元素或者id.
      */
-    render: function(element) {
+    render: function() {
         var me = this,
             main,title;
 
