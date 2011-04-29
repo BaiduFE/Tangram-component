@@ -22,6 +22,8 @@
 
 /**
  * 创建一个日历对象绑定于一个input输入域
+ * @name baidu.ui.DatePicker
+ * @class
  * @param {Object} options config参数
  * @config {Number} width 日历组件的宽度
  * @config {Number} height 日历组件的高度
