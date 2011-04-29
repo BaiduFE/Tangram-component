@@ -51,7 +51,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     me.offset = options.offset || [0, 0];
     me.positionElement = null;
 
-    baidu.ui.Tooltip._showingTooltip[me.guid] = me;
+    baidu.ui.Tooltip.showing[me.guid] = me;
 
 }).extend(
     /**
@@ -125,7 +125,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 	 */
 	open: function(target) {
 		var me = this,
-            showTooltip = baidu.ui.Tooltip._showingTooltip,
+            showTooltip = baidu.ui.Tooltip.showing,
             isSingleton = baidu.ui.Tooltip.isSingleton,
             target = target || me.target[0],
             currentTarget = me.currentTarget,
@@ -324,7 +324,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 		if (me.getBody()) {
 			baidu.dom.remove(me.getBody());
 		}
-        delete(baidu.ui.Tooltip._showingTooltip[me.guid]);
+        delete(baidu.ui.Tooltip.showing[me.guid]);
 		baidu.lang.Class.prototype.dispose.call(me);
 	},
     /**
@@ -344,4 +344,4 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 });
 
 baidu.ui.Tooltip.isSingleton = false;
-baidu.ui.Tooltip._showingTooltip = {};
+baidu.ui.Tooltip.showing = {};
