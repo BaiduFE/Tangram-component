@@ -102,7 +102,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
         var me = this,
             main,title;
 
-        main = me.renderMain(element);
+        main = me.renderMain();
 
         baidu.each(me.target, function(t,index){
             if((title = baidu.getAttr(t, 'title')) && title != ''){
