@@ -116,10 +116,9 @@
                     width: (options.position.indexOf('bottom') > -1 ? coordinate.width : 0),
                     height: (options.position.indexOf('right') > -1 ? coordinate.height : 0)
                 };
-                
-                
-                
-                
+               
+                elementStyle.left -= (options.position.indexOf('right') >= 0 ? (coordinate.width || 0) : 0);
+                elementStyle.top -= (options.position.indexOf('bottom') >= 0 ? (coordinate.height || 0) : 0);
                 
                 elementStyle.left += elementStyle.left + offset.width + sourceWidth - scrollLeft > cW - parentPos.left ?
                     optOffset.width - sourceWidth : offset.width;
