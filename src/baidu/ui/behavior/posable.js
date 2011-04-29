@@ -82,10 +82,10 @@
 
         switch (options.insideScreen) {
            case "surround" :
-                elementStyle.left += elementStyle.left < scrollLeft ? sourceWidth  : 
-                                        ((elementStyle.left + sourceWidth ) > (scrollLeft + cW) ? - sourceWidth : 0);
-                elementStyle.top  += elementStyle.top  < scrollTop  ? sourceHeight :
-                                        ((elementStyle.top  + sourceHeight) > (scrollTop  + cH) ? - sourceHeight : 0);
+                elementStyle.left += elementStyle.left < scrollLeft ? sourceWidth  + (coordinate.width || 0 ): 
+                    ((elementStyle.left + sourceWidth ) > (scrollLeft + cW) ? - sourceWidth - (coordinate.width || 0 ) : 0);
+                elementStyle.top  += elementStyle.top  < scrollTop  ? sourceHeight + (coordinate.height || 0):
+                                        ((elementStyle.top  + sourceHeight) > (scrollTop  + cH) ? - sourceHeight - (coordinate.height || 0) : 0);
                 break;
             case 'fix' :
                 elementStyle.left = Math.max(
