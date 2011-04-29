@@ -287,3 +287,60 @@ test('dispose',function(){
 	equal(baidu.dom.g(t.getId()),null,'disposed');
 	equals(baidu.event._listeners.length, l1, 'event removed all');
 });
+
+test('Tooltip surround',function() {
+	stop();
+	ua.frameExt(function(w, f) {
+		$(f).css('width', 400).css('height', 300);
+		var div = w.document.body.appendChild(w.document.createElement('div'));
+		$(div).css('position', 'absolute');
+		div.style.border="1px solid black";
+		var target = w.document.body.appendChild(w.document.createElement('div'));
+		$(target).css('width', 100).css('height', 100).css('position', 'absolute').css('left', 10).css('top', 10);
+		target.style.border="1px solid red";
+		var content = w.document.createElement('span');
+		    content.innerHTML = '这是一个tooltip，测试surround';
+		var op = {
+			positionBy : 'element',
+			insideScreen : 'surround',
+			target : target,
+			contentElement : content,
+			onopen : function() {
+				}
+		};
+		t = new w.baidu.ui.Tooltip(op);
+		t.render(div);
+		t.open();
+		equals(baidu.dom.getPosition(t.getMain()).top, 112, 'check the tooltip is on the right-bottom');
+		equals(baidu.dom.getPosition(t.getMain()).left, 112, 'check the tooltip is on the right-bottom');
+		$(target).css('left', 100).css('top', 10);
+		t.update();
+		equals(baidu.dom.getPosition(t.getMain()).top, 112, 'check the tooltip is on the left-bottom');
+		equals(baidu.dom.getPosition(t.getMain()).left, 
+				100 - t.getMain().offsetWidth + (baidu.browser.ie ? 2 : 0), 
+				'check the tooltip is on the left-bottom');
+		$(target).css('left', 10).css('top', 190);
+		t.update();
+		equals(baidu.dom.getPosition(t.getMain()).top, 
+				190 - t.getMain().offsetHeight + (baidu.browser.ie ? 2 : 0), 
+				'check the tooltip is on the right-top');
+		equals(baidu.dom.getPosition(t.getMain()).left, 112, 'check the tooltip is on the right-top');
+		$(target).css('left', 100).css('top', 190);
+		t.update();
+		equals(baidu.dom.getPosition(t.getMain()).top, 
+				190 - t.getMain().offsetHeight + (baidu.browser.ie ? 2 : 0), 
+				'check the tooltip is on the left-top');
+		equals(baidu.dom.getPosition(t.getMain()).left, 
+				100 - t.getMain().offsetWidth + (baidu.browser.ie ? 2 : 0), 
+				'check the tooltip is on the left-top');
+		$(target).css('left', 100).css('top', 200);
+		t.update();
+		$(target).css('left', 100).css('top', 220);
+		t.update();
+		t.close();
+		t.dispose();
+		w.document.body.removeChild(target);
+		te.obj.push(f);
+		this.finish();
+	});
+});
