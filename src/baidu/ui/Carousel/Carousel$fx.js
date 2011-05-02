@@ -38,31 +38,43 @@ baidu.ui.Carousel.register(function(me){
 //        }
 //        me._moveCenter();
 //        //end}
-
-
         
-
-
-//        var body = me.getBody(),
-//            pos = me.orientation == 'horizontal',
-//            axis = me._axis[me.orientation],
-//            val = body[axis.scrollPos] +  me[axis.offset] * me.pageSize;
-//        
-//        
-//        
-//        
+        var direction = evt.direction,
+            orie = me.orientation == 'horizontal',
+            axis = me._axis[me.orientation],
+            body = me.getBody(),
+            sContainer = me.getScrollContainer(),
+            fragment = document.createDocumentFragment(),
+            count = me.pageSize * 3,
+            i = 0,
+            is;
+        !direction && (direction = baidu.array.indexOf(//这个循环会随着项的增加而增加循环时间
+            me._itemIds,
+            baidu.dom.children(sContainer)[me.pageSize].id
+        ) > evt.index ? 'prev' : 'next');
+        
+        
+        
+        
+        is = direction == 'prev';
+        for(; i < count; i++){
+            fragment.appendChild(me._getItemElement(evt.index
+                - me.pageSize
+                - evt.scrollOffset + i));
+        }
+        sContainer.style[axis.size] = parseInt(sContainer.style[axis.size])
+            + me.pageSize * 3 * me[axis.offset] + 'px';
+        is ? sContainer.insertBefore(fragment, sContainer.firstChild)
+            : sContainer.appendChild(fragment);
+        body[axis.scrollPos] += is ? me.pageSize * 3 * me[axis.offset] : 0;
 //        baidu.fx.scrollTo(me.getBody(),
-//            {x: pos ? val: 0, y: pos ? 0 : val},
+//            {x: orie ? val : 0, y: orie? 0 : val},
 //            {});
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        body[axis.scrollPos] = body[axis.scrollPos] + me.pageSize * 3 * me[axis.offset] * (is ? -1 : 1);
+        for(i = 0; i < count; i++){
+            baidu.dom.remove(sContainer[is ? 'lastChild' : 'firstChild']);
+        }
+        me._moveCenter();
         evt.returnValue = false;
     });
 });
