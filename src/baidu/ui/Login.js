@@ -25,7 +25,8 @@
 
 /**
  * 应用实现 login 备注：涉及passport的API接口参数可以参见http://fe.baidu.com/doc/zhengxin/passport/openapi_help.text
- * @function
+ * @name baidu.ui.Login
+ * @class
  * @param  {String|DOMElement}  content               内容或者内容对应的元素
  * @param  {Object}             [options]             选项参数
  * @config {DOMElement}         content               要放到dialog中的元素，如果传此参数时同时传contentText，则忽略contentText。
