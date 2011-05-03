@@ -203,21 +203,73 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         }
     },
     
+    _basicFlip: function(type){
+        var me = this,
+            type = type == 'prev',
+            is = me.flip == 'item',
+            sContainer = me.getScrollContainer(),
+            index = me.scrollIndex
+                + (is ? 1 : me.pageSize)
+                * (type ? -1 : 1),
+            offset = is ? (type ? 0 : me.pageSize - 1)
+                : me.scrollIndex % me.pageSize,
+            item = me._getItemElement(index),
+            itemIndex;
+        function scrollTo(index, offset){
+            me.addEventListener('onafterscroll', function(evt){
+                var target = evt.target;
+                target.focus(evt.index);
+                target.removeEventListener('onafterscroll', arguments.callee);
+            });
+            me.scrollTo(index, offset);
+        }
+        if(is){
+            if(!item.id){return;}
+            itemIndex = baidu.array.indexOf(
+                baidu.dom.children(sContainer), item);
+            itemIndex < me.pageSize
+                || itemIndex >= me.pageSize * 2 ? scrollTo(index, offset)
+                : me.focus(index);
+        }else{
+            if(!item.id){
+                offset = 0;
+                index = (Math.floor(me.scrollIndex / me.pageSize) + (type ? -1 : 1))
+                    * me.pageSize;
+            }
+            me._getItemElement(index).id && scrollTo(index, offset);
+        }
+    },
+    
     prev: function(){
-        var me = this;
+        this._basicFlip('prev');
     },
     
     next: function(){
-        var me = this;
+        this._basicFlip('next');
+    },
+    
+    _isVerge: function(type){
+        var me = this,
+            type = type == 'first',
+            is = me.flip == 'item',
+            currPage = Math.floor(me.scrollIndex / me.pageSize),
+            val = false;
+        if(is){
+            val = type ? me.scrollIndex <= 0
+                : me.scrollIndex >= me._datas.length - 1;
+        }else{
+            val = type ? currPage <= 0
+                : currPage >= Math.floor((me._datas.length - 1) / me.pageSize);
+        }
+        return val;
     },
     
     isFirst: function(){
-        return this.scrollIndex <= 0;
+        return this._isVerge('first');
     },
     
     isLast: function(){
-        var me = this;
-        return me.scrollIndex >= me._datas.length - 1;
+        return this._isVerge('last');
     },
     
     focus: function(index){
