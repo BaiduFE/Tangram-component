@@ -6,88 +6,102 @@
 ///import baidu.fx.current;
 ///import baidu.fx.scrollTo;
 ///import baidu.array.indexOf;
+///import baidu.dom.children;
+///import baidu.lang.isFunction;
 
 baidu.ui.Carousel.register(function(me){
+    //实现思路：两种情况：
+    //<a>当index项存在于buff，移动之前动态运算需要移动N个单位，先插入N个item到容器中
+    //<b>当index项不存于buff，运算滚动方向前虚拟移动pageSize个单位
+    //移动完成后使用renderItems重新归位
     if(!me.enableFx){return;}
     me.addEventListener('onbeforescroll', function(evt){
         if(baidu.fx.current(me.getBody())){return;}
-        
-//        var item = me.getItem(evt.index),
-//            axis = me._axis[me.orientation],
-//            sContainer = me.getScrollContainer(),
-//            child = baidu.dom.children(sContainer),
-//            itemIndex = baidu.array.indexOf(child, item),
-//            count = Math.abs(me._recruitCount = itemIndex - evt.scrollOffset - me.pageSize),
-//            i = 0,
-//            element;
-//        //{start
-//        for(; i < count; i++){
-//            element = me._recruitCount > 0 ? me._getItemElement(child.length - itemIndex + evt.index + i)
-//                : me._getItemElement(evt.index - itemIndex - i - 1);
-//            sContainer.style[axis.size] = parseInt(sContainer.style[axis.size])
-//                + me[axis.offset] + 'px';
-//            //scrollLeft | scrollTop?
-//            me._recruitCount > 0 ? sContainer.appendChild(element)
-//                : sContainer.insertBefore(element, sContainer.firstChild);
-//        }
-//        //start}
-//        me.getBody()[axis.scrollPos] += me._recruitCount * me[axis.offset];
-//        //{end
-//        for(i = 0; i < count; i++){
-//            baidu.dom.remove(sContainer[me._recruitCount > 0 ? 'firstChild' : 'lastChild'] );
-//        }
-//        me._moveCenter();
-//        //end}
-        
-        var direction = evt.direction,
+        //滚动前需要运算出array(需要添加的总数item-id), direction(滚动方向)
+        var axis = me._axis[me.orientation],
             orie = me.orientation == 'horizontal',
-            axis = me._axis[me.orientation],
-            body = me.getBody(),
-            sContainer = me.getScrollContainer(),
-            fragment = document.createDocumentFragment(),
-            count = me.pageSize * 3,
+            child = baidu.dom.children(me.getScrollContainer()),
+            item = me.getItem(evt.index),
+            itemIndex = item ? baidu.array.indexOf(child, item) : -1,
+            direction = item ? itemIndex - evt.scrollOffset - me.pageSize : me.pageSize,
+            array = [],
+            count = Math.abs(direction),
             i = 0,
-            is;
-        !direction && (direction = baidu.array.indexOf(//这个循环会随着项的增加而增加循环时间
-            me._itemIds,
-            baidu.dom.children(sContainer)[me.pageSize].id
-        ) > evt.index ? 'prev' : 'next');
-        
-        
-        
-        
-        is = direction == 'prev';
+            currItem,
+            val;
         for(; i < count; i++){
-            fragment.appendChild(me._getItemElement(evt.index
-                - me.pageSize
-                - evt.scrollOffset + i));
+            if(item){
+                array.push(direction < 0 ? evt.index - itemIndex - count + i
+                    : child.length - itemIndex + evt.index + i);
+            }else{
+                itemIndex = evt.index - evt.scrollOffset + i;
+                currItem = me.getItem(itemIndex);
+                currItem && direction--;
+                !currItem && array.push(itemIndex);
+            }
         }
-        sContainer.style[axis.size] = parseInt(sContainer.style[axis.size])
-            + me.pageSize * 3 * me[axis.offset] + 'px';
-        is ? sContainer.insertBefore(fragment, sContainer.firstChild)
-            : sContainer.appendChild(fragment);
-        body[axis.scrollPos] += is ? me.pageSize * 3 * me[axis.offset] : 0;
-//        baidu.fx.scrollTo(me.getBody(),
-//            {x: orie ? val : 0, y: orie? 0 : val},
-//            {});
-        body[axis.scrollPos] = body[axis.scrollPos] + me.pageSize * 3 * me[axis.offset] * (is ? -1 : 1);
-        for(i = 0; i < count; i++){
-            baidu.dom.remove(sContainer[is ? 'lastChild' : 'firstChild']);
-        }
-        me._moveCenter();
+        !item && (direction = (direction + me.pageSize)
+            * (baidu.array.indexOf(me._itemIds, child[me.pageSize].id)
+                > evt.index ? -1 : 1));
+        val = me.getBody()[axis.scrollPos] + me[axis.offset] * direction;
+        me.scrollFxOptions = baidu.object.extend(me.scrollFxOptions, {
+            carousel: me,
+            items: array,
+            index: evt.index,
+            scrollOffset: evt.scrollOffset,
+            direction: direction
+        });
+        baidu.lang.isFunction(me.scrollFx)
+            && me.scrollFx(me.getBody(),
+                {x: orie ? val : 0, y: orie ? 0 : val},
+                me.scrollFxOptions);
         evt.returnValue = false;
     });
 });
+//
 baidu.ui.Carousel.extend({
     enableFx: true,
     scrollFx: baidu.fx.scrollTo,
     scrollFxOptions: {
         duration: 500,
-        onbeforestart: function(){
-            alert(me._recruitCount)
+        onbeforestart: function(evt){
+            var timeLine = evt.target,
+                me = timeLine.carousel,
+                axis = me._axis[me.orientation],
+                is = timeLine.direction < 0,
+                sContainer = me.getScrollContainer(),
+                fragment = document.createDocumentFragment(),
+                array = timeLine.items,
+                count = array.length,
+                i = 0;
+            for(; i < count; i++){
+                fragment.appendChild(me._getItemElement(array[i]));
+            }
+            is ? sContainer.insertBefore(fragment, sContainer.firstChild)
+                : sContainer.appendChild(fragment);
+            me.orientation == 'horizontal'
+                && (sContainer.style[axis.size] = parseInt(sContainer.style[axis.size])
+                    + count * me[axis.offset] + 'px');
+            is && (me.getBody()[axis.scrollPos] += count * me[axis.offset]);
+            me.dispatchEvent('onbeforestartscroll', {
+                index: timeLine.index,
+                scrollOffset: timeLine.scrollOffset
+            });
         },
-        onafterfinish: function(){
-            
+        onafterfinish: function(evt){
+            var timeLine = evt.target,
+                me = timeLine.carousel,
+                axis = me._axis[me.orientation],
+                sContainer = me.getScrollContainer();
+            me.orientation == 'horizontal'
+                && (sContainer.style[axis.size] = parseInt(sContainer.style[axis.size])
+                    - timeLine.items.length * me[axis.offset] + 'px');
+            me._renderItems(timeLine.index, timeLine.scrollOffset);
+            me._moveCenter();
+            me.dispatchEvent('onafterscroll', {
+                index: timeLine.index,
+                scrollOffset: timeLine.scrollOffset
+            });
         }
     }
 });
