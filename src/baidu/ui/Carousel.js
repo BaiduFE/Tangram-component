@@ -6,10 +6,14 @@
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.children;
 ///import baidu.dom.getStyle;
+///import baidu.dom.create;
 ///import baidu.dom.remove;
+///import baidu.dom.addClass;
+///import baidu.dom.removeClass;
 ///import baidu.string.format;
 ///import baidu.array.each;
 ///import baidu.browser.ie;
+
 
 baidu.ui.Carousel = baidu.ui.createUI(function(options){
     var me = this,
@@ -42,7 +46,6 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
     },
     
     tplDOM: '<div id="#{id}" class="#{class}">#{content}</div>',
-    tplItem: '<div id="#{id}" class="#{class}" "#{handler}">#{content}</div>',
     
     getString: function(){
         var me = this,
@@ -62,64 +65,47 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         if(!target || me.getMain()){return;}
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me.getString());
         me._renderItems();
+//        me._renderItems(8, 0);
         me._resizeView();
         me._moveCenter();
+        me.focus(me.scrollIndex);
         me.dispatchEvent('onload');
-    },
-    
-    _getRenderData: function(index, offset){
-        var me = this,
-            array = [],
-            index = Math.min(Math.max(index | 0, 0), me._datas.length - 1),
-            offset = Math.min(Math.max(offset | 0, 0), me.pageSize - 1),
-            count = me.pageSize * 3,
-            i = 0,
-            pointer;//起点索引
-        index < offset && (offset = index);//这种情况比如把1放到可视区域2的位置
-        pointer = index - offset - me.pageSize;
-        for(; i < count; i++){
-            array.push({
-                index: pointer + i,
-                id: me._itemIds[pointer + i] || '',
-                data: me._datas[pointer + i] || {content: ''}
-            });
-        }
-        return array;
     },
     
     _renderItems: function(index, offset){
         var me = this,
-            array = [],
-            data = me._getRenderData(index, offset),
-            count = data.length,
-            i = 0;
+            sContainer = me.getScrollContainer(),
+            index = Math.min(Math.max(index | 0, 0), me._datas.length - 1),
+            offset = Math.min(Math.max(offset | 0, 0), me.pageSize - 1),
+            sContainer = me.getScrollContainer(),
+            i = 0,
+            count = me.pageSize * 3;
+        index < offset && (offset = index);//这种情况比如把1放到可视区域2的位置
+        sContainer.innerHTML = '';
         for(; i < count; i++){
-            array.push(baidu.string.format(me.tplItem, {
-                id: data[i].id,
-                'class': me.getClass('item'),
-                content: data[i].data.content
-            }));
+            sContainer.appendChild(
+                me._getItemElement(index - offset - me.pageSize + i)
+            );
         }
-        me.getScrollContainer().innerHTML = array.join('');
     },
     
     _moveCenter: function(){
         if(!this._boundX && !this._boundY){return;}
         var me = this,
             axis = me._axis[me.orientation],
-            is = me.orientation == 'horizontal'
-            ieOffset = is && baidu.browser.ie == 6 ? me._boundX.marginX : 0;
+            orie = me.orientation == 'horizontal'
+            ieOffset = orie && baidu.browser.ie == 6 ? me._boundX.marginX : 0;
         me.getBody()[axis.scrollPos] = me[axis.offset]
             * me.pageSize
-            + (is ? 0 : Math.abs(Math.max(me._boundY.marginX, me._boundY.marginY) / 2 - me._boundY.marginX))
+            + (orie ? 0 : Math.abs(Math.max(me._boundY.marginX, me._boundY.marginY) / 2 - me._boundY.marginX))
             + ieOffset;
     },
     
     _resizeView: function(){
         if(this._datas.length <= 0){return;}//没有数据
-        var me= this,
+        var me = this,
             axis = me._axis[me.orientation],
-            is = me.orientation == 'horizontal',
+            orie = me.orientation == 'horizontal',
             sContainer = me.getScrollContainer(),
             child = baidu.dom.children(sContainer),
             boundX,
@@ -132,8 +118,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             isNaN(marginX) && (marginX = 0);
             isNaN(marginY) && (marginY = 0);
             return {
-                width: bound,
-                offset: bound + (is ? marginX + marginY : Math.max(marginX, marginY)),
+//                width: bound,
+                offset: bound + (orie ? marginX + marginY : Math.max(marginX, marginY)),
                 marginX: marginX,
                 marginY: marginY
             };
@@ -144,35 +130,33 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         me.offsetHeight <= 0 && (me.offsetHeight = boundY.offset);
         
         sContainer.style.width = boundX.offset
-            * (is ? child.length : 1)
+            * (orie ? child.length : 1)
             + (baidu.browser.ie == 6 ? boundX.marginX + boundX.marginY : 0)
             + 'px';
-        is && (sContainer.style.height = boundY.offset + 'px');//如果是横向滚动需要设一下高度，防止不会自动撑开
+        orie && (sContainer.style.height = boundY.offset + 'px');//如果是横向滚动需要设一下高度，防止不会自动撑开
         me.getBody().style[axis.size] = me[axis.offset] * me.pageSize + 'px';
     },
     
-    
-    
-    
-    
-    
-    
-    
-    getItemElement: function(){
-        
+    _getItemElement: function(index){
+        var me = this,
+            itemId = me._itemIds[index],
+            element = me._items[itemId],
+            txt = me._datas[index];
+        if(!element){
+            element = baidu.dom.create('div', {
+                id: itemId || '',
+                'class': me.getClass('item')
+            });
+            element.innerHTML = txt ? txt.content : '';
+            itemId && (me._items[itemId] = element);
+        }
+        return element;
     },
     
-    
-    
-    
-    
-    
-    
-    
-   
     getCurrentIndex: function(){
         return this.scrollIndex;
     },
+    
     getTotalCount: function(){
         return this._datas.length;
     },
@@ -189,57 +173,54 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
     /**
      * 
      */
-    scrollTo: function(index, scrollOffset, direction){
-//        var me = this,
-//            index = Math.min(Math.max(index | 0, 0), me._datas.length - 1),
-//            offset = Math.min(Math.max(scrollOffset | 0, 0), me.pageSize - 1);
-//        if(me._datas.length <= 0){return;}
-//        if(me.dispatchEvent('onbeforescroll',
-//            {index: index, scrollOffset: offset, direction: direction})){
-//            alert('ffff');
-//        }
-//        this._renderItems(index, scrollOffset);
-
-//            axis = me._axis[me.orientation],
-//            index = Math.min(Math.max(index | 0, 0), me._datas.length - 1),
-//            offset = Math.min(Math.max(scrollOffset | 0, 0), me.pageSize - 1),
-//            sContainer = me.getScrollContainer(),
-//            child = baidu.dom.children(sContainer),
-//            item = baidu.dom.g(me._itemIds[index]),
-//            count = -1;
-//        index < offset && (offset = index);
-//        item && baidu.array.each(child, function(ele, i){
-//            if(ele.id && ele.id == item.id){
-//                count = i;
-//                return false;
-//            }
-//        });
-//        count -= me.pageSize + offset;
-//        me.getBody()[axis.scrollPos] +=  me[axis.offset] * count;
-        
+    scrollTo: function(index, scrollOffset){
+        var me = this;
+        if(me._datas.length <= 0){return;}
+        if(me.dispatchEvent('onbeforescroll',
+            {index: index, scrollOffset: offset})){
+            me._renderItems(index, scrollOffset);
+        }
     },
     
     prev: function(){
-        
+        var me = this;
     },
     
     next: function(){
-        
+        var me = this;
     },
     
     isFirst: function(){
-        
+        return this.scrollIndex <= 0;
     },
     
     isLast: function(){
-        
+        var me = this;
+        return me.scrollIndex >= me._datas.length - 1;
     },
     
-    focus: function(){
-        
+    focus: function(index){
+        var me = this,
+            beforeItem = me._itemIds[index]
+                && me._getItemElement(me.scrollIndex),
+            currItem = me._itemIds[index]
+                && me._getItemElement(index);
+        beforeItem
+            && baidu.dom.removeClass(beforeItem, me.getClass('item-focus'));
+        if(currItem){
+            baidu.dom.addClass(currItem, me.getClass('item-focus'));
+            me.scrollIndex = index;
+        }
     },
     
     getScrollContainer: function(){
         return baidu.dom.g(this.getId('scroll'));
+    },
+    
+    dispose: function(){
+        var me = this;
+        me.dispatchEvent('ondispose');
+        baidu.dom.remove(me.getMain());
+        baidu.lang.Class.prototype.dispose.call(me);
     }
 });
