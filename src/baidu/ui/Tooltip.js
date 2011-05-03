@@ -320,8 +320,8 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 	dispose: function() {
 		var me = this;
 		me.dispatchEvent('ondispose');
-		if (me.getBody()) {
-			baidu.dom.remove(me.getBody());
+		if (me.getMain()) {
+			baidu.dom.remove(me.getMain());
 		}
         delete(baidu.ui.Tooltip.showing[me.guid]);
 		baidu.lang.Class.prototype.dispose.call(me);
