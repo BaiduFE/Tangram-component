@@ -33,7 +33,7 @@ baidu.ui.behavior.posable.setPositionByElement =
 baidu.ui.behavior.posable._setPositionByElement = function(target, element, options){
     var targetPos = baidu.dom.getPosition(target);
     options.once = false;
-    options.insideScreen = 'verge';
+    options.insideScreen = options.insideScreen || 'verge';
     targetPos.width = target.offsetWidth;
     targetPos.height = target.offsetHeight;
     this._positionByCoordinate(element, targetPos, options, true);

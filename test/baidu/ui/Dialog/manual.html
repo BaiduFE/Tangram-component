@@ -247,7 +247,8 @@ h2{
             function createDialog(type){
                 var nowIndex = dialogPool.length;
                 var options = {
-                    autoRender : true
+                    autoRender : true,
+                    autoDispose: false
                 };
 
                 baidu.object.extend(options, getConfigureObject());
