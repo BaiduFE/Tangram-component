@@ -192,7 +192,9 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
      * 
      */
     scrollTo: function(index, scrollOffset){
-        var me = this;
+        var me = this,
+            index = Math.min(Math.max(index | 0, 0), me._datas.length - 1),
+            offset = Math.min(Math.max(scrollOffset | 0, 0), me.pageSize - 1);
         if(me._datas.length <= 0){return;}
         if(me.dispatchEvent('onbeforescroll',
             {index: index, scrollOffset: offset})){
