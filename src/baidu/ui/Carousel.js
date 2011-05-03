@@ -12,7 +12,9 @@
 ///import baidu.dom.removeClass;
 ///import baidu.string.format;
 ///import baidu.array.each;
+///import baidu.array.indexOf;
 ///import baidu.browser.ie;
+///import baidu.fn.bind;
 
 
 baidu.ui.Carousel = baidu.ui.createUI(function(options){
@@ -148,9 +150,25 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
                 'class': me.getClass('item')
             });
             element.innerHTML = txt ? txt.content : '';
-            itemId && (me._items[itemId] = element);
+            if(itemId){
+                me._items[itemId] = element;
+                element.onclick = baidu.fn.bind('_onItemClickHandler', me, element);
+                element.onmouseover = baidu.fn.bind('_onMouseHandler', me, 'mouseover');
+                element.onmouseout = baidu.fn.bind('_onMouseHandler', me, 'mouseout');
+            }
         }
         return element;
+    },
+    
+    _onItemClickHandler: function(ele, evt){
+        var me = this;
+        me.focus(baidu.array.indexOf(me._itemIds, ele.id));
+        me.dispatchEvent('onitemclick');
+    },
+    
+    _onMouseHandler: function(type, evt){
+        var me = this;
+        me.dispatchEvent('on' + type);
     },
     
     getCurrentIndex: function(){
@@ -179,6 +197,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         if(me.dispatchEvent('onbeforescroll',
             {index: index, scrollOffset: offset})){
             me._renderItems(index, scrollOffset);
+            me.dispatchEvent('onafterscroll');
         }
     },
     
