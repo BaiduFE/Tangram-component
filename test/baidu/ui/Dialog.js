@@ -461,7 +461,7 @@ test('test update contextText and content',function(){
 	
 	var options = {
 			content : null,
-			contentText : '',
+			contentText : ''
 	};
 	d.update(options);
 	equals(d.getContent().innerHTML, '', 'The content is right when update');
