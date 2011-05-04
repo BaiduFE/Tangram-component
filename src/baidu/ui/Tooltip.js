@@ -51,7 +51,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     me.offset = options.offset || [0, 0];
     me.positionElement = null;
 
-    baidu.ui.Tooltip._showingTooltip[me.guid] = me;
+    baidu.ui.Tooltip.showing[me.guid] = me;
 
 }).extend(
     /**
@@ -97,13 +97,12 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     /**
      * 渲染Tooltip到HTML
      * @public 
-     * @param {String|HTMLElement} element  需要渲染到的元素或者id.
      */
-    render: function(element) {
+    render: function() {
         var me = this,
             main,title;
 
-        main = me.renderMain(element);
+        main = me.renderMain();
 
         baidu.each(me.target, function(t,index){
             if((title = baidu.getAttr(t, 'title')) && title != ''){
@@ -125,7 +124,7 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 	 */
 	open: function(target) {
 		var me = this,
-            showTooltip = baidu.ui.Tooltip._showingTooltip,
+            showTooltip = baidu.ui.Tooltip.showing,
             isSingleton = baidu.ui.Tooltip.isSingleton,
             target = target || me.target[0],
             currentTarget = me.currentTarget,
@@ -321,10 +320,10 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 	dispose: function() {
 		var me = this;
 		me.dispatchEvent('ondispose');
-		if (me.getBody()) {
-			baidu.dom.remove(me.getBody());
+		if (me.getMain()) {
+			baidu.dom.remove(me.getMain());
 		}
-        delete(baidu.ui.Tooltip._showingTooltip[me.guid]);
+        delete(baidu.ui.Tooltip.showing[me.guid]);
 		baidu.lang.Class.prototype.dispose.call(me);
 	},
     /**
@@ -344,4 +343,4 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 });
 
 baidu.ui.Tooltip.isSingleton = false;
-baidu.ui.Tooltip._showingTooltip = {};
+baidu.ui.Tooltip.showing = {};

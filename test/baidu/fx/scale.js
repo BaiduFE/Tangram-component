@@ -1,5 +1,47 @@
 module("baidu.fx.scale");
 
+test('test dom, fade = false', function() {
+	var c, t;
+	stop();
+	t = te.dom[1];
+	c = baidu.fx.scale(t, {
+		onbeforestart : function() {
+			ok(true, 'test dom');
+		},
+		onafterfinish : function() {
+			if(baidu.browser.ie){
+				equals(te.dom[1].style.filter,"", "The filter is not set");
+			}
+			else{
+				equals(te.dom[1].style.opacity, "", "The opacity is not set");
+			}
+			start();
+		},
+		fade : false
+	});
+});
+
+test('test dom, fade = true', function() {
+	var c, t;
+	stop();
+	t = te.dom[1];
+	c = baidu.fx.scale(t, {
+		onbeforestart : function() {
+			ok(true, 'test dom');
+		},
+		onafterfinish : function() {
+			if(baidu.browser.ie){
+				equals(te.dom[1].style.filter,"progid:DXImageTransform.Microsoft.Alpha(opacity:100)", "The filter is not set");
+			}
+			else{
+				equals(te.dom[1].style.opacity, "1", "The opacity is set");
+			}
+			start();
+		},
+		fade : true
+	});
+});
+
 // test id-dom
 test('test dom', function() {
 	var c, t;
@@ -192,3 +234,4 @@ test('test events', function() {
 		}
 	})
 });
+

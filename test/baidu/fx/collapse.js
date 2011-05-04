@@ -17,7 +17,7 @@ var op = {/* fx效果方法依赖参数 */
 };
 
 var opV = {/* fx效果方法依赖参数 */
-    orientation: 'vertical',
+    orientation: 'horizontal',
     onbeforestart : function() {/* 初始设置启动宽度为100 */
         $(te.dom[0]).css('width', 100).css('height', 100).css('background-color', 'red');
     },
@@ -73,8 +73,9 @@ test('校验时间序列', function() {
 				$(te.dom[0]).css('height', 100).css('background-color', 'red');
 			}
 		}
-	}).checktimeline(function(point) {
-		return Math.round(Math.pow(point - 4, 2) * 25 / 4);
+	}).checktimeline(function(point, timelinepoint) {
+		// 100*(1-per)2
+		return Math.round(100 * Math.pow(1 - point / timelinepoint, 2));
 	}, function() {
 		return parseInt($(te.dom[0]).css('height'));
 	});
