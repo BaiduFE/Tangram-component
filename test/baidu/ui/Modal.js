@@ -345,8 +345,8 @@ test('hide select', function() {
 	    m.dispose();
 	    start();
 	}
-    ua.importsrc('baidu.swf.create,baidu.page.getViewWidth,baidu.page.getViewHeight,baidu.page.getScrollTop,baidu.page.getScrollLeft', 
-			check ,'baidu.swf.create', 'baidu.ui.Modal');
+    ua.importsrc('baidu.page.getViewWidth,baidu.page.getViewHeight,baidu.page.getScrollTop,baidu.page.getScrollLeft', 
+			check ,'baidu.page.getViewWidth', 'baidu.ui.Modal');
 });
 
 //test('窗口scroll测试', function() {
