@@ -18,20 +18,6 @@
 		$(img).css('position', 'absolute');
 		te.dom.push(div2);
 
-//		te.obj.push({
-//			check : function(d, i, max, info, _check, c) {
-//				var c = c || this.check;
-//				if (i == max) {
-//					start();
-//				} else {
-//					_check(i, max, info);
-//
-//					setTimeout(function() {
-//						c(d, i + 1, max, info, _check, c);
-//					}, d / max);
-//				}
-//			}
-//		});
 		/**
 		 * 校验的对象方法，校验的运行方法 记录起始事件
 		 */
@@ -46,10 +32,11 @@
 						return this;
 					},
 					checkbase : function() {
-						var me = this;
+						var me = this,
+						//启动前方法支持
+						beforestart = me.options.beforestart;
 						me.options.beforestart && me.options.beforestart();
-						return me.options
-								.method(me.element, me.options.options);
+						return me.options.method(me.element, me.options.options);
 					},
 					/**
 					 * 校验时间点附近的期望值和实际值，时间点采用等分切割方式
@@ -82,11 +69,12 @@
 											+ ']');
 								}
 								expect(timelinepoint);
-								start();
+								// 这个地方经常因为元素被移除了而fx还在继续执行导致问题
+								setTimeout(QUnit.start, 200);
 							}
 						}, c.duration / timelinepoint);
 						// };
-						starttime = new Date().getTime();
+						me.starttime = new Date().getTime();
 						// timeline();
 					},
 					/**
@@ -120,7 +108,7 @@
 					/**
 					 * 在时间线一半时撤销效果
 					 */
-					checkcancel : function(aftercancel) {
+					checkcancel : function(aftercancel, nostart) {
 						var me = this;
 						me.options.options = me.options.options || {};
 						me.options.options.oncancel = function() {
@@ -129,7 +117,7 @@
 							setTimeout(function() {
 								ok(c.disposed, 'fx disposed after cancel');
 								expect(2);
-								start();
+								!nostart && start();
 							}, 1);
 						};
 						var c = me.checkbase();
