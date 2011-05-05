@@ -58,7 +58,7 @@
      * 通过js改变hash的时候，浏览器会增加历史记录，并且执行回调函数
      * @param {Function} callBack hash值变更时的回调函数.
      */
-    function history(callBack) {
+    function listen(callBack) {
         _curHash = ('');
         if (callBack)
             _callbackFun = callBack;
@@ -89,5 +89,5 @@
         }
     };
 
-    baidu.history = baidu.history.history = history;
+    baidu.history.listen = listen;
 })();
