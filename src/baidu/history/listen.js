@@ -83,7 +83,7 @@
 
         }else {
             if (_curHash != location.hash.replace(/^#/, ''))
-                _hashChangeCallBack();
+                _curHash = (window.location.hash.replace(/^#/, '') || '');   
             
             //ff3.6 chrome safari oprea11通过onhashchange实现
             window.onhashchange = _hashChangeCallBack;
