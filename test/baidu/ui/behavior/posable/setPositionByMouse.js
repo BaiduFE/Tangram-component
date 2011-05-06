@@ -111,3 +111,133 @@ test('options', function() {
 		this.finish();
 	});
 });
+
+
+test('test in a big iframe, surround', function() {
+	// 弄个小点的iframe便于解决要求在屏幕内的问题
+	ua.frameExt(function(w, f) {
+		$(f).css('width', 100).css('height', 100);
+		var doc = w.document, div = doc.body.appendChild(doc
+				.createElement('div')), ui = {
+			dispatchEvent : function(type) {
+			}
+		};
+		$(div).css('position', 'absolute').css('left', 10).css('height', 10).css('width', 20).css('height', 20)
+				.css('background-color', 'yellow');
+		for ( var key in w.baidu.ui.behavior.posable)
+			ui[key] = w.baidu.ui.behavior.posable[key];
+		ua.mousemove(doc.body, {
+			clientX : 50,
+			clientY : 50
+		});
+		ui.setPositionByMouse(div, {
+			once : true,
+			insideScreen : 'surround'
+		});
+		equals(parseInt(w.$(div).css('left')), 50, 'check left-top');
+		equals(parseInt(w.$(div).css('top')), 50, 'check left-top');
+		
+		ua.mousemove(doc.body, {
+			clientX : 90,
+			clientY : 50
+		});
+		ui.setPositionByMouse(div, {
+			once : true,
+			insideScreen : 'surround'
+		});
+		equals(parseInt(w.$(div).css('left')), 70, 'check right-top');
+		equals(parseInt(w.$(div).css('top')), 50, 'check right-top');
+
+		ua.mousemove(doc.body, {
+			clientX : 50,
+			clientY :90
+		});
+		ui.setPositionByMouse(div, {
+			once : true,
+			insideScreen : 'surround'
+		});
+		equals(parseInt(w.$(div).css('left')), 50, 'check left-bottom');
+		equals(parseInt(w.$(div).css('top')), 70, 'check left-bottom');
+		
+		ua.mousemove(doc.body, {
+			clientX : 90,
+			clientY :90
+		});
+		ui.setPositionByMouse(div, {
+			once : true,
+			insideScreen : 'surround'
+		});
+		equals(parseInt(w.$(div).css('left')), 70, 'check right-bottom');
+		equals(parseInt(w.$(div).css('top')), 70, 'check right-bottom');
+		
+		doc.body.removeChild(div);
+		te.obj.push(f);
+		this.finish();
+	});
+});
+
+test('test in a small iframe, surround', function() {
+	// 弄个小点的iframe便于解决要求在屏幕内的问题
+	ua.frameExt(function(w, f) {
+		$(f).css('width', 100).css('height', 100);
+		var doc = w.document, div = doc.body.appendChild(doc
+				.createElement('div')), ui = {
+			dispatchEvent : function(type) {
+			}
+		};
+		var div1 = doc.body.appendChild(doc.createElement('div'));
+		$(div1).css('width', 200).css('height', 200);
+		$(div).css('position', 'absolute').css('left', 10).css('height', 10).css('width', 20).css('height', 20)
+				.css('background-color', 'yellow');
+		for ( var key in w.baidu.ui.behavior.posable)
+			ui[key] = w.baidu.ui.behavior.posable[key];
+		ua.mousemove(doc.body, {
+			clientX : 50,
+			clientY : 50
+		});
+		ui.setPositionByMouse(div, {
+			once : true,
+			insideScreen : 'surround'
+		});
+		equals(parseInt(w.$(div).css('left')), 50, 'check left-top');
+		equals(parseInt(w.$(div).css('top')), 50, 'check left-top');
+		
+		ua.mousemove(doc.body, {
+			clientX : 90,
+			clientY : 50
+		});
+		ui.setPositionByMouse(div, {
+			once : true,
+			insideScreen : 'surround'
+		});
+		equals(parseInt(w.$(div).css('left')), 70, 'check right-top');
+		equals(parseInt(w.$(div).css('top')), 50, 'check right-top');
+
+		ua.mousemove(doc.body, {
+			clientX : 50,
+			clientY :90
+		});
+		ui.setPositionByMouse(div, {
+			once : true,
+			insideScreen : 'surround'
+		});
+		equals(parseInt(w.$(div).css('left')), 50, 'check left-bottom');
+		equals(parseInt(w.$(div).css('top')), 70, 'check left-bottom');
+		
+		ua.mousemove(doc.body, {
+			clientX : 90,
+			clientY :90
+		});
+		ui.setPositionByMouse(div, {
+			once : true,
+			insideScreen : 'surround'
+		});
+		equals(parseInt(w.$(div).css('left')), 70, 'check right-bottom');
+		equals(parseInt(w.$(div).css('top')), 70, 'check right-bottom');
+		
+		doc.body.removeChild(div);
+		doc.body.removeChild(div1);
+		te.obj.push(f);
+		this.finish();
+	});
+});
