@@ -19,7 +19,7 @@
      * @param {String} hash
      */
     function _addHistory(hash) {
-        var fdoc = frame.contentWindow.document;
+        var fdoc = _frame.contentWindow.document;
         hash = hash || '#';
 
         //通过open方法触发frame的onload
@@ -83,7 +83,8 @@
 
         }else {
             if (_curHash != location.hash.replace(/^#/, ''))
-            _hashChangeCallBack();
+                _hashChangeCallBack();
+            
             //ff3.6 chrome safari oprea11通过onhashchange实现
             window.onhashchange = _hashChangeCallBack;
         }
