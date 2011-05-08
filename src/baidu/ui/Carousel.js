@@ -3,20 +3,21 @@
  * Copyright 2011 Baidu Inc. All rights reserved.
  */
 ///import baidu.ui.createUI;
+///import baidu.lang.guid;
+///import baidu.browser.ie;
 ///import baidu.dom.insertHTML;
-///import baidu.dom.children;
-///import baidu.dom.getStyle;
-///import baidu.dom.create;
-///import baidu.dom.remove;
-///import baidu.dom.addClass;
-///import baidu.dom.removeClass;
 ///import baidu.string.format;
 ///import baidu.array.each;
 ///import baidu.array.indexOf;
-///import baidu.browser.ie;
+///import baidu.array.find;
+///import baidu.dom.g;
+///import baidu.dom.remove;
+///import baidu.dom.children;
+///import baidu.dom.getStyle;
+///import baidu.dom.create;
+///import baidu.dom.addClass;
+///import baidu.dom.removeClass;
 ///import baidu.fn.bind;
-
-
 baidu.ui.Carousel = baidu.ui.createUI(function(options){
     var me = this,
         data = me.contentText || [];
@@ -71,6 +72,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         me._resizeView();
         me._moveCenter();
         me.focus(me.scrollIndex);
+        me.addEventListener('onafterscroll', function(evt){
+            me._renderItems(evt.index, evt.scrollOffset);
+            me._moveCenter();
+        });
         me.dispatchEvent('onload');
     },
     
@@ -80,14 +85,14 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             index = Math.min(Math.max(index | 0, 0), me._datas.length - 1),
             offset = Math.min(Math.max(offset | 0, 0), me.pageSize - 1),
             sContainer = me.getScrollContainer(),
+            count = me.pageSize,
             i = 0,
-            count = me.pageSize * 3;
-        index < offset && (offset = index);//这种情况比如把1放到可视区域2的位置
-        sContainer.innerHTML = '';
+            itemIndex;
+        while(sContainer.firstChild){//这里改用innerHTML赋空值会使js存的dom也被清空
+            baidu.dom.remove(sContainer.firstChild);
+        }
         for(; i < count; i++){
-            sContainer.appendChild(
-                me._getItemElement(index - offset - me.pageSize + i)
-            );
+            sContainer.appendChild(me._getItemElement(index - offset + i));
         }
     },
     
@@ -97,10 +102,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             axis = me._axis[me.orientation],
             orie = me.orientation == 'horizontal'
             ieOffset = orie && baidu.browser.ie == 6 ? me._boundX.marginX : 0;
-        me.getBody()[axis.scrollPos] = me[axis.offset]
-            * me.pageSize
-            + (orie ? 0 : Math.abs(Math.max(me._boundY.marginX, me._boundY.marginY) / 2 - me._boundY.marginX))
-            + ieOffset;
+        me.getBody()[axis.scrollPos] = (orie ? 0 : Math.abs(Math.max(me._boundY.marginX, me._boundY.marginY)
+            / 2 - me._boundY.marginX)) + ieOffset;
     },
     
     _resizeView: function(){
@@ -139,7 +142,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         me.getBody().style[axis.size] = me[axis.offset] * me.pageSize + 'px';
     },
     
-    _getItemElement: function(index){
+    _baseItemElement: function(index){
         var me = this,
             itemId = me._itemIds[index],
             element = me._items[itemId],
@@ -149,15 +152,20 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
                 id: itemId || '',
                 'class': me.getClass('item')
             });
+            !itemId && baidu.dom.addClass(element, me.getClass('item-empty'));
             element.innerHTML = txt ? txt.content : '';
             if(itemId){
-                me._items[itemId] = element;
                 element.onclick = baidu.fn.bind('_onItemClickHandler', me, element);
                 element.onmouseover = baidu.fn.bind('_onMouseHandler', me, 'mouseover');
                 element.onmouseout = baidu.fn.bind('_onMouseHandler', me, 'mouseout');
+                me._items[itemId] = element;
             }
         }
-        return element;
+        return element; 
+    },
+    
+    _getItemElement: function(index){
+        return this._baseItemElement(index);
     },
     
     _onItemClickHandler: function(ele, evt){
@@ -167,8 +175,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
     },
     
     _onMouseHandler: function(type, evt){
-        var me = this;
-        me.dispatchEvent('on' + type);
+        this.dispatchEvent('on' + type);
     },
     
     getCurrentIndex: function(){
@@ -191,97 +198,133 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
     /**
      * 
      */
-    scrollTo: function(index, scrollOffset){
+    scrollTo: function(index, scrollOffset, direction){
         var me = this,
-            index = Math.min(Math.max(index | 0, 0), me._datas.length - 1),
-            offset = Math.min(Math.max(scrollOffset | 0, 0), me.pageSize - 1);
-        if(me._datas.length <= 0){return;}
+            axis = me._axis[me.orientation],
+            body = me.getBody(),
+            sContainer = me.getScrollContainer(),
+            child = baidu.dom.children(sContainer),
+            item = me.getItem(index),
+            smartDirection = direction,
+            distance = index - scrollOffset,
+            count = Math.abs(distance),
+            len = me._datas.length,
+            i = 0,
+            fragment,
+            vergeIndex,
+            is;
+        if((item && distance == 0 && !direction)
+            || me._datas.length <= 0 || index < 0
+            || index > me._datas.length - 1){return;}
+        if(!smartDirection){//自动运算合理的方向
+            smartDirection = item ? (distance < 0 ? 'prev' : (distance > 0 ? 'next' : 'keep'))
+                : baidu.array.indexOf(me._itemIds,
+                    baidu.array.find(child, function(ele){return !!ele.id}))
+                    > index ? 'prev' : 'next';
+        }
+        is = smartDirection == 'prev';
+        if(!item || direction){
+            vergeIndex = baidu.array.indexOf(me._itemIds,
+                child[is ? 0 : child.length - 1].id);
+            //(x + len - y) % len
+            //Math(offset - (is ? 0 : pz - 1)) + count
+            count = Math.abs(scrollOffset - (is ? 0 : me.pageSize - 1))
+                + ((is ? vergeIndex : index) + len - (is ? index : vergeIndex)) % len;
+            count > me.pageSize && (count = me.pageSize);
+        }
+        fragment = count > 0 && document.createDocumentFragment();
+        for(; i < count; i++){
+            fragment.appendChild(
+                me._getItemElement(is ? index - scrollOffset + i
+                    : me.pageSize + index + i
+                        - (item && !direction ? baidu.array.indexOf(child, item) : scrollOffset + count))
+            );
+        }
+        is ? sContainer.insertBefore(fragment, child[0])
+            : sContainer.appendChild(fragment);
+        distance = me[axis.offset] * count;
+        sContainer.style[axis.size] = parseInt(sContainer.style[axis.size]) + distance + 'px';
+        is && (body[axis.scrollPos] += distance);
+        me._blur();//防止闪烁
         if(me.dispatchEvent('onbeforescroll',
-            {index: index, scrollOffset: offset})){
-            me._renderItems(index, scrollOffset);
-            me.dispatchEvent('onafterscroll');
+            {index: index, scrollOffset: scrollOffset, direction: direction, distance: distance})){
+            me.getBody()[axis.scrollPos] += distance * (is ? -1 : 1);
+            me.dispatchEvent('onafterscroll',
+                {index: index, scrollOffset: scrollOffset, direction: direction});
         }
     },
     
-    _basicFlip: function(type){
+    _getFlipIndex: function(type){
         var me = this,
-            type = type == 'prev',
             is = me.flip == 'item',
+            type = type == 'prev',
+            currIndex = me.scrollIndex,
+            index = me.scrollIndex + (is ? 1 : me.pageSize) * (type ? -1 : 1),
+            offset = is ? (type ? 0 : me.pageSize - 1) : me.scrollIndex % me.pageSize;
+        if(!is && !me._getItemElement(index).id){
+            index = (Math.floor(me.scrollIndex / me.pageSize) + (type ? -1 : 1))
+                * me.pageSize;
+            offset = 0;
+        }
+        return {index: index, scrollOffset: offset};
+    },
+    
+    _baseFlip: function(type){
+        var me = this,
             sContainer = me.getScrollContainer(),
-            index = me.scrollIndex
-                + (is ? 1 : me.pageSize)
-                * (type ? -1 : 1),
-            offset = is ? (type ? 0 : me.pageSize - 1)
-                : me.scrollIndex % me.pageSize,
-            item = me._getItemElement(index),
-            itemIndex;
-        function scrollTo(index, offset){
+            flip = me._getFlipIndex(type);
+        function scrollTo(index, offset, type){
             me.addEventListener('onafterscroll', function(evt){
                 var target = evt.target;
                 target.focus(evt.index);
                 target.removeEventListener('onafterscroll', arguments.callee);
             });
-            me.scrollTo(index, offset);
+            me.scrollTo(index, offset, type);
         }
-        if(is){
-            if(!item.id){return;}
-            itemIndex = baidu.array.indexOf(
-                baidu.dom.children(sContainer), item);
-            itemIndex < me.pageSize
-                || itemIndex >= me.pageSize * 2 ? scrollTo(index, offset)
-                : me.focus(index);
+        if(me.flip == 'item'){
+            me.getItem(flip.index) ? me.focus(flip.index)
+                : scrollTo(flip.index, flip.scrollOffset, type);
         }else{
-            if(!item.id){
-                offset = 0;
-                index = (Math.floor(me.scrollIndex / me.pageSize) + (type ? -1 : 1))
-                    * me.pageSize;
-            }
-            me._getItemElement(index).id && scrollTo(index, offset);
+            me._getItemElement(flip.index).id
+                && scrollTo(flip.index, flip.scrollOffset, type);
         }
     },
     
     prev: function(){
-        this._basicFlip('prev');
+        this._baseFlip('prev');
     },
     
     next: function(){
-        this._basicFlip('next');
-    },
-    
-    _isVerge: function(type){
-        var me = this,
-            type = type == 'first',
-            is = me.flip == 'item',
-            currPage = Math.floor(me.scrollIndex / me.pageSize),
-            val = false;
-        if(is){
-            val = type ? me.scrollIndex <= 0
-                : me.scrollIndex >= me._datas.length - 1;
-        }else{
-            val = type ? currPage <= 0
-                : currPage >= Math.floor((me._datas.length - 1) / me.pageSize);
-        }
-        return val;
+        this._baseFlip('next');
     },
     
     isFirst: function(){
-        return this._isVerge('first');
+        var flip = this._getFlipIndex('prev');
+        return flip.index < 0;
     },
     
     isLast: function(){
-        return this._isVerge('last');
+        var flip = this._getFlipIndex('next');
+        return flip.index >= this._datas.length;
+    },
+    
+    _blur: function(){
+        var me = this,
+            itemId = me._itemIds[me.scrollIndex];
+        if(itemId){
+            baidu.dom.removeClass(me._baseItemElement(me.scrollIndex),
+                me.getClass('item-focus'));
+            me.scrollIndex = -1;
+        }
     },
     
     focus: function(index){
         var me = this,
-            beforeItem = me._itemIds[index]
-                && me._getItemElement(me.scrollIndex),
-            currItem = me._itemIds[index]
-                && me._getItemElement(index);
-        beforeItem
-            && baidu.dom.removeClass(beforeItem, me.getClass('item-focus'));
-        if(currItem){
-            baidu.dom.addClass(currItem, me.getClass('item-focus'));
+            itemId = me._itemIds[index],
+            item = itemId && me._baseItemElement(index);//防止浪费资源创出空的element
+        if(itemId){
+            me._blur();
+            baidu.dom.addClass(item, me.getClass('item-focus'));
             me.scrollIndex = index;
         }
     },
