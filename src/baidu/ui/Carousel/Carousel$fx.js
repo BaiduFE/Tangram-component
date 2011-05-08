@@ -2,12 +2,20 @@
  * Tangram
  * Copyright 2011 Baidu Inc. All rights reserved.
  */
-
 ///import baidu.ui.Carousel;
 ///import baidu.lang.isFunction;
 ///import baidu.fx.scrollTo;
 ///import baidu.fx.current;
-
+///import baidu.object.extend;
+/**
+ * 为滚动组件增加动画滚动功能
+ * @param {Object} options config参数
+ * @config {Boolean} enableFx 是否支持动画插件
+ * @config {Function} scrollFx 描述组件的动画执行过程，默认是baidu.fx.scrollTo
+ * @config {Object} scrollFxOptions 执行动画过程所需要的参数
+ * @config {Function} onbeforestartscroll 当开始执行动画时触发该事件
+ * @author linlingyu
+ */
 baidu.ui.Carousel.register(function(me){
     if(!me.enableFx){return;}
     me.addEventListener('onbeforescroll', function(evt){
@@ -42,7 +50,6 @@ baidu.ui.Carousel.extend({
                 direction: timeLine.direction
             });
         },
-        
         onafterfinish: function(evt){
             var timeLine = evt.target;
             timeLine.carousel.dispatchEvent('onafterscroll', {

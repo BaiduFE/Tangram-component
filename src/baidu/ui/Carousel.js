@@ -2,6 +2,7 @@
  * Tangram
  * Copyright 2011 Baidu Inc. All rights reserved.
  */
+
 ///import baidu.ui.createUI;
 ///import baidu.lang.guid;
 ///import baidu.browser.ie;
@@ -17,13 +18,32 @@
 ///import baidu.dom.create;
 ///import baidu.dom.addClass;
 ///import baidu.dom.removeClass;
+///import baidu.event.on;
+///import baidu.event.un;
 ///import baidu.fn.bind;
+
+/**
+ * 创建一个简单的滚动组件
+ * @param {Object} options config参数
+ * @config {String} orientation 描述该组件是创建一个横向滚动组件或是竖向滚动组件，取值：horizontal:横向, vertical:竖向
+ * @config {Object} contentText 定义carousel组件每一项的字符数据，格式：[{content: 'text-0'}, {content: 'text-1'}, {content: 'text-2'}...]
+ * @config {String} flip 定义组件的翻页方式，取值：item:一次滚动一个项, page:一次滚动一页
+ * @config {Number} pageSize 描述一页显示多少个滚动项，默认值是3
+ * @config {Number} offsetWidth 自定义每个项的宽度，当滚动时将以这个宽度值来滚动一个项
+ * @config {Number} offsetHeight 自定义每个项的高度，当滚动时将以这个高度值来滚动一个项
+ * @config {String} onload 当渲染完组件时触发该事件
+ * @config {String} onbeforescroll 当开始滚动时触发该事件
+ * @config {String} onafterscroll 当结束一次滚动时触发该事件
+ * @config {String} onprev 当翻到前一项或前一页时触发该事件
+ * @config {String} onnext 当翻到下一项或下一页时触发该事件
+ * @author linlingyu
+ */
 baidu.ui.Carousel = baidu.ui.createUI(function(options){
     var me = this,
         data = me.contentText || [];
     me._datas = data.slice(0, data.length);
     me._itemIds = [];
-    me._items = {};//用来存入被删除的节点，当再次被使用时可以直接拿回来
+    me._items = {};//用来存入被删除的节点，当再次被使用时可以直接拿回来,格式:{element: dom, handler: []}
     baidu.array.each(me._datas, function(item){
         me._itemIds.push(baidu.lang.guid());
     })
@@ -42,14 +62,16 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
     scrollIndex: 0,
     offsetWidth: 0,
     offsetHeight: 0,
-    
     _axis: {
-        horizontal: {pos: 'left', size: 'width', offset: 'offsetWidth', scrollPos: 'scrollLeft', scrollSize: 'scrollWidth'},
-        vertical: {pos: 'top', size: 'height', offset: 'offsetHeight', scrollPos: 'scrollTop', scrollSize: 'scrollHeight'}
+        horizontal: {pos: 'left', size: 'width', offset: 'offsetWidth', scrollPos: 'scrollLeft'},
+        vertical: {pos: 'top', size: 'height', offset: 'offsetHeight', scrollPos: 'scrollTop'}
     },
-    
     tplDOM: '<div id="#{id}" class="#{class}">#{content}</div>',
-    
+    /**
+     * 生成一个容器的字符串
+     * @return {String}
+     * @private
+     */
     getString: function(){
         var me = this,
             str = baidu.string.format(me.tplDOM, {
@@ -62,11 +84,15 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             content: str
         });
     },
-    
+    /**
+     * 渲染滚动组件到参数指定的容器中
+     * @param {HTMLElement} target 一个用来存放组件的容器对象
+     */
     render: function(target){
         var me = this;
         if(!target || me.getMain()){return;}
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me.getString());
+        
         me._renderItems();
 //        me._renderItems(8, 0);
         me._resizeView();
@@ -77,8 +103,14 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             me._moveCenter();
         });
         me.dispatchEvent('onload');
+        
     },
-    
+    /**
+     * 从缓存中取出滚动项按照参数的格式在页面上排列出滚动项
+     * @param {Number} index 索引值
+     * @param {Number} offset 指定索引项放在页面的位置
+     * @private
+     */
     _renderItems: function(index, offset){
         var me = this,
             sContainer = me.getScrollContainer(),
@@ -95,7 +127,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             sContainer.appendChild(me._getItemElement(index - offset + i));
         }
     },
-    
+    /**
+     * 将滚动容器排列到中间位置
+     * @private
+     */
     _moveCenter: function(){
         if(!this._boundX && !this._boundY){return;}
         var me = this,
@@ -105,7 +140,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         me.getBody()[axis.scrollPos] = (orie ? 0 : Math.abs(Math.max(me._boundY.marginX, me._boundY.marginY)
             / 2 - me._boundY.marginX)) + ieOffset;
     },
-    
+    /**
+     * 运算可视区域的宽高(包括对margin的运算)，并运算出一个滚动单位的offsetWidth和offsetHeight
+     * @private
+     */
     _resizeView: function(){
         if(this._datas.length <= 0){return;}//没有数据
         var me = this,
@@ -141,51 +179,81 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         orie && (sContainer.style.height = boundY.offset + 'px');//如果是横向滚动需要设一下高度，防止不会自动撑开
         me.getBody().style[axis.size] = me[axis.offset] * me.pageSize + 'px';
     },
-    
+    /**
+     * 根据索引的从缓存中取出对应的滚动项，如果缓存不存在该项则创建并存入缓存，空滚动项不被存入缓存
+     * @param {Number} index 索引值
+     * @return {HTMLElement}
+     * @private
+     */
     _baseItemElement: function(index){
         var me = this,
             itemId = me._itemIds[index],
-            element = me._items[itemId],
-            txt = me._datas[index];
-        if(!element){
-            element = baidu.dom.create('div', {
+            entry = me._items[itemId] || {},
+            txt = me._datas[index],
+            element;
+        if(!entry.element){
+            entry.element = element = baidu.dom.create('div', {
                 id: itemId || '',
                 'class': me.getClass('item')
             });
             !itemId && baidu.dom.addClass(element, me.getClass('item-empty'));
             element.innerHTML = txt ? txt.content : '';
             if(itemId){
-                element.onclick = baidu.fn.bind('_onItemClickHandler', me, element);
-                element.onmouseover = baidu.fn.bind('_onMouseHandler', me, 'mouseover');
-                element.onmouseout = baidu.fn.bind('_onMouseHandler', me, 'mouseout');
-                me._items[itemId] = element;
+                entry.handler = [
+                    {evtName: 'click', handler: baidu.fn.bind('_onItemClickHandler', me, element)},
+                    {evtName: 'mouseover', handler: baidu.fn.bind('_onMouseHandler', me, 'mouseover')},
+                    {evtName: 'mouseout', handler: baidu.fn.bind('_onMouseHandler', me, 'mouseout')}
+                ];
+                baidu.array.each(entry.handler, function(item){
+                    baidu.event.on(element, item.evtName, item.handler);
+                });
+                me._items[itemId] = entry;
             }
         }
-        return element; 
+        return entry.element;
     },
-    
+    /**
+     * 对_baseItemElement的再包装，在循环滚动中可以被重写
+     * @param {Number} index 索引值
+     * @return {HTMLElement}
+     */
     _getItemElement: function(index){
         return this._baseItemElement(index);
     },
-    
+    /**
+     * 处理点击滚动项的事件触发
+     * @param {HTMLElement} ele 该滚动项的容器对象
+     * @param {Event} evt 触发事件的对象
+     * @private
+     */
     _onItemClickHandler: function(ele, evt){
         var me = this;
         me.focus(baidu.array.indexOf(me._itemIds, ele.id));
         me.dispatchEvent('onitemclick');
     },
-    
+    /**
+     * 处理鼠标在滚动项上划过的事件触发
+     * @param {String} type mouseover或是omouseout
+     * @param {Event} evt 触发事件的对象
+     * @private
+     */
     _onMouseHandler: function(type, evt){
         this.dispatchEvent('on' + type);
     },
-    
+    /**
+     * 取得当前得到焦点项在所有数据项中的索引值
+     * @return {Number} 索引值
+     */
     getCurrentIndex: function(){
         return this.scrollIndex;
     },
-    
+    /**
+     * 取得数据项的总数目
+     * @return {Number} 总数
+     */
     getTotalCount: function(){
         return this._datas.length;
     },
-    
     /**
      * 根据数据的索引值取得对应在页面的DOM节点，当节点不存时返回null
      * @param {Number} index 在数据中的索引值
@@ -194,9 +262,11 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
     getItem: function(index){
         return baidu.dom.g(this._itemIds[index]);
     },
-    
     /**
-     * 
+     * 从当前项滚动到index指定的项，并将该项放在scrollOffset的位置
+     * @param {Number} index 在滚动数据中的索引
+     * @param {Number} scrollOffset 在页面的显示位置
+     * @param {String} direction 滚动方向，取值: prev:强制滚动到上一步, next:强制滚动到下一步，当不给出该值时，会自动运算一个方向来滚动
      */
     scrollTo: function(index, scrollOffset, direction){
         var me = this,
@@ -253,7 +323,12 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
                 {index: index, scrollOffset: scrollOffset, direction: direction});
         }
     },
-    
+    /**
+     * 取得翻页的索引和索引在页面中的位置
+     * @param {String} type 翻页方向，取值：prev:翻到上一步,next:翻到下一步
+     * @return {Object} {index:需要到达的索引项, scrollOffset:在页面中的位置}
+     * @private
+     */
     _getFlipIndex: function(type){
         var me = this,
             is = me.flip == 'item',
@@ -268,7 +343,11 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         }
         return {index: index, scrollOffset: offset};
     },
-    
+    /**
+     * 翻面的基础处理方法
+     * @param {String} type 翻页方向，取值：prev:翻到上一步,next:翻到下一步
+     * @private
+     */
     _baseFlip: function(type){
         var me = this,
             sContainer = me.getScrollContainer(),
@@ -289,25 +368,38 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
                 && scrollTo(flip.index, flip.scrollOffset, type);
         }
     },
-    
+    /**
+     * 翻到上一项或是翻到上一页
+     */
     prev: function(){
         this._baseFlip('prev');
     },
-    
+    /**
+     * 翻到下一项或是翻到下一页
+     */
     next: function(){
         this._baseFlip('next');
     },
-    
+    /**
+     * 是否已经处在第一项或第一页
+     * @return {Boolean} true:当前已是到第一项或第一页
+     */
     isFirst: function(){
         var flip = this._getFlipIndex('prev');
         return flip.index < 0;
     },
-    
+    /**
+     * 是否已经处在末项或是末页
+     * @return {Boolean} true:当前已是到末项或末页
+     */
     isLast: function(){
         var flip = this._getFlipIndex('next');
         return flip.index >= this._datas.length;
     },
-    
+    /**
+     * 使当前选中的项失去焦点
+     * @private
+     */
     _blur: function(){
         var me = this,
             itemId = me._itemIds[me.scrollIndex];
@@ -317,7 +409,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             me.scrollIndex = -1;
         }
     },
-    
+    /**
+     * 使某一项得到焦点
+     * @param {Number} index 需要得到焦点项的索引
+     */
     focus: function(index){
         var me = this,
             itemId = me._itemIds[index],
@@ -328,14 +423,24 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             me.scrollIndex = index;
         }
     },
-    
+    /**
+     * 取得存放所有项的上层容器
+     * @return {HTMLElement} 一个HTML元素
+     */
     getScrollContainer: function(){
         return baidu.dom.g(this.getId('scroll'));
     },
-    
+    /**
+     * 析构函数
+     */
     dispose: function(){
         var me = this;
         me.dispatchEvent('ondispose');
+        baidu.object.each(me._items, function(item){
+            baidu.array.each(item.handler, function(handler){
+                baidu.event.un(item, item.evtName, handler);
+            });
+        });
         baidu.dom.remove(me.getMain());
         baidu.lang.Class.prototype.dispose.call(me);
     }
