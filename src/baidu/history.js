@@ -5,4 +5,4 @@
 
 ///import baidu;
 
-baidu.fx = baidu.fx || {} ;
+baidu.history = baidu.history || {};
