@@ -7,6 +7,10 @@
 	<property name="report.file" value="test/tools/br/report.xml" />
 	<property name="git.project" value="Tangram-component" />
 	<property name="git.user" value="" />
+
+	<property name="report.style.path" value="test/tools/br/report/style" />
+	<property name="report.html.path" value="${report.path}/html" />
+
 	<path id="ext.classpath">
 		<fileset dir="test/tools/lib">
 			<include name="**/*.jar" />
@@ -38,5 +42,42 @@
 		<waitfor maxwait="600" maxwaitunit="second">
 			<available file="${report.file}" />
 		</waitfor>
+
+	</target>
+	<!-- 
+		mail brief info
+		mail user should be pass from command line for multi user support
+	-->
+	<target name="checkmailuser">
+		<condition property="git.user.mail" />
+	</target>
+	<target name="mail" depends="checkmailuser, getreport">
+		<!--generate html report by junit report-->
+		<mkdir dir="${report.html.path}" />
+		<junitreport todir="${report.html.path}">
+			<fileset dir="${report.path}">
+				<include name="*.xml" />
+			</fileset>
+			<!-- brief report for mail message -->
+			<report format="noframes" styledir="${report.style.path}/brief" todir="${report.html.path}/brief" />
+			<!-- detail report for mail attachements 
+			<report format="noframes" styledir="${report.style.path}/detail" todir="${report.html.path}/detail" />-->
+		</junitreport>
+		<!--send mail from hotswap-c-->
+		<loadfile property="report.html" srcFile="${report.style.path}/brief/junit-noframes.html" />
+		<mail mailhost="hotswap-c.baidu.com" charset="UTF-8" messagemimetype="text/html" subject="build from ci">
+			<to address="${git.user.mail}" />
+			<from address="yangbo@baidu.com" />
+			<cc address="yangbo@baidu.com" />
+			<message>${report.html}
+				&lt;br/&gt;see detail report from &lt;a href="" &gt;ci link&lt;/&gt;</message>
+			<!--
+			<attachments>
+				<fileset dir="${report.html.path}/detail">
+					<include name="**/*" />
+					<exclude name="" />
+				</fileset>
+			</attachments>-->
+		</mail>
 	</target>
 </project>
