@@ -21,6 +21,7 @@
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.fn.bind;
+///import baidu.object.each;
 
 /**
  * 创建一个简单的滚动组件
@@ -177,7 +178,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             + (baidu.browser.ie == 6 ? boundX.marginX + boundX.marginY : 0)
             + 'px';
         orie && (sContainer.style.height = boundY.offset + 'px');//如果是横向滚动需要设一下高度，防止不会自动撑开
-        me.getBody().style[axis.size] = me[axis.offset] * me.pageSize + 'px';
+//        me.getBody().style[axis.size] = me[axis.offset] * me.pageSize + 'px';
+        me.getBody().style[axis.size] = me['_bound' + (orie ? 'X' : 'Y')].offset * me.pageSize + 'px';
     },
     /**
      * 根据索引的从缓存中取出对应的滚动项，如果缓存不存在该项则创建并存入缓存，空滚动项不被存入缓存
@@ -437,8 +439,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         var me = this;
         me.dispatchEvent('ondispose');
         baidu.object.each(me._items, function(item){
-            baidu.array.each(item.handler, function(handler){
-                baidu.event.un(item, item.evtName, handler);
+            item.handler && baidu.array.each(item.handler, function(listener){
+                baidu.event.un(item.element, listener.evtName, listener.handler);
             });
         });
         baidu.dom.remove(me.getMain());
