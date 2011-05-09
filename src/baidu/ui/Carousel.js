@@ -93,14 +93,18 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         var me = this;
         if(!target || me.getMain()){return;}
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me.getString());
-        
         me._renderItems();
-//        me._renderItems(8, 0);
         me._resizeView();
         me._moveCenter();
         me.focus(me.scrollIndex);
         me.addEventListener('onafterscroll', function(evt){
+            var orie = me.orientation == 'horizontal',
+                axis = me._axis[me.orientation],
+                sContainer = me.getScrollContainer();
             me._renderItems(evt.index, evt.scrollOffset);
+            sContainer.style[axis.size] = parseInt(sContainer.style[axis.size])
+                - me['_bound' + (orie ? 'X' : 'Y')].offset
+                * evt.scrollUnit + 'px';
             me._moveCenter();
         });
         me.dispatchEvent('onload');
@@ -162,7 +166,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             isNaN(marginX) && (marginX = 0);
             isNaN(marginY) && (marginY = 0);
             return {
-//                width: bound,
+                width: bound,
                 offset: bound + (orie ? marginX + marginY : Math.max(marginX, marginY)),
                 marginX: marginX,
                 marginY: marginY
@@ -177,8 +181,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             * (orie ? child.length : 1)
             + (baidu.browser.ie == 6 ? boundX.marginX + boundX.marginY : 0)
             + 'px';
-        orie && (sContainer.style.height = boundY.offset + 'px');//如果是横向滚动需要设一下高度，防止不会自动撑开
-//        me.getBody().style[axis.size] = me[axis.offset] * me.pageSize + 'px';
+//        orie && (sContainer.style.height = boundY.offset + 'px');//如果是横向滚动需要设一下高度，防止不会自动撑开
+        sContainer.style.height = boundY.offset * (orie ? 1 : child.length) + 'px';
         me.getBody().style[axis.size] = me['_bound' + (orie ? 'X' : 'Y')].offset * me.pageSize + 'px';
     },
     /**
@@ -314,15 +318,15 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         }
         is ? sContainer.insertBefore(fragment, child[0])
             : sContainer.appendChild(fragment);
-        distance = me[axis.offset] * count;
+        distance = me['_bound' + (me.orientation == 'horizontal' ? 'X' : 'Y')].offset * count;
         sContainer.style[axis.size] = parseInt(sContainer.style[axis.size]) + distance + 'px';
         is && (body[axis.scrollPos] += distance);
         me._blur();//防止闪烁
         if(me.dispatchEvent('onbeforescroll',
-            {index: index, scrollOffset: scrollOffset, direction: direction, distance: distance})){
+            {index: index, scrollOffset: scrollOffset, direction: direction, scrollUnit: count})){
             me.getBody()[axis.scrollPos] += distance * (is ? -1 : 1);
             me.dispatchEvent('onafterscroll',
-                {index: index, scrollOffset: scrollOffset, direction: direction});
+                {index: index, scrollOffset: scrollOffset, direction: direction, scrollUnit: count});
         }
     },
     /**

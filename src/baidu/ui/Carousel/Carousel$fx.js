@@ -23,12 +23,13 @@ baidu.ui.Carousel.register(function(me){
         var is = evt.direction == 'prev',
             axis = me._axis[me.orientation],
             orie = me.orientation == 'horizontal',
-            val = me.getBody()[axis.scrollPos] + evt.distance * (is ? -1 : 1);
+            val = me.getBody()[axis.scrollPos] + evt.scrollUnit * me[axis.offset] * (is ? -1 : 1);
         me.scrollFxOptions = baidu.object.extend(me.scrollFxOptions, {
             carousel: me,
             index: evt.index,
             scrollOffset: evt.scrollOffset,
-            direction: evt.direction
+            direction: evt.direction,
+            scrollUnit: evt.scrollUnit
         });
         me.scrollFxOptions.carousel = me;
         baidu.lang.isFunction(me.scrollFx) && me.scrollFx(me.getBody(),
@@ -47,7 +48,8 @@ baidu.ui.Carousel.extend({
             evt.target.carousel.dispatchEvent('onbeforestartscroll', {
                 index: timeLine.index,
                 scrollOffset: timeLine.scrollOffset,
-                direction: timeLine.direction
+                direction: timeLine.direction,
+                scrollUnit: timeLine.scrollUnit
             });
         },
         onafterfinish: function(evt){
@@ -55,7 +57,8 @@ baidu.ui.Carousel.extend({
             timeLine.carousel.dispatchEvent('onafterscroll', {
                 index: timeLine.index,
                 scrollOffset: timeLine.scrollOffset,
-                direction: timeLine.direction
+                direction: timeLine.direction,
+                scrollUnit: timeLine.scrollUnit
             });
         }
     }
