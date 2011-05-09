@@ -64,8 +64,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
     offsetWidth: 0,
     offsetHeight: 0,
     _axis: {
-        horizontal: {pos: 'left', size: 'width', offset: 'offsetWidth', scrollPos: 'scrollLeft'},
-        vertical: {pos: 'top', size: 'height', offset: 'offsetHeight', scrollPos: 'scrollTop'}
+        horizontal: {pos: 'left', size: 'width', offset: 'offsetWidth', client: 'clientWidth', scrollPos: 'scrollLeft'},
+        vertical: {pos: 'top', size: 'height', offset: 'offsetHeight', client: 'clientHeight', scrollPos: 'scrollTop'}
     },
     tplDOM: '<div id="#{id}" class="#{class}">#{content}</div>',
     /**
@@ -137,13 +137,11 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
      * @private
      */
     _moveCenter: function(){
-        if(!this._boundX && !this._boundY){return;}
+        if(!this._boundX){return;}
         var me = this,
-            axis = me._axis[me.orientation],
-            orie = me.orientation == 'horizontal'
-            ieOffset = orie && baidu.browser.ie == 6 ? me._boundX.marginX : 0;
-        me.getBody()[axis.scrollPos] = (orie ? 0 : Math.abs(Math.max(me._boundY.marginX, me._boundY.marginY)
-            / 2 - me._boundY.marginX)) + ieOffset;
+            axis = me._axis[me.orientation];
+        me.getBody()[axis.scrollPos] = me.orientation == 'horizontal'
+            && baidu.browser.ie == 6 ? me._boundX.marginX : 0;
     },
     /**
      * 运算可视区域的宽高(包括对margin的运算)，并运算出一个滚动单位的offsetWidth和offsetHeight
@@ -156,6 +154,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             orie = me.orientation == 'horizontal',
             sContainer = me.getScrollContainer(),
             child = baidu.dom.children(sContainer),
+            bound,
             boundX,
             boundY;
         function getItemBound(item, type){
@@ -166,7 +165,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             isNaN(marginX) && (marginX = 0);
             isNaN(marginY) && (marginY = 0);
             return {
-                width: bound,
+//                size: bound,
                 offset: bound + (orie ? marginX + marginY : Math.max(marginX, marginY)),
                 marginX: marginX,
                 marginY: marginY
@@ -174,16 +173,19 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         }
         me._boundX = boundX = getItemBound(child[0], 'x');
         me._boundY = boundY = getItemBound(child[0], 'y');
+        bound = orie ? boundX : boundY;
         me.offsetWidth <= 0 && (me.offsetWidth = boundX.offset);
         me.offsetHeight <= 0 && (me.offsetHeight = boundY.offset);
-        
         sContainer.style.width = boundX.offset
             * (orie ? child.length : 1)
-            + (baidu.browser.ie == 6 ? boundX.marginX + boundX.marginY : 0)
+            + (baidu.browser.ie == 6 ? boundX.marginX : 0)
             + 'px';
-//        orie && (sContainer.style.height = boundY.offset + 'px');//如果是横向滚动需要设一下高度，防止不会自动撑开
-        sContainer.style.height = boundY.offset * (orie ? 1 : child.length) + 'px';
-        me.getBody().style[axis.size] = me['_bound' + (orie ? 'X' : 'Y')].offset * me.pageSize + 'px';
+        sContainer.style.height = boundY.offset
+            * (orie ? 1 : child.length)
+            + (orie ? 0 : boundY.marginX)
+            + 'px';
+        me.getBody().style[axis.size] = bound.offset * me.pageSize
+            + (orie ? 0 : Math.min(bound.marginX, bound.marginY)) + 'px';
     },
     /**
      * 根据索引的从缓存中取出对应的滚动项，如果缓存不存在该项则创建并存入缓存，空滚动项不被存入缓存
