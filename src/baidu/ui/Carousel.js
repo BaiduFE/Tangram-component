@@ -321,7 +321,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         distance = me['_bound' + (me.orientation == 'horizontal' ? 'X' : 'Y')].offset * count;
         sContainer.style[axis.size] = parseInt(sContainer.style[axis.size]) + distance + 'px';
         is && (body[axis.scrollPos] += distance);
-        me._blur();//防止闪烁
+//        me._blur();//防止闪烁
         if(me.dispatchEvent('onbeforescroll',
             {index: index, scrollOffset: scrollOffset, direction: direction, scrollUnit: count})){
             me.getBody()[axis.scrollPos] += distance * (is ? -1 : 1);
