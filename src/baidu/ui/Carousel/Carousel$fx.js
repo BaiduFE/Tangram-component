@@ -31,7 +31,6 @@ baidu.ui.Carousel.register(function(me){
             direction: evt.direction,
             scrollUnit: evt.scrollUnit
         });
-        me.scrollFxOptions.carousel = me;
         baidu.lang.isFunction(me.scrollFx) && me.scrollFx(me.getBody(),
             {x: orie ? val : 0, y: orie ? 0 : val}, me.scrollFxOptions);
         evt.returnValue = false;

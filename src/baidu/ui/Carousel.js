@@ -284,7 +284,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             child = baidu.dom.children(sContainer),
             item = me.getItem(index),
             smartDirection = direction,
-            distance = index - scrollOffset,
+            distance = baidu.array.indexOf(child, item) - scrollOffset,
             count = Math.abs(distance),
             len = me._datas.length,
             i = 0,
@@ -323,12 +323,11 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
         distance = me['_bound' + (me.orientation == 'horizontal' ? 'X' : 'Y')].offset * count;
         sContainer.style[axis.size] = parseInt(sContainer.style[axis.size]) + distance + 'px';
         is && (body[axis.scrollPos] += distance);
-//        me._blur();//防止闪烁
         if(me.dispatchEvent('onbeforescroll',
-            {index: index, scrollOffset: scrollOffset, direction: direction, scrollUnit: count})){
+            {index: index, scrollOffset: scrollOffset, direction: smartDirection, scrollUnit: count})){
             me.getBody()[axis.scrollPos] += distance * (is ? -1 : 1);
             me.dispatchEvent('onafterscroll',
-                {index: index, scrollOffset: scrollOffset, direction: direction, scrollUnit: count});
+                {index: index, scrollOffset: scrollOffset, direction: smartDirection, scrollUnit: count});
         }
     },
     /**
