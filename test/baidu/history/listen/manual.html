@@ -26,7 +26,9 @@ window.onload=function(){
         i++;
  		window.location.hash=i;
 	}
-    baidu.history(function(){alert("callback hash="+location.hash);});
+    baidu.history.listen(function(){
+            alert("callback hash=" + window.location.hash);
+    });
 }
 
 </script>
