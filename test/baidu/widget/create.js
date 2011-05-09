@@ -209,7 +209,7 @@ test("不存在的资源", function() {
 		depends : [ 't5_notexist' ]
 	});
 	timeouthandle = setTimeout(function() {
-		w1.dispose();
+//		w1.dispose();
 		ok(true, "抛错误了。。。");
 		start();
 	}, 500);
