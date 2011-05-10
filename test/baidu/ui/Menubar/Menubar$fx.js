@@ -60,45 +60,41 @@ test('Open a common Menubar(expand) and'
 		function() {
 			expect(2);
 			stop();
-			var check = function() {
-				var options = {
-					data : [ {
-						content : 'm11'
-					}, {
-						content : 'm12'
-					} ],
-					target : te.dom[0],
-					showFx : baidu.fx.expand,
-					hideFx : baidu.fx.collapse,
-					showFxOptions : {
-						onafterfinish : function() {
-							var len = baidu.fx.current(menu.getBody()).length;
-							var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
-							var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
-							ok(fx == 'baidu.fx.expand_collapse',
-									'The menubar expand');
-							menu.close();
-						}
-					},
-					hideFxOptions : {
-						onafterfinish : function() {
-							var len = baidu.fx.current(menu.getBody()).length;
-							var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
-							var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
-							ok((fx == 'baidu.fx.expand_collapse')
-											&& guid != baidu.fx
-													.current(menu
-															.getBody())[len - 1]['_guid'],
-									'The menubar collapse');
-							start();
-						}
+			var options = {
+				data : [ {
+					content : 'm11'
+				}, {
+					content : 'm12'
+				} ],
+				target : te.dom[0],
+				showFx : baidu.fx.expand,
+				hideFx : baidu.fx.collapse,
+				showFxOptions : {
+					onafterfinish : function() {
+						var len = baidu.fx.current(menu.getBody()).length;
+						var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
+						var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
+						ok(fx == 'baidu.fx.expand_collapse',
+								'The menubar expand');
+						menu.close();
 					}
-				};
-				var menu = new baidu.ui.Menubar(options);
-				te.obj.push(menu);
-				menu.render(menu.target);
-				menu.open();
+				},
+				hideFxOptions : {
+					onafterfinish : function() {
+						var len = baidu.fx.current(menu.getBody()).length;
+						var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
+						var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
+						ok((fx == 'baidu.fx.expand_collapse')
+										&& guid != baidu.fx
+												.current(menu
+														.getBody())[len - 1]['_guid'],
+								'The menubar collapse');
+						start();
+					}
+				}
 			};
-			ua.importsrc('baidu.fx.current', check, 'baidu.fx.current',
-					'baidu.ui.Menubar.Menubar$fx');
+			var menu = new baidu.ui.Menubar(options);
+			te.obj.push(menu);
+			menu.render(menu.target);
+			menu.open();
 		});

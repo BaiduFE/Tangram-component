@@ -1,371 +1,454 @@
 /*
  * Tangram
- * Copyright 2010 Baidu Inc. All rights reserved.
- * @path:ui/carousel/Carousel.js
- * @author:linlingyu
- * @version:1.0.0
- * @date:2010-09-06
+ * Copyright 2011 Baidu Inc. All rights reserved.
  */
 
+///import baidu.ui.createUI;
+///import baidu.lang.guid;
+///import baidu.browser.ie;
 ///import baidu.dom.insertHTML;
-///import baidu.dom.setStyles;
+///import baidu.string.format;
 ///import baidu.array.each;
+///import baidu.array.indexOf;
+///import baidu.array.find;
 ///import baidu.dom.g;
-///import baidu.dom.children;
 ///import baidu.dom.remove;
+///import baidu.dom.children;
+///import baidu.dom.getStyle;
+///import baidu.dom.create;
 ///import baidu.dom.addClass;
 ///import baidu.dom.removeClass;
-///import baidu.lang.isNumber;
-///import baidu.string.format;
-///import baidu.ui.createUI;
+///import baidu.event.on;
+///import baidu.event.un;
+///import baidu.fn.bind;
+///import baidu.object.each;
 
 /**
- * carousel滚动控件。
- * @class carousel类
- * @param  {Object}   [options]           carousel的参数选项
- * @config {HTMLElement}   target              存放控件的元素
- * @config {Array}    contentText         用于生成滚动的条目
- * @config {String}   orientation         排列方式，取值：horizontal（默认），vertical。
- * @config {String}   flip                滚动按钮方式，取值：item（一次滚动一个项），page（翻页滚动）。
- * @config {Number}   pageSize            一行显示几个item，默认值3。
- * @config {Boolean}  isCycle             是否循环滚动，默认值false。
- * @config {Boolean}  autoScroll          是否自动滚动。
- * @config {Boolean}  showButton          是否显示翻转按钮，默认值true。
- * @config {Number}   offsetWidth         用户自定义的滚动宽度
- * @config {Number}   offsetHeight        用户自定义的滚动高度
- * @config {Function} onload              初始化时的触发事件
- * @config {Function} onbeforescroll      开始滚动时的触发事件
- * @config {Function} onafterscroll       结束滚动时的触发事件
- * @config {Function} onprevitem          当跳到上一个滚动项时触发该事件
- * @config {Function} onnextitem          当跳到下一个滚动项时触发该事件
- * @config {Function} onprevpage          当跳到上一页时触发该事件
- * @config {Function} onnextPage          当跳到下一页时触发该事件
- * @config {Function} onitemclick         点击某个滚动项时的触发事件
- * @config {Function} onmouseover         当鼠标悬停在某个滚动项时的触发事件
- * @config {Function} onmouseout          当鼠标移开某个滚动项时的触发事件
- * @plugin autoScroll                     自动滚动
- * @plugin btn                            为跑马灯添加控制按钮插件
- * @plugin fx                             为跑马灯添加动画效果
- * @plugin scrollByItem                   单次滚动单个元素的模式
- * @plugin scrollByPage                   单次滚动一页的模式
- * @plugin table                          让跑马灯支持多行多列
+ * 创建一个简单的滚动组件
+ * @param {Object} options config参数.
+ * @config {String} orientation 描述该组件是创建一个横向滚动组件或是竖向滚动组件，取值：horizontal:横向, vertical:竖向
+ * @config {Object} contentText 定义carousel组件每一项的字符数据，格式：[{content: 'text-0'}, {content: 'text-1'}, {content: 'text-2'}...]
+ * @config {String} flip 定义组件的翻页方式，取值：item:一次滚动一个项, page:一次滚动一页
+ * @config {Number} pageSize 描述一页显示多少个滚动项，默认值是3
+ * @config {String} onload 当渲染完组件时触发该事件
+ * @config {String} onbeforescroll 当开始滚动时触发该事件
+ * @config {String} onafterscroll 当结束一次滚动时触发该事件
+ * @config {String} onprev 当翻到前一项或前一页时触发该事件
+ * @config {String} onnext 当翻到下一项或下一页时触发该事件
+ * @author linlingyu
  */
-
-baidu.ui.Carousel = baidu.ui.createUI(function(opts){
-    this.contentText = opts.contentText || [];  //数组或对象在prototype中定义时会造成新建对象共用数据
+baidu.ui.Carousel = baidu.ui.createUI(function(options) {
+    var me = this,
+        data = me.contentText || [];
+    me._datas = data.slice(0, data.length);
+    me._itemIds = [];
+    me._items = {};//用来存入被删除的节点，当再次被使用时可以直接拿回来,格式:{element: dom, handler: []}
+    baidu.array.each(me._datas, function(item) {
+        me._itemIds.push(baidu.lang.guid());
+    });
+    me.flip = me.flip.toLowerCase();
+    me.orientation = me.orientation.toLowerCase();
 }).extend(
     /**
      *  @lends baidu.ui.Carousel.prototype
      */
 {
-    
-    uiType : "carousel",        // ui控件的类型 **必须**
-    orientation : "horizontal", //横竖向的排列方式，取值horizontal,vertical
-    pageSize : 3,               //每页显示多少个item
-
-    scrollIndex : -1,           //当前焦点滚动到的项索引
-
-    totalCount : 0,             //总记录数
-    itemCount : 0,              //用于创建item的自增数
-    offsetWidth : 0,            //单个item的宽度
-    offsetHeight : 0,       //单个item的高度
-    
-    axis : {
-        horizontal : {offsetPos : "offsetLeft", offsetSize : "offsetWidth", scroll : "scrollLeft"},
-        vertical : {offsetPos : "offsetTop", offsetSize : "offsetHeight", scroll:"scrollTop"}
-    },//关于位置的换算
-
-    tplDOM : "<div id='#{id}' class='#{class}'>#{content}</div>",
-
-    tplItem : "<div id='#{id}' class='#{class}' onclick=\"#{handler}\" onmouseover=\"#{mouseoverHandler}\" onmouseout=\"#{mouseoutHandler}\">#{content}</div>",
-    
-    /**
-     * 渲染carousel到指定的target容器中
-     * @public
-     * @param {HTMLElement} target table的父层容器
-     */
-    render : function(target){
-        var me = this;
-        baidu.dom.insertHTML(me.renderMain(target || me.target), "beforeEnd", me.getString());
-        me.totalCount = me.contentText.length || 0;
-        me._resize();
-        me.dispatchEvent("onload");
+    uiType: 'carousel',
+    orientation: 'horizontal',//horizontal|vertical
+    //direction: 'down',//up|right|down|left
+    flip: 'item',//item|page
+    pageSize: 3,
+    scrollIndex: 0,
+    offsetWidth: 0,//这个属性是为了在老版本中支持margin，现版本中不再开放给用户
+    offsetHeight: 0,//这个属性是为了在老版本中支持margin，现版本中不再开放给用户
+    _axis: {
+        horizontal: {pos: 'left', size: 'width', offset: 'offsetWidth', client: 'clientWidth', scrollPos: 'scrollLeft'},
+        vertical: {pos: 'top', size: 'height', offset: 'offsetHeight', client: 'clientHeight', scrollPos: 'scrollTop'}
     },
-    
+    tplDOM: '<div id="#{id}" class="#{class}">#{content}</div>',
     /**
-     * 根据item的尺寸运算可视区域的大小和滚动层的大小
-     * @param {boolean} val true:第一次resize, false:一般的resize
-     */
-    _resize : function(){
-        var me = this,
-            offset_x = me.axis[me.orientation].offsetSize,//由pageSize决定长度的一方
-            offset_y = me.axis["horizontal" == me.orientation ? "vertical" : "horizontal"].offsetSize,//直接设置成item长度的一方
-            item = me.getItem(0);
-            
-        me.offsetWidth = me.offsetWidth || item.offsetWidth;
-        me.offsetHeight = me.offsetHeight || item.offsetHeight;
-        //这里设置container的宽度和高度让用户可以看到一个按照pageSize和orientation计算出来的固定介面
-        baidu.dom.setStyles(me.getBody(), {
-            width : me.offsetWidth * ("horizontal" == me.orientation ? me.pageSize : 1) + "px",
-            height : me.offsetHeight * ("vertical" == me.orientation ? me.pageSize : 1) + "px"
-        });
-        //这里运算scrollContainer的宽度是为了让item都能展开排成一行
-        if("horizontal" == me.orientation){
-            baidu.setStyles(me.getScrollContainer(), {width : me.offsetWidth * me.totalCount + "px"});
-        }
-    },
-    
-    /**
-     * 生成滚动结构的html字符串代码
+     * 生成一个容器的字符串
+     * @return {String}
      * @private
-     * @return {String} 生成html字符串
      */
-    getString : function(){
-        var me = this, itemStr = [], scrollStr;
-        baidu.array.each(me.contentText, function(item){
-            itemStr.push(baidu.format(me.tplItem, {
-                id : me.getId("item" + me.itemCount),//这里的编号只是一个识别符，不包含任何业务联系
-                "class" : me.getClass("item"),
-                handler : me.getCallString("_onItemClick", me.getId("item" + me.itemCount)),
-                mouseoverHandler : me.getCallString("_onMouse", me.getId("item" + me.itemCount)),
-                mouseoutHandler : me.getCallString("_onMouse",  me.getId("item" + me.itemCount++)),
-                content : item.content
-            }));
-        });
-        scrollStr = baidu.format(me.tplDOM, {
-            id : me.getId("scroll"),
-            "class" : me.getClass("scroll"),
-            content : itemStr.join("")
-        });
-        return baidu.format(me.tplDOM, {
-            id : me.getId(),
-            "class" : me.getClass(),
-            content : scrollStr
-        });
-    },
-    
-    /**
-     * 取得滚动容器
-     * @return {HTMLElement}  滚动容器
-     */
-    getScrollContainer : function(){
-        return baidu.g(this.getId("scroll"));
-    },
-    
-    /**
-     * 取得参数索引值对应的item
-     * @param {Number} index 取item的索引
-     * @return {HTMLElement} 返回该索引下的html对象
-     */
-
-    getItem : function(index){
-        return baidu.dom.children(this.getScrollContainer())[index];
-    },
-    
-    /**
-     * 插入一个item到末端，当存在第二参数表示要在该索引对应的item之前插入
-     * @param {HTMLElement} ele 需要插入的item，只取ele的innerHTML内容
-     * @param {Number} index 在该索引指定的item前面插入
-     */
-
-    addItem : function(ele, index) {
-
+    getString: function() {
         var me = this,
-            
-            axis = me.axis[me.orientation],
-            
-            item = baidu.format(me.tplItem, {
-
-                id : me.getId("item" + me.itemCount),
-
-                "class" : me.getClass("item"),
-
-                handler : me.getCallString("_onItemClick", me.getId("item" + me.itemCount)),
-                mouseoverHandler : me.getCallString("_onMouse", 'over', me.getId("item" + me.itemCount)),
-                mouseoutHandler : me.getCallString("_onMouse", 'out',  me.getId("item" + me.itemCount++)),
-
-                content : ele.innerHTML
-
+            str = baidu.string.format(me.tplDOM, {
+                id: me.getId('scroll'),
+                'class': me.getClass('scroll')
             });
-        if(baidu.lang.isNumber(index)){
-
-            baidu.dom.insertHTML(me.getItem(index), "beforeBegin", item);
-
-            index <= me.scrollIndex && me.scrollIndex++;//当插入一个item，需要更新原来的scrollIndex
-            
-            index < me.scrollIndex && (me.getBody()[axis.scroll] += me[axis.offsetSize]);
-            
-        }else{
-
-            baidu.dom.insertHTML(me.getScrollContainer(), "beforeEnd", item);
-
-        }
-        me.totalCount++;
-
-        //这里不重新设置会造成掉行
-
-        me._resize();
-
+        return baidu.string.format(me.tplDOM, {
+            id: me.getId(),
+            'class': me.getClass(),
+            content: str
+        });
     },
-    
-
     /**
-     * 移除一个item
-     * @public
-     * @param {Number} index 需移除的item的索引 
-     * @return {HTMLElement} 被移除的项
+     * 渲染滚动组件到参数指定的容器中
+     * @param {HTMLElement} target 一个用来存放组件的容器对象.
      */
-
-    removeItem : function(index) {
-
+    render: function(target) {
+        var me = this;
+        if (!target || me.getMain()) {return;}
+        baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me.getString());
+        me._renderItems();
+        me._resizeView();
+        me._moveCenter();
+        me.focus(me.scrollIndex);
+        me.addEventListener('onafterscroll', function(evt) {
+            var orie = me.orientation == 'horizontal',
+                axis = me._axis[me.orientation],
+                sContainer = me.getScrollContainer();
+            me._renderItems(evt.index, evt.scrollOffset);
+            sContainer.style[axis.size] = parseInt(sContainer.style[axis.size])
+                - me['_bound' + (orie ? 'X' : 'Y')].offset
+                * evt.scrollUnit + 'px';
+            me._moveCenter();
+        });
+        me.dispatchEvent('onload');
+    },
+    /**
+     * 从缓存中取出滚动项按照参数的格式在页面上排列出滚动项
+     * @param {Number} index 索引值.
+     * @param {Number} offset 指定索引项放在页面的位置.
+     * @private
+     */
+    _renderItems: function(index, offset) {
         var me = this,
-            
-            axis = me.axis[me.orientation],
-            
-            currIndex = me.scrollIndex,
-            
-            lastIndex = me.totalCount - 1,
-            
-            item = me.getItem(index);
-
-        if(item){
-            baidu.dom.remove(item.id);
-            index < currIndex && (me.getBody()[axis.scroll] -= me[axis.offsetSize]);
-            if( index < currIndex
-                || currIndex >= me.totalCount - me.pageSize
-                && index == lastIndex){//当前位置正好处于最后时，当删除最后一个项时，FF内核浏览器不会自动填充可视区
-                me.getBody()[axis.scroll] -= me[axis.offsetSize];
+            sContainer = me.getScrollContainer(),
+            index = Math.min(Math.max(index | 0, 0), me._datas.length - 1),
+            offset = Math.min(Math.max(offset | 0, 0), me.pageSize - 1),
+            sContainer = me.getScrollContainer(),
+            count = me.pageSize,
+            i = 0,
+            itemIndex;
+        while (sContainer.firstChild) {//这里改用innerHTML赋空值会使js存的dom也被清空
+            baidu.dom.remove(sContainer.firstChild);
+        }
+        for (; i < count; i++) {
+            sContainer.appendChild(me._getItemElement(index - offset + i));
+        }
+    },
+    /**
+     * 将滚动容器排列到中间位置
+     * @private
+     */
+    _moveCenter: function() {
+        if (!this._boundX) {return;}
+        var me = this,
+            axis = me._axis[me.orientation];
+        me.getBody()[axis.scrollPos] = me.orientation == 'horizontal'
+            && baidu.browser.ie == 6 ? me._boundX.marginX : 0;
+    },
+    /**
+     * 运算可视区域的宽高(包括对margin的运算)，并运算出一个滚动单位的offsetWidth和offsetHeight
+     * @private
+     */
+    _resizeView: function() {
+        if (this._datas.length <= 0) {return;}//没有数据
+        var me = this,
+            axis = me._axis[me.orientation],
+            orie = me.orientation == 'horizontal',
+            sContainer = me.getScrollContainer(),
+            child = baidu.dom.children(sContainer),
+            bound,
+            boundX,
+            boundY;
+        function getItemBound(item, type) {
+            var type = type == 'x',
+                bound = item[type ? 'offsetWidth' : 'offsetHeight'],
+                marginX = parseInt(baidu.dom.getStyle(item, type ? 'marginLeft' : 'marginTop')),
+                marginY = parseInt(baidu.dom.getStyle(item, type ? 'marginRight' : 'marginBottom'));
+            isNaN(marginX) && (marginX = 0);
+            isNaN(marginY) && (marginY = 0);
+            return {
+//                size: bound,
+                offset: bound + (orie ? marginX + marginY : Math.max(marginX, marginY)),
+                marginX: marginX,
+                marginY: marginY
+            };
+        }
+        me._boundX = boundX = getItemBound(child[0], 'x');
+        me._boundY = boundY = getItemBound(child[0], 'y');
+        bound = orie ? boundX : boundY;
+        me.offsetWidth <= 0 && (me.offsetWidth = boundX.offset);
+        me.offsetHeight <= 0 && (me.offsetHeight = boundY.offset);
+        sContainer.style.width = boundX.offset
+            * (orie ? child.length : 1)
+            + (baidu.browser.ie == 6 ? boundX.marginX : 0)
+            + 'px';
+        sContainer.style.height = boundY.offset
+            * (orie ? 1 : child.length)
+            + (orie ? 0 : boundY.marginX)
+            + 'px';
+        me.getBody().style[axis.size] = bound.offset * me.pageSize
+            + (orie ? 0 : Math.min(bound.marginX, bound.marginY)) + 'px';
+    },
+    /**
+     * 根据索引的从缓存中取出对应的滚动项，如果缓存不存在该项则创建并存入缓存，空滚动项不被存入缓存
+     * @param {Number} index 索引值.
+     * @return {HTMLElement}
+     * @private
+     */
+    _baseItemElement: function(index) {
+        var me = this,
+            itemId = me._itemIds[index],
+            entry = me._items[itemId] || {},
+            txt = me._datas[index],
+            element;
+        if (!entry.element) {
+            entry.element = element = baidu.dom.create('div', {
+                id: itemId || '',
+                'class': me.getClass('item')
+            });
+            !itemId && baidu.dom.addClass(element, me.getClass('item-empty'));
+            element.innerHTML = txt ? txt.content : '';
+            if (itemId) {
+                entry.handler = [
+                    {evtName: 'click', handler: baidu.fn.bind('_onItemClickHandler', me, element)},
+                    {evtName: 'mouseover', handler: baidu.fn.bind('_onMouseHandler', me, 'mouseover')},
+                    {evtName: 'mouseout', handler: baidu.fn.bind('_onMouseHandler', me, 'mouseout')}
+                ];
+                baidu.array.each(entry.handler, function(item) {
+                    baidu.event.on(element, item.evtName, item.handler);
+                });
+                me._items[itemId] = entry;
             }
-            index == currIndex && me.focus(0 == currIndex ? 0 : currIndex - 1);
-            index < currIndex && (me.scrollIndex -= 1);
-            me.totalCount--;
-            me._resize();
         }
-        return item;
-
+        return entry.element;
     },
-    
     /**
-     * 滚动到索引指定的item
-     * @public
-     * @param {Number} index 目标索引
-     * @param {Number} scrollOffset 把item滚动到的位置，取值(0-pageSize)
+     * 对_baseItemElement的再包装，在循环滚动中可以被重写
+     * @param {Number} index 索引值.
+     * @return {HTMLElement}
      */
-
-    scrollTo : function(index, scrollOffset) {
-
-        var me = this,
-            scrollOffset = scrollOffset || 0;
-        if(me.dispatchEvent("onbeforescroll", {index : index, scrollOffset : scrollOffset})){
-            me._scrollTo(index, scrollOffset);
-        }
-
+    _getItemElement: function(index) {
+        return this._baseItemElement(index);
     },
-    
     /**
-     * 直接滚动到索引指定的item(无动画效果)
-     * @param {Number} index 目标索引
-     * @param {Number} scrollOffset 把item滚动到的位置，定义域(0, pageSize-1)
+     * 处理点击滚动项的事件触发
+     * @param {HTMLElement} ele 该滚动项的容器对象.
+     * @param {Event} evt 触发事件的对象.
+     * @private
      */
-
-    _scrollTo : function(index, scrollOffset) {
-
-        var me = this,
-            scrollOffset = scrollOffset || 0,
-
-            item = me.getItem(index);
-
-        if(item){
-            me.dispatchEvent("onbeforestartscroll", {index : index, scrollOffset : scrollOffset});
-            me.getBody()[me.axis[me.orientation].scroll] = me[me.axis[me.orientation].offsetSize] * (index - scrollOffset);
-            me.dispatchEvent("onafterscroll", {index : index, scrollOffset : scrollOffset});
-        }
-    },
-    
-    _onItemClick: function(rsid){
+    _onItemClickHandler: function(ele, evt) {
         var me = this;
-        me.focus(rsid);
-        me.dispatchEvent("onitemclick");
+        me.focus(baidu.array.indexOf(me._itemIds, ele.id));
+        me.dispatchEvent('onitemclick');
     },
     /**
-     * 设置索引对应的item的焦点
-     * @param {Number} index 目标索引
+     * 处理鼠标在滚动项上划过的事件触发
+     * @param {String} type mouseover或是omouseout.
+     * @param {Event} evt 触发事件的对象.
+     * @private
      */
-
-    focus : function(index) {
-
-        var me = this, item;
-
-        //这里当index是传入id时转换成索引
-
-        if("string" == typeof(index)){
-
-            baidu.array.each(baidu.dom.children(me.getScrollContainer()), function(item, i){
-
-                if(index == item.id){
-
-                    index = i;
-
-                    return;
-
-                }
-
+    _onMouseHandler: function(type, evt) {
+        this.dispatchEvent('on' + type);
+    },
+    /**
+     * 取得当前得到焦点项在所有数据项中的索引值
+     * @return {Number} 索引值.
+     */
+    getCurrentIndex: function() {
+        return this.scrollIndex;
+    },
+    /**
+     * 取得数据项的总数目
+     * @return {Number} 总数.
+     */
+    getTotalCount: function() {
+        return this._datas.length;
+    },
+    /**
+     * 根据数据的索引值取得对应在页面的DOM节点，当节点不存时返回null
+     * @param {Number} index 在数据中的索引值.
+     * @return {HTMLElement} 返回一个DOM节点.
+     */
+    getItem: function(index) {
+        return baidu.dom.g(this._itemIds[index]);
+    },
+    /**
+     * 从当前项滚动到index指定的项，并将该项放在scrollOffset的位置
+     * @param {Number} index 在滚动数据中的索引.
+     * @param {Number} scrollOffset 在页面的显示位置.
+     * @param {String} direction 滚动方向，取值: prev:强制滚动到上一步, next:强制滚动到下一步，当不给出该值时，会自动运算一个方向来滚动.
+     */
+    scrollTo: function(index, scrollOffset, direction) {
+        var me = this,
+            axis = me._axis[me.orientation],
+            scrollOffset = Math.min(Math.max(scrollOffset, 0), me.pageSize - 1),
+            sContainer = me.getScrollContainer(),
+            child = baidu.dom.children(sContainer),
+            item = me.getItem(index),
+            smartDirection = direction,
+            distance = baidu.array.indexOf(child, item) - scrollOffset,
+            count = Math.abs(distance),
+            len = me._datas.length,
+            i = 0,
+            fragment,
+            vergeIndex,
+            is;
+        if ((item && distance == 0 && !direction)
+            || me._datas.length <= 0 || index < 0
+            || index > me._datas.length - 1) {return;}
+        if (!smartDirection) {//自动运算合理的方向
+            smartDirection = item ? (distance < 0 ? 'prev' : (distance > 0 ? 'next' : 'keep'))
+                : baidu.array.indexOf(me._itemIds,
+                    baidu.array.find(child, function(ele) {return !!ele.id}))
+                    > index ? 'prev' : 'next';
+        }
+        is = smartDirection == 'prev';
+        if (!item || direction) {
+            vergeIndex = baidu.array.indexOf(me._itemIds,
+                child[is ? 0 : child.length - 1].id);
+            //(x + len - y) % len
+            //Math(offset - (is ? 0 : pz - 1)) + count
+            count = Math.abs(scrollOffset - (is ? 0 : me.pageSize - 1))
+                + ((is ? vergeIndex : index) + len - (is ? index : vergeIndex)) % len;
+            count > me.pageSize && (count = me.pageSize);
+        }
+        fragment = count > 0 && document.createDocumentFragment();
+        for (; i < count; i++) {
+            fragment.appendChild(
+                me._getItemElement(is ? index - scrollOffset + i
+                    : me.pageSize + index + i
+                        - (item && !direction ? baidu.array.indexOf(child, item) : scrollOffset + count))
+            );
+        }
+        is ? sContainer.insertBefore(fragment, child[0])
+            : sContainer.appendChild(fragment);
+        distance = me['_bound' + (me.orientation == 'horizontal' ? 'X' : 'Y')].offset * count;
+        sContainer.style[axis.size] = parseInt(sContainer.style[axis.size]) + distance + 'px';
+        is && (me.getBody()[axis.scrollPos] += distance);
+        if (me.dispatchEvent('onbeforescroll',
+            {index: index, scrollOffset: scrollOffset, direction: smartDirection,
+				scrollUnit: count})) {
+            me.getBody()[axis.scrollPos] += count * me[axis.offset] * (is ? -1 : 1);
+            me.dispatchEvent('onafterscroll',
+                {index: index, scrollOffset: scrollOffset, direction: smartDirection, scrollUnit: count});
+        }
+    },
+    /**
+     * 取得翻页的索引和索引在页面中的位置
+     * @param {String} type 翻页方向，取值：prev:翻到上一步,next:翻到下一步.
+     * @return {Object} {index:需要到达的索引项, scrollOffset:在页面中的位置}.
+     * @private
+     */
+    _getFlipIndex: function(type) {
+        var me = this,
+            is = me.flip == 'item',
+            type = type == 'prev',
+            currIndex = me.scrollIndex,
+            index = currIndex + (is ? 1 : me.pageSize) * (type ? -1 : 1),
+            offset = is ? (type ? 0 : me.pageSize - 1)
+                : baidu.array.indexOf(baidu.dom.children(me.getScrollContainer()), me.getItem(currIndex)),
+            flipIndex;
+        if (!is && (index < 0 || index > me._datas.length - 1)) {
+            index = currIndex - offset + (type ? -1 : me.pageSize);
+            offset = type ? me.pageSize - 1 : 0;
+        }
+        return {index: index, scrollOffset: offset};
+    },
+    /**
+     * 翻面的基础处理方法
+     * @param {String} type 翻页方向，取值：prev:翻到上一步,next:翻到下一步.
+     * @private
+     */
+    _baseFlip: function(type) {
+        if (!this.getItem(this.scrollIndex)) {return;}
+        var me = this,
+            sContainer = me.getScrollContainer(),
+            flip = me._getFlipIndex(type);
+        function scrollTo(index, offset, type) {
+            me.addEventListener('onafterscroll', function(evt) {
+                var target = evt.target;
+                target.focus(evt.index);
+                target.removeEventListener('onafterscroll', arguments.callee);
             });
-
+            me.scrollTo(index, offset, type);
         }
-
-        item = me.getItem(index);
-
-        if(item){
-
-            me._blur();
-
-            baidu.dom.addClass(item, me.getClass("item-focus"));
-
-            me.scrollIndex = index;
-            
-            me.dispatchEvent('onfocus');
-
+        if (me.flip == 'item') {
+            me.getItem(flip.index) ? me.focus(flip.index)
+                : scrollTo(flip.index, flip.scrollOffset, type);
+        }else {
+            me._getItemElement(flip.index).id
+                && scrollTo(flip.index, flip.scrollOffset, type);
         }
-        
     },
-    
     /**
-     * 失去焦点
+     * 翻到上一项或是翻到上一页
      */
-
-    _blur : function() {
-
+    prev: function() {
+        this._baseFlip('prev');
+    },
+    /**
+     * 翻到下一项或是翻到下一页
+     */
+    next: function() {
+        this._baseFlip('next');
+    },
+    /**
+     * 是否已经处在第一项或第一页
+     * @return {Boolean} true:当前已是到第一项或第一页.
+     */
+    isFirst: function() {
+        var flip = this._getFlipIndex('prev');
+        return flip.index < 0;
+    },
+    /**
+     * 是否已经处在末项或是末页
+     * @return {Boolean} true:当前已是到末项或末页.
+     */
+    isLast: function() {
+        var flip = this._getFlipIndex('next');
+        return flip.index >= this._datas.length;
+    },
+    /**
+     * 使当前选中的项失去焦点
+     * @private
+     */
+    _blur: function() {
         var me = this,
-
-            item = me.getItem(me.scrollIndex);
-
-        if(item){
-
-            baidu.dom.removeClass(item, me.getClass("item-focus"));
-
+            itemId = me._itemIds[me.scrollIndex];
+        if (itemId) {
+            baidu.dom.removeClass(me._baseItemElement(me.scrollIndex),
+                me.getClass('item-focus'));
             me.scrollIndex = -1;
-
         }
-
     },
     /**
-     * 控件单个项的鼠标移入或移出的样式
-     * @param {String} type 事件类型
-     * @param {Number} rsid 目标id
+     * 使某一项得到焦点
+     * @param {Number} index 需要得到焦点项的索引.
      */
-    _onMouse : function(type, rsid){
-        this.dispatchEvent("mouse" + type, {target : baidu.g(rsid)});
+    focus: function(index) {
+        var me = this,
+            itemId = me._itemIds[index],
+            item = itemId && me._baseItemElement(index);//防止浪费资源创出空的element
+        if (itemId) {
+            me._blur();
+            baidu.dom.addClass(item, me.getClass('item-focus'));
+            me.scrollIndex = index;
+        }
     },
-    
     /**
-     * 销毁实例
+     * 取得存放所有项的上层容器
+     * @return {HTMLElement} 一个HTML元素.
      */
-    dispose : function(){
+    getScrollContainer: function() {
+        return baidu.dom.g(this.getId('scroll'));
+    },
+    /**
+     * 析构函数
+     */
+    dispose: function() {
         var me = this;
-        me.dispatchEvent("dispose");
+        me.dispatchEvent('ondispose');
+        baidu.object.each(me._items, function(item) {
+            item.handler && baidu.array.each(item.handler, function(listener) {
+                baidu.event.un(item.element, listener.evtName, listener.handler);
+            });
+        });
         baidu.dom.remove(me.getMain());
         baidu.lang.Class.prototype.dispose.call(me);
     }
-
 });
