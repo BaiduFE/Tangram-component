@@ -1,43 +1,64 @@
 /*
  * Tangram
- * Copyright 2010 Baidu Inc. All rights reserved.
- * @path:ui/Carousel/Carousel.js
- * @author:linlingyu
- * @version:1.0.0
- * @date:2010-09-09
+ * Copyright 2011 Baidu Inc. All rights reserved.
  */
-///import baidu.fx.current;
-///import baidu.fx.scrollTo;
 ///import baidu.ui.Carousel;
+///import baidu.lang.isFunction;
+///import baidu.fx.scrollTo;
+///import baidu.fx.current;
+///import baidu.object.extend;
 /**
- * 为跑马灯添加动画效果
+ * 为滚动组件增加动画滚动功能
+ * @param {Object} options config参数.
+ * @config {Boolean} enableFx 是否支持动画插件
+ * @config {Function} scrollFx 描述组件的动画执行过程，默认是baidu.fx.scrollTo
+ * @config {Object} scrollFxOptions 执行动画过程所需要的参数
+ * @config {Function} onbeforestartscroll 当开始执行动画时触发该事件
+ * @author linlingyu
  */
-baidu.ui.Carousel.register(function(me){
-	/**
-	 * 一个动画插件，用来实现滚动图片项
-	 */
-	me.addEventListener("onbeforescroll", function(evt){
-		if(!baidu.fx.current(me.getBody())){
-			var val = 0, item = me.getItem(evt.index),
-				pos = "vertical" == me.orientation;
-			if(item){
-				val = me[me.axis[me.orientation].offsetSize] * (evt.index - evt.scrollOffset);
-				baidu.fx.scrollTo(me.getBody(), {x : (pos ? 0 : val), y : (pos ? val : 0)}, {
-					onbeforestart : function(){
-						me.dispatchEvent("onbeforestartscroll", {
-							index : evt.index,
-							scrollOffset : evt.scrollOffset
-						})
-					},
-					onafterfinish : function(){
-						me.dispatchEvent("onafterscroll", {
-							index : evt.index,
-							scrollOffset : evt.scrollOffset
-						})
-					}
-				});
-			}
-		}
-		evt.returnValue = false;
-	});
+baidu.ui.Carousel.register(function(me) {
+    if (!me.enableFx) {return;}
+    me.addEventListener('onbeforescroll', function(evt) {
+        if (baidu.fx.current(me.getBody())) {return;}
+        var is = evt.direction == 'prev',
+            axis = me._axis[me.orientation],
+            orie = me.orientation == 'horizontal',
+            val = me.getBody()[axis.scrollPos] + evt.scrollUnit * me[axis.offset] * (is ? -1 : 1);
+        me.scrollFxOptions = baidu.object.extend(me.scrollFxOptions, {
+            carousel: me,
+            index: evt.index,
+            scrollOffset: evt.scrollOffset,
+            direction: evt.direction,
+            scrollUnit: evt.scrollUnit
+        });
+        baidu.lang.isFunction(me.scrollFx) && me.scrollFx(me.getBody(),
+            {x: orie ? val : 0, y: orie ? 0 : val}, me.scrollFxOptions);
+        evt.returnValue = false;
+    });
+});
+//
+baidu.ui.Carousel.extend({
+    enableFx: true,
+    scrollFx: baidu.fx.scrollTo,
+    scrollFxOptions: {
+        duration: 500,
+        onbeforestart: function(evt) {
+            var timeLine = evt.target;
+            evt.target.carousel.dispatchEvent('onbeforestartscroll', {
+                index: timeLine.index,
+                scrollOffset: timeLine.scrollOffset,
+                direction: timeLine.direction,
+                scrollUnit: timeLine.scrollUnit
+            });
+        },
+        onafterfinish: function(evt) {
+            var timeLine = evt.target;
+            timeLine.carousel.dispatchEvent('onafterscroll', {
+                index: timeLine.index,
+                scrollOffset: timeLine.scrollOffset,
+                direction: timeLine.direction,
+                scrollUnit: timeLine.scrollUnit
+            });
+        }
+    }
 });
