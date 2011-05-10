@@ -1,3 +1,3 @@
 ///import baidu;
 /** @namespace */
-baidu.ui = baidu.ui || { version: '1.3.7' };
+baidu.ui = baidu.ui || { version: '1.3.8' };
