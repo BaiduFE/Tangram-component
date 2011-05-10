@@ -1,21 +1,21 @@
 .tangram-carousel {
-	position: relative;
 	overflow: hidden;
 	border: green solid 4px;
 }
 
 /*滚动容器*/
 .tangram-carousel .tangram-carousel-scroll {
-	position: absolute;
 	border : blue solid 1px;
 }
 
 /*单个滚动项，如果是竖向滚动，请保持float不要设置*/
 .tangram-carousel .tangram-carousel-scroll .tangram-carousel-item {
-	position: relatiev;
 	float: left;
 	border: pink solid 1px;
+	margin: 1px;
+	padding: 1px;
 	width: 80px;
+	height: 20px;
 }
 
 /*单个滚动项得到焦点时候的样式*/
