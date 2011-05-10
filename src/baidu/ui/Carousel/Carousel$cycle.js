@@ -51,10 +51,9 @@ baidu.ui.Carousel.register(function(me){
             is = me.flip == 'item',
             type = type == 'prev',
             currIndex = me.scrollIndex,
-            index = me.scrollIndex + (is ? 1 : me.pageSize) * (type ? -1 : 1),
-            item = !is && me.getItem(me.scrollIndex),
+            index = currIndex + (is ? 1 : me.pageSize) * (type ? -1 : 1),
             offset = is ? (type ? 0 : me.pageSize - 1)
-                : baidu.array.indexOf(baidu.dom.children(me.getScrollContainer()), item),
+                : baidu.array.indexOf(baidu.dom.children(me.getScrollContainer()), me.getItem(currIndex)),
             count = me._datas.length;
         return {index: (index + count) % count, scrollOffset: offset};
     }

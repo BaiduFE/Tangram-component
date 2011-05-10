@@ -279,7 +279,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
     scrollTo: function(index, scrollOffset, direction){
         var me = this,
             axis = me._axis[me.orientation],
-            body = me.getBody(),
+            scrollOffset = Math.min(Math.max(scrollOffset, 0), me.pageSize - 1), 
             sContainer = me.getScrollContainer(),
             child = baidu.dom.children(sContainer),
             item = me.getItem(index),
@@ -322,10 +322,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             : sContainer.appendChild(fragment);
         distance = me['_bound' + (me.orientation == 'horizontal' ? 'X' : 'Y')].offset * count;
         sContainer.style[axis.size] = parseInt(sContainer.style[axis.size]) + distance + 'px';
-        is && (body[axis.scrollPos] += distance);
+        is && (me.getBody()[axis.scrollPos] += distance);
         if(me.dispatchEvent('onbeforescroll',
             {index: index, scrollOffset: scrollOffset, direction: smartDirection, scrollUnit: count})){
-            me.getBody()[axis.scrollPos] += distance * (is ? -1 : 1);
+            me.getBody()[axis.scrollPos] += count * me[axis.offset] * (is ? -1 : 1);
             me.dispatchEvent('onafterscroll',
                 {index: index, scrollOffset: scrollOffset, direction: smartDirection, scrollUnit: count});
         }
@@ -341,12 +341,13 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
             is = me.flip == 'item',
             type = type == 'prev',
             currIndex = me.scrollIndex,
-            index = me.scrollIndex + (is ? 1 : me.pageSize) * (type ? -1 : 1),
-            offset = is ? (type ? 0 : me.pageSize - 1) : me.scrollIndex % me.pageSize;
-        if(!is && !me._getItemElement(index).id){
-            index = (Math.floor(me.scrollIndex / me.pageSize) + (type ? -1 : 1))
-                * me.pageSize;
-            offset = 0;
+            index =  currIndex + (is ? 1 : me.pageSize) * (type ? -1 : 1),
+            offset = is ? (type ? 0 : me.pageSize - 1)
+                : baidu.array.indexOf(baidu.dom.children(me.getScrollContainer()), me.getItem(currIndex)),
+            flipIndex;
+        if(!is && (index < 0 || index > me._datas.length - 1)){
+            index = currIndex - offset + (type ? -1 : me.pageSize);
+            offset = type ? me.pageSize - 1 : 0;
         }
         return {index: index, scrollOffset: offset};
     },
@@ -356,6 +357,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options){
      * @private
      */
     _baseFlip: function(type){
+        if(!this.getItem(this.scrollIndex)){return;}
         var me = this,
             sContainer = me.getScrollContainer(),
             flip = me._getFlipIndex(type);
