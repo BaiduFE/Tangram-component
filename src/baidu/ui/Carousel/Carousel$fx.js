@@ -9,17 +9,17 @@
 ///import baidu.object.extend;
 /**
  * 为滚动组件增加动画滚动功能
- * @param {Object} options config参数
+ * @param {Object} options config参数.
  * @config {Boolean} enableFx 是否支持动画插件
  * @config {Function} scrollFx 描述组件的动画执行过程，默认是baidu.fx.scrollTo
  * @config {Object} scrollFxOptions 执行动画过程所需要的参数
  * @config {Function} onbeforestartscroll 当开始执行动画时触发该事件
  * @author linlingyu
  */
-baidu.ui.Carousel.register(function(me){
-    if(!me.enableFx){return;}
-    me.addEventListener('onbeforescroll', function(evt){
-        if(baidu.fx.current(me.getBody())){return;}
+baidu.ui.Carousel.register(function(me) {
+    if (!me.enableFx) {return;}
+    me.addEventListener('onbeforescroll', function(evt) {
+        if (baidu.fx.current(me.getBody())) {return;}
         var is = evt.direction == 'prev',
             axis = me._axis[me.orientation],
             orie = me.orientation == 'horizontal',
@@ -42,7 +42,7 @@ baidu.ui.Carousel.extend({
     scrollFx: baidu.fx.scrollTo,
     scrollFxOptions: {
         duration: 500,
-        onbeforestart: function(evt){
+        onbeforestart: function(evt) {
             var timeLine = evt.target;
             evt.target.carousel.dispatchEvent('onbeforestartscroll', {
                 index: timeLine.index,
@@ -51,7 +51,7 @@ baidu.ui.Carousel.extend({
                 scrollUnit: timeLine.scrollUnit
             });
         },
-        onafterfinish: function(evt){
+        onafterfinish: function(evt) {
             var timeLine = evt.target;
             timeLine.carousel.dispatchEvent('onafterscroll', {
                 index: timeLine.index,
