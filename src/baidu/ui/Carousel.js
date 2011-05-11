@@ -294,7 +294,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
         if (!smartDirection) {//自动运算合理的方向
             smartDirection = item ? (distance < 0 ? 'prev' : (distance > 0 ? 'next' : 'keep'))
                 : baidu.array.indexOf(me._itemIds,
-                    baidu.array.find(child, function(ele) {return !!ele.id}))
+                    baidu.array.find(child, function(ele) {return !!ele.id}).id)
                     > index ? 'prev' : 'next';
         }
         is = smartDirection == 'prev';
@@ -360,11 +360,14 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
             sContainer = me.getScrollContainer(),
             flip = me._getFlipIndex(type);
         function scrollTo(index, offset, type) {
+            if(me._fliping){return;}
             me.addEventListener('onafterscroll', function(evt) {
                 var target = evt.target;
                 target.focus(evt.index);
+                target._fliping = false;
                 target.removeEventListener('onafterscroll', arguments.callee);
             });
+            me._fliping = true;
             me.scrollTo(index, offset, type);
         }
         if (me.flip == 'item') {
