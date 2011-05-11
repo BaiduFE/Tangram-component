@@ -41,12 +41,14 @@ function report(){
 		$case->setAttribute("name", $key);
 		$case->setAttribute("time", $casetime);
 		$case->setAttribute("cov", $info[2]);
+		covHtml($config['browser'].'/'.$key,$info[2]);
 		if($failure > 0){
 			$failures++;
 			$failinfo = $case->appendChild($dom->createElement('failure'));
 			$failinfo->setAttribute('type', 'junit.framework.AssertionFailedError');
 			//FROM php.net, You cannot simply overwrite $textContent, to replace the text content of a DOMNode, as the missing readonly flag suggests.
-			$failinfo->appendChild(new DOMText($value));
+			$kiss = join(".", split("_", $key));
+			$failinfo->appendChild(new DOMText("<a href=\"http://10.32.34.115:8000/BaiduFE/Tangram-component/test/tools/br/run.php?case=$kiss\">run</a>"));
 		}
 		//TODO add more case info in xml
 	}
