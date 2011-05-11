@@ -41,7 +41,6 @@ function report(){
 		$case->setAttribute("name", $key);
 		$case->setAttribute("time", $casetime);
 		$case->setAttribute("cov", $info[2]);
-		covHtml($config['browser'].'/'.$key,$info[2]);
 		if($failure > 0){
 			$failures++;
 			$failinfo = $case->appendChild($dom->createElement('failure'));
