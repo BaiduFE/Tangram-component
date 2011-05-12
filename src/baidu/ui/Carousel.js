@@ -382,13 +382,17 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
      * 翻到上一项或是翻到上一页
      */
     prev: function() {
-        this._baseFlip('prev');
+        var me = this;
+        me._baseFlip('prev');
+        me.dispatchEvent('onprev');
     },
     /**
      * 翻到下一项或是翻到下一页
      */
     next: function() {
-        this._baseFlip('next');
+        var me = this;
+        me._baseFlip('next');
+        me.dispatchEvent('onnext');
     },
     /**
      * 是否已经处在第一项或第一页

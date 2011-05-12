@@ -1,0 +1,67 @@
+/*
+ * Tangram
+ * Copyright 2011 Baidu Inc. All rights reserved.
+ */
+
+///import baidu.ui.Carousel;
+///import baidu.lang.Class.addEventListeners;
+
+/**
+ * 为滚动组件增加自动滚动功能
+ * @param {Object} options config参数.
+ * @config {Boolean} isAutoScroll 是否支持自动滚动，默认支持
+ * @config {Number} scrollInterval 以毫秒描述每次滚动的时间间隔
+ * @config {String} direction 取值，up|right|down|left 描述组件的滚动方向
+ */
+baidu.ui.Carousel.register(function(me){
+    if(!me.isAutoScroll){return;}
+    var key = me._getAutoScrollDirection();
+    me.addEventListeners('onprev,onnext', function(){
+        clearTimeout(me._autoScrollTimeout);//先清除上一次，防止多次运行
+        me._autoScrollTimeout = setTimeout(function(){
+            me._autoScrolling && me[key]();
+        }, me.scrollInterval);
+    });
+    me.addEventListener('onload', function(evt){
+        evt.target.startAutoScroll();
+    });
+    me.addEventListener('ondispose', function(evt){
+        clearTimeout(evt.target._autoScrollTimeout);
+    });
+});
+
+baidu.ui.Carousel.extend(
+/**
+ *  @lends baidu.ui.Carousel.prototype
+ */
+{
+    isAutoScroll: true,
+    scrollInterval: 1000,
+    direction: 'left',//up|right|down|left 描述组件的滚动方向
+    _autoScrolling: true,
+    /**
+     * 取得当次设定的滚动方向字符串
+     * @return {String} prev|next
+     * @private
+     */
+    _getAutoScrollDirection: function(){
+        var me = this,
+            methods = {up: 'next', right: 'prev', down: 'prev', left: 'next'};
+        return methods[me.direction.toLowerCase()]
+            || methods[me.orientation == 'horizontal' ? 'left' : 'down'];
+    },
+    /**
+     * 从停止状态开始自动滚动
+     */
+    startAutoScroll: function(){
+        var me = this;
+        me._autoScrolling = true;
+        me[me._getAutoScrollDirection()]();
+    },
+    /**
+     * 停止当前自动滚动状态
+     */
+    stopAutoScroll: function(){
+        this._autoScrolling = false;
+    }
+});

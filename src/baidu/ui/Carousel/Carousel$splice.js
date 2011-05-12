@@ -15,7 +15,11 @@
 /**
  * 为滚动组件提供动态增加或是删减滚动项功能
  */
-baidu.ui.Carousel.extend({
+baidu.ui.Carousel.extend(
+/**
+ *  @lends baidu.ui.Carousel.prototype
+ */
+{
     /**
      * 增加一个滚动项
      * @param {String} content 需要插入项的字符内容
@@ -37,6 +41,38 @@ baidu.ui.Carousel.extend({
         newIndex = item ? me.scrollIndex : baidu.array.indexOf(me._itemIds, child[0].id);
         index >= firstIndex && index <= firstIndex + me.pageSize - 1
             && me._renderItems(newIndex, baidu.array.indexOf(child, me.getItem(newIndex)));
+    },
+        /**
+     * 移除索引指定的某一项
+     * @param {Number} index 要移除项的索引
+     * @return {HTMLElement} 当移除项存在于页面时返回该节点
+     * @private
+     */
+    _removeItem: function(index){
+        if(!baidu.lang.isNumber(index) || index < 0
+            || index > this._datas.length - 1){return;}
+        var me = this,
+            removeItem = me.getItem(index),
+            currItem = me.getItem(me.scrollIndex),
+            itemId = me._itemIds[index],
+            item = me._items[itemId],
+            child = baidu.dom.children(me.getScrollContainer()),
+            newIndex;
+        item && baidu.array.each(item.handler, function(listener){
+            baidu.event.un(item.element, listener.evtName, listener.handler);
+        });
+        delete me._items[itemId];
+        me._datas.splice(index, 1);
+        me._itemIds.splice(index, 1);
+        index < me.scrollIndex && me.scrollIndex--;
+        index == me.scrollIndex && (me.scrollIndex = -1);
+        newIndex = currItem && me.scrollIndex > -1 ? me.scrollIndex
+            : baidu.array.indexOf(me._itemIds,
+                    baidu.array.find(child, function(item){return item.id != itemId;}).id);
+        removeItem && me._renderItems(newIndex,
+            index == 0 && newIndex == index ? 0 : baidu.array.indexOf(child, me.getItem(newIndex)));
+        me.dispatchEvent('onremoveitem', {index: index, id: itemId});
+        return removeItem;
     },
     /**
      * 将一个字符串的内容插入到索引指定的位置
@@ -64,28 +100,9 @@ baidu.ui.Carousel.extend({
      * @return {HTMLElement} 当移除项存在于页面时返回该节点
      */
     removeItem: function(index){
-        if(!baidu.lang.isNumber(index) || index < 0
-            || index > this._datas.length - 1){return;}
         var me = this,
-            removeItem = me.getItem(index),
-            currItem = me.getItem(me.scrollIndex),
-            itemId = me._itemIds[index],
-            item = me._items[itemId],
-            child = baidu.dom.children(me.getScrollContainer()),
-            newIndex = currItem && me.scrollIndex != index ? me.scrollIndex
-                : baidu.array.indexOf(me._itemIds,
-                    baidu.array.find(child, function(item){return item.id != itemId;}).id);
-            
-        item && baidu.array.each(item.handler, function(listener){
-            baidu.event.un(item.element, listener.evtName, listener.handler);
-        });
-        delete me._items[itemId];
-        me._datas.splice(index, 1);
-        me._itemIds.splice(index, 1);
-        index < me.scrollIndex && me.scrollIndex--;
-        index == me.scrollIndex && (me.scrollIndex = -1);
-        removeItem && me._renderItems(newIndex, baidu.array.indexOf(child, me.getItem(newIndex)));
-        me.dispatchEvent('onremoveitem', {index: index, id: itemId});
-        return removeItem;
+            item = me._removeItem(index);
+        me.dispatchEvent('onremoveitem', {index: index});
+        return item;
     }
 });

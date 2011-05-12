@@ -37,7 +37,11 @@ baidu.ui.Carousel.register(function(me) {
     });
 });
 //
-baidu.ui.Carousel.extend({
+baidu.ui.Carousel.extend(
+/**
+ *  @lends baidu.ui.Carousel.prototype
+ */
+{
     enableFx: true,
     scrollFx: baidu.fx.scrollTo,
     scrollFxOptions: {

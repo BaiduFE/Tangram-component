@@ -62,4 +62,7 @@ baidu.ui.Carousel.register(function(me) {
         delete this._itemsBuff[evt.id + '-buff'];
     });
 });
+/**
+ *  @lends baidu.ui.Carousel.prototype
+ */
 baidu.ui.Carousel.prototype.isCycle = true;
