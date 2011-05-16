@@ -3,7 +3,7 @@ module('baidu.widget.dispose');
 test('base', function() {
 	expect(4);
 	stop();
-	baidu.widget._basePath = upath;
+	baidu.widget._basePath = upath + "js/";
 	ua.importsrc('baidu.widget.create', function() {
 		var w = baidu.widget.create('c', function(r, e) {
 			this.dispose = function() {// 自定义dispose方法
