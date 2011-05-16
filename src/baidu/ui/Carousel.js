@@ -23,6 +23,8 @@
 ///import baidu.fn.bind;
 ///import baidu.object.each;
 
+
+
 /**
  * 创建一个简单的滚动组件
  * @param {Object} options config参数.
@@ -37,6 +39,9 @@
  * @config {String} onnext 当翻到下一项或下一页时触发该事件
  * @author linlingyu
  */
+
+
+
 baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     var me = this,
         data = me.contentText || [];
@@ -276,7 +281,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     scrollTo: function(index, scrollOffset, direction) {
         var me = this,
             axis = me._axis[me.orientation],
-            scrollOffset = Math.min(Math.max(scrollOffset, 0), me.pageSize - 1),
+            scrollOffset = Math.min(Math.max(scrollOffset | 0, 0), me.pageSize - 1),
             sContainer = me.getScrollContainer(),
             child = baidu.dom.children(sContainer),
             item = me.getItem(index),
@@ -359,6 +364,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
         var me = this,
             sContainer = me.getScrollContainer(),
             flip = me._getFlipIndex(type);
+        if(flip.index < 0 || flip.index > me._datas.length - 1){return;}
         function scrollTo(index, offset, type) {
             if(me._fliping){return;}
             me.addEventListener('onafterscroll', function(evt) {

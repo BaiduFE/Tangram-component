@@ -57,21 +57,25 @@ baidu.ui.Carousel.extend(
             itemId = me._itemIds[index],
             item = me._items[itemId],
             child = baidu.dom.children(me.getScrollContainer()),
-            newIndex;
+            currIndex = me.scrollIndex,
+            newIndex,
+            scrollOffset;
         item && baidu.array.each(item.handler, function(listener){
             baidu.event.un(item.element, listener.evtName, listener.handler);
         });
         delete me._items[itemId];
         me._datas.splice(index, 1);
         me._itemIds.splice(index, 1);
-        index < me.scrollIndex && me.scrollIndex--;
-        index == me.scrollIndex && (me.scrollIndex = -1);
-        newIndex = currItem && me.scrollIndex > -1 ? me.scrollIndex
-            : baidu.array.indexOf(me._itemIds,
-                    baidu.array.find(child, function(item){return item.id != itemId;}).id);
-        removeItem && me._renderItems(newIndex,
-            index == 0 && newIndex == index ? 0 : baidu.array.indexOf(child, me.getItem(newIndex)));
-        me.dispatchEvent('onremoveitem', {index: index, id: itemId});
+        (me.scrollIndex > me._datas.length - 1
+            || me.scrollIndex > index) && me.scrollIndex--;
+        if(removeItem){
+            index == currIndex && me.focus(me.scrollIndex);
+            newIndex = currItem ? me.scrollIndex : baidu.array.indexOf(me._itemIds,
+                baidu.array.find(child, function(item){return item.id != itemId;}).id);
+            scrollOffset = baidu.array.indexOf(child, me.getItem(newIndex));
+            index <= newIndex && newIndex < me.pageSize && scrollOffset--;
+            me._renderItems(newIndex, scrollOffset);
+        }
         return removeItem;
     },
     /**
