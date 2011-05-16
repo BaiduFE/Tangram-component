@@ -4,6 +4,7 @@
  */
 
 ///import baidu.ui.Carousel;
+///import baidu.ui.Carousel.Carousel$cycle;
 ///import baidu.lang.Class.addEventListeners;
 
 /**
@@ -23,7 +24,10 @@ baidu.ui.Carousel.register(function(me){
         }, me.scrollInterval);
     });
     me.addEventListener('onload', function(evt){
-        evt.target.startAutoScroll();
+        var me = evt.target;
+        setTimeout(function(){
+            me.startAutoScroll();
+        }, me.scrollInterval);
     });
     me.addEventListener('ondispose', function(evt){
         clearTimeout(evt.target._autoScrollTimeout);
@@ -37,7 +41,7 @@ baidu.ui.Carousel.extend(
 {
     isAutoScroll: true,
     scrollInterval: 1000,
-    direction: 'left',//up|right|down|left 描述组件的滚动方向
+    direction: 'right',//up|right|down|left 描述组件的滚动方向
     _autoScrolling: true,
     /**
      * 取得当次设定的滚动方向字符串
@@ -46,9 +50,9 @@ baidu.ui.Carousel.extend(
      */
     _getAutoScrollDirection: function(){
         var me = this,
-            methods = {up: 'next', right: 'prev', down: 'prev', left: 'next'};
+            methods = {up: 'prev', right: 'next', down: 'next', left: 'prev'};
         return methods[me.direction.toLowerCase()]
-            || methods[me.orientation == 'horizontal' ? 'left' : 'down'];
+            || methods[me.orientation == 'horizontal' ? 'right' : 'down'];
     },
     /**
      * 从停止状态开始自动滚动
@@ -62,6 +66,8 @@ baidu.ui.Carousel.extend(
      * 停止当前自动滚动状态
      */
     stopAutoScroll: function(){
-        this._autoScrolling = false;
+        var me = this;
+        clearTimeout(me._autoScrollTimeout);
+        me._autoScrolling = false;
     }
 });
