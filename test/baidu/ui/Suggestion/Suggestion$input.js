@@ -383,4 +383,101 @@ test('type tab and esc', function() {
 	sugg.show('a', [ 'aa', 'ab' ]);
 });
 
+test("suggestion in dialog, key options", function() {
+	stop();
+	var input = te.dom[0];
+	ua.importsrc('baidu.ui.Dialog',function(){
+		var d_options = {
+				titleText : "title",
+				content : input
+			};
+		d = new baidu.ui.Dialog(d_options);
+		d.render();
+		d.open();
+		var s_options = {
+				onshow : function() {
+					UserAction.keydown(input, {
+						keyCode : 40
+					});
+					UserAction.keydown(input, {
+						keyCode : 13
+					});
+				},
+				onhide : function() {
+					setTimeout(function() {
+						equals(input.value, 'ab', 'select ab');
+						d.close();
+						d.dispose();
+						sugg.dispose();
+						start();
+					}, 0);
+				}
+			};
+		sugg = new baidu.ui.Suggestion(s_options);
+		sugg.render(input);
+		sugg.show('a', [ 'ab', 'ac' ]);
+	},'baidu.ui.Dialog','baidu.ui.Suggestion.Suggestion$input' );
+});
+
+test("suggestion in dialog, mouse options", function() {
+	stop();
+	var input = te.dom[0];
+	ua.importsrc('baidu.ui.Dialog',function(){
+		var d_options = {
+				titleText : "title",
+				content : input
+			};
+		d = new baidu.ui.Dialog(d_options);
+		d.render();
+		d.open();
+		var s_options = {
+				onshow : function() {
+					ua.click(sugg._getItem(0));
+				},
+				onhide : function() {
+					setTimeout(function() {
+						equals(input.value, 'ab', 'select ab');
+						d.close();
+						d.dispose();
+						sugg.dispose();
+						start();
+					}, 0);
+				}
+			};
+		sugg = new baidu.ui.Suggestion(s_options);
+		sugg.render(input);
+		sugg.show('a', [ 'ab', 'ac' ]);
+	},'baidu.ui.Dialog','baidu.ui.Suggestion.Suggestion$input' );
+});
+
+test("suggestion in dialog, hide", function() {
+	stop();
+	var input = te.dom[0];
+	ua.importsrc('baidu.ui.Dialog',function(){
+		var d_options = {
+				titleText : "title",
+				content : input
+			};
+		d = new baidu.ui.Dialog(d_options);
+		d.render();
+		d.open();
+		var s_options = {
+				onshow : function() {
+					ua.click(d.getTitle());
+				},
+				onhide : function() {
+					setTimeout(function() {
+						equals(input.value, '', 'select nothing');
+						d.close();
+						d.dispose();
+						sugg.dispose();
+						start();
+					}, 0);
+				}
+			};
+		sugg = new baidu.ui.Suggestion(s_options);
+		sugg.render(input);
+		sugg.show('a', [ 'ab', 'ac' ]);
+	},'baidu.ui.Dialog','baidu.ui.Suggestion.Suggestion$input' );
+});
 // TODO 输入法相关的测试，依然需要一组手工用例
