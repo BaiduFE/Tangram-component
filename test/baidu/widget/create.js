@@ -196,14 +196,20 @@ test('test get', function() {
 test("不存在的资源", function() {
 	expect(1);
 	stop();
-	var w1 = baidu.widget.create("t1", function(require, exports) {
-		var dd = require('t5_notexist');
-		ok(false, "见 说明 wiki.commonjs.org/wiki/Modules/1.1.1");
+	var timeouthandle, w1 = baidu.widget.create("t1", function(require, exports) {
+		try {
+			var dd = require('t5_notexist');
+			ok(false, "见 说明 wiki.commonjs.org/wiki/Modules/1.1.1");
+		} catch (e) {
+			ok(true, "有异常抛出");			
+		}
+		clearTimeout(timeouthandle);
 		start();
 	}, {
 		depends : [ 't5_notexist' ]
 	});
-	setTimeout(function(){
+	timeouthandle = setTimeout(function() {
+//		w1.dispose();
 		ok(true, "抛错误了。。。");
 		start();
 	}, 500);
