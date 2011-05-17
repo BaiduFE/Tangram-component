@@ -8,9 +8,6 @@
 	<property name="git.project" value="Tangram-component" />
 	<property name="git.user" value="" />
 
-	<property name="report.style.path" value="test/tools/br/report/style" />
-	<property name="report.html.path" value="${report.path}/html" />
-
 	<path id="ext.classpath">
 		<fileset dir="test/tools/lib">
 			<include name="**/*.jar" />
