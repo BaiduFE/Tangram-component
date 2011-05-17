@@ -29,12 +29,12 @@ baidu.ui.Carousel.extend(
     _addText: function(content, index){
         var me = this,
             child = baidu.dom.children(me.getScrollContainer()),
-            index = Math.min(Math.max(baidu.lang.isNumber(index) ? index : me._datas.length, 0), me._datas.length),
+            index = Math.min(Math.max(baidu.lang.isNumber(index) ? index : me._dataList.length, 0), me._dataList.length),
             item = me.getItem(me.scrollIndex),
             firstIndex = baidu.array.indexOf(me._itemIds, child[0].id),
             newIndex;
         
-        me._datas.splice(index, 0, {content: content});
+        me._dataList.splice(index, 0, {content: content});
         me._itemIds.splice(index, 0, baidu.lang.guid());
         index <= me.scrollIndex && me.scrollIndex++;
         //
@@ -50,7 +50,7 @@ baidu.ui.Carousel.extend(
      */
     _removeItem: function(index){
         if(!baidu.lang.isNumber(index) || index < 0
-            || index > this._datas.length - 1){return;}
+            || index > this._dataList.length - 1){return;}
         var me = this,
             removeItem = me.getItem(index),
             currItem = me.getItem(me.scrollIndex),
@@ -64,9 +64,9 @@ baidu.ui.Carousel.extend(
             baidu.event.un(item.element, listener.evtName, listener.handler);
         });
         delete me._items[itemId];
-        me._datas.splice(index, 1);
+        me._dataList.splice(index, 1);
         me._itemIds.splice(index, 1);
-        (me.scrollIndex > me._datas.length - 1
+        (me.scrollIndex > me._dataList.length - 1
             || me.scrollIndex > index) && me.scrollIndex--;
         if(removeItem){
             index == currIndex && me.focus(me.scrollIndex);

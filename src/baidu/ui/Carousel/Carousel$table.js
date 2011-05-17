@@ -21,11 +21,11 @@ baidu.ui.Carousel.register(function(me){
     me.gridLayout = baidu.object.extend({row: 3, col: 3},
         baidu.lang.isArray(me.gridLayout) ? baidu.array.hash(['row', 'col'], me.gridLayout)
             : me.gridLayout);
-    me._datas = me._formatTableData(me._datas);
+    me._dataList = me._formatTableData(me._dataList);
     me._tables = [];
-    baidu.array.each(me._datas, function(item, i){
+    baidu.array.each(me._dataList, function(item, i){
         me._tables.push(new baidu.ui.Table({data: item}));
-        me._datas[i] = {content: me._tables[i].getString()};
+        me._dataList[i] = {content: me._tables[i].getString()};
     });
 });
 
@@ -63,7 +63,7 @@ baidu.ui.Carousel.extend(
     addTableItem: function(data, index){
         var me = this,
             data = me._formatTableData(data),
-            index = Math.min(Math.max(baidu.lang.isNumber(index) ? index : me._datas.length, 0), me._datas.length);
+            index = Math.min(Math.max(baidu.lang.isNumber(index) ? index : me._dataList.length, 0), me._dataList.length);
         me._tables.splice(index, 0, new baidu.ui.Table({data: data[0]}));
         me._addText(me._tables[index].getString(), index);
     },
@@ -74,7 +74,7 @@ baidu.ui.Carousel.extend(
      */
     removeTableItem: function(index){
         if(!baidu.lang.isNumber(index) || index < 0
-            || index > this._datas.length - 1){return;}
+            || index > this._dataList.length - 1){return;}
         var me = this;
         me._tables.splice(index, 1);
         return me._removeItem(index);

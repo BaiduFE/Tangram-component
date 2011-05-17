@@ -45,10 +45,10 @@
 baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     var me = this,
         data = me.contentText || [];
-    me._datas = data.slice(0, data.length);
+    me._dataList = data.slice(0, data.length);
     me._itemIds = [];
     me._items = {};//用来存入被删除的节点，当再次被使用时可以直接拿回来,格式:{element: dom, handler: []}
-    baidu.array.each(me._datas, function(item) {
+    baidu.array.each(me._dataList, function(item) {
         me._itemIds.push(baidu.lang.guid());
     });
     me.flip = me.flip.toLowerCase();
@@ -64,13 +64,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     flip: 'item',//item|page
     pageSize: 3,
     scrollIndex: 0,
-    offsetWidth: 0,//这个属性是为了在老版本中支持margin，现版本中不再开放给用户
-    offsetHeight: 0,//这个属性是为了在老版本中支持margin，现版本中不再开放给用户
     _axis: {
-        horizontal: {pos: 'left', size: 'width', offset: 'offsetWidth', client: 'clientWidth', scrollPos: 'scrollLeft'},
-        vertical: {pos: 'top', size: 'height', offset: 'offsetHeight', client: 'clientHeight', scrollPos: 'scrollTop'}
+        horizontal: {vector: '_boundX', pos: 'left', size: 'width', offset: 'offsetWidth', client: 'clientWidth', scrollPos: 'scrollLeft'},
+        vertical: {vector: '_boundY', pos: 'top', size: 'height', offset: 'offsetHeight', client: 'clientHeight', scrollPos: 'scrollTop'}
     },
-    tplDOM: '<div id="#{id}" class="#{class}">#{content}</div>',
     /**
      * 生成一个容器的字符串
      * @return {String}
@@ -78,11 +75,12 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
      */
     getString: function() {
         var me = this,
-            str = baidu.string.format(me.tplDOM, {
+            tpl = '<div id="#{id}" class="#{class}">#{content}</div>',
+            str = baidu.string.format(tpl, {
                 id: me.getId('scroll'),
                 'class': me.getClass('scroll')
             });
-        return baidu.string.format(me.tplDOM, {
+        return baidu.string.format(tpl, {
             id: me.getId(),
             'class': me.getClass(),
             content: str
@@ -98,7 +96,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me.getString());
         me._renderItems();
         me._resizeView();
-        me._moveCenter();
+        me._moveToMiddle();
         me.focus(me.scrollIndex);
         me.addEventListener('onafterscroll', function(evt) {
             var orie = me.orientation == 'horizontal',
@@ -108,7 +106,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
             sContainer.style[axis.size] = parseInt(sContainer.style[axis.size])
                 - me['_bound' + (orie ? 'X' : 'Y')].offset
                 * evt.scrollUnit + 'px';
-            me._moveCenter();
+            me._moveToMiddle();
+            me._scrolling = false;
         });
         me.dispatchEvent('onload');
     },
@@ -121,24 +120,25 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     _renderItems: function(index, offset) {
         var me = this,
             sContainer = me.getScrollContainer(),
-            index = Math.min(Math.max(index | 0, 0), me._datas.length - 1),
+            index = Math.min(Math.max(index | 0, 0), me._dataList.length - 1),
             offset = Math.min(Math.max(offset | 0, 0), me.pageSize - 1),
-            sContainer = me.getScrollContainer(),
             count = me.pageSize,
             i = 0,
-            itemIndex;
+            entry;
         while (sContainer.firstChild) {//这里改用innerHTML赋空值会使js存的dom也被清空
             baidu.dom.remove(sContainer.firstChild);
         }
         for (; i < count; i++) {
-            sContainer.appendChild(me._getItemElement(index - offset + i));
+            entry = me._getItemElement(index - offset + i)
+            sContainer.appendChild(entry.element);
+            entry.setContent();
         }
     },
     /**
      * 将滚动容器排列到中间位置
      * @private
      */
-    _moveCenter: function() {
+    _moveToMiddle: function() {
         if (!this._boundX) {return;}
         var me = this,
             axis = me._axis[me.orientation];
@@ -150,13 +150,12 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
      * @private
      */
     _resizeView: function() {
-        if (this._datas.length <= 0) {return;}//没有数据
+        if (this._dataList.length <= 0) {return;}//没有数据
         var me = this,
             axis = me._axis[me.orientation],
             orie = me.orientation == 'horizontal',
             sContainer = me.getScrollContainer(),
             child = baidu.dom.children(sContainer),
-            bound,
             boundX,
             boundY;
         function getItemBound(item, type) {
@@ -173,11 +172,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
                 marginY: marginY
             };
         }
-        me._boundX = boundX = getItemBound(child[0], 'x');
-        me._boundY = boundY = getItemBound(child[0], 'y');
-        bound = orie ? boundX : boundY;
-        me.offsetWidth <= 0 && (me.offsetWidth = boundX.offset);
-        me.offsetHeight <= 0 && (me.offsetHeight = boundY.offset);
+        me._boundX = boundX = getItemBound(child[0], 'x');//设置滚动单位
+        me._boundY = boundY = getItemBound(child[0], 'y');//设置滚动单位
         sContainer.style.width = boundX.offset
             * (orie ? child.length : 1)
             + (baidu.browser.ie == 6 ? boundX.marginX : 0)
@@ -186,9 +182,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
             * (orie ? 1 : child.length)
             + (orie ? 0 : boundY.marginX)
             + 'px';
-        me.getBody().style[axis.size] = bound.offset * me.pageSize
-            + (orie ? 0 : Math.min(bound.marginX, bound.marginY)) + 'px';
+        me.getBody().style[axis.size] = me[axis.vector].offset * me.pageSize
+            + (orie ? 0 : Math.min(me[axis.vector].marginX, me[axis.vector].marginY)) + 'px';
     },
+    
     /**
      * 根据索引的从缓存中取出对应的滚动项，如果缓存不存在该项则创建并存入缓存，空滚动项不被存入缓存
      * @param {Number} index 索引值.
@@ -199,7 +196,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
         var me = this,
             itemId = me._itemIds[index],
             entry = me._items[itemId] || {},
-            txt = me._datas[index],
+            txt = me._dataList[index],
             element;
         if (!entry.element) {
             entry.element = element = baidu.dom.create('div', {
@@ -207,7 +204,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
                 'class': me.getClass('item')
             });
             !itemId && baidu.dom.addClass(element, me.getClass('item-empty'));
-            element.innerHTML = txt ? txt.content : '';
+            entry.content = txt ? txt.content : '';
             if (itemId) {
                 entry.handler = [
                     {evtName: 'click', handler: baidu.fn.bind('_onItemClickHandler', me, element)},
@@ -219,9 +216,14 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
                 });
                 me._items[itemId] = entry;
             }
+            entry.setContent = function(){
+                this.content && (this.element.innerHTML = this.content);
+                this.content && (delete this.content);
+            }
         }
-        return entry.element;
+        return entry;
     },
+    
     /**
      * 对_baseItemElement的再包装，在循环滚动中可以被重写
      * @param {Number} index 索引值.
@@ -262,7 +264,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
      * @return {Number} 总数.
      */
     getTotalCount: function() {
-        return this._datas.length;
+        return this._dataList.length;
     },
     /**
      * 根据数据的索引值取得对应在页面的DOM节点，当节点不存时返回null
@@ -288,49 +290,59 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
             smartDirection = direction,
             distance = baidu.array.indexOf(child, item) - scrollOffset,
             count = Math.abs(distance),
-            len = me._datas.length,
+            len = me._dataList.length,
             i = 0,
             fragment,
             vergeIndex,
-            is;
+            vector,
+            entry;
+        //当移动距离是0并且不存在方向，没有数据，index不合法，或是正处理滚动中。以上条件都退出
         if ((item && distance == 0 && !direction)
-            || me._datas.length <= 0 || index < 0
-            || index > me._datas.length - 1) {return;}
-        if (!smartDirection) {//自动运算合理的方向
+            || me._dataList.length <= 0 || index < 0
+            || index > me._dataList.length - 1
+            || me._scrolling) {return;}
+        if (!smartDirection) {//如果方法参数没有给出合理的方向，需要自动运算合理的方向
+            //如果index所对项已经存在于页，则以需要移动的距离来判断方法
+            //如果不存在于页面，表示是远端运动，以可视区左边第一个有id的项来和index比较大小得出方向
             smartDirection = item ? (distance < 0 ? 'prev' : (distance > 0 ? 'next' : 'keep'))
                 : baidu.array.indexOf(me._itemIds,
                     baidu.array.find(child, function(ele) {return !!ele.id}).id)
                     > index ? 'prev' : 'next';
         }
-        is = smartDirection == 'prev';
-        if (!item || direction) {
+        vector = smartDirection == 'prev';
+        if (!item || direction) {//如果是一个远端移动
+            //算出可视区中最接近index的一个项的索引，即边界索引
             vergeIndex = baidu.array.indexOf(me._itemIds,
-                child[is ? 0 : child.length - 1].id);
+                child[vector ? 0 : child.length - 1].id);
             //(x + len - y) % len
             //Math(offset - (is ? 0 : pz - 1)) + count
-            count = Math.abs(scrollOffset - (is ? 0 : me.pageSize - 1))
-                + ((is ? vergeIndex : index) + len - (is ? index : vergeIndex)) % len;
+            //以上两个公式结合以后可以运算出当前边界项之后需要动态添加多少项而可以不管他的方向性
+            count = Math.abs(scrollOffset - (vector ? 0 : me.pageSize - 1))
+                + ((vector ? vergeIndex : index) + len - (vector ? index : vergeIndex)) % len;
             count > me.pageSize && (count = me.pageSize);
         }
         fragment = count > 0 && document.createDocumentFragment();
+        //利用循环先把要移动的项生成并插入到相应的位置
         for (; i < count; i++) {
-            fragment.appendChild(
-                me._getItemElement(is ? index - scrollOffset + i
-                    : me.pageSize + index + i
-                        - (item && !direction ? baidu.array.indexOf(child, item) : scrollOffset + count))
-            );
+            entry = me._getItemElement(vector ? index - scrollOffset + i
+                : me.pageSize + index + i - (item && !direction ? baidu.array.indexOf(child, item)
+                    : scrollOffset + count));
+            fragment.appendChild(entry.element);
+            entry.setContent();//为了防止内存泄露在这里渲染内容，该方法只会渲染一次
         }
-        is ? sContainer.insertBefore(fragment, child[0])
+        vector ? sContainer.insertBefore(fragment, child[0])
             : sContainer.appendChild(fragment);
-        distance = me['_bound' + (me.orientation == 'horizontal' ? 'X' : 'Y')].offset * count;
+        distance = me[axis.vector].offset * count;//me[axis.vector].offset是单个项的移动单位
+        //扩大scrollContainer宽度，让上面插入的可以申展开
         sContainer.style[axis.size] = parseInt(sContainer.style[axis.size]) + distance + 'px';
-        is && (me.getBody()[axis.scrollPos] += distance);
-        if (me.dispatchEvent('onbeforescroll',
-            {index: index, scrollOffset: scrollOffset, direction: smartDirection,
-				scrollUnit: count})) {
-            me.getBody()[axis.scrollPos] += count * me[axis.offset] * (is ? -1 : 1);
-            me.dispatchEvent('onafterscroll',
-                {index: index, scrollOffset: scrollOffset, direction: smartDirection, scrollUnit: count});
+        //scrollContainer改变宽度后需要对位置重新调整，让可视区保持不保
+        vector && (me.getBody()[axis.scrollPos] += distance);
+        me._scrolling = true;//开始滚动
+        if (me.dispatchEvent('onbeforescroll', {index: index, scrollOffset: scrollOffset,
+            direction: smartDirection, scrollUnit: count})) {
+            me.getBody()[axis.scrollPos] += count * me[axis.vector].offset * (vector ? -1 : 1);
+            me.dispatchEvent('onafterscroll', {index: index, scrollOffset: scrollOffset,
+                direction: smartDirection, scrollUnit: count});
         }
     },
     /**
@@ -341,21 +353,21 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
      */
     _getFlipIndex: function(type) {
         var me = this,
-            is = me.flip == 'item',
+            vector = me.flip == 'item',
             type = type == 'prev',
             currIndex = me.scrollIndex,
-            index = currIndex + (is ? 1 : me.pageSize) * (type ? -1 : 1),
-            offset = is ? (type ? 0 : me.pageSize - 1)
+            index = currIndex + (vector ? 1 : me.pageSize) * (type ? -1 : 1),
+            offset = vector ? (type ? 0 : me.pageSize - 1)
                 : baidu.array.indexOf(baidu.dom.children(me.getScrollContainer()), me.getItem(currIndex)),
             flipIndex;
-        if (!is && (index < 0 || index > me._datas.length - 1)) {
+        if (!vector && (index < 0 || index > me._dataList.length - 1)) {
             index = currIndex - offset + (type ? -1 : me.pageSize);
             offset = type ? me.pageSize - 1 : 0;
         }
         return {index: index, scrollOffset: offset};
     },
     /**
-     * 翻面的基础处理方法
+     * 翻页的基础处理方法
      * @param {String} type 翻页方向，取值：prev:翻到上一步,next:翻到下一步.
      * @private
      */
@@ -364,23 +376,22 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
         var me = this,
             sContainer = me.getScrollContainer(),
             flip = me._getFlipIndex(type);
-        if(flip.index < 0 || flip.index > me._datas.length - 1){return;}
+        if(flip.index < 0 || flip.index > me._dataList.length - 1){return;}
         function scrollTo(index, offset, type) {
-            if(me._fliping){return;}
             me.addEventListener('onafterscroll', function(evt) {
                 var target = evt.target;
                 target.focus(evt.index);
-                target._fliping = false;
                 target.removeEventListener('onafterscroll', arguments.callee);
             });
-            me._fliping = true;
             me.scrollTo(index, offset, type);
         }
         if (me.flip == 'item') {
             me.getItem(flip.index) ? me.focus(flip.index)
                 : scrollTo(flip.index, flip.scrollOffset, type);
         }else {
-            me._getItemElement(flip.index).id
+//            me._getItemElement(flip.index).element.id
+//                && scrollTo(flip.index, flip.scrollOffset, type);
+            me._itemIds[flip.index]
                 && scrollTo(flip.index, flip.scrollOffset, type);
         }
     },
@@ -414,7 +425,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
      */
     isLast: function() {
         var flip = this._getFlipIndex('next');
-        return flip.index >= this._datas.length;
+        return flip.index >= this._dataList.length;
     },
     /**
      * 使当前选中的项失去焦点
@@ -424,7 +435,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
         var me = this,
             itemId = me._itemIds[me.scrollIndex];
         if (itemId) {
-            baidu.dom.removeClass(me._baseItemElement(me.scrollIndex),
+            baidu.dom.removeClass(me._baseItemElement(me.scrollIndex).element,
                 me.getClass('item-focus'));
             me.scrollIndex = -1;
         }
@@ -439,7 +450,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
             item = itemId && me._baseItemElement(index);//防止浪费资源创出空的element
         if (itemId) {
             me._blur();
-            baidu.dom.addClass(item, me.getClass('item-focus'));
+            baidu.dom.addClass(item.element, me.getClass('item-focus'));
             me.scrollIndex = index;
         }
     },

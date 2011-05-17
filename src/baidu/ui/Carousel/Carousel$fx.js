@@ -23,7 +23,7 @@ baidu.ui.Carousel.register(function(me) {
         var is = evt.direction == 'prev',
             axis = me._axis[me.orientation],
             orie = me.orientation == 'horizontal',
-            val = me.getBody()[axis.scrollPos] + evt.scrollUnit * me[axis.offset] * (is ? -1 : 1);
+            val = me.getBody()[axis.scrollPos] + evt.scrollUnit * me[axis.vector].offset * (is ? -1 : 1);
         me.scrollFxOptions = baidu.object.extend(me.scrollFxOptions, {
             carousel: me,
             index: evt.index,
