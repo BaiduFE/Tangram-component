@@ -28,7 +28,7 @@ test('onopen, hide select, transparent smartCover',function(){
 		ok(!popup.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is transparent');
 		equals(popup.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 		ok(Math.abs(popup.getMain().firstChild.firstChild.offsetWidth - popup.getMain().offsetWidth) < 5, 'The width of the iframe is right');
-		ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+		ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 		te.obj.push(popup);
 		document.body.removeChild(select_a);
 		document.body.removeChild(select_b);
@@ -66,7 +66,7 @@ test('onopen, hide select, transparent smartCover, red Popup',function(){
 	ok(popup.getMain().style['backgroundColor'] == 'red' || popup.getMain().style['backgroundColor'] == '#ff0000', 'The popup is red');
 	equals(popup.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetWidth - popup.getMain().offsetWidth) < 5, 'The width of the iframe is right');
-	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 	te.obj.push(popup);
 	document.body.removeChild(select_a);
 	document.body.removeChild(select_b);
@@ -109,7 +109,7 @@ test('onopen, hide select, white smartCover',function(){
 	ok(popup.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is not transparent');
 	equals(popup.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetWidth - popup.getMain().offsetWidth) < 5, 'The width of the iframe is right');
-	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 	te.obj.push(popup);
 	document.body.removeChild(select_a);
 	document.body.removeChild(select_b);
@@ -178,7 +178,7 @@ test('onopen, hide flash, transparent smartCover',function(){
 		ok(!popup.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is transparent');
 		equals(popup.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 		ok(Math.abs(popup.getMain().firstChild.firstChild.offsetWidth - popup.getMain().offsetWidth) < 5, 'The width of the iframe is right');
-		ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+		ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 		te.obj.push(popup);
 		document.body.removeChild(div);
 		document.body.removeChild(div2);
@@ -226,7 +226,7 @@ test('onopen, hide flash, transparent smartCover, red Popup',function(){
 	ok(popup.getMain().style['backgroundColor'] == 'red' || popup.getMain().style['backgroundColor'] == '#ff0000', 'The popup is red');
 	equals(popup.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetWidth - popup.getMain().offsetWidth) < 5, 'The width of the iframe is right');
-	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 	te.obj.push(popup);
 	document.body.removeChild(div);
 	document.body.removeChild(div2);
@@ -280,7 +280,7 @@ test('onopen, hide flash, white smartCover',function(){
 	debugger
 	equals(popup.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetWidth - popup.getMain().offsetWidth) < 5, 'The width of the iframe is right');
-	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 	te.obj.push(popup);
 	document.body.removeChild(div);
 	document.body.removeChild(div2);
@@ -342,7 +342,7 @@ test('onupdate, hide select',function(){
 	ok(!popup.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is transparent');
 	equals(popup.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetWidth - popup.getMain().offsetWidth) < 5, 'The width of the iframe is right');
-	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 	var options_update = {
 			width : '400px',
 			height :'400px'
@@ -351,7 +351,7 @@ test('onupdate, hide select',function(){
 	ok(!popup.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is transparent');
 	equals(popup.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetWidth - popup.getMain().offsetWidth) < 5, 'The width of the iframe is right');
-	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight) < 5, 'The Height of the iframe is right');
+	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 	te.obj.push(popup);
 	document.body.removeChild(select_a);
 	document.body.removeChild(select_b);
