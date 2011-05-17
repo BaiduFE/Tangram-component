@@ -313,7 +313,7 @@ test('TreeNode function toggle, collapse and expand', function() {
 	equals(node.getChildNodes().length, 0, 'size of child before expand');
 	equals($(nodeid)[0].children.length, 0, 'size of subnode child');
     //TODO
-	equals(parseInt($(nodeid).css('height')), 0, 'subnode is not shown');
+	ok(!parseInt($(nodeid).css('height')), 'subnode is not shown');
 	node.expand();
 	equals(node.getChildNodes().length, 1, 'size of child before expand');
 	equals($(nodeid)[0].children.length, 1, 'size of subnode child');

@@ -7,7 +7,7 @@
                    
      yangbo                                                                
      ====================================================================== -->
-<project name="reportAndMail" basedir="../">
+<project name="reportAndMail" basedir="../../">
 	<description>
             for report merge and mail
     </description>
