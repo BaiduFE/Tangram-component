@@ -33,8 +33,8 @@
  * @config {String} flip 定义组件的翻页方式，取值：item:一次滚动一个项, page:一次滚动一页
  * @config {Number} pageSize 描述一页显示多少个滚动项，默认值是3
  * @config {String} onload 当渲染完组件时触发该事件
- * @config {String} onbeforescroll 当开始滚动时触发该事件
- * @config {String} onafterscroll 当结束一次滚动时触发该事件
+ * @config {String} onbeforescroll 当开始滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
+ * @config {String} onafterscroll 当结束一次滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
  * @config {String} onprev 当翻到前一项或前一页时触发该事件
  * @config {String} onnext 当翻到下一项或下一页时触发该事件
  * @author linlingyu
@@ -277,7 +277,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     /**
      * 从当前项滚动到index指定的项，并将该项放在scrollOffset的位置
      * @param {Number} index 在滚动数据中的索引.
-     * @param {Number} scrollOffset 在页面的显示位置.
+     * @param {Number} scrollOffset 在页面的显示位置，该参数如果不填默认值取0.
      * @param {String} direction 滚动方向，取值: prev:强制滚动到上一步, next:强制滚动到下一步，当不给出该值时，会自动运算一个方向来滚动.
      */
     scrollTo: function(index, scrollOffset, direction) {
@@ -296,8 +296,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
             vergeIndex,
             vector,
             entry;
-        //当移动距离是0并且不存在方向，没有数据，index不合法，或是正处理滚动中。以上条件都退出
-        if ((item && distance == 0 && !direction)
+        //当移动距离是0，没有数据，index不合法，或是正处理滚动中。以上条件都退出
+        if((item && distance == 0)
             || me._dataList.length <= 0 || index < 0
             || index > me._dataList.length - 1
             || me._scrolling) {return;}
@@ -310,7 +310,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
                     > index ? 'prev' : 'next';
         }
         vector = smartDirection == 'prev';
-        if (!item || direction) {//如果是一个远端移动
+        if (!item) {//如果是一个远端移动
             //算出可视区中最接近index的一个项的索引，即边界索引
             vergeIndex = baidu.array.indexOf(me._itemIds,
                 child[vector ? 0 : child.length - 1].id);
