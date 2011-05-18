@@ -13,6 +13,7 @@
  * @config {Boolean} isAutoScroll 是否支持自动滚动，默认支持
  * @config {Number} scrollInterval 以毫秒描述每次滚动的时间间隔
  * @config {String} direction 取值，up|right|down|left 描述组件的滚动方向
+ * @config {Function} onautuscroll 一个事件，当触发一次autoscroll时触发该事件
  */
 baidu.ui.Carousel.register(function(me){
     if(!me.isAutoScroll){return;}
@@ -20,7 +21,10 @@ baidu.ui.Carousel.register(function(me){
     me.addEventListeners('onprev,onnext', function(){
         clearTimeout(me._autoScrollTimeout);//先清除上一次，防止多次运行
         me._autoScrollTimeout = setTimeout(function(){
-            me._autoScrolling && me[key]();
+            if(me._autoScrolling){
+                me[key]();
+                me.dispatchEvent('onautoscroll', {direction: key});
+            }
         }, me.scrollInterval);
     });
     me.addEventListener('onload', function(evt){
@@ -58,9 +62,11 @@ baidu.ui.Carousel.extend(
      * 从停止状态开始自动滚动
      */
     startAutoScroll: function(){
-        var me = this;
+        var me = this,
+            direction = me._getAutoScrollDirection();
         me._autoScrolling = true;
-        me[me._getAutoScrollDirection()]();
+        me[direction]();
+        me.dispatchEvent('onautoscroll', {direction: direction});
     },
     /**
      * 停止当前自动滚动状态
