@@ -312,11 +312,11 @@ test('TreeNode function toggle, collapse and expand', function() {
 	// expand前，它是叶子
 	equals(node.getChildNodes().length, 0, 'size of child before expand');
 	equals($(nodeid)[0].children.length, 0, 'size of subnode child');
-	ok(!isShown($(nodeid)), 'subnode is not shown');
+	ok(!isShown($(nodeid)[0]), 'subnode is not shown');
 	node.expand();
 	equals(node.getChildNodes().length, 1, 'size of child before expand');
 	equals($(nodeid)[0].children.length, 1, 'size of subnode child');
-	ok(parseInt($(nodeid).css('height')) > 0, 'subnode is shown');
+	ok(isShown($(nodeid)[0]), 'subnode is not shown');
 	equals($(nodeid).css('display'), 'block', 'subnode is shown');
 	equals($(nodeid)[0].children[0].id, 'a0', 'subnode child is a0');
 	node.collapse();// 折叠后

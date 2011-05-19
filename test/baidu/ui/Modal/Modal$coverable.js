@@ -13,7 +13,7 @@ test('hide select',function(){
 			ok(!m.getMain().firstChild.firstChild.style['backgroundColor'] ,'The iframe is transparent');
 			equals(m.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 			equals(m.getMain().firstChild.firstChild.style.width, m.getMain().offsetWidth + 'px', 'The width of the iframe is right');
-			equals(m.getMain().firstChild.firstChild.style.height, m.getMain().offsetHeight + 'px', 'The Height of the iframe is right');
+			ok(Math.abs(m.getMain().firstChild.firstChild.offsetHeight - m.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 			equals(m.getMain().firstChild.firstChild.offsetTop, m.getMain().offsetTop, 'The top of the iframe is right');
 			equals(m.getMain().firstChild.firstChild.offsetLeft, m.getMain().offsetLeft, 'The left of the iframe is right');
 		}
@@ -56,7 +56,7 @@ test('在div中遮罩 hide select', function() {
 			ok(m.getMain().firstChild.firstChild.style['backgroundColor'] == 'white' || m.getMain().firstChild.firstChild.style['backgroundColor'] == '#ffffff','The iframe is transparent');
 			equals(m.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 			equals(m.getMain().firstChild.firstChild.offsetWidth, m.getMain().offsetWidth, 'The width of the iframe is right');
-			equals(m.getMain().firstChild.firstChild.offsetHeight, m.getMain().offsetHeight, 'The Height of the iframe is right');
+			ok(Math.abs(m.getMain().firstChild.firstChild.offsetHeight - m.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');
 			equals(baidu.dom.getPosition(m.getMain().firstChild.firstChild).top, m.getMain().offsetTop, 'The top of the iframe is right PUBLICGE-391');
 			equals(baidu.dom.getPosition(m.getMain().firstChild.firstChild).left, m.getMain().offsetLeft, 'The left of the iframe is right');
 		}
