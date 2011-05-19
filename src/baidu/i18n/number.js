@@ -30,7 +30,7 @@ baidu.i18n.number = baidu.i18n.number || {
             }
             number = number.replace(sOpt.group, "");
         }else{
-            number < 0 && isNegative = true;
+            number < 0 && (isNegative = true);
         }
         number = parseFloat(number);
         return tOpt._format ? tOpt._format(number, isNegative) : me._format(number, {

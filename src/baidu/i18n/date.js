@@ -38,7 +38,7 @@ baidu.i18n.date = baidu.i18n.calendar || {
      * @param {Date} dateObject
      * @return {Date}
      */
-    toLocalDate: function(locale, dateObject) {
+    toLocaleDate: function(locale, dateObject) {
         return this._basicDate(locale, dateObject, 'locale');
     },
 
@@ -50,19 +50,19 @@ baidu.i18n.date = baidu.i18n.calendar || {
      * @return {Date}
      */
     toGregorianDate: function(locale, dateObject) {
-        return this._basicDate(dateObject, locale, 'gregorian');
+        return this._basicDate(locale, dateObject, 'gregorian');
     },
 
     /**
      * 本地日历和格力高利公历相互转换的基础函数
      * @private
-     * @param {Date} dateObject 需要转换的日期函数.
      * @param {string} locale 传入date的地区名称简写字符，不传入则从date中计算得出.
+     * @param {Date} dateObject 需要转换的日期函数.
      * @param {String} type ['local' , 'gregorian'].
      */
-    _basicDate: function(dateObject, locale, type) {
-        var timeOffset = (type == 'local' ? 1 : -1) * dateObject.getTimezoneOffset(),
-            timeZone = baidu.i18n.cultures[locale].calendar.timeZone,
+    _basicDate: function(locale, dateObject, type) {
+        var timeOffset = (type == 'locale' ? 1 : -1) * dateObject.getTimezoneOffset(),
+            timeZone = baidu.i18n.cultures[locale].timeZone,
             millisecond = dateObject.getTime();
 
         return new Date(timeOffset / 60 != timeZone ? (millisecond + timeOffset * 60000 + 3600000 * timeZone) : millisecond);

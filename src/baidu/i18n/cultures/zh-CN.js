@@ -21,7 +21,7 @@ baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] 
     
     number: {
         group: ",",
-        groupLength: 3
+        groupLength: 3,
         decimal: ".",
         positive: "",
         negative: "-",
