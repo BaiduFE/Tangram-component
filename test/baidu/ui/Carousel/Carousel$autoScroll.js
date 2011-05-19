@@ -1,10 +1,10 @@
 module('baidu.ui.Carousel.Carousel$autoScroll');
 
-function createCarousel(s) {
+function createCarousel(s, f, d, c) {
 
 	var op = {
 		// target : c,
-		orientation : s ? 'vertical' : 'horizontal',
+		orientation : s,
 		contentText : [ {
 			content : "item-0"
 		}, {
@@ -24,154 +24,336 @@ function createCarousel(s) {
 		}, {
 			content : "item-8"
 		} ],
-		autoScroll : {
-			interval : 100,
-			type : 'item'
-		}
+		isCycle : c,
+		flip : f,
+		direction : d,
+		scrollInterval: 100
 	};
 	return new baidu.ui.Carousel(op);
 }
 
-test("autoScrollTo:H, index=1, time=4, type=item", function() {
+function createCarousel_8items(s, f, d, c) {
+
+	var op = {
+		// target : c,
+		orientation : s,
+		contentText : [ {
+			content : "item-0"
+		}, {
+			content : "item-1"
+		}, {
+			content : "item-2"
+		}, {
+			content : "item-3"
+		}, {
+			content : "item-4"
+		}, {
+			content : "item-5"
+		}, {
+			content : "item-6"
+		}, {
+			content : "item-7"
+		} ],
+		isCycle : c,
+		flip : f,
+		direction : d,
+		scrollInterval: 100
+	};
+	return new baidu.ui.Carousel(op);
+}
+
+function createCarousel_4items(s, f, d, c) {
+
+	var op = {
+		// target : c,
+		orientation : s,
+		contentText : [ {
+			content : "item-0"
+		}, {
+			content : "item-1"
+		}, {
+			content : "item-2"
+		}, {
+			content : "item-3"
+		} ],
+		isCycle : c,
+		flip : f,
+		direction : d,
+		scrollInterval: 100
+	};
+	return new baidu.ui.Carousel(op);
+}
+
+test("autoScroll, left", function() {
 	stop();
 	ua.loadcss(upath + 'style.css', function() {
 		var cas, oitem, item, c;
-		cas = createCarousel(false);
+		cas = createCarousel('horizontal', 'item', 'left', false);
 		cas.render(te.dom[0]);
-		item = document.getElementById(cas.getId("item" + 2));
-		c = document.getElementById(cas.getId());
-		cas.focus(0);
-		cas.scrollTo(0);
-		// scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
 		setTimeout(function() {
-			equals(c.scrollLeft, item.offsetWidth * 4,"验证滚动距离是否为五个item的width");
+			cas.stopAutoScroll();
+			ok(cas.getItem(0).className.indexOf(cas.getClass("item-focus")) > -1,
+					"no scroll");
+			cas.dispose();
+			start();
+		}, 400);
+	});
+});
+
+test("autoScroll, right", function() {
+	stop();
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c;
+		cas = createCarousel('horizontal', 'item', 'right', false);
+		cas.render(te.dom[0]);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(4).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item4");
+			cas.startAutoScroll();
+			setTimeout(function() {
+				cas.stopAutoScroll();
+				ok(cas.getItem(8).className.indexOf(cas.getClass("item-focus")) > -1,
+						"scroll to item8");
+				cas.dispose();
+				start();
+			}, 450);
+		}, 450);
+	});
+});
+
+test("autoScroll, up", function() {
+	stop();
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c;
+		cas = createCarousel('vertical', 'item', 'up', false);
+		cas.render(te.dom[0]);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(0).className.indexOf(cas.getClass("item-focus")) > -1,
+					"no scroll");
 			cas.dispose();
 			start();
 		}, 450);
-	}, 'tangram-carousel', 'position', 'relative');
+	});
 });
 
-test("autoScrollTo:H, index=1, time=8, type=item", function() {
-	var cas, oitem, item, c;
-	cas = createCarousel(false);
-	cas.render();
-	item = document.getElementById(cas.getId("item" + 2));
-	c = document.getElementById(cas.getId());
-	cas.focus(0);
+test("autoScroll, down", function() {
 	stop();
-	cas.scrollTo(1);// scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
-	setTimeout(function() {
-		equals(c.scrollLeft, item.offsetWidth * 6 + 2,
-				"验证滚动距离是否为六个item的width+2（到最后一个item就停止）");
-		equals(cas.scrollIndex, 8, "验证滚动到item8（不循环滚动）");
-		cas.dispose();
-		start();
-	}, 890);
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c;
+		cas = createCarousel('vertical', 'item', 'down', false);
+		cas.render(te.dom[0]);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(4).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item4");
+			cas.startAutoScroll();
+			setTimeout(function() {
+				cas.stopAutoScroll();
+				ok(cas.getItem(8).className.indexOf(cas.getClass("item-focus")) > -1,
+						"scroll to item8");
+				cas.dispose();
+				start();
+			}, 450);
+		}, 450);
+	});
 });
 
-test("autoScrollTo:H, index=1, time=8, type=item, isCycle:true", function() {
-	var cas, oitem, item, c;
-	cas = createCarousel(false);
-	cas.isCycle = true;
-	cas.render();
-	item = document.getElementById(cas.getId("item" + 2));
-	c = document.getElementById(cas.getId());
-	cas.focus(0);
+test("autoScroll, page, once", function() {
+	expect(1);
 	stop();
-	cas.scrollTo(1);// scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
-	setTimeout(function() {
-		equals(c.scrollLeft, 0, "验证滚动距离是否为0（循环滚动）");
-		equals(cas.scrollIndex, 0, "验证滚动回item0（循环滚动）");
-		cas.dispose();
-		start();
-	}, 890);
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c, step = 0;
+		cas = createCarousel('horizontal', 'page', 'right', false);
+		cas.render(te.dom[0]);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(3).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item3");
+			cas.dispose();
+			start();
+		}, 150);
+	});
 });
 
-test("autoScrollTo:V, index=2, time=2, type=item", function() {
-	var cas, oitem, item, c;
-	cas = createCarousel(true);
-	cas.render();
-	item = document.getElementById(cas.getId("item" + 2));
-	c = document.getElementById(cas.getId());
-	cas.focus(0);
+test("autoScroll, no cycle, page", function() {
+	expect(1);
 	stop();
-	cas.scrollTo(2);// scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
-	setTimeout(function() {
-		equals(c.scrollTop, item.offsetHeight * 4, "验证滚动距离是否为四个item的height");
-		cas.dispose();
-		start();
-	}, 250);
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c, step = 0;
+		cas = createCarousel_8items('horizontal', 'page', 'right', false);
+		cas.render(te.dom[0]);
+		cas.focus(2);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(6).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item6");
+			cas.dispose();
+			start();
+		}, 1000);
+	});
 });
 
-test("autoScrollTo:H, index=1, time=2, type=page", function() {
-	var cas, oitem, item, c;
-	cas = createCarousel(false);
-	cas.render();
-	cas.autoScroll.type = 'page';
-	item = document.getElementById(cas.getId("item" + 2));
-	c = document.getElementById(cas.getId());
-	cas.focus(0);
+test("autoScroll, no cycle, item", function() {
+	expect(1);
 	stop();
-	cas.scrollTo(1);// scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
-	setTimeout(function() {
-		equals(c.scrollLeft, item.offsetWidth * 6, "验证滚动距离是否为两页item的width");
-		equals(cas.scrollIndex, 6, "验证滚动到item6");
-		cas.dispose();
-		start();
-	}, 250);
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c, step = 0;
+		cas = createCarousel('horizontal', 'item', 'right', false);
+		cas.render(te.dom[0]);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(8).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item8");
+			cas.dispose();
+			start();
+		}, 1000);
+	});
 });
 
-test("autoScrollTo:H, index=3, time=2, type=page", function() {
-	var cas, oitem, item, c;
-	cas = createCarousel(false);
-	cas.render();
-	cas.autoScroll.type = 'page';
-	item = document.getElementById(cas.getId("item" + 2));
-	c = document.getElementById(cas.getId());
-	cas.focus(0);
+test("autoScroll, cycle, item, right", function() {
+	expect(1);
 	stop();
-	cas.scrollTo(3);// scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
-	setTimeout(function() {
-		equals(c.scrollLeft, item.offsetWidth * 6, "验证滚动距离是否为两页item的width");
-		equals(cas.scrollIndex, 6, "验证滚动到item6（不循环滚动）");
-		cas.dispose();
-		start();
-	}, 250);
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c, step = 0;
+		cas = createCarousel_4items('horizontal', 'item', 'right', true);
+		cas.render(te.dom[0]);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(1).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item1");
+			cas.dispose();
+			start();
+		}, 590);
+	});
 });
 
-test("autoScrollTo:H, index=3, time=2, type=page", function() {
-	var cas, oitem, item, c;
-	cas = createCarousel(false);
-	cas.isCycle = true;
-	cas.render();
-	cas.autoScroll.type = 'page';
-	item = document.getElementById(cas.getId("item" + 2));
-	c = document.getElementById(cas.getId());
-	cas.focus(0);
+test("autoScroll, cycle, item, left", function() {
+	expect(1);
 	stop();
-	cas.scrollTo(3);// scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
-	setTimeout(function() {
-		equals(c.scrollLeft, 0, "验证滚动距离是否为0（循环滚动）");
-		equals(cas.scrollIndex, 0, "验证滚动回item0（循环滚动）");
-		cas.dispose();
-		start();
-	}, 250);
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c, step = 0;
+		cas = createCarousel_4items('horizontal', 'item', 'left', true);
+		cas.render(te.dom[0]);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(3).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item3");
+			cas.dispose();
+			start();
+		}, 590);
+	});
 });
 
-test("autoScrollTo:V, index=1, time=2, type=page", function() {
-	var cas, oitem, item, c;
-	cas = createCarousel(true);
-	cas.render();
-	cas.autoScroll.type = 'page';
-	item = document.getElementById(cas.getId("item" + 2));
-	c = document.getElementById(cas.getId());
-	cas.focus(0);
+test("autoScroll, cycle, page, right", function() {
+	expect(5);
 	stop();
-	cas.scrollTo(1);// scrollLeft 表示滚动条向右拖动的距离 $(c).css('height')
-	setTimeout(function() {
-		equals(c.scrollTop, item.offsetHeight * 6, "验证滚动距离是否为两页item的width");
-		equals(cas.scrollIndex, 6, "验证滚动到item6");
-		cas.dispose();
-		start();
-	}, 250);
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c, step = 0;
+		cas = createCarousel_8items('horizontal', 'page', 'right', true);
+		cas.onafterscroll = function(){
+			if(step == 0)
+				ok(cas.getItem(2).className.indexOf(cas.getClass("item-focus")) > -1,
+				"scroll to item2");
+			if(step == 1)
+				ok(cas.getItem(5).className.indexOf(cas.getClass("item-focus")) > -1,
+				"scroll to item5");
+			if(step == 2)
+				ok(cas.getItem(0).className.indexOf(cas.getClass("item-focus")) > -1,
+				"scroll to item0");
+			if(step == 3)
+				ok(cas.getItem(3).className.indexOf(cas.getClass("item-focus")) > -1,
+				"scroll to item3");
+			step ++;
+		}
+		cas.render(te.dom[0]);
+		cas.focus(2);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(6).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item6");
+			cas.dispose();
+			start();
+		}, 490);
+	});
+});
+
+test("autoScroll, cycle, page, left", function() {
+	expect(5);
+	stop();
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c, step = 0;
+		cas = createCarousel_8items('horizontal', 'page', 'left', true);
+		cas.onafterscroll = function(){
+			if(step == 0)
+				ok(cas.getItem(2).className.indexOf(cas.getClass("item-focus")) > -1,
+				"scroll to item2");
+			if(step == 1)
+				ok(cas.getItem(7).className.indexOf(cas.getClass("item-focus")) > -1,
+				"scroll to item7");
+			if(step == 2)
+				ok(cas.getItem(4).className.indexOf(cas.getClass("item-focus")) > -1,
+				"scroll to item4");
+			if(step == 3)
+				ok(cas.getItem(1).className.indexOf(cas.getClass("item-focus")) > -1,
+				"scroll to item1");
+			step ++;
+		}
+		cas.render(te.dom[0]);
+		cas.focus(2);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(6).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item6");
+			cas.dispose();
+			start();
+		}, 490);
+	});
+});
+
+test("autoScroll, onautoscroll, left", function() {
+	expect(4);
+	stop();
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c;
+		cas = createCarousel('horizontal', 'item', 'left', false);
+		cas.onautoscroll = function(evt){
+			equals(evt.direction, 'prev', 'The direction is right');
+		}
+		cas.render(te.dom[0]);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(0).className.indexOf(cas.getClass("item-focus")) > -1,
+					"no scroll");
+			cas.dispose();
+			start();
+		}, 400);
+	});
+});
+
+test("autoScroll, onautoscroll, right", function() {
+	expect(11);
+	stop();
+	ua.loadcss(upath + 'style.css', function() {
+		var cas, oitem, item, c;
+		cas = createCarousel('horizontal', 'item', 'right', false);
+		cas.onautoscroll = function(evt){
+			equals(evt.direction, 'next', 'The direction is right');
+		}
+		cas.render(te.dom[0]);
+		setTimeout(function() {
+			cas.stopAutoScroll();
+			ok(cas.getItem(4).className.indexOf(cas.getClass("item-focus")) > -1,
+					"scroll to item4");
+			cas.startAutoScroll();
+			setTimeout(function() {
+				cas.stopAutoScroll();
+				ok(cas.getItem(8).className.indexOf(cas.getClass("item-focus")) > -1,
+						"scroll to item8");
+				cas.dispose();
+				start();
+			}, 490);
+		}, 490);
+	});
 });
