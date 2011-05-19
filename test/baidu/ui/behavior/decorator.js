@@ -31,7 +31,7 @@ test('base', function() {
 	ui.render(te.dom[0]);
 	equal(dec.getDecorator(), undefined, 'none decorator');
 //	equals(dec.getDecorator().length, 0, 'none decorator added');
-	ui.decorator.push(ui.body);
+	ui.decorator.push(ui);
 	ui.render();
 	equals(dec.getDecorator().length, 1, '1 decorator addedh');
 	var decIns = dec.getDecorator()[0];

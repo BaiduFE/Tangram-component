@@ -159,3 +159,10 @@ test('add remove items', function() {
 	equals(ui.getHeads().length, 1, 'get items after add');
 	equals(ui.getHeads()[0].innerHTML, 'H0', 'get items after add');
 });
+
+test('dispose', function(){
+	var eventLength = baidu.event._listeners.length;
+	var ui = te.getUI();
+	ui.render("div_test");
+	te.checkUI.dispose(ui, eventLength);
+});
