@@ -15,32 +15,32 @@
  */
 baidu.ui.Carousel.register(function(me) {
     if (!me.isCycle) {return;}
-    me._itemsBuff = {};//重复项的缓存
+    me._itemsPool = {};//重复项的缓存
     /**
      * 对core方法重写
      * @private
      */
     me._getItemElement = function(index) {//不覆盖prototype链上的方法
         var me = this,
-            count = me._datas.length,
+            count = me._dataList.length,
             index = (index + count) % count,
             itemId = me._itemIds[index],
-            item = baidu.dom.g(itemId),
-            element;
-        if (item) {//如果item已经存在于页面，则从buff中取另一个
-            element = me._itemsBuff[itemId + '-buff'];
-            if (!element) {
-                element = baidu.dom.create('div', {
+            entry = baidu.dom.g(itemId) ? me._itemsPool[itemId + '-buff']
+                : me._baseItemElement(index);
+        if (!entry) {//如果entry还未存在于buff中
+            entry = me._itemsPool[itemId + '-buff'] = {
+                element: baidu.dom.create('div', {
                     id: itemId + '-buff',
                     'class': me.getClass('item')
-                });
-                element.innerHTML = me._datas[index].content;
-                me._itemsBuff[itemId + '-buff'] = element;
-            }
-        }else {
-            element = me._baseItemElement(index);
+                }),
+                content : me._dataList[index].content,
+                setContent: function(){
+                    this.content && (this.element.innerHTML = this.content);
+                    this.content && (delete this.content);
+                }
+            };
         }
-        return element;
+        return entry;
     }
     /**
      * 对core方法重写
@@ -54,12 +54,15 @@ baidu.ui.Carousel.register(function(me) {
             index = currIndex + (is ? 1 : me.pageSize) * (type ? -1 : 1),
             offset = is ? (type ? 0 : me.pageSize - 1)
                 : baidu.array.indexOf(baidu.dom.children(me.getScrollContainer()), me.getItem(currIndex)),
-            count = me._datas.length;
+            count = me._dataList.length;
         return {index: (index + count) % count, scrollOffset: offset};
     }
 
     me.addEventListener('onremoveitem', function(evt) {
-        delete this._itemsBuff[evt.id + '-buff'];
+        delete this._itemsPool[evt.id + '-buff'];
     });
 });
+/**
+ *  @lends baidu.ui.Carousel.prototype
+ */
 baidu.ui.Carousel.prototype.isCycle = true;
