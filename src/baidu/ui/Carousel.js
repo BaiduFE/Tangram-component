@@ -371,14 +371,14 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
      * @param {String} type 翻页方向，取值：prev:翻到上一步,next:翻到下一步.
      * @private
      */
-    _baseFlip: function(type) {
+    _baseSlide: function(type) {
         if (!this.getItem(this.scrollIndex)) {return;}
         var me = this,
             sContainer = me.getScrollContainer(),
             flip = me._getFlipIndex(type);
         if(flip.index < 0 || flip.index > me._dataList.length - 1){return;}
-        function scrollTo(index, offset, type) {
-            me.addEventListener('onafterscroll', function(evt) {
+        function moveByIndex(index, offset, type){
+            me.addEventListener('onafterscroll', function(evt){
                 var target = evt.target;
                 target.focus(evt.index);
                 target.removeEventListener('onafterscroll', arguments.callee);
@@ -387,12 +387,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
         }
         if (me.flip == 'item') {
             me.getItem(flip.index) ? me.focus(flip.index)
-                : scrollTo(flip.index, flip.scrollOffset, type);
+                : moveByIndex(flip.index, flip.scrollOffset, type);
         }else {
-//            me._getItemElement(flip.index).element.id
-//                && scrollTo(flip.index, flip.scrollOffset, type);
             me._itemIds[flip.index]
-                && scrollTo(flip.index, flip.scrollOffset, type);
+                && moveByIndex(flip.index, flip.scrollOffset, type);
         }
     },
     /**
@@ -400,7 +398,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
      */
     prev: function() {
         var me = this;
-        me._baseFlip('prev');
+        me._baseSlide('prev');
         me.dispatchEvent('onprev');
     },
     /**
@@ -408,7 +406,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
      */
     next: function() {
         var me = this;
-        me._baseFlip('next');
+        me._baseSlide('next');
         me.dispatchEvent('onnext');
     },
     /**
