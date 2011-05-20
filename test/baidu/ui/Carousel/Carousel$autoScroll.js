@@ -313,7 +313,7 @@ test("autoScroll, cycle, page, left", function() {
 });
 
 test("autoScroll, onautoscroll, left", function() {
-	expect(4);
+	expect(5);
 	stop();
 	ua.loadcss(upath + 'style.css', function() {
 		var cas, oitem, item, c;
@@ -328,7 +328,7 @@ test("autoScroll, onautoscroll, left", function() {
 					"no scroll");
 			cas.dispose();
 			start();
-		}, 400);
+		}, 490);
 	});
 });
 
