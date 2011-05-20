@@ -94,7 +94,6 @@ var testingElement = {}, te = testingElement;
 	QUnit.testStart = function() {
 		mySetup();
 		s.apply(this, arguments);
-		;
 	};
 	QUnit.testDone = function() {
 		e.call(this, arguments);

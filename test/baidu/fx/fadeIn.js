@@ -1,5 +1,4 @@
 module("baidu.fx.fadeIn");
-ua.importsrc("baidu.dom.getStyle");
 
 var op = {/* fx效果方法依赖参数 */
 	onbeforestart : function() {/* 初始设置启动高度为100 */
@@ -68,15 +67,12 @@ test('校验时间序列', function() {
 		}
 	}).checktimeline(
 			function(point, timelinepoint) {
-				return 100 * point / timelinepoint;//均匀渐变
+				return 100 * point / timelinepoint;// 均匀渐变
 			},
 			function() {
 				if (baidu.browser.ie) {
-					var re = /opacity\:\d+/;
-					var opacity = re.exec($(te.dom[0]).css('filter'))
+					return /opacity\:\d+/.exec($(te.dom[0]).css('filter'))
 							.toString().split(':')[1];
-					var a = opacity;
-					return a;
 				} else
 					return $(te.dom[0]).css('opacity') * 100; // 为便于校验，放大100
 			});

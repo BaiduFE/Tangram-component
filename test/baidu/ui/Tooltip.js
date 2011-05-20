@@ -25,7 +25,7 @@ test('target and type', function() {
 	var t = new baidu.ui.Tooltip({});
 	t.render(div);
 	equals(t.uiType, 'tooltip', 'check type');
-	equals(t.getMain().id, div.id, 'check id');
+	t.dispose();
 });
 
 test('option attribute',function() {
@@ -69,6 +69,7 @@ test('option attribute',function() {
 					} else if (step == 2) {
 						equals(t.positionBy, 'mouse', 'check positionBy');
 						t.close();
+						document.body.removeChild(target);
 						start();
 					}
 				}
@@ -76,6 +77,7 @@ test('option attribute',function() {
 			t = new baidu.ui.Tooltip(op);
 			t.render(div);
 			t.open();
+			te.obj.push(t);
 			stop();
 		});
 
@@ -104,6 +106,8 @@ test('on', function() {
 	tp.render(div);
 	tp.open();
 	tp.close();
+	tp.dispose();
+	document.body.removeChild(target);
 });
 
 test("Set or don't set the offset of the tooltip", function(){
@@ -131,6 +135,7 @@ test("Set or don't set the offset of the tooltip", function(){
 			+"tooltip = the left position of the div + the "
 			+"offset of the tooltip ");
 	tp.close();
+	tp.dispose();
 	var content = document.createElement('span');
     content.innerHTML = '提示';
 	var tp1 = new baidu.ui.Tooltip({
@@ -147,18 +152,23 @@ test("Set or don't set the offset of the tooltip", function(){
 			"If don't set the offset, the left position of the "
 			+"tooltip = the left position of the div ");
 	tp1.close();
+	tp1.dispose();
+	document.body.removeChild(target);
 });
 
 /*
  * 设置多例的情况,默认情况
  */
 test('isSingleton false',function(){
-	var div = testingElement.dom[0];
+	var div = document.body.appendChild(document.createElement('div'));
 	var target1 = document.body.appendChild(document.createElement('div')),
 	    target2 = document.body.appendChild(document.createElement('div'));
-	    
+	$(target1).css('width', 100).css('height', 100);
+	$(target2).css('width', 100).css('height', 100);
+	
 	var tp = new baidu.ui.Tooltip({
-		target : [target1,target2]
+		target : [target1,target2],
+		content : 'content'
 	});
 	tp.render(div);
 	
@@ -176,6 +186,7 @@ test('isSingleton false',function(){
 	//不同组显示
 	var div1 = document.body.appendChild(document.createElement('div'));
 	var target3 = document.body.appendChild(document.createElement('div')); 
+	$(target3).css('width', 100).css('height', 100);
 	var tp1 = new baidu.ui.Tooltip({
 		target : target3
 	});
@@ -186,7 +197,15 @@ test('isSingleton false',function(){
 	ok(parseInt(tp1.getMain().style.left)>0,'tooltip1 show');
 	equal(tp.currentTarget,target2,'check tp currentTarget target2');
 	equal(tp1.currentTarget,target3,'check tp1 currentTarget target3');
-
+	tp.close();
+	tp.dispose();
+	tp1.close();
+	tp1.dispose();
+	document.body.removeChild(target1);
+	document.body.removeChild(target2);
+	document.body.removeChild(target3);
+	document.body.removeChild(div);
+	document.body.removeChild(div1);
 });
 
 /*
@@ -219,7 +238,14 @@ test('isSingleton true',function(){
 	ok(parseInt(tp1.getMain().style.left)>0,'tooltip1 show');
 	equal(tp.currentTarget,null,'check tp currentTarget target2');
 	equal(tp1.currentTarget,target3,'check tp1 currentTarget target3');
-
+	tp.close();
+	tp.dispose();
+	tp1.close();
+	tp1.dispose();
+	document.body.removeChild(target1);
+	document.body.removeChild(target2);
+	document.body.removeChild(target3);
+	document.body.removeChild(div1);
 });
 
 /**
@@ -268,7 +294,9 @@ test('target title',function(){
 	}; 
 	tp.update(options);
 	equal(tp.getBody().innerHTML,'content');
-
+	tp.close();
+	tp.dispose();
+	document.body.removeChild(target1);
 });
 
 test('dispose',function(){
@@ -286,4 +314,63 @@ test('dispose',function(){
 	t.dispose();
 	equal(baidu.dom.g(t.getId()),null,'disposed');
 	equals(baidu.event._listeners.length, l1, 'event removed all');
+	document.body.removeChild(target);
+});
+
+test('Tooltip surround',function() {
+	stop();
+	ua.frameExt(function(w, f) {
+		$(f).css('width', 400).css('height', 300);
+		var div = w.document.body.appendChild(w.document.createElement('div'));
+		$(div).css('position', 'absolute');
+		div.style.border="1px solid black";
+		var target = w.document.body.appendChild(w.document.createElement('div'));
+		$(target).css('width', 100).css('height', 100).css('position', 'absolute').css('left', 10).css('top', 10);
+		target.style.border="1px solid red";
+		var content = w.document.createElement('span');
+		    content.innerHTML = '这是一个tooltip，测试surround';
+		var op = {
+			positionBy : 'element',
+			insideScreen : 'surround',
+			target : target,
+			contentElement : content,
+			onopen : function() {
+				}
+		};
+		t = new w.baidu.ui.Tooltip(op);
+		t.render(div);
+		t.open();
+		equals(baidu.dom.getPosition(t.getMain()).top, 112, 'check the tooltip is on the right-bottom');
+		equals(baidu.dom.getPosition(t.getMain()).left, 112, 'check the tooltip is on the right-bottom');
+		$(target).css('left', 100).css('top', 10);
+		t.update();
+		equals(baidu.dom.getPosition(t.getMain()).top, 112, 'check the tooltip is on the left-bottom');
+		equals(baidu.dom.getPosition(t.getMain()).left, 
+				100 - t.getMain().offsetWidth + (baidu.browser.ie ? 2 : 0), 
+				'check the tooltip is on the left-bottom');
+		$(target).css('left', 10).css('top', 190);
+		t.update();
+		equals(baidu.dom.getPosition(t.getMain()).top, 
+				190 - t.getMain().offsetHeight + (baidu.browser.ie ? 2 : 0), 
+				'check the tooltip is on the right-top');
+		equals(baidu.dom.getPosition(t.getMain()).left, 112, 'check the tooltip is on the right-top');
+		$(target).css('left', 100).css('top', 190);
+		t.update();
+		equals(baidu.dom.getPosition(t.getMain()).top, 
+				190 - t.getMain().offsetHeight + (baidu.browser.ie ? 2 : 0), 
+				'check the tooltip is on the left-top');
+		equals(baidu.dom.getPosition(t.getMain()).left, 
+				100 - t.getMain().offsetWidth + (baidu.browser.ie ? 2 : 0), 
+				'check the tooltip is on the left-top');
+		$(target).css('left', 100).css('top', 200);
+		t.update();
+		$(target).css('left', 100).css('top', 220);
+		t.update();
+		t.close();
+		t.dispose();
+		w.document.body.removeChild(target);
+		w.document.body.removeChild(div);
+		te.obj.push(f);
+		this.finish();
+	});
 });

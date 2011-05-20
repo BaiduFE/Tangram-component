@@ -105,8 +105,6 @@ test("createitem", function() {
 });
 
 test("direction vertical", function() {//纵向也测一下
-  stop();
-  ua.importsrc('baidu.ui.Button',function(){
     var options = {
         title:"title",
         width : 200,
@@ -159,18 +157,12 @@ test("direction vertical", function() {//纵向也测一下
     toolbar.addRaw(button);
     ok(button==toolbar.getItemByName(options.name),'create a button4');
     te.obj.push(toolbar);
-    start();
-
-});
-
 });
 
 /*
  * 针对container的情况进行测试，1、默认container;2、无container;3、随意创建container
  */
 test("add", function() {
-    stop();
-    ua.importsrc('baidu.ui.Button',function(){
      var options = {
             title:"title",
             width : 200,
@@ -217,8 +209,6 @@ test("add", function() {
         equal(test_button.getBody().parentNode,div,'check test_button2 position');
         te.dom.push(div);
         te.obj.push(toolbar);
-        start();
-    });
 
 });
   
@@ -246,8 +236,6 @@ test('addRow',function(){
   });
   
   test('remove removeAll',function(){
-  	stop();
-    ua.importsrc('baidu.ui.Button',function(){
         var options = {
             title:"title",
             width : 200,
@@ -299,8 +287,6 @@ test('addRow',function(){
         ok(!toolbar._itemObject['test_button2'],'_itemObject[test_button2] is removed');
         ok(!toolbar._itemObject['test_button3'],'_itemObject[test_button3] is removed');
         te.obj.push(toolbar);
-        start();
-    });
   });
   
   test('enable disable enableAll disableAll',function(){

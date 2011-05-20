@@ -9,7 +9,7 @@
 /**
  * 根据传入的widget名, 初始化方法等,创建widget.
  * @id baidu.widget.create
- * @function
+ * @class
  * @grammar baidu.widget.create(id, main, [options])
  * @param {String} id widget名.
  * @param {Function} main widget的初始化方法,第一个参数为获取依赖widget API的方法(require), 第二个参数为API挂载点(exports).

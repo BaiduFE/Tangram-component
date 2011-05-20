@@ -10,7 +10,6 @@
 ///import baidu.dom.g;
 ///import baidu.dom.hide;
 ///import baidu.object.extend;
-
 ///import baidu.fx.create;
 
 /**
@@ -20,6 +19,7 @@
  * @param     {Object}                options            选项。参数的详细说明如下表所示
  * @config    {Number}                duration           500,//效果持续时间，默认值为500ms
  * @config    {Number}                interval           16, //动画帧间隔时间，默认值为16ms
+ * @config    {String}                orientation        动画收拢方向，取值：vertical（默认），horizontal
  * @config    {Function}              transition         function(schedule){return schedule;},时间线函数
  * @config    {Function}              onbeforestart      function(){},//效果开始前执行的回调函数
  * @config    {Function}              onbeforeupdate     function(){},//每次刷新画面之前会调用的回调函数
@@ -32,15 +32,32 @@
 baidu.fx.collapse = function(element, options) {
     if (!(element = baidu.dom.g(element))) return null;
 
-    var e = element, offsetHeight;
+    var e = element, 
+        value, 
+        attr,
+        attrHV = {
+            "vertical": {
+                value: 'height',
+                offset: 'offsetHeight',
+                stylesValue: ["paddingBottom","paddingTop","borderTopWidth","borderBottomWidth"]
+            },
+            "horizontal": {
+                value: 'width',
+                offset: 'offsetWidth',
+                stylesValue: ["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"]
+            }
+        };
 
     var fx = baidu.fx.create(e, baidu.object.extend({
+        orientation: 'vertical'
+        
         //[Implement Interface] initialize
-        initialize : function() {
-            this.protect("height");
+        ,initialize : function() {
+            attr = attrHV[this.orientation];
+            this.protect(attr.value);
             this.protect("overflow");
             this.restoreAfterFinish = true;
-            offsetHeight = e.offsetHeight;
+            value = e[attr.offset];
             e.style.overflow = "hidden";
         }
 
@@ -49,7 +66,7 @@ baidu.fx.collapse = function(element, options) {
 
         //[Implement Interface] render
         ,render : function(schedule) {
-            e.style.height = Math.floor(schedule * offsetHeight) +"px";
+            e.style[attr.value] = Math.floor(schedule * value) +"px";
         }
 
         //[Implement Interface] finish

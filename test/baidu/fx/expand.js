@@ -16,6 +16,23 @@ var op = {/* fx效果方法依赖参数 */
 	}
 };
 
+var opV = {/* fx效果方法依赖参数 */
+    orientation: 'horizontal',
+    onbeforestart : function() {
+        $(te.dom[0]).css('height', 100).css('width', 100).css('background-color', 'red');
+    },
+    onbeforeupdate : function() {
+        if (!this.checked) {
+            this.checked = true;
+            equals(parseInt($(te.dom[0]).css('width')), 1, '校验对象宽度在开始时是否为1');/* 校验对象最后宽度是否为100 */
+        }
+    },
+    onafterfinish : function() {
+        equals(parseInt($(te.dom[0]).css('width')), 100, '校验对象宽度在结束时是否为100');/* 校验对象最后宽度是否为100 */
+        start();
+    }
+};
+
 test('校验元素类型为id', function() {
 	te.checkfx.create(te.dom[0].id, {
 		method : baidu.fx.expand,
@@ -30,13 +47,20 @@ test('校验元素类型为dom', function() {
 	}).checkbase();
 });
 
+test('校验orientation 为vertical', function() {
+    te.checkfx.create(te.dom[0], {
+        method : baidu.fx.expand,
+        options : opV
+    }).checkbase();
+});
+
 test('校验事件序列', function() {
 	te.checkfx.create(te.dom[0], {
 		method : baidu.fx.expand,
 		beforestart : function() {/* 初始设置启动高度为100 */
 			$(te.dom[0]).css('height', 100).css('background-color', 'red');
 		}
-	}).checkevents({
+	}).checkevents( {
 		onafterfinish : start
 	}, 4);
 });

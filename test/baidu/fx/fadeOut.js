@@ -61,19 +61,20 @@ test('校验时间序列', function() {
 		beforestart : function() {/* 初始设置启动高度为100 */
 			$(te.dom[0]).css('height', 100).css('background-color', 'red');
 		}
-	}).checktimeline(
-			function(point, timelinepoint) {
-				return 100 - 100 * point / timelinepoint;// 均匀渐变，时间敏感
-			},
-			function() {
-				if (baidu.browser.ie) {
-					var re = /opacity\:\d+/;
-					var opacity = re.exec($(te.dom[0]).css('filter'))
-							.toString().split(':')[1];
-					return opacity;
-				} else
-					return $(te.dom[0]).css('opacity') * 100;/* 为便于校验，放大100 */
-			});
+	})
+			.checktimeline(
+					function(point, timelinepoint) {
+						return 100 - 100 * point / timelinepoint;// 均匀渐变，时间敏感
+					},
+					function() {
+						if (baidu.browser.ie) {
+							var filter = $(te.dom[0]).css('filter');
+							return filter ? /opacity\:\d+/.exec(
+									$(te.dom[0]).css('filter')).toString()
+									.split(':')[1] : 1;
+						} else
+							return $(te.dom[0]).css('opacity') * 100;/* 为便于校验，放大100 */
+					});
 });
 
 test('校验cancel', function() {

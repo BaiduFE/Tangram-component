@@ -19,6 +19,8 @@
 
 /**
  * 装饰器控件基类
+ * @name baidu.ui.Decorator
+ * @class
  */
 
 baidu.ui.Decorator = baidu.ui.createUI(function(options){

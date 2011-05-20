@@ -4,13 +4,13 @@
 		div.id = 'div_test';
 		document.body.appendChild(div);
 		// div.style.position="absolute";
-		var m = document.createElement('ul');
-		m.className = 'menu';
-		div.appendChild(m);
-		var m1 = document.createElement('li');
-		m1.id = 'm1';
-		m1.innerHTML = 'm1';
-		m.appendChild(m1);
+//		var m = document.createElement('ul');
+//		m.className = 'menu';
+//		div.appendChild(m);
+//		var m1 = document.createElement('li');
+//		m1.id = 'm1';
+//		m1.innerHTML = 'm1';
+//		m.appendChild(m1);
 //
 //		 var link = document.createElement("link");
 //		 link.setAttribute("rel", "stylesheet");
@@ -30,8 +30,8 @@
 ////			+ "td {border:solid 1px red;}"
 ////		    + "</style>";
 ////		sheet.innerHTML = str;
-		testingElement.dom.push(m1);
-		testingElement.dom.push(m);
+//		testingElement.dom.push(m1);
+//		testingElement.dom.push(m);
 		testingElement.dom.push(div);
 	}
 
