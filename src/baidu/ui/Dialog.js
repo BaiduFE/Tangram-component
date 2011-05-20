@@ -96,7 +96,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     //用style来保证其初始状态，不会占据屏幕的位置
     tplDOM: "<div id='#{id}' class='#{class}' style='position:relative'>#{title}#{content}#{footer}</div>",
     tplTitle: "<div id='#{id}' class='#{class}'><span id='#{inner-id}' class='#{inner-class}'>#{content}</span></div>",
-    tplContent: "<div id='#{id}' class='#{class}' style='overflow:auto; position:relative'>#{content}</div>",
+    tplContent: "<div id='#{id}' class='#{class}' style='overflow:hidden; position:relative'>#{content}</div>",
     tplFooter: "<div id='#{id}' class='#{class}'></div>",
 
     /**
