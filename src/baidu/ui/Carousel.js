@@ -27,6 +27,8 @@
 
 /**
  * 创建一个简单的滚动组件
+ * @name baidu.ui.Carousel
+ * @class
  * @param {Object} options config参数.
  * @config {String} orientation 描述该组件是创建一个横向滚动组件或是竖向滚动组件，取值：horizontal:横向, vertical:竖向
  * @config {Object} contentText 定义carousel组件每一项的字符数据，格式：[{content: 'text-0'}, {content: 'text-1'}, {content: 'text-2'}...]
