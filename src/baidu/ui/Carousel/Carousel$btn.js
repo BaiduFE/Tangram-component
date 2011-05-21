@@ -30,7 +30,11 @@ baidu.ui.Carousel.register(function(me) {
     });
 });
 //
-baidu.object.extend(baidu.ui.Carousel.prototype, {
+baidu.object.extend(baidu.ui.Carousel.prototype, 
+/**
+ *  @lends baidu.ui.Carousel.prototype
+ */
+{
     showButton: true,//是否需要显示翻转按钮
     tplBtn: '<a class="#{class}" onclick="#{handler}" href="javascript:void(0);">#{content}</a>'
 });
