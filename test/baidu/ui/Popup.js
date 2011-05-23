@@ -85,5 +85,5 @@ test('getString',function(){
 	te.obj.push(popup);
 	popup.render();
 	var str = popup.getString();
-	equal(str,"<div id="+"'"+popup.getId()+"'"+" class="+"'"+popup.getClass()+"'"+"></div>")
+	equal(str,"<div id="+"'"+popup.getId()+"'"+" class="+"'"+popup.getClass()+"' style='position:relative; top:0px; left:0px;'"+"></div>")
 });

@@ -80,6 +80,7 @@ $b = array_key_exists('browser', $_GET) ? $_GET['browser'] : 'all';
 if($b !='all'){
 	run($b, $release, true);
 }else{
+	Config::StopAll();//添加启动前结束浏览器步骤
 	foreach(Config::$BROWSERS as $b=>$i){
 		run($b, $release);
 	}
