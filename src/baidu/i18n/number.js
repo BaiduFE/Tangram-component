@@ -31,6 +31,7 @@ baidu.i18n.number = baidu.i18n.number || {
             number = number.replace(sOpt.group, "");
         }else{
             number < 0 && (isNegative = true);
+            number *= -1;
         }
         number = parseFloat(number);
         if(isNaN(number)){
@@ -56,10 +57,13 @@ baidu.i18n.number = baidu.i18n.number || {
         var numberArray = String(number).split(options.decimal),
             preNum = numberArray[0].split('').reverse(),
             aftNum = numberArray[1] || '',
-            len = 0,
+            len = 0,remainder = 0,
             result = '';
         
         len = parseInt(preNum.length / options.groupLength);
+        remainder = preNum.length % options.groupLength;
+        len = remainder == 0 ? len - 1 : len;
+
         for(var i = 1; i <= len; i++){
             preNum.splice(options.groupLength * i + (i - 1), 0, options.group);    
         }
