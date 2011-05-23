@@ -277,7 +277,6 @@ test('onopen, hide flash, white smartCover',function(){
     }, "flashContainer2");
 	popup.open();
 	ok(popup.getMain().firstChild.firstChild.style['backgroundColor'],'The iframe is not transparent PUBLICGE-375');
-	debugger
 	equals(popup.getMain().firstChild.firstChild.style['zIndex'], '-1', 'The z-index of the iframe is -1')
 	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetWidth - popup.getMain().offsetWidth) < 5, 'The width of the iframe is right');
 	ok(Math.abs(popup.getMain().firstChild.firstChild.offsetHeight - popup.getMain().offsetHeight * 0.97) < 5, 'The Height of the iframe is right');

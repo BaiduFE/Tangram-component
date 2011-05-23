@@ -121,22 +121,26 @@ test('setLogLevel', function() {
 test('timer', function() {
 	// 每次都应该输出50
 	var expectList = [];
+	var actualList = [];
 	baidu.log.callBack = function() {
 		var data = this[this.length - 1];
-		// 接受误差10
-		ok(Math.abs(data.data-100)<10, '每次都是100');
-		equals(data.type, 'info', '输出接口是info');
+		actualList[actualList.length] = data.data;
 	};
 	baidu.log.time('a');// 启动计时器
 	var time;
 	for ( var i = 1; i < 5; i++) {
-		time = i * 100;
-		expectList.push(time);// 将脉冲计数器加入数组用于校验
+		time = i * 200;
 		setTimeout(function() {
 			baidu.log.time('a');// 每100脉冲一次
 		}, time);
 	}
-	setTimeout(QUnit.start, time + 10);
+	setTimeout(function() {
+		equals(actualList.length, 4, 'info log');
+		TT.array.each(actualList, function(item) {
+			ok(Math.abs(item - 200) < 30, '误差正负30 : ' + item);
+		});
+		QUnit.start();
+	}, time + 100);
 	stop();
 });
 
@@ -163,7 +167,7 @@ test('timeStep', function() {
 	// 校验整体结构
 	baidu.log.callBack = function() {
 		// 会有两次没有数据输出，这用例设计的，太巧妙。。。
-		var now = new Date().getTime() - start;//50, 100, 150, 200
+		var now = new Date().getTime() - start;// 50, 100, 150, 200
 		var expList = [];
 		var i = 0;
 		for (; i < dataList.length; i++) {
@@ -173,16 +177,16 @@ test('timeStep', function() {
 				expList.push(data);
 			}
 		}
-		same(this, expList);
-//		equals(this.length, 2, '每次出来两个数据');
-//		same(this.shift(), dataList.shift(), '数据校验');
-//		same(this.shift(), dataList.shift(), '数据校验');
+		same(this, expList, 'check data');
+//		 equals(this.length, 2, '每次出来两个数据');
+//		 same(this.shift(), dataList.shift(), '数据校验');
+//		 same(this.shift(), dataList.shift(), '数据校验');
 	};
 	var idx = 0;
-	var call = function(data){
+	var call = function(data) {
 		setTimeout(function() {
 			baidu.log[data.type](data.data);
-		}, data.time);		
+		}, data.time);
 	};
 	for (; idx < dataList.length; idx++) {
 		call(dataList[idx]);
