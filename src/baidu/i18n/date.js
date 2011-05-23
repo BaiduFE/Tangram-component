@@ -51,11 +51,18 @@ baidu.i18n.date = baidu.i18n.date || {
      * @param {String} sLocale dateObject 的地区标识，可选参数，传则以dateObject中获取的为准
      */
     _basicDate: function(tLocale, dateObject, sLocale) {
-        var sTimeOffset = -1 * dateObject.getTimezoneOffset(),
-            tTimeZone = baidu.i18n.cultures[tLocale].timeZone,
-            sTimeZone = sLocale ? baidu.i18n.cultures[sLocale].timeZone : sTimeOffset / 60,
+        var tTimeZone = baidu.i18n.cultures[tLocale].timeZone,
             tTimeOffset = tTimeZone * 60,
+            sTimeZone,sTimeOffset,
             millisecond = dateObject.getTime();
+
+        if(sLocale){
+            sTimeZone = baidu.i18n.cultures[sLocale].timeZone;
+            sTimeOffset = sTimeZone * 60;
+        }else{
+            sTimeOffset = -1 * dateObject.getTimezoneOffset();
+            sTimeZone = sTimeZone / 60;
+        }
 
         return new Date(sTimeZone != tTimeZone ? (millisecond  + (tTimeOffset - sTimeOffset) * 60000) : millisecond);
     }
