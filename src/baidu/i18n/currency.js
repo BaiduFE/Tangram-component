@@ -25,19 +25,19 @@ baidu.i18n.currency = baidu.i18n.currency || {
         if(typeof number === "string"){
             number = number.replace(sOpt.symbol);
         }
-        number = parseFloat(number);
         
-        return tOpt.symbol + (tOpt._format ? tOpt._format(number) : this._format(tLocale, number));
+        return tOpt.symbol + this._format(tLocale, number, sLocale);
     },
 
     /**
      * 按照语言的数字格式进行格式化
      * @private 
-     * @param {String} locale 目标语言
-     * @param {Number} number 数字
+     * @param {String} tLocale 目标语言
+     * @param {Number | Number} number 数字
+     * @param {String} [sLocale] 可选参数，若传入的number格式为字符串，则该参数必须传入
      * @return {String}
      */
-    _format: function(locale, number){
-        return baidu.i18n.number.format(locale, number); 
+    _format: function(tLocale, number, sLocale){
+        return baidu.i18n.number.format(tLocale, number, sLocale); 
     }
 };
