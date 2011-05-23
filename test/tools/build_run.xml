@@ -7,6 +7,7 @@
 	<property name="report.file" value="test/tools/br/report.xml" />
 	<property name="git.project" value="Tangram-component" />
 	<property name="git.user" value="" />
+
 	<path id="ext.classpath">
 		<fileset dir="test/tools/lib">
 			<include name="**/*.jar" />
