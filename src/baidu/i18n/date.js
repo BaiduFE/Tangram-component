@@ -4,7 +4,7 @@
  */
 
 ///import baidu.i18n;
-baidu.i18n.date = baidu.i18n.calendar || {
+baidu.i18n.date = baidu.i18n.date || {
 
     /**
      * 获取某年某个月的天数
@@ -34,23 +34,13 @@ baidu.i18n.date = baidu.i18n.calendar || {
     /**
      * 将传入的date对象转换成指定地区的date对象
      * @public
-     * @param {String} locale 地区名称简写字符.
+     * @param {String} tLocale 地区名称简写字符.
      * @param {Date} dateObject
+     * @param {String} sLocale dateObject 的地区标识，可选参数，传则以dateObject中获取的为准
      * @return {Date}
      */
-    toLocaleDate: function(locale, dateObject) {
-        return this._basicDate(locale, dateObject, 'locale');
-    },
-
-    /**
-     * 将传入的date转换成格力高利公历
-     * @public
-     * @param {String} locale 传入date的地区名称简写字符，不传入则从date中计算得出.
-     * @param {Date} dateObject
-     * @return {Date}
-     */
-    toGregorianDate: function(locale, dateObject) {
-        return this._basicDate(locale, dateObject, 'gregorian');
+    toLocaleDate: function(tLocale, dateObject, sLocale) {
+        return this._basicDate(tLocale, dateObject, sLocale);
     },
 
     /**
@@ -58,13 +48,15 @@ baidu.i18n.date = baidu.i18n.calendar || {
      * @private
      * @param {string} locale 传入date的地区名称简写字符，不传入则从date中计算得出.
      * @param {Date} dateObject 需要转换的日期函数.
-     * @param {String} type ['local' , 'gregorian'].
+     * @param {String} sLocale dateObject 的地区标识，可选参数，传则以dateObject中获取的为准
      */
-    _basicDate: function(locale, dateObject, type) {
-        var timeOffset = (type == 'locale' ? 1 : -1) * dateObject.getTimezoneOffset(),
-            timeZone = baidu.i18n.cultures[locale].timeZone,
+    _basicDate: function(tLocale, dateObject, sLocale) {
+        var sTimeOffset = -1 * dateObject.getTimezoneOffset(),
+            tTimeZone = baidu.i18n.cultures[tLocale].timeZone,
+            sTimeZone = sLocale ? baidu.i18n.cultures[sLocale].timeZone : sTimeOffset / 60,
+            tTimeOffset = tTimeZone * 60,
             millisecond = dateObject.getTime();
 
-        return new Date(timeOffset / 60 != timeZone ? (millisecond + timeOffset * 60000 + 3600000 * timeZone) : millisecond);
+        return new Date(sTimeZone != tTimeZone ? (millisecond  + (tTimeOffset - sTimeOffset) * 60000) : millisecond);
     }
 };

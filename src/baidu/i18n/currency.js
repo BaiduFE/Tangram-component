@@ -18,8 +18,8 @@ baidu.i18n.currency = baidu.i18n.currency || {
      */
     format: function(tLocale, number, sLocale){
         var me = this,
-            sOpt = sLocale && baidu.i18.cultures[sLocale].currency,
-            tOpt = baidu.i18.cultures[tLocale].currency,
+            sOpt = sLocale && baidu.i18n.cultures[sLocale].currency,
+            tOpt = baidu.i18n.cultures[tLocale].currency,
             result;
 
         if(typeof number === "string"){

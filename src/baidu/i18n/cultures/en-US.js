@@ -2,7 +2,9 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
+
 ///import baidu.i18n.cultures;
+///import baidu.object.extend;
 
 baidu.i18n.cultures['en-US'] = baidu.object.extend(baidu.i18n.cultures['en-US'] || {}, {
     calendar: {
@@ -27,7 +29,7 @@ baidu.i18n.cultures['en-US'] = baidu.object.extend(baidu.i18n.cultures['en-US'] 
                 group: this.group,
                 groupLength: this.groupLength,
                 decimal: this.decimal,
-                symbol: isNegative ? me.negative : me.positive 
+                symbol: isNegative ? this.negative : this.positive 
             });
         }
     },
@@ -37,7 +39,7 @@ baidu.i18n.cultures['en-US'] = baidu.object.extend(baidu.i18n.cultures['en-US'] 
     },
 
     language: {
-        ok: 'ok'，
+        ok: 'ok',
         cancel: 'cancel',
         signin: 'signin',
         signup: 'signup'

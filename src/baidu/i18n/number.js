@@ -33,6 +33,10 @@ baidu.i18n.number = baidu.i18n.number || {
             number < 0 && (isNegative = true);
         }
         number = parseFloat(number);
+        if(isNaN(number)){
+            return 'Not a number'; 
+        }
+        
         return tOpt._format ? tOpt._format(number, isNegative) : me._format(number, {
             group: tOpt.group || ',',
             decimal: tOpt.decimal || '.',
@@ -49,18 +53,18 @@ baidu.i18n.number = baidu.i18n.number || {
      * @return {String}
      */
     _format: function(number, options){
-        var numberArray = String(number).splite(options.decimal),
+        var numberArray = String(number).split(options.decimal),
             preNum = numberArray[0].split('').reverse(),
-            aftNum = numberArray[2],
+            aftNum = numberArray[1] || '',
             len = 0,
             result = '';
         
-        len = preNum.length / options.groupLength;
+        len = parseInt(preNum.length / options.groupLength);
         for(var i = 1; i <= len; i++){
-            preNum.splice(groupLength * i + (i - 1) - 1, 0, options.group);    
+            preNum.splice(options.groupLength * i + (i - 1), 0, options.group);    
         }
         preNum = preNum.reverse();
-        result = options.symbol + preNum.join('') + options.decimal + aftNum;
+        result = options.symbol + preNum.join('') + (aftNum.length > 0 ? options.decimal + aftNum : '');
 
         return result;
     }

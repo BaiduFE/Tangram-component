@@ -3,6 +3,7 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 ///import baidu.i18n.cultures;
+///import baidu.object.extend;
 
 baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] || {}, {
     calendar: {
@@ -27,7 +28,7 @@ baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] 
                 group: this.group,
                 groupLength: this.groupLength,
                 decimal: this.decimal,
-                symbol: isNegative ? me.negative : me.positive 
+                symbol: isNegative ? this.negative : this.positive 
             });
         }
     },
@@ -37,7 +38,7 @@ baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] 
     },
 
     language: {
-        ok: '确定'，
+        ok: '确定',
         cancel: '取消',
         signin: '注册',
         signup: '登录'
