@@ -28,10 +28,12 @@ baidu.i18n.number = baidu.i18n.number || {
             }else if(number.indexOf(sOpt.positive) > -1){
                 number = number.replace(sOpt.positive, "");
             }
-            number = number.replace(sOpt.group, "");
+            number = number.replace(new RegExp(sOpt.group,'g'), "");
         }else{
-            number < 0 && (isNegative = true);
-            number *= -1;
+            if(number < 0){
+                isNegative = true;
+                number *= -1;       
+            }
         }
         number = parseFloat(number);
         if(isNaN(number)){
