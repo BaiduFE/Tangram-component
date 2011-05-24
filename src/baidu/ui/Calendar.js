@@ -20,6 +20,10 @@
 ///import baidu.dom.remove;
 ///import baidu.lang.isNumber;
 
+///import baidu.i18n;
+///import baidu.i18n.cultures.zh-CN;
+///import baidu.i18n.date;
+
 /**
  * 创建一个简单的日历对象
  * @name baidu.ui.Calendar
@@ -30,6 +34,7 @@
  * @config {Array} highlightDates 设定需要高亮显示的某几个日期或日期区间，格式:[date, {start:date, end:date}, date, date...]
  * @config {Array} disableDates 设定不可使用的某几个日期或日期区间，格式:[date, {start:date, end:date}, date, date...]
  * @config {Object} flipContent 设置翻转月份按钮的内容，格式{prev: '', next: ''}
+ * @config {string} language 日历显示的语言，默认为中文 
  * @config {function} onclickdate 当点击某个日期的某天时触发该事件
  * @author linlingyu
  */
@@ -57,6 +62,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
     uiType: 'calendar',
     weekStart: 'Sun',//定义周的第一天
     statable: true,
+    language: 'zh-CN',
     
     tplDOM: '<div id="#{id}" class="#{class}">#{content}</div>',
     tplTable: '<table border="0" cellpadding="0" cellspacing="1" class="#{class}"><thead class="#{headClass}">#{head}</thead><tbody class="#{bodyClass}">#{body}</tbody></table>',
@@ -144,7 +150,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
      * @private
      */
     _getMonthCount: function(year, month){
-        var invoke = baidu.i18n.culture.calendar.getMonthCount,
+        var invoke = baidu.i18n.date.getDaysInMonth,
             monthArr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
             count;
         invoke && (count = invoke(year, month));
@@ -161,7 +167,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
      */
     _getDateTableString: function(){
         var me = this,
-            calendar = baidu.i18n.culture.calendar,
+            calendar = baidu.i18n.cultures[me.language].calendar,
             dayArr = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'],//day index
 //            curr = me._currLocalDate,//_currentLocalDate
             curr = me._currDate,
@@ -238,7 +244,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
      * @private
      */
     _toLocalDate: function(date){//很多地方都需要使用到转化，为避免总是需要写一长串i18n特地做成方法吧
-        return date ? baidu.i18n.culture.calendar.toLocalDate(date)
+        return date ? baidu.i18n.date.toLocaleDate(this.language,date)
             : date;
     },
     
@@ -277,7 +283,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
     renderTitle: function(){
         var me = this, prev, next,
             curr = me._currDate,
-            calendar = baidu.i18n.culture.calendar,
+            calendar = baidu.i18n.cultures[me.language].calendar,
             ele = baidu.dom.g(me.getId('label')),
             txt = baidu.string.format(calendar.titleNames, {
                 yyyy: curr.getFullYear(),

@@ -1443,7 +1443,7 @@ bdPass.TemplateItems["length"] = bdPass.TemplateItems["length"] || 0;
 		__onSuccess : function(json) {
 			this.config.onSuccess(this, json);
 		},
-		complete : function(isFailed, json) {debugger
+		complete : function(isFailed, json) {
 			if (document.attachEvent && this.charset) {
 				document.charset = this.charset;
 			}

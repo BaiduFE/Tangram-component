@@ -6,28 +6,6 @@ module('baidu.ui.Carousel');
 		var div = document.createElement('div');
 		div.id = 'div_test';
 		document.body.appendChild(div);
-		// div.style.position="absolute";
-//		var m = document.createElement('ul');
-//		m.className = 'menu';
-//		div.appendChild(m);
-//		var m1 = document.createElement('li');
-//		m1.id = 'm1';
-//		m1.innerHTML = 'm1';
-//		m.appendChild(m1);
-
-//		var sheet = document.createElement("div");
-//		document.getElementsByTagName("head")[0].appendChild(sheet);
-//		var str = "<syle>"+
-//		    ".tangram-carousel {position: relative; overflow: hidden;	border: green solid 4px;}"
-//			+ ".tangram-carousel .tangram-carousel-scroll {position: absolute;border : blue solid 1px;}'"
-//			+ ".tangram-carousel .tangram-carousel-scroll .tangram-carousel-item {position: relatiev;float: left;border: pink solid 1px;width: 80px;}"
-//			+ ".tangram-carousel .tangram-carousel-scroll .tangram-carousel-item-focus {border: red solid 1px;background: #eee;}"
-//			+ ".tangram-carousel-btn-base {float: left;}"
-//			+ "td {border:solid 1px red;}"
-//		    + "</style>";
-//		sheet.innerHTML = str;
-//		testingElement.dom.push(m1);
-//		testingElement.dom.push(m);
 		testingElement.dom.push(div);
 	}
 
@@ -39,7 +17,6 @@ module('baidu.ui.Carousel');
 })();
 
 function createCarousel(c, s) {
-
 	var op = {
 		target : c,
 		contentText : [ {
@@ -61,8 +38,52 @@ function createCarousel(c, s) {
 	else if (s === false)
 		op['orientation'] = 'horizontal';
 	return new baidu.ui.Carousel(op);
-
 }
+
+var step =0;
+var afterstep = 0;
+
+function check(evtindex, evtscrollOffset, evtscrollUnit, evtdirection, index, scrollOffset, scrollUnit, direction){
+	equals(evtindex, index, 'onbeforescroll-check index');
+	equals(evtscrollOffset, scrollOffset, 'onbeforescroll-check scrollOffset');
+	equals(evtscrollUnit, scrollUnit, 'onbeforescroll-check scrollUnit:');
+	equals(evtdirection, direction, 'onbeforescroll-check direction');
+};
+function check_onbeforescroll(evt){
+	step ++;
+	if(step == 1)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 2, 0, 2, 'next');
+	if(step == 2)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 4, 0, 2, 'next');
+	if(step == 3)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 0, 2, 3, 'prev');
+	if(step == 4)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 3, 1, 3, 'next');
+	if(step == 5)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 5, 1, 2, 'next');
+	if(step == 6)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 2, 2, 3, 'prev');
+	if(step == 7)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 2, 0, 2, 'next');//，因为scrollTo(2,6)不会触发滚动，这一步算scrollTo(2,-1)
+
+};
+function check_onafterscroll(evt){
+	afterstep ++;
+	if(afterstep == 1)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 2, 0, 2, 'next');
+	if(afterstep == 2)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 4, 0, 2, 'next');
+	if(afterstep == 3)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 0, 2, 3, 'prev');
+	if(afterstep == 4)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 3, 1, 3, 'next');
+	if(afterstep == 5)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 5, 1, 2, 'next');
+	if(afterstep == 6)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 2, 2, 3, 'prev');
+	if(afterstep == 7)
+		check(evt.index, evt.scrollOffset, evt.scrollUnit, evt.direction, 2, 0, 2, 'next');//，因为scrollTo(2,6)不会触发滚动，这一步算scrollTo(2,-1)	
+};
 
 test("carousel width and height",function(){
 	expect(4);
@@ -181,9 +202,12 @@ test("getTotalCount", function() {
 });
 
 test("prev, item, PUBLICGE-418", function() {
-	expect(6);
+	expect(12);
 	var c = te.dom[0];
 	var carousel = createCarousel(c);
+	carousel.onprev = function(){
+		ok(true, 'onpre is dispatched');
+	}
 	carousel.render(c);
 	carousel.focus(5);
 	carousel.scrollTo(5,0);
@@ -201,9 +225,12 @@ test("prev, item, PUBLICGE-418", function() {
 });
 
 test("next, item, PUBLICGE-418", function() {
-	expect(7);
+	expect(13);
 	var c = te.dom[0];
 	var carousel = createCarousel(c);
+	carousel.onnext = function(){
+		ok(true, 'onnext is dispatched');
+	}
 	carousel.render(c);
 	carousel.focus(0);
 	for(var i = 0; i <= 5; i++){
@@ -328,12 +355,13 @@ test("dispose", function() {
 });
 
 test("scrollTo H", function() {
+	expect(64);
     var cas, oitem, item;
     var c = te.dom[0];
     cas = createCarousel(te.dom[0]);
+    cas.onbeforescroll = check_onbeforescroll;
+    cas.onafterscroll = check_onafterscroll;
 	cas.render(c);
-	item = cas.getItem(0), c = document.getElementById(cas.getId());
-	cas.focus(0);
 	cas.scrollTo(2, 0);
     equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
     cas.scrollTo(4, 0);
@@ -354,13 +382,15 @@ test("scrollTo H", function() {
 });
 
 test("scrollTo V", function() {
+	expect(64);
 	var cas, oitem, item;
 	var c = te.dom[0];
 	cas = createCarousel(te.dom[0], true);
+	step =0;
+	afterstep = 0;
+    cas.onbeforescroll = check_onbeforescroll;
+    cas.onafterscroll = check_onafterscroll;
 	cas.render(c);
-	cas.focus(0);
-	item = cas.getItem(0);
-	c = document.getElementById(cas.getId());
 	cas.scrollTo(2, 0);
     equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
     cas.scrollTo(4, 0);
@@ -376,6 +406,121 @@ test("scrollTo V", function() {
     cas.scrollTo(2, 6);
     equals(cas.getScrollContainer().firstChild.innerHTML, 'item-0',"验证滚动");
     cas.scrollTo(2, -1);
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
+	cas.dispose();
+});
+
+test("scrollTo, without scrollOffset", function() {
+	var cas, oitem, item;
+	var c = te.dom[0];
+	cas = createCarousel(te.dom[0], true);
+	cas.render(c);
+	cas.scrollTo(2);
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
+    cas.scrollTo(4);
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-4',"验证滚动");
+    cas.scrollTo(0);
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-0',"验证滚动");
+	cas.dispose();
+});
+
+test("scrollTo H, with direction", function() {
+	expect(65);
+	var cas, oitem, item;
+	var c = te.dom[0];
+	cas = createCarousel(te.dom[0], true);
+	step =0;
+	afterstep = 0;
+    cas.onbeforescroll = check_onbeforescroll;
+    cas.onafterscroll = check_onafterscroll;
+	cas.render(c);
+	cas.scrollTo(2, 0, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
+    cas.scrollTo(4, 0, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-4',"验证滚动");
+    cas.scrollTo(0, 2, 'prev');
+    equals(cas.getScrollContainer().firstChild.innerHTML, '',"验证滚动");
+    equals(cas.getScrollContainer().firstChild.nextSibling.nextSibling.innerHTML, 'item-0',"验证滚动");
+    cas.scrollTo(3, 1, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
+    cas.scrollTo(5, 1, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-4',"验证滚动");
+    cas.scrollTo(2, 2, 'prev');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-0',"验证滚动");
+    cas.scrollTo(2, 6, 'prev');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-0',"验证滚动");
+    cas.scrollTo(2, -1, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
+	cas.dispose();
+});
+
+test("scrollTo V, with direction", function() {
+	expect(65);
+	var cas, oitem, item;
+	var c = te.dom[0];
+	cas = createCarousel(te.dom[0], true);
+	step =0;
+	afterstep = 0;
+    cas.onbeforescroll = check_onbeforescroll;
+    cas.onafterscroll = check_onafterscroll;
+	cas.render(c);
+	cas.scrollTo(2, 0, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
+    cas.scrollTo(4, 0, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-4',"验证滚动");
+    cas.scrollTo(0, 2, 'prev');
+    equals(cas.getScrollContainer().firstChild.innerHTML, '',"验证滚动");
+    equals(cas.getScrollContainer().firstChild.nextSibling.nextSibling.innerHTML, 'item-0',"验证滚动");
+    cas.scrollTo(3, 1, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
+    cas.scrollTo(5, 1, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-4',"验证滚动");
+    cas.scrollTo(2, 2, 'prev');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-0',"验证滚动");
+    cas.scrollTo(2, 6, 'prev');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-0',"验证滚动");
+    cas.scrollTo(2, -1, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
+	cas.dispose();
+});
+
+test("large quantity", function() {
+	expect(12);
+	var cas, oitem, item;
+	var c = te.dom[0];
+	var data = new Array();
+	for(var i = 0; i < 1000; i++)
+		data.push({content : 'item-' + i});
+	var op = {
+			target : c,
+			contentText : data
+		};
+	var cas = new baidu.ui.Carousel(op);
+	cas.render(c);
+	ok(cas.getItem(0).className.indexOf(cas.getClass("item-focus")) > -1,
+	"item0 is focus");
+	cas.scrollTo(100, 0);
+	cas.focus(100);
+	ok(cas.getItem(100).className.indexOf(cas.getClass("item-focus")) > -1,
+	"item100 is focus");
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-100',"验证滚动");
+    cas.scrollTo(200, 0);
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-200',"验证滚动");
+    cas.scrollTo(0, 2);
+    equals(cas.getScrollContainer().firstChild.innerHTML, '',"验证滚动");
+    equals(cas.getScrollContainer().firstChild.nextSibling.nextSibling.innerHTML, 'item-0',"验证滚动");
+    cas.scrollTo(500, 1, 'next');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-499',"验证滚动");
+    cas.scrollTo(999, 1, 'next');
+    cas.focus(999);
+	ok(cas.getItem(999).className.indexOf(cas.getClass("item-focus")) > -1,
+	"item999 is focus");
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-998',"验证滚动");
+    cas.scrollTo(200, 2, 'prev');
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-198',"验证滚动");
+    cas.scrollTo(200, 6);
+    equals(cas.getScrollContainer().firstChild.innerHTML, 'item-198',"验证滚动");
+    cas.scrollTo(2, -1, 'next');
     equals(cas.getScrollContainer().firstChild.innerHTML, 'item-2',"验证滚动");
 	cas.dispose();
 });

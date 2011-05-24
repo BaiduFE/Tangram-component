@@ -4,6 +4,7 @@
         <title>dialog manual test - by berg</title>
         <meta http-equiv="Content-Type" charset="utf-8" content="text/html;charset=utf-8">
         <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Dialog.*,baidu.ui.legacy' ></script>
+        <script src='../../../../src/import.php?f=baidu.ui.get,baidu.ui.Suggestion.*' ></script>
         
         <script src='../../../../src/import.php?f=baidu.ui.behavior.decorator' ></script>
         <!--页面依赖-->
@@ -16,6 +17,11 @@ body{
 h2{
     margin:0.3em 0;
 }
+
+.tangram-suggestion-main{
+    z-index:9999
+}
+
 .case{
     border:1px #333 solid;
     padding:5px;
@@ -269,12 +275,23 @@ h2{
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({width:200, height: 200})'>small one</a>, ");
                 dialogContent.push("<a href=# onclick='baidu.ui.get(this).update({top:\"auto\", left : \"auto\"})'>go middle</a>, <select> <option>im in dialog</option> </select> ");
                 dialogContent.push('<object width="695" height="90" align="middle" id="flash2" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" style=""><param value="window" name="wmode"><param value="http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&amp;gp=402&amp;time=nHc4PjmzP16vn0.swf" name="movie"><embed width="695" height="90" align="middle" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" name="flash2" src="http://drmcmm.baidu.com/media/id=nHcdrHRdP1m&amp;gp=402&amp;time=nHc4PjmzP16vn0.swf" wmode="window"></object>');
+                dialogContent.push('<input with="200px" id="suggestion_input"/>');
                 dialogContent = dialogContent.join('');
 
                 if(!type){
                     options['contentText'] = dialogContent;
                     var dialog = new baidu.ui.Dialog(options);
                     dialog.open();
+
+                    var s = new baidu.ui.Suggestion({
+                        getData: function(){
+                            this.setData("f",[
+                                "fuck",
+                                "fuck1",
+                                "fuck2"]);
+                        }
+                    });
+                    s.render('suggestion_input');
                 }else if(type == 'iframe'){
                     var dialog = new baidu.ui.Dialog.iframe("inner.html", options);
                 }else{

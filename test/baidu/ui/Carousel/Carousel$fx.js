@@ -35,8 +35,8 @@ test('horizontal, in buff', function() {
 			},
 			"onafterscroll" : function() {
 				var container = document.getElementById(this.getId());
-				var len = baidu.dom.children(carous.getScrollContainer()).length;
-				var firstItemInWindow = baidu.dom.children(carous.getScrollContainer())[len-3].innerHTML;
+				var i = Math.round(container.scrollLeft / 86);
+				var firstItemInWindow = baidu.dom.children(carous.getScrollContainer())[i].innerHTML;
 				if (step == 0) {
 					equals(firstItemInWindow, 'item~2', 'step0');
 					setTimeout(function() {
@@ -73,7 +73,7 @@ test('horizontal, in buff', function() {
 					}, 0);
 				}
 				if (step == 5) {
-					equals(firstItemInWindow, 'item~4', 'step5');
+					equals(firstItemInWindow, '', 'step5');
 					setTimeout(function() {
 						start();
 						carous.dispose();
@@ -140,8 +140,8 @@ test('vertical, in buff', function() {
 			},
 			"onafterscroll" : function() {
 				var container = document.getElementById(this.getId());
-				var len = baidu.dom.children(carous.getScrollContainer()).length;
-				var firstItemInWindow = baidu.dom.children(carous.getScrollContainer())[len-3].innerHTML;
+				var i = Math.round(container.scrollTop / 25);
+				var firstItemInWindow = baidu.dom.children(carous.getScrollContainer())[i].innerHTML;
 				if (step == 0) {
 					equals(firstItemInWindow, 'item~2', 'step0');
 					setTimeout(function() {
@@ -178,7 +178,7 @@ test('vertical, in buff', function() {
 					}, 0);
 				}
 				if (step == 5) {
-					equals(firstItemInWindow, 'item~4', 'step5');
+					equals(firstItemInWindow, '', 'step5');
 					setTimeout(function() {
 						start();
 						carous.dispose();

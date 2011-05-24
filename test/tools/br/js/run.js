@@ -3,13 +3,7 @@ function run(kiss, runnext) {
 	window.document.title = kiss;
 	var wb = window.brtest = window.brtest || {};
 
-	if (wb.kisses && wb.kisses[kiss + '_error']) {
-		$('div#id_runningarea').empty().css('display', 'block').append(
-				wb.kisses[kiss + 'error']);
-		return;
-	}
-
-	wb.timeout = wb.timeout || 20000;
+	wb.timeout = wb.timeout || 8000;
 	wb.breakOnError = /breakonerror=true/gi.test(location.search)
 			|| $('input#id_control_breakonerror').attr('checked');
 	wb.runnext = /batchrun=true/gi.test(location.search) || runnext
@@ -53,8 +47,6 @@ function run(kiss, runnext) {
 					'done',
 					function(event, a, b, covinfo) {
 						clearTimeout(toh);
-						// 田丽丽修改
-						// 原本此处参数b中只有两个元素，但是为了标识有test超时，传入config.testTimeoutFlag作为b[2]，如果config.testTimeoutFlag为true，将module标记为fail_case
 						var wb = window.brtest, errornum = b.failed, allnum = b.failed
 								+ b.passed;// , testTimeOutFlag = b[2];
 						wb.kissend = new Date().getTime();
@@ -81,11 +73,11 @@ function run(kiss, runnext) {
 										.split(',')[0]) == 0)) {
 							var nextA = wb.kissnode.next()[0];
 							if (nextA.tagName == 'A') {
-								run(nextA.title, wb.runnext);
+								if (wb.kisses[nextA.title] === undefined)
+									run(nextA.title, wb.runnext);
 							} else {
 								/* 隐藏执行区 */
-								$('div#id_runningarea').toggle();
-
+								// $('div#id_runningarea').toggle();
 								/* ending 提交数据到后台 */
 								wb.kisses['config'] = location.search
 										.substring(1);
@@ -115,7 +107,8 @@ function run(kiss, runnext) {
 	/**
 	 * 初始化执行区并通过嵌入iframe启动用例执行
 	 */
-	var url = 'run.php?case=' + kiss + '&' + location.search.substring(1);
+	var url = 'run.php?case=' + kiss + '&time=' + new Date().getTime() + "&"
+	+ location.search.substring(1);
 	// + (location.search.length > 0 ? '&' + location.search.substring(1)
 	// : '');
 
