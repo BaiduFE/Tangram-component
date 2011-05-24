@@ -12,6 +12,7 @@
 
 ///import baidu.lang.isArray;
 ///import baidu.array.each;
+///import baidu.array.contains;
 
 ///import baidu.event.stop;
 
@@ -61,8 +62,15 @@ baidu.ui.Tooltip.register(function(me) {
 
         //隐藏tooltip
         function hideFn(e){
-            me.close();
+            var target = baidu.event.getTarget(e || window.event),
+                judge = function(el){
+                    return me.getBody() == el;
+                };
+            if(judge(target) || baidu.dom.getAncestorBy(target, judge) || baidu.ui.get(target) == me){
+                return;
+            }
 
+            me.close();
             //停止默认事件及事件传播
             baidu.event.stop(e || window.event);
         }
