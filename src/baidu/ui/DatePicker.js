@@ -20,6 +20,9 @@
 ///import baidu.dom.getPosition;
 ///import baidu.browser.isStrict;
 
+///import baidu.i18n;
+///import baidu.i18n.cultures.zh-CN;
+
 /**
  * 创建一个日历对象绑定于一个input输入域
  * @name baidu.ui.DatePicker
@@ -31,10 +34,11 @@
  * @config {Object} popupOptions Picker组件的浮动层由Popup组件渲染，该参数用来设置Popup的属性，具体参考Popup
  * @config {Object} calendarOptions Picker组件的日历由Calendar组件渲染，该参数来用设置Calendar的属性，具体参考Calendar
  * @config {Function} onpick 当选中某个日期时的触发事件
+ * @config {String} language 当前语言，默认为中文
  */
 baidu.ui.DatePicker = baidu.ui.createUI(function(options){
     var me = this;
-    me.format = me.format || baidu.i18n.culture.calendar.dateFormat || 'yyyy-MM-dd';
+    me.format = me.format || baidu.i18n.cultures[me.language].calendar.dateFormat || 'yyyy-MM-dd';
     me.popupOptions = baidu.object.merge(me.popupOptions || {},
         options,
         {overwrite: true, whiteList: ['width', 'height']});
@@ -52,6 +56,9 @@ baidu.ui.DatePicker = baidu.ui.createUI(function(options){
  */
 {
     uiType: 'datePicker',
+
+    language: 'zh-CN',
+    
     /**
      * 取得从input到得字符按format分析得到的日期对象
      * @private
