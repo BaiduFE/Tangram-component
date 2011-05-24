@@ -35,7 +35,7 @@ test('toLocaleDate', function(){
 	localTime = date.getTime();
 	localOffset=date.getTimezoneOffset()*60000; //获得当地时间偏移的毫秒数
 	utc = localTime + localOffset; //utc即GMT时间
-	offset =-5; //-5区
+	offset = -5; //-5区 美国时间
 	us = utc + (3600000*offset);
 	date_5 = new Date(us); 
 	var newtoen = baidu.i18n.date.toLocaleDate('en-US', date);
@@ -50,4 +50,18 @@ test('toLocaleDate', function(){
 	equals(newentoen.toString() ,date_5.toString(), 'Convert to en-US time');
 	var newentozh= baidu.i18n.date.toLocaleDate('zh-CN', date_5, 'en-US');
 	equals(newentozh.toString(), date.toString(), 'Convert to zh-CN time');
+});
+
+test('custom language', function(){
+	var date = new Date();
+	localTime = date.getTime();
+	localOffset=date.getTimezoneOffset()*60000; //获得当地时间偏移的毫秒数
+	utc = localTime + localOffset; //utc即GMT时间
+	offset = -4; //-4区 加拿大时间
+	ca = utc + (3600000*offset);
+	date_4 = new Date(ca); 
+	var newentozh= baidu.i18n.date.toLocaleDate('zh-CN', date_4, 'en-CA');
+	equals(newentozh.toString(), date.toString(), 'Convert to zh-CN time');
+	var newzhtoen = baidu.i18n.date.toLocaleDate('en-CA', date, 'zh-CN');
+	equals(newzhtoen.toString() ,date_4.toString(), 'Convert to en-US time');
 });
