@@ -25,3 +25,10 @@ test('string', function(){
 	equals(baidu.i18n.number.format('en-US', 'abcd', 'zh-CN'), 'Not a number', 'en-US to zh-CN, special chars');
 	equals(baidu.i18n.number.format('en-US', '10000。1', 'zh-CN'), '10,000', 'en-US to zh-CN');
 });
+
+test('custom language', function(){
+	equals(baidu.i18n.number.format('zh-CN', 1000000000.1, 'en-CA'), '1,000,000,000.1', 'zh-CN to en-CA');
+	equals(baidu.i18n.number.format('en-CA', 12345678.901, 'zh-CN'), '12,345,678.901', 'en-CA to zh-CN');
+	equals(baidu.i18n.number.format('zh-CN', '123,45678.901', 'zh-CN'), '12,345,678.901', 'zh-CN to zh-CN');
+	equals(baidu.i18n.number.format('en-CA', '-100,000,0000', 'en-CA'), '-1,000,000,000', 'en-CA to en-CA');
+});
