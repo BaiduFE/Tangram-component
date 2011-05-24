@@ -7,7 +7,8 @@ module('baidu.ui.Calendar');
 	// 月份信息
 	te._monthDay = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 	te._weekShot = 'sun,mon,tue,wed,thu,fri,sat';
-
+	te._language = ['zh-CN','zh-CN','zh-CN','zh-CN','zh-CN', 'en-US', 'en-US'];
+	te._language_count = 0;
 	te.getDate = function(date, day) {
 		var d = new Date();
 		if (typeof date == 'string') {
@@ -148,6 +149,8 @@ module('baidu.ui.Calendar');
 
 	te.getUI = function(norender, target, op) {
 		te.now = new Date();// 避免时间误差，此处直接纪录时间
+		op = op || {};
+		op.language = te._language[te._language_count++];
 		var ui = new baidu.ui.Calendar(op || {});
 		te.obj.push(ui);
 		te.dom.push(ui.getMain());
