@@ -5,9 +5,10 @@ module('baidu.ui.Carousel.Carousle$table');
  * <li>removeTableItem
  * 
  * **/
-function createCarousel(s) {
+function createCarousel(s, supportTable) {
 	var op = {
 		// target : c,
+	    supportTable : supportTable ,
 		orientation : s,
 		contentText : [ {
 			content : "data-0"
@@ -33,10 +34,23 @@ function createCarousel(s) {
 	return new baidu.ui.Carousel(op);
 };
 
+
+test("diasble", function() {
+	expect(3);
+	var cas, oitem, item, c;
+	cas = createCarousel('horizontal', false);
+	cas.render(te.dom[0]);
+	var items = baidu.dom.children(cas.getScrollContainer());
+	equals(items[0].innerHTML, 'data-0', "check first item");
+	equals(items[1].innerHTML, 'data-1', "check second item");
+	equals(items[2].innerHTML, 'data-2', "check third item");
+	
+});
+
 test("basic", function() {
 	expect(14);
 	var cas, oitem, item, c;
-	cas = createCarousel('horizontal');
+	cas = createCarousel('horizontal', true);
 	cas.render(te.dom[0]);
 	var items = baidu.dom.children(cas.getScrollContainer());
 	equals(items.length, 3, '3 items');
@@ -59,7 +73,7 @@ test("basic", function() {
 
 test("addTableItem, index = -1", function() {
 	var cas, oitem, item, c;
-	cas = createCarousel('horizontal');
+	cas = createCarousel('horizontal', true);
 	cas.render(te.dom[0]);
 	var contentText =[ {
 		content : "data-a"
@@ -106,7 +120,7 @@ test("addTableItem, index = -1", function() {
 
 test("addTableItem, index = 0", function() {
 	var cas, oitem, item, c;
-	cas = createCarousel('horizontal');
+	cas = createCarousel('horizontal', true);
 	cas.render(te.dom[0]);
 	var contentText =[ {
 		content : "data-a"
@@ -153,7 +167,7 @@ test("addTableItem, index = 0", function() {
 
 test("addTableItem, index = null", function() {
 	var cas, oitem, item, c;
-	cas = createCarousel('horizontal');
+	cas = createCarousel('horizontal', true);
 	cas.render(te.dom[0]);
 	var contentText =[ {
 		content : "data-a"
@@ -199,7 +213,7 @@ test("addTableItem, index = null", function() {
 
 test("addTableItem, index = null, less data", function() {
 	var cas, oitem, item, c;
-	cas = createCarousel('horizontal');
+	cas = createCarousel('horizontal', true);
 	cas.render(te.dom[0]);
 	var contentText =[ {
 		content : "data-a"
@@ -263,7 +277,7 @@ test("addTableItem, index = null, less data", function() {
 
 test("removeTableItem, index = -1", function() {//设计规定removeItem和removeTableItem传入的index是-1时，不做处理
 	var cas, oitem, item, c;
-	cas = createCarousel('horizontal');
+	cas = createCarousel('horizontal', true);
 	cas.render(te.dom[0]);
 	cas.removeTableItem(-1);
 	var items = baidu.dom.children(cas.getScrollContainer());
@@ -287,7 +301,7 @@ test("removeTableItem, index = -1", function() {//设计规定removeItem和remov
 
 test("removeTableItem, index = 0", function() {
 	var cas, oitem, item, c;
-	cas = createCarousel('horizontal');
+	cas = createCarousel('horizontal', true);
 	cas.render(te.dom[0]);
 	cas.removeTableItem(0);
 	var items = baidu.dom.children(cas.getScrollContainer());
@@ -304,7 +318,7 @@ test("removeTableItem, index = 0", function() {
 
 test("removeTableItem, index = 1", function() {
 	var cas, oitem, item, c;
-	cas = createCarousel('horizontal');
+	cas = createCarousel('horizontal', true);
 	cas.render(te.dom[0]);
 	var contentText =[ {
 		content : "data-a"
@@ -369,7 +383,7 @@ test("removeTableItem, index = 1", function() {
 
 test("getTable", function() {
 	var cas, oitem, item, c;
-	cas = createCarousel('horizontal');
+	cas = createCarousel('horizontal', true);
 	cas.render(te.dom[0]);
 	var table = cas.getTable(-1);
 	equals(table, null, 'get null');
