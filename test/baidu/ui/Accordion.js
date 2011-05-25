@@ -51,7 +51,7 @@ test('function - insertItemHTML', function() {
 	}, 1);
 	equals(ui.getHeads().length, 3, 'check sub items length');
 	equals(ui.getHeads()[1].innerHTML, 'H4', 'check inserted item');
-	equals(ui.getBodies()[1].innerHTML, 'body4-0<div>body4-1</div>',
+	equals(ui.getBodies()[1].innerHTML.replace(/\s/g,'').toLowerCase(), 'body4-0<div>body4-1</div>',
 			'check inserted item');
 	equals(ui.getHeads()[2].innerHTML, 'H1', 'check inserted item');
 
@@ -121,8 +121,8 @@ test('get items', function() {
 
 	var bs = ui.getBodies();
 	equals(bs.length, 2, 'get bodies');
-	equals(bs[0].innerHTML, '<div>B0</div>', 'body 0');
-	equals(bs[1].innerHTML, '<div>B1</div>', 'body 1');
+	ok(bs[0].innerHTML == '<div>B0</div>' || bs[0].innerHTML == '<DIV>B0</DIV>', 'body 0');
+	ok(bs[1].innerHTML == '<div>B1</div>' || bs[1].innerHTML == '<DIV>B1</DIV>', 'body 1');
 
 	var is = ui.items;
 	equals(is.length, 2, 'get items');

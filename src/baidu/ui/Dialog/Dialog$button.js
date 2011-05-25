@@ -8,6 +8,10 @@
 ///import baidu.object.each;
 ///import baidu.ui.Dialog.Dialog$autoDispose;
 
+///import baidu.i18n;
+///import baidu.i18n.string;
+///import baidu.i18n.cultures.zh-CN;
+
 /**
  * 根据this.buttons创建dialog下部的buttons
  * butions格式
@@ -53,11 +57,14 @@ baidu.extend(baidu.ui.Dialog.prototype,{
 });
 baidu.ui.Dialog.register(function(me){
     //存储button实例
-    me.buttonInstances = {}; 
+    me.buttonInstances = {};
+    me.language = me.language || 'zh-CN';
     
-    var accept,cancel,tmpButtons = {};
+    var accept,cancel,tmpButtons = {},
+        language = baidu.i18n.cultures[me.language].language;
+    
     accept = {
-        'content' : '确定',
+        'content' : language['ok'],
         'onclick' : function() {
             var me = this,
                 parent = me.getParent();
@@ -65,7 +72,7 @@ baidu.ui.Dialog.register(function(me){
         }
     };
     cancel = {
-        'content' : '取消',
+        'content' : language['cancel'],
         'onclick' : function() {
             var me = this,
                 parent = me.getParent();
