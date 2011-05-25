@@ -196,7 +196,7 @@ test("set,get,remove a lot of data", function() {
 		}
 		start();
 	};
-	ua.importsrc('baidu.browser,baidu.browser.chrome,baidu.browser.opera,baidu.browser.firefox', 
+	ua.importsrc('baidu.browser,baidu.browser.chrome,baidu.browser.opera,baidu.browser.firefox,baidu.browser.maxthon,baidu.browser.safari', 
 			check ,'baidu.browser', 'baidu.data.storage');
 });
 
@@ -212,8 +212,8 @@ test("overflow", function() {
 	for(var i = 0; i < 3000; i++)
 		value += 'value';
 	var times = 5;
-	if(baidu.browser.chrome || baidu.browser.firefox)
-		times = 100;
+	if(baidu.browser.chrome || baidu.browser.maxthon || baidu.browser.safari)
+		times = 300;
 	if(baidu.browser.firefox)//FF太慢，所以不测overflow
 		times = 1;
 	for(var i = 0; i < times; i++){
