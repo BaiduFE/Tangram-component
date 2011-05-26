@@ -45,16 +45,6 @@ baidu.ui.Tree = baidu.ui.createUI(function(options) {
     this._treeNodes = {};
 });
 
-/**
- * Tangram
- * Copyright 2010 Baidu Inc. All rights reserved.
- *
- * path: ui/tree/TreeNode.js
- * author: fx
- * version: 1.0.0
- * date: 2010-10-27
- */
-
 //TreeNode类 
 /**
  * 树节点类
