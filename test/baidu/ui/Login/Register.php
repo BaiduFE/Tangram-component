@@ -72,14 +72,6 @@
 
          more_ext : {
 
-             ext1_name : "\u5fd8\u8bb0\u5bc6\u7801",
-
-             ext1_url : "http://passport.baidu.com/?getpass_index",
-
-             ext2_name : "\u95ee\u9898\u53cd\u9988",
-
-             ext2_url :  "http://passport.baidu.com/?question"
-
          }
 
     })';
