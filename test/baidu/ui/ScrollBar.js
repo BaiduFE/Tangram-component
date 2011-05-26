@@ -197,7 +197,6 @@ test('mousemove thumb',function(){
 	        	clientY:thumbtop+50
 	        });
 		}, 60);
-	   start();
    });
 });
 
@@ -229,19 +228,18 @@ test('mousedown slider',function(){
 				clientX : thumbleft,
 				clientY:thumbtop+70
 			});
-		},30)
+		},30);
 	    setTimeout(function(){
 			ua.mousedown(slider, {
 				clientX : thumbleft,
 				clientY:thumbtop+70
 			});
-		},60)
+		},60);
 		setTimeout(function(){
 		   equal(baidu.dom.getStyle(thumb,'top'),Math.round((70-thumbheight*0.5))+'px','mousedown slider ');
 		   te.obj.push(scrollbar);
 		   start();
-		},100)
-		start();
+		},100);
    });
 });
 
