@@ -10,6 +10,23 @@
 
 ///import baidu.ui.createUI;
 ///import baidu.string.format;
+///import baidu.array.each;
+///import baidu.array.remove;
+///import baidu.string.format;
+///import baidu.dom.remove;
+///import baidu.dom.g;
+///import baidu.dom.children;
+///import baidu.dom.addClass;
+///import baidu.dom.removeClass;
+///import baidu.dom.insertHTML;
+///import baidu.object.extend;
+///import baidu.event.stopPropagation;
+///import baidu.string.encodeHTML;
+///import baidu.object.extend;
+///import baidu.dom.insertBefore;
+///import baidu.dom.insertAfter;
+///import baidu.dom.hide;
+///import baidu.dom.show;
 
 /**
  * @class  Tree：管理和操作TreeNode
@@ -39,25 +56,6 @@ baidu.ui.Tree = baidu.ui.createUI(function(options) {
  * version: 1.0.0
  * date: 2010-10-27
  */
-///import baidu.ui.Tree;
-///import baidu.ui.createUI;
-///import baidu.array.each;
-///import baidu.array.remove;
-///import baidu.string.format;
-///import baidu.dom.remove;
-///import baidu.dom.g;
-///import baidu.dom.children;
-///import baidu.dom.addClass;
-///import baidu.dom.removeClass;
-///import baidu.dom.insertHTML;
-///import baidu.object.extend;
-///import baidu.event.stopPropagation;
-///import baidu.string.encodeHTML;
-///import baidu.object.extend;
-///import baidu.dom.insertBefore;
-///import baidu.dom.insertAfter;
-///import baidu.dom.hide;
-///import baidu.dom.show;
 
 //TreeNode类 
 /**
