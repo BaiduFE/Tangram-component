@@ -100,7 +100,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
         me._resizeView();
         me._moveToMiddle();
         me.focus(me.scrollIndex);
-        me.addEventListener('onafterscroll', function(evt) {
+        me.addEventListener('onbeforeendscroll', function(evt) {
             var orie = me.orientation == 'horizontal',
                 axis = me._axis[me.orientation],
                 sContainer = me.getScrollContainer();
@@ -343,6 +343,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
         if (me.dispatchEvent('onbeforescroll', {index: index, scrollOffset: scrollOffset,
             direction: smartDirection, scrollUnit: count})) {
             me.getBody()[axis.scrollPos] += count * me[axis.vector].offset * (vector ? -1 : 1);
+            me.dispatchEvent('onbeforeendscroll', {index: index, scrollOffset: scrollOffset,
+                direction: smartDirection, scrollUnit: count});
             me.dispatchEvent('onafterscroll', {index: index, scrollOffset: scrollOffset,
                 direction: smartDirection, scrollUnit: count});
         }
@@ -360,8 +362,8 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
             currIndex = me.scrollIndex,
             index = currIndex + (vector ? 1 : me.pageSize) * (type ? -1 : 1),
             offset = vector ? (type ? 0 : me.pageSize - 1)
-                : baidu.array.indexOf(baidu.dom.children(me.getScrollContainer()), me.getItem(currIndex)),
-            flipIndex;
+                : baidu.array.indexOf(baidu.dom.children(me.getScrollContainer()), me.getItem(currIndex));
+        //fix flip page
         if (!vector && (index < 0 || index > me._dataList.length - 1)) {
             index = currIndex - offset + (type ? -1 : me.pageSize);
             offset = type ? me.pageSize - 1 : 0;
@@ -380,10 +382,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
             flip = me._getFlipIndex(type);
         if(flip.index < 0 || flip.index > me._dataList.length - 1){return;}
         function moveByIndex(index, offset, type){
-            me.addEventListener('onafterscroll', function(evt){
+            me.addEventListener('onbeforeendscroll', function(evt){
                 var target = evt.target;
                 target.focus(evt.index);
-                target.removeEventListener('onafterscroll', arguments.callee);
+                target.removeEventListener('onbeforeendscroll', arguments.callee);
             });
             me.scrollTo(index, offset, type);
         }
