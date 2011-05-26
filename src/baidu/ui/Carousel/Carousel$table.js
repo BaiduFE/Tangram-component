@@ -15,9 +15,11 @@
 /**
  * 
  * @param {Object} options config参数.
+ * @config {Boolean} supportTable 是否支持表格项，默认支持
  * @config {Object} gridLayout 描述一个滚动项的内容是以多行多列的数据形式，例如：{row:3, col:2}
  */
-baidu.ui.Carousel.register(function(me){
+baidu.ui.Carousel.register(function(me) {
+    if(!me.supportTable){return;}
     me.gridLayout = baidu.object.extend({row: 3, col: 3},
         baidu.lang.isArray(me.gridLayout) ? baidu.array.hash(['row', 'col'], me.gridLayout)
             : me.gridLayout);
@@ -34,6 +36,7 @@ baidu.ui.Carousel.extend(
  *  @lends baidu.ui.Carousel.prototype
  */
 {
+    supportTable: true,
     /**
 	 * 将一维的数组通过layout格式化成二维的数据
 	 * @param {Array} data 需要插入到table的数据(一维)
