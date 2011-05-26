@@ -47,9 +47,9 @@ test('prev and next in iframe', function(){
 			}
 			if(step == 2){
 				if(baidu.browser.ie)
-					equals(w.location.hash, '#', 'The hash is ' + w.location.hash);
+					equals(w.location.hash, '#' + init_hash, 'The hash is ' + w.location.hash);
 				else
-					equals(w.location.hash, '', 'The hash is ' + w.location.hash);
+					equals(w.location.hash, init_hash, 'The hash is ' + w.location.hash);
 			    if(baidu.browser.ie){
 				    setTimeout(function(){
 				    	w.location.hash = 3;
@@ -65,6 +65,7 @@ test('prev and next in iframe', function(){
 			    me.finish();
 			} 
 		};
+		var init_hash = w.location.hash;
 		w.baidu.history.listen(callback);
 		w.location.hash = 3;
     });

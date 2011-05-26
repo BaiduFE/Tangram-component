@@ -246,36 +246,48 @@ test("next, item, PUBLICGE-418", function() {
 });
 
 test("prev and next, page", function() {
-	expect(7);
+	expect(15);
 	var c = te.dom[0];
 	var carousel = createCarousel(c);
-	var item;
 	carousel.render(c);
 	carousel.flip = 'page';
+	var npstep = 0;
+	carousel.onafterscroll = function check_onafterscroll(evt){
+		npstep ++;
+		if(npstep == 1)
+			equals(this.getCurrentIndex(), 3, 'check getCurrentIndex');
+		if(npstep == 2)
+			equals(this.getCurrentIndex(), 0, 'check getCurrentIndex');
+		if(npstep == 3)
+			equals(this.getCurrentIndex(), 0, 'check getCurrentIndex');
+		if(npstep == 4)
+			equals(this.getCurrentIndex(), 3, 'check getCurrentIndex');
+		if(npstep == 5)
+			equals(this.getCurrentIndex(), 4, 'check getCurrentIndex');
+		if(npstep == 6)
+			equals(this.getCurrentIndex(), 4, 'check getCurrentIndex');
+		if(npstep == 7)
+			equals(this.getCurrentIndex(), 2, 'check getCurrentIndex');
+		if(npstep == 8)
+			equals(this.getCurrentIndex(), 1, 'check getCurrentIndex');
+	};
 	carousel.next();
-	ok(carousel.getItem(3).className.indexOf(carousel.getClass("item-focus")) > -1,
-			"check next item3");
+	equals(carousel.getCurrentIndex(), 3, "check next item3");
 	carousel.prev();
-	ok(carousel.getItem(0).className.indexOf(carousel.getClass("item-focus")) > -1,
-	"check prev item0");
+	equals(carousel.getCurrentIndex(), 0, "check prev item0");
 	carousel.scrollTo(0,2);
-	ok(carousel.getItem(0).className.indexOf(carousel.getClass("item-focus")) > -1,
-	"check focus afet scroll PUBLICGE-429");
+	equals(carousel.getCurrentIndex(), 0, "check focus after scroll PUBLICGE-429");
 	carousel.focus(0);
 	carousel.next();
-	ok(carousel.getItem(3).className.indexOf(carousel.getClass("item-focus")) > -1,
-	"check next item1");
+	equals(carousel.getCurrentIndex(), 3, "check next item1");
 	carousel.next();
-	ok(carousel.getItem(4).className.indexOf(carousel.getClass("item-focus")) > -1,
-	"check next item4");
+	equals(carousel.getCurrentIndex(), 4, "check next item4");
 	carousel.scrollTo(5,0);
 	carousel.focus(5);
 	carousel.prev();
-	ok(carousel.getItem(2).className.indexOf(carousel.getClass("item-focus")) > -1,
-	"check prev item4");
+	equals(carousel.getCurrentIndex(), 2, "check prev item4");
 	carousel.prev();
-	ok(carousel.getItem(1).className.indexOf(carousel.getClass("item-focus")) > -1,
-	"check prev item1");
+	equals(carousel.getCurrentIndex(), 1, "check prev item1");
 	carousel.dispose();
 });
 

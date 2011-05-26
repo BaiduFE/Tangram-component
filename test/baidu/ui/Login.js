@@ -7,7 +7,7 @@ test("Basic test", function() {
 		var options = {
 			autoRender : true,
 			titleText : "登录窗口",
-			loginURL : upath + "Login/login.php" // 打个桩,干掉跨域
+			loginURL : upath + "Login/Login.php" // 打个桩,干掉跨域
 		};
 		var l = baidu.event._listeners.length;
 		var login = new baidu.ui.Login(options);
@@ -35,7 +35,7 @@ test("Login with right username and password", function() {
 		var options = {
 			autoRender : true,
 			titleText : "登录窗口",
-			loginURL : upath + "Login/login.php", // 打个桩,干掉跨域
+			loginURL : upath + "Login/Login.php", // 打个桩,干掉跨域
 			onLoginSuccess : function() {
 				ok(true, "Login successfully");
 				login.close();
@@ -68,7 +68,7 @@ test("Login with wrong username and password", function() {
 		var options = {
 			autoRender : true,
 			titleText : "登录窗口",
-			loginURL : upath + "Login/login.php", // 打个桩,干掉跨域
+			loginURL : upath + "Login/Login.php", // 打个桩,干掉跨域
 			onLoginFailure : function() {
 				ok(true, "Login fail");
 				login.close();
