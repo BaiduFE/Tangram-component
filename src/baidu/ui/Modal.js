@@ -28,6 +28,7 @@
 ///import baidu.dom.getPosition;
 ///import baidu.dom.children;
 ///import baidu.dom.fixable;
+///import baidu.browser.ie;
 
 ///import baidu.lang.instance;
 
@@ -179,12 +180,6 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
         if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie < 7){
             me.windowHandler = me.getWindowHandle();
             baidu.on(window, 'resize', me.windowHandler);
-
-            //iframe 补丁
-            window.top !== window.self && setTimeout(function(){
-                me._getModalStyles({});
-                me._update();
-            },16);
         }
     },
 
@@ -265,6 +260,14 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
                 width: baidu.page.getViewWidth(),
                 height: baidu.page.getViewHeight()
             });
+            
+            if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie < 7){
+                //iframe 补丁
+                window.top !== window.self && setTimeout(function(){
+                    me._getModalStyles({});
+                    me._update();
+                },16);
+            }
          };
     },
 
@@ -333,9 +336,8 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
                 styles['left'] = parentPosition.left - offsetParentPosition.left + getStyleNum(offsetParent, 'marginLeft');
             }
         }else {
-
-            //如果不是ie6,并且不是quirk模式，设置为fixed
-            if ((baidu.browser.ie >= 7 || !baidu.browser.ie ) && document.compatMode != 'BackCompat') {
+     
+            if ( baidu.browser.ie >= 7 || !baidu.browser.ie) {
                 styles['width'] = '100%';
                 styles['height'] = '100%';
             }else {
