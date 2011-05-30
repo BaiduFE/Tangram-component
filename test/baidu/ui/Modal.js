@@ -345,32 +345,44 @@ test('hide select', function() {
 	    m.dispose();
 	    start();
 	}
-    ua.importsrc('baidu.page.getViewWidth,baidu.page.getViewHeight,baidu.page.getScrollTop,baidu.page.getScrollLeft', 
+	ua.importsrc('baidu.page.getViewWidth,baidu.page.getViewHeight,baidu.page.getScrollTop,baidu.page.getScrollLeft', 
 			check ,'baidu.page.getViewWidth', 'baidu.ui.Modal');
 });
 
-//test('窗口scroll测试', function() {
-//	expect(4);
-//	ua.frameExt(function(w, f) {
-//	    f.style.borderWidth = f.style.margin = f.style.padding = 0;
-//		var me = this;
-//		var m = new w.baidu.ui.Modal();
-//		m.render();
-//		m.show();
-//		mo = m.getMain();
-//		baidu.on(w, 'scroll', function() {
-//			setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
-//				ok(Math.abs(mo.offsetWidth - 100) < 5, 'width change on window resize PUBLICGE-381');
-//				ok(Math.abs(mo.offsetHeight - 100) < 5, 'height change on window resize PUBLICGE-381');
-//				equals(mo.offsetTop , f.offsetTop, "top isn't changed on window scroll");
-//				ok(Math.abs(mo.offsetLeft - f.offsetLeft) < 5, "left isn't changed on window scroll");
-//                te.obj.push(f);
-//				m.dispose();
-//				me.finish();
-//			}, 50);
-//		});
-//		$(f).css('width', "100px");
-//		$(f).css('height', "100px");
-//		w.scrollTo(0, 50);
-//	});
-//});
+test('窗口scroll测试', function() {
+	expect(4);
+	ua.frameExt({
+		onafterstart : function(f) {
+			$(f).css('width', 300).css('height', 300);
+		},
+		ontest : function(w, f) {
+			w.$(w.document.body).css('border', 0);
+			w.$(w.document.body).css('margin', 0);
+			w.$(w.document.body).css('padding', 0);
+			w.$(w.document.body).append('<div id="test1"></div>');
+			w.$('div#test1').css('width', 600).css('height', 600);
+		    f.style.borderWidth = f.style.margin = f.style.padding = 0;
+			var me = this;
+			var m = new w.baidu.ui.Modal();
+			m.render();
+			m.show();
+			mo = m.getMain();
+			baidu.on(w, 'scroll', function() {
+				setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
+					ok(Math.abs(mo.offsetWidth - w.baidu.page.getViewWidth()) < 5, 'width change on window scroll');
+					ok(Math.abs(mo.offsetHeight - w.baidu.page.getViewHeight()) < 5, 'height change on window scroll');
+					if($(mo).css('position') == 'fixed') {
+						equals($(mo).css('position'),'fixed' , "window scrolled");	
+					} else {
+						equals(mo.offsetTop , 50, "top isn't changed on window scroll");
+					}
+					ok(mo.offsetLeft==0, "left isn't changed on window scroll");
+	                te.obj.push(f);
+					m.dispose();
+					me.finish();
+				}, 50);
+			});
+			w.scrollTo(0, 50);
+	}
+	});
+});
