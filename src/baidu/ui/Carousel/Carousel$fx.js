@@ -55,8 +55,15 @@ baidu.ui.Carousel.extend(
                 scrollUnit: timeLine.scrollUnit
             });
         },
+        
         onafterfinish: function(evt) {
             var timeLine = evt.target;
+            timeLine.carousel.dispatchEvent('onbeforeendscroll', {
+                index: timeLine.index,
+                scrollOffset: timeLine.scrollOffset,
+                direction: timeLine.direction,
+                scrollUnit: timeLine.scrollUnit
+            });
             timeLine.carousel.dispatchEvent('onafterscroll', {
                 index: timeLine.index,
                 scrollOffset: timeLine.scrollOffset,
