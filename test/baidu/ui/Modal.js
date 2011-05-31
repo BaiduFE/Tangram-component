@@ -71,19 +71,15 @@ test('窗口resize测试（缩小）', function() {
 		ok(Math.abs(mo.offsetHeight - f.offsetHeight) < 5, "The offsetHeight of modal is the same with the offsetHeight of frame");
 		baidu.on(w, 'resize', function() {
 			setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
-				if(flag){
-					ok(Math.abs(mo.offsetHeight - 100) < 5, 'height change on window resize PUBLICGE-381');
-	                te.obj.push(f);
-					m.dispose();
-					me.finish();
-				}else{
-					ok(Math.abs(mo.offsetWidth - 100) < 5, 'width change on window resize PUBLICGE-381');
-					$(f).css('height', "100px");
-				}
-				flag = true;
+				ok(Math.abs(mo.offsetHeight - 100) < 5, 'height change on window resize PUBLICGE-381');
+				ok(Math.abs(mo.offsetWidth - 100) < 5, 'width change on window resize PUBLICGE-381');
+                te.obj.push(f);
+				m.dispose();
+				baidu.un(w,'resize');
+				me.finish();
 			}, 100);
 		});
-		$(f).css('width', "100px");
+		$(f).css('height', "100px").css('width', "100px");
 	});
 });
 
@@ -106,19 +102,15 @@ test('窗口resize测试(放大)', function() {
 		ok(Math.abs(mo.offsetHeight - f.offsetHeight) < 5, "The offsetHeight of modal is the same with the offsetHeight of frame");
 		baidu.on(w, 'resize', function() {
 			setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
-				if(flag){
-					ok(Math.abs(mo.offsetHeight - 500) < 5, 'height change on window resize');
-	                te.obj.push(f);
-					m.dispose();
-					me.finish();
-				}else{
-					flag=true;
-					ok(Math.abs(mo.offsetWidth - 500) < 5, 'width change on window resize');
-					$(f).css('height', "500px");
-				}
+				ok(Math.abs(mo.offsetHeight - 500) < 5, 'height change on window resize');
+				ok(Math.abs(mo.offsetWidth - 500) < 5, 'width change on window resize');
+                te.obj.push(f);
+                baidu.un(w,'resize');
+				m.dispose();
+				me.finish();
 			}, 100);
 		});
-		$(f).css('width', "500px");
+		$(f).css('height', "500px").css('width', "500px");
 	});
 });
 
@@ -381,7 +373,9 @@ test('窗口scroll测试', function() {
 					m.dispose();
 					me.finish();
 				}, 50);
+				baidu.un(w, 'scroll');
 			});
+			
 			w.scrollTo(0, 50);
 	}
 	});
