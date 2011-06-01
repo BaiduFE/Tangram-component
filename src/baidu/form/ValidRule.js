@@ -7,11 +7,13 @@
 ///import baidu.lang.createClass;
 ///import baidu.lang.isString;
 ///import baidu.lang.isFunction;
+///import baidu.object.extend;
 ///import baidu.ajax.request;
 
 /**
  * 验证规则组件，提供各种基础验证，默认的验证方式有以下几种：required(必填)，remote(Ajax验证)，email(电子邮件验证)，number(数字验证)，maxlength(最大长度验证)，minlength(最小长度验证)，rangelength(长度范围验证)，equal(等于验证)，telephone(电话号码)
  * @name baidu.form.ValidRule
+ * @class
  */
 baidu.form.ValidRule = baidu.form.ValidRule || baidu.lang.createClass(function(){
     var me = this;
@@ -57,8 +59,8 @@ baidu.form.ValidRule = baidu.form.ValidRule || baidu.lang.createClass(function()
     /**
      * 用一个验证方法对一个已经存在的值进行验证，并将结果返回到回调中。说明：如果是一个remote验证，则是一个ajax验证，请让服务器返回true或是false来表示验证结果
      * @param {String} name 验证方法的名称，如：required,email等
-     * @param {Object} val 需要被验证的字符串值，如果是remote该参数可以忽视
-     * @param {Object} callback 验证结束的回调，第一参数为验证结果
+     * @param {String} val 需要被验证的字符串值，如果是remote该参数可以忽视
+     * @param {Function} callback 验证结束的回调，第一参数为验证结果
      * @param {Object} options 表示验证需要的参数，如当验证类型是maxlength时，需要options是{param:10}
      */
     match: function(name, val, callback, options){
@@ -67,6 +69,9 @@ baidu.form.ValidRule = baidu.form.ValidRule || baidu.lang.createClass(function()
             param = options && options.param;
         if('remote' == name.toLowerCase()){
             baidu.lang.isString(param) && (param = {url: param});
+            param = baidu.object.extend({}, param);
+            param.data && baidu.lang.isFunction(param.data)
+                && (param.data = param.data(val));
             param.onsuccess = param.onfailure = function(xhr, responseText){
                 callback(rule(xhr, responseText));
             }
@@ -79,8 +84,8 @@ baidu.form.ValidRule = baidu.form.ValidRule || baidu.lang.createClass(function()
     
     /**
      * 增加一条验证规则
-     * @param {Object} name 验证规则的名称
-     * @param {Object} handler 执行验证的函数或是正则表达式，如果是函数，需要返回一个boolean
+     * @param {String} name 验证规则的名称
+     * @param {Function|RegExp} handler 执行验证的函数或是正则表达式，如果是函数，需要返回一个boolean
      */
     addRule: function(name, handler){
         this._rules[name] = handler;
