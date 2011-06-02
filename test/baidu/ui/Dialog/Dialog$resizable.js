@@ -33,6 +33,8 @@ test("drag s", function() {
 		};
 	d = new baidu.ui.Dialog(options);
 	d.render();
+	d.open();
+	$(d.getMain()).css('backgroundColor', "red");
 	stop();
 
 	bodyWidth = d.getBody().offsetWidth;
@@ -58,17 +60,17 @@ test("drag s", function() {
 			});
 			setTimeout(function() {				
 				ua.mouseup(ehandle);
-				setTimeout(function(){
+//				setTimeout(function(){
 					equals(parseInt(d.getBody().offsetWidth), bodyWidth, "s拖动后，body宽度不变");
 					equals(parseInt(d.getContent().offsetWidth), contentWidth, "s拖动后，content宽度不变");
-					equals(parseInt(d.width), contentWidth, "s拖动后，d的width值不变");
+					equals(parseInt(d.width), contentWidth, "s拖动后，d的kuandu不变");
 					equals(parseInt(d.getBody().offsetHeight), bodyHeight + 100, "s拖动后，body高度变化");
 					equals(parseInt(d.getContent().offsetHeight), contentHeight + 100, "s拖动后，content高度变化");
 					equals(parseInt(d.height), contentHeight + 100, "s拖动后，d的height值变化");
 					d.close();
 					d.dispose();
 					start();				
-				}, 30);
+//				}, 30);
 			}, 30);
 		}, 30);
 	}, 30);
@@ -108,7 +110,7 @@ test("drag e", function() {
 			});
 			setTimeout(function() {				
 				ua.mouseup(ehandle);
-				setTimeout(function(){
+//				setTimeout(function(){
 					equals(parseInt(d.getBody().offsetWidth), bodyWidth + 100, "e拖动后，body宽度变化");
 					equals(parseInt(d.getContent().offsetWidth), contentWidth + 100, "e拖动后，content宽度变化");
 					equals(parseInt(d.width), contentWidth + 100, "s拖动后，d的width值变化");
@@ -118,7 +120,7 @@ test("drag e", function() {
 					d.close();
 					d.dispose();
 					start();					
-				}, 30);
+//				}, 30);
 			}, 30);
 		}, 30);
 	}, 30);
@@ -158,7 +160,7 @@ test("drag se", function() {
 			});
 			setTimeout(function() {				
 				ua.mouseup(ehandle);
-				setTimeout(function(){
+//				setTimeout(function(){
 					equals(parseInt(d.getBody().offsetWidth), bodyWidth + 100, "se拖动后，body宽度变化");
 					equals(parseInt(d.getContent().offsetWidth), contentWidth + 100, "se拖动后，content宽度变化");
 					equals(parseInt(d.width), contentWidth + 100, "se拖动后，d的width值变化");
@@ -168,7 +170,7 @@ test("drag se", function() {
 					d.close();
 					d.dispose();
 					start();				
-				}, 30);
+//				}, 30);
 			}, 30);
 		}, 30);
 	}, 30);
