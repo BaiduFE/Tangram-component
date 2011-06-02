@@ -73,7 +73,6 @@ test('窗口resize测试（缩小）', function() {
 			setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
 				ok(Math.abs(mo.offsetHeight - 100) < 5, 'height change on window resize PUBLICGE-381');
 				ok(Math.abs(mo.offsetWidth - 100) < 5, 'width change on window resize PUBLICGE-381');
-                te.obj.push(f);
 				m.dispose();
 				baidu.un(w,'resize');
 				me.finish();
@@ -104,7 +103,6 @@ test('窗口resize测试(放大)', function() {
 			setTimeout(function() {//某些浏览器在调整高宽大小后需要时间来同步。
 				ok(Math.abs(mo.offsetHeight - 500) < 5, 'height change on window resize');
 				ok(Math.abs(mo.offsetWidth - 500) < 5, 'width change on window resize');
-                te.obj.push(f);
                 baidu.un(w,'resize');
 				m.dispose();
 				me.finish();
@@ -137,7 +135,6 @@ test('部分遮罩（在iframe中）', function() {
         equals(tt.offsetHeight, m1.getMain().offsetHeight, '遮罩元素height检测');
         m1.dispose();
         w.document.body.removeChild(tt);
-        te.obj.push(f);
 		this.finish();
 	});
 });
@@ -301,7 +298,6 @@ test('Check update', function() {
 		equals(m.styles.opacity, '0.3', 'check opacity');
 		m.dispose();
 		w.document.body.removeChild(tt);
-		te.obj.push(f);
 		this.finish();
 	});
 });
@@ -369,13 +365,11 @@ test('窗口scroll测试', function() {
 						equals(mo.offsetTop , 50, "top isn't changed on window scroll");
 					}
 					ok(mo.offsetLeft==0, "left isn't changed on window scroll");
-	                te.obj.push(f);
 					m.dispose();
 					me.finish();
 				}, 50);
 				baidu.un(w, 'scroll');
 			});
-			
 			w.scrollTo(0, 50);
 	}
 	});
