@@ -48,8 +48,12 @@ test('prev and next in iframe', function(){
 			    }
 			}
 			if(step == 2){
-				if(baidu.browser.ie || baidu.browser.maxthon)
-					equals(w.location.hash, init_hash, 'The hash is ' + w.location.hash);
+				if(baidu.browser.ie || baidu.browser.maxthon){
+					if(init_hash == "" && baidu.browser.ie)
+					    equals(w.location.hash, '#' + init_hash, 'The hash is ' + w.location.hash);
+					else
+					    equals(w.location.hash, init_hash, 'The hash is ' + w.location.hash);
+				}
 				else
 					equals(w.location.hash, init_hash, 'The hash is ' + w.location.hash);
 			    if(baidu.browser.ie || baidu.browser.maxthon || baidu.browser.safari){
