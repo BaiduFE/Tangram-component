@@ -60,7 +60,11 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
     for(; i < count; i++){
         fn._addons[i](me);
     }
-}).extend({
+}).extend(
+/**
+ *  @lends baidu.form.Validator.prototype
+ */
+{
     /**
      * 所有注册验证事件的侦听器
      * @param {String} key 单个验证域的名称
