@@ -9,14 +9,14 @@ test('basic', function(){
 			step ++;
 			if(step == 1){
 			    equals(location.hash, '#1', 'The hash is ' + location.hash);
-			    if(baidu.browser.ie || baidu.browser.maxthon){
+//			    if(baidu.browser.ie || baidu.browser.maxthon){
 				    setTimeout(function(){
 						window.location.hash = 2;
 				    }, 0);
-			    }
-			    else{
-			    	window.location.hash = 2;
-			    }
+//			    }
+//			    else{
+//			    	window.location.hash = 2;
+//			    }
 			}
 			if(step == 2){
 				equals(location.hash, '#2', 'The hash is ' + location.hash);
