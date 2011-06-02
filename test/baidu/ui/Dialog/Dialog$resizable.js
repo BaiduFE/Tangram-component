@@ -63,10 +63,10 @@ test("drag s", function() {
 //				setTimeout(function(){
 					equals(parseInt(d.getBody().offsetWidth), bodyWidth, "s拖动后，body宽度不变");
 					equals(parseInt(d.getContent().offsetWidth), contentWidth, "s拖动后，content宽度不变");
-					equals(parseInt(d.width), contentWidth, "s拖动后，d的kuandu不变");
+					equals(parseInt(d.width), contentWidth, "s拖动后，d的宽度不变");
 					equals(parseInt(d.getBody().offsetHeight), bodyHeight + 100, "s拖动后，body高度变化");
 					equals(parseInt(d.getContent().offsetHeight), contentHeight + 100, "s拖动后，content高度变化");
-					equals(parseInt(d.height), contentHeight + 100, "s拖动后，d的height值变化");
+					equals(parseInt(d.height), contentHeight + 100, "s拖动后，d的高度变化");
 					d.close();
 					d.dispose();
 					start();				
@@ -113,10 +113,10 @@ test("drag e", function() {
 //				setTimeout(function(){
 					equals(parseInt(d.getBody().offsetWidth), bodyWidth + 100, "e拖动后，body宽度变化");
 					equals(parseInt(d.getContent().offsetWidth), contentWidth + 100, "e拖动后，content宽度变化");
-					equals(parseInt(d.width), contentWidth + 100, "s拖动后，d的width值变化");
+					equals(parseInt(d.width), contentWidth + 100, "s拖动后，d的宽度变化");
 					equals(parseInt(d.getBody().offsetHeight), bodyHeight, "e拖动后，body高度不变");
 					equals(parseInt(d.getContent().offsetHeight), contentHeight, "e拖动后，content高度不变");
-					equals(parseInt(d.height), contentHeight, "e拖动后，d的height值不变");
+					equals(parseInt(d.height), contentHeight, "e拖动后，d的高度不变");
 					d.close();
 					d.dispose();
 					start();					
@@ -163,10 +163,10 @@ test("drag se", function() {
 //				setTimeout(function(){
 					equals(parseInt(d.getBody().offsetWidth), bodyWidth + 100, "se拖动后，body宽度变化");
 					equals(parseInt(d.getContent().offsetWidth), contentWidth + 100, "se拖动后，content宽度变化");
-					equals(parseInt(d.width), contentWidth + 100, "se拖动后，d的width值变化");
+					equals(parseInt(d.width), contentWidth + 100, "se拖动后，d的宽度变化");
 					equals(parseInt(d.getBody().offsetHeight), bodyHeight + 100, "se拖动后，body高度变化");
 					equals(parseInt(d.getContent().offsetHeight), contentHeight + 100, "se拖动后，content高度变化");
-					equals(parseInt(d.height), contentHeight + 100, "se拖动后 ，d的height值变化");
+					equals(parseInt(d.height), contentHeight + 100, "se拖动后 ，d的高度变化");
 					d.close();
 					d.dispose();
 					start();				
