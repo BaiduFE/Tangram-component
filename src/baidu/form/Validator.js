@@ -128,14 +128,16 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
         baidu.array.each(keyList, function(item){
             entry = rules[item];
             value = me._form.elements[name].value;
-            if(item != 'required' && !value){return;}//如果不是必填并且无值则不做验证
             me._validRule.match(item, value,
                 function(val){
-                    !val && resultList.push({type: item, field: name, result: val});
-                    if(count++ >= keyList.length - 1){
+                    if(!val && (item == 'required' || value)){
+                        //处理当是必填时加入，非必填时当有值才加入验证结果
+                        resultList.push({type: item, field: name, result: val});
+                    }
+                    if(count++ >= keyList.length - 1){//当所有都验证完了以后
                         baidu.lang.isFunction(callback)
                             && callback(resultList.length <= 0, resultList);
-                        me.dispatchEvent('validateField', {resultList: resultList});
+                        me.dispatchEvent('validatefield', {field: name, resultList: resultList});
                     }
                 },
                 {param: entry.hasOwnProperty('param') ? entry.param : entry});
@@ -157,26 +159,3 @@ baidu.form.Validator.register = function(fn){
     typeof fn == 'function'
         && baidu.form.Validator._addons.push(fn);
 }
-//
-/**
- * 一个用于方便配置规则的验证域规则类
- * @name baidu.form.Validate.FieldRule
- * @class
- * @param {Object} rule 必选项，对规则的描述，如：{required: true, maxlength: {param: 50}}
- * @param {Object} message 可选项，对应规则的信息提示描述，如对应上面rule的配置：{required: {success: 'success msg', failure: 'failure msg'}, maxlength: 'failure msg'}
- * @param {String} event 可选项，对单个规则的触发事件，如：'blur,click'
- */
-baidu.form.Validator.FieldRule = baidu.form.Validator.FieldRule || function(rule, message, event){
-    var msg;
-    baidu.object.each(rule, function(item, key){
-        msg = message[key];
-        if(msg){
-            !item.hasOwnProperty('param') && (rule[key] = {param: item});
-            rule[key].message = msg;
-        }
-    });
-    return {
-        rule: rule,
-        event: event
-    };
-};
