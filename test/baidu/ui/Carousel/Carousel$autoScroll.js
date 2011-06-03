@@ -254,16 +254,16 @@ test("autoScroll, cycle, page, right", function() {
 		cas = createCarousel_8items('horizontal', 'page', 'right', true);
 		cas.onafterscroll = function(){
 			if(step == 0)
-				ok(cas.getItem(2).className.indexOf(cas.getClass("item-focus")) > -1,
+				ok(cas.getItem(5).className.indexOf(cas.getClass("item-focus")) > -1,
 				"scroll to item2");
 			if(step == 1)
-				ok(cas.getItem(5).className.indexOf(cas.getClass("item-focus")) > -1,
+				ok(cas.getItem(0).className.indexOf(cas.getClass("item-focus")) > -1,
 				"scroll to item5");
 			if(step == 2)
-				ok(cas.getItem(0).className.indexOf(cas.getClass("item-focus")) > -1,
+				ok(cas.getItem(3).className.indexOf(cas.getClass("item-focus")) > -1,
 				"scroll to item0");
 			if(step == 3)
-				ok(cas.getItem(3).className.indexOf(cas.getClass("item-focus")) > -1,
+				ok(cas.getItem(6).className.indexOf(cas.getClass("item-focus")) > -1,
 				"scroll to item3");
 			step ++;
 		}
@@ -287,16 +287,16 @@ test("autoScroll, cycle, page, left", function() {
 		cas = createCarousel_8items('horizontal', 'page', 'left', true);
 		cas.onafterscroll = function(){
 			if(step == 0)
-				ok(cas.getItem(2).className.indexOf(cas.getClass("item-focus")) > -1,
+				ok(cas.getItem(7).className.indexOf(cas.getClass("item-focus")) > -1,
 				"scroll to item2");
 			if(step == 1)
-				ok(cas.getItem(7).className.indexOf(cas.getClass("item-focus")) > -1,
+				ok(cas.getItem(4).className.indexOf(cas.getClass("item-focus")) > -1,
 				"scroll to item7");
 			if(step == 2)
-				ok(cas.getItem(4).className.indexOf(cas.getClass("item-focus")) > -1,
+				ok(cas.getItem(1).className.indexOf(cas.getClass("item-focus")) > -1,
 				"scroll to item4");
 			if(step == 3)
-				ok(cas.getItem(1).className.indexOf(cas.getClass("item-focus")) > -1,
+				ok(cas.getItem(6).className.indexOf(cas.getClass("item-focus")) > -1,
 				"scroll to item1");
 			step ++;
 		}

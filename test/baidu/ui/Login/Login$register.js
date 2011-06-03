@@ -7,7 +7,7 @@ test("Basic test", function() {
 		var options = {
 			autoRender : true,
 			defaultStatus : 'reg',
-			regURL : upath + "/Register.php" // 打个桩,干掉跨域
+			regURL : upath + "Register.php" // 打个桩,干掉跨域
 		};
 		var l = baidu.event._listeners.length;
 		var login = new baidu.ui.Login(options);
@@ -35,7 +35,7 @@ test("Register with right information", function() {
 		var options = {
 			autoRender : true,
 			defaultStatus : 'reg',
-			regURL : upath + "/Register.php", // 打个桩,干掉跨域
+			regURL : upath + "Register.php", // 打个桩,干掉跨域
 			onRegisterSuccess : function() {
 				ok(true, "Register successfully");
 				login.close();
@@ -71,7 +71,7 @@ test("Register with wrong information", function() {
 		var options = {
 			autoRender : true,
 			defaultStatus : 'reg',
-			regURL : upath + "/Register.php", // 打个桩,干掉跨域
+			regURL : upath + "Register.php", // 打个桩,干掉跨域
 			onRegisterFailure : function() {
 				ok(true, "Register fail");
 				login.close();
