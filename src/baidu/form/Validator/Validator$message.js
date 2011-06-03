@@ -14,7 +14,7 @@
 ///import baidu.string.format;
 
 /**
- * 为表单验证提供信息提示功能.
+ * 为表单验证提供信息提示功能，有关信息提示的配置请参考Validator的构造函数参数说明.
  * @param {Object} optioins 参数
  * @config {Boolean} showMessage 是否需要显示提示信息，默认是true
  */
