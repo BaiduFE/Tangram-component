@@ -79,7 +79,7 @@ test('多个target', function() {
 		ok(!isShown(tp.getBody()), 'hide before click');
 		tp.open(div1);
 		ok(isShown(tp.getBody()), 'shown after open');
-		ua.click(document);
+		ua.click(document.body);
 		ok(!isShown(tp.getBody()), 'hide before click');
 		tp.close();
 		te.obj.push(tp);
@@ -101,7 +101,7 @@ test('多个target', function() {
 			tp.close();
 		}
 		tp.open(div[0]);
-		ua.click(document);
+		ua.click(document.body);
 		tp.dispose();
 		var ic = baidu.event._listeners.length;
 		equals(ie, ic, 'events are un');

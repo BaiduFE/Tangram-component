@@ -20,10 +20,12 @@
  * @name baidu.form.Validate
  * @class
  * @param {HTMLElement|String} form 一个表单对象的引用或是该id的字符串标识
- * @param {Object} fieldRule 一条或多条baidu.from.Validator.FieldRule对象，或是按如下格式配置fieldName: {rule: {required :{message: {success: 'success message', failure: 'failure message'}}, maxlength: {param: 10, message: 'failure message'}}, event: 'blur,click'}.<br/>说明：当是remote验证时，支持可以直接配置url，如：remote: 'http://localhost?fieldName=value'，也可以是json，如：remote: {url: 'http://localhost', data: function(val){return 'fieldName=' + val}}，有关更详细的json格式配置请参考baidu.ajax.request
+ * @param {Object} fieldRule 对验证规则的配置，一个验证域需要的配置包括验证域名称，验证规则，提示信息(可选，需要Validator$message支持)，提示信息存放容器(可选，需要Validator$message支持)，验证触发事件(可选)，一个完整的配置大致如：fieldName: {rule: {required: {param: true, message: {success: 'success msg', failure: 'failure msg'}}, maxlength: {param: 50, message: 'failure msg'}, email: true}, messageContainer: 'myMsgElement', eventName: 'keyup,blur'}
  * @param {Object} options参数描述
  * @config {String} validateEvent：描述全局的各个验证域的触发验证事件，如'blur,click'，默认是blur
  * @config {Boolean} validateOnSubmit：描述是否当提交表单时做验证，默认是true.
+ * @config {Function} onvalidatefield: 验证单个验证域结束时的触发事件，function(event){}，event.field返回当次验证域的名称，event.resultList返回验证失败的项目数组(当验证成功时该数组长度为0)，各个项是json数据，格式如：{type: 类型, field: 被验证域名称}.
+ * @config {Function} onvalidate：验证全部验证域结束时的触发事件，function(event){}，event.resultList返回验证失败的项目数组(当验证成功时该数组长度为0)，各个项是json数据，格式如：{type: 类型, field: 被验证域名称}.
  */
 baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(form, fieldRule, options){
     var me = this,
@@ -97,7 +99,7 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
     
     /**
      * 对所有表单进行验证，并把验证结果返回在callback函数中
-     * @param {Function} callback 验证结束后的回调函数，第一参数表示验证结果，第二参数表示验证的失败项数组，各个项的json格式如：{type: 类型, field: 被验证域名称, result: 验证结果}
+     * @param {Function} callback 验证结束后的回调函数，第一参数表示验证结果，第二参数表示验证的失败项数组，各个项的json格式如：{type: 类型, field: 被验证域名称}
      */
     validate: function(callback){
         var me = this,
@@ -110,7 +112,7 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
                 if(count++ >= keyList.length - 1){
                     baidu.lang.isFunction(callback)
                         && callback(resultList.length <= 0, resultList);
-//                    me.dispatchEvent('onvalidate', {resultList: resultList});
+                    me.dispatchEvent('onvalidate', {resultList: resultList});
                 }
             });
        });
@@ -119,7 +121,7 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
     /**
      * 对单个验证域进行验证，结果返回在callback回调函数中
      * @param {String} name 单个验证域的名称
-     * @param {Function} callback 验证结束后的回调函数，第一参数表示验证结果，第二参数表示验证的失败项数组，各个项的json格式如：{type: 类型, field: 被验证域名称, result: 验证结果}
+     * @param {Function} callback 验证结束后的回调函数，第一参数表示验证结果，第二参数表示验证的失败项数组，各个项的json格式如：{type: 类型, field: 被验证域名称}
      */
     validateField: function(name, callback){
         var me = this,
