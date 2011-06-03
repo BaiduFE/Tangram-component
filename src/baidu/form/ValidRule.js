@@ -38,7 +38,7 @@ baidu.form.ValidRule = baidu.form.ValidRule || baidu.lang.createClass(function()
             equal: function(val, opt){
                 return val === (baidu.lang.isFunction(opt) ? opt() : opt);
             },
-            telephone: /^(?:[\+0]\d{1,3}\-)?(?:\d{3,4}\-)?\d{5,12}$/
+            telephone: /^(((?:[\+0]\d{1,3}-[1-9]\d{1,2})|\d{3,4})-)?\d{5,8}$/
         };
 }).extend(
 /**
