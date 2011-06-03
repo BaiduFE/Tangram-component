@@ -36,8 +36,8 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
     me._form = baidu.dom.g(form);
     me._fieldRule = fieldRule;
     me._validRule = new baidu.form.ValidRule();
-    me._options = baidu.object.extend({validateEvent: 'blur', validateOnSubmit: true}, options);//默认全局设置失去焦点时验证，提交时验证
-    eventNameList = me._options.validateEvent.split(',');
+    baidu.object.extend(me, options);
+    eventNameList = me.validateEvent.split(',');
     //添加事件
     function addEvent(eventName, key){
         var entry = {
@@ -51,13 +51,13 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
         });
     }
     baidu.object.each(me._fieldRule, function(value, key){
-        baidu.array.each(baidu.lang.isString(value.event) ? value.event.split(',')
+        baidu.array.each(baidu.lang.isString(value.eventName) ? value.eventName.split(',')
             : eventNameList,
             function(item){
                 addEvent(item, key);
             });
     });
-    me._options.validateOnSubmit && addEvent('onsubmit');
+    me.validateOnSubmit && addEvent('onsubmit');
     //插件机制
     for(; i < count; i++){
         fn._addons[i](me);
@@ -67,6 +67,8 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
  *  @lends baidu.form.Validator.prototype
  */
 {
+    validateEvent: 'blur',
+    validateOnSubmit: true,
     /**
      * 所有注册验证事件的侦听器
      * @param {String} key 单个验证域的名称
