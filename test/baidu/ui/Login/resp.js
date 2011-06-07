@@ -270,9 +270,9 @@ bdPass.TemplateItems["length"] = bdPass.TemplateItems["length"] || 0;
 (function() {
 	var statics = {
 		itemCache : [],
-		preUrl : "https://passport.baidu.com/",
-		preUrlHttps : "https://passport.baidu.com/",
-		preUrlPost : "https://passport.baidu.com/api/?",
+//		preUrl : "https://passport.baidu.com/",
+//		preUrlHttps : "https://passport.baidu.com/",
+//		preUrlPost : "https://passport.baidu.com/api/?",
 		ctrlVersion : "1,0,0,7",
 		regNameValid : true,
 		regPwdValid : true,
@@ -292,7 +292,7 @@ bdPass.TemplateItems["length"] = bdPass.TemplateItems["length"] || 0;
 				pass.G(el).src = url;
 			}
 		},
-		regAgreeUrl : "https://passport.baidu.com/js/agree.js?v=1.2",
+//		regAgreeUrl : "https://passport.baidu.com/js/agree.js?v=1.2",
 		regAgreeInsert : function() {
 			var area = pass.G("PassRegAgree");
 			var reg_text = reg_agree_txt || "";
@@ -464,66 +464,67 @@ bdPass.TemplateItems["length"] = bdPass.TemplateItems["length"] || 0;
 			40 : [ "verifycode", "\u8bf7\u8f93\u5165\u9a8c\u8bc1\u7801" ],
 			41 : [ "verifycode", "\u9a8c\u8bc1\u7801\u683c\u5f0f\u9519\u8bef" ],
 			42 : [ "verifycode", "\u9a8c\u8bc1\u7801\u9519\u8bef" ]
-		},
-		lockmail : {
-			1 : [ "error",
-					"\u672a\u77e5\u9519\u8bef\uff0c\u8bf7\u91cd\u8bd5\u3002" ],
-			2 : [ "error", "\u8bf7\u5148\u767b\u5f55" ],
-			3 : [
-					"password",
-					'\u60a8\u7684\u5bc6\u7801\u8fc7\u4e8e\u7b80\u5355\uff0c\u8bf7\u5148<a href="http://passport.baidu.com/passchange" target="_blank">\u5347\u7ea7\u5bc6\u7801</a>\u3002' ],
-			4 : [ "error", "\u60a8\u5df2\u8bbe\u7f6e\u5b89\u5168\u90ae\u7bb1" ],
-			5 : [
-					"error",
-					"\u4eca\u65e5\u9a8c\u8bc1\u6b21\u6570\u8fc7\u591a\uff0c\u8bf7\u660e\u5929\u518d\u8bd5\u3002" ],
-			6 : [ "error",
-					"\u60a8\u8f93\u5165\u5bc6\u7801\u9519\u8bef\u6b21\u6570\u592a\u591a" ],
-			11 : [
-					"password",
-					"\u5bc6\u7801\u9519\u8bef\uff0c\u8bf7\u68c0\u67e5\u662f\u5426\u8f93\u5165\u9519\u8bef\uff0c\u6216\u9519\u6309\u4e86\u5927\u5c0f\u5199\u6309\u952e\u3002" ],
-			12 : [ "securemail",
-					"\u8bf7\u8f93\u5165\u9a8c\u8bc1\u90ae\u7bb1\u5730\u5740" ],
-			13 : [ "securemail",
-					"\u9a8c\u8bc1\u90ae\u7bb1\u683c\u5f0f\u4e0d\u6b63\u786e" ],
-			14 : [ "securemail",
-					"\u9a8c\u8bc1\u90ae\u7bb1\u5730\u5740\u8fc7\u957f" ],
-			15 : [ "error",
-					"\u6821\u9a8c\u90ae\u7bb1\u683c\u5f0f\u4e0d\u6b63\u786e" ],
-			16 : [ "error",
-					"\u6b64\u90ae\u7bb1\u9a8c\u8bc1\u6b21\u6570\u8fc7\u591a" ],
-			17 : [
-					"error",
-					"\u6b64\u90ae\u7bb1\u5df2\u88ab\u9a8c\u8bc1\u8fc7\uff0c\u6bcf\u4e2a\u90ae\u7bb1\u4ec5\u53ef\u4e3a\u4e00\u4e2a\u7528\u6237\u540d\u63d0\u4f9b\u9a8c\u8bc1\uff0c\u8bf7\u91cd\u65b0\u586b\u5199\u3002" ],
-			20 : [ "error", "\u7cfb\u7edf\u9519\u8bef" ]
-		},
-		lockphone : {
-			1 : [ "error",
-					"\u672a\u77e5\u9519\u8bef\uff0c\u8bf7\u91cd\u8bd5\u3002" ],
-			2 : [ "error", "\u8bf7\u5148\u767b\u5f55" ],
-			3 : [
-					"password",
-					'\u60a8\u7684\u5bc6\u7801\u8fc7\u4e8e\u7b80\u5355\uff0c\u8bf7\u5148<a href="http://passport.baidu.com/passchange" target="_blank">\u5347\u7ea7\u5bc6\u7801</a>\u3002' ],
-			4 : [ "error", "\u60a8\u5df2\u8bbe\u7f6e\u5b89\u5168\u624b\u673a" ],
-			5 : [
-					"error",
-					"\u4eca\u65e5\u9a8c\u8bc1\u6b21\u6570\u8fc7\u591a\uff0c\u8bf7\u660e\u5929\u518d\u8bd5\u3002" ],
-			6 : [ "error",
-					"\u60a8\u8f93\u5165\u5bc6\u7801\u9519\u8bef\u6b21\u6570\u592a\u591a" ],
-			11 : [
-					"password",
-					"\u5bc6\u7801\u9519\u8bef\uff0c\u8bf7\u68c0\u67e5\u662f\u5426\u8f93\u5165\u9519\u8bef\uff0c\u6216\u9519\u6309\u4e86\u5927\u5c0f\u5199\u6309\u952e\u3002" ],
-			12 : [ "securemobile",
-					"\u8bf7\u8f93\u5165\u9a8c\u8bc1\u624b\u673a\u53f7\u7801" ],
-			13 : [
-					"securemobile",
-					"\u624b\u673a\u683c\u5f0f\u9519\u8bef\uff0c\u8bf7\u68c0\u67e5\u5e76\u91cd\u65b0\u8f93\u5165\u3002" ],
-			16 : [
-					"securemobile",
-					"\u624b\u673a\u53f7\u7801\u5df2\u88ab\u9a8c\u8bc1\u8d85\u8fc7\u6700\u5927\u6b21\u6570" ],
-			17 : [ "securemobile",
-					"\u6b64\u624b\u673a\u5df2\u88ab\u9a8c\u8bc1\u8fc7" ],
-			20 : [ "error", "\u7cfb\u7edf\u9519\u8bef" ]
 		}
+//		,
+//		lockmail : {
+//			1 : [ "error",
+//					"\u672a\u77e5\u9519\u8bef\uff0c\u8bf7\u91cd\u8bd5\u3002" ],
+//			2 : [ "error", "\u8bf7\u5148\u767b\u5f55" ],
+//			3 : [
+//					"password",
+//					'\u60a8\u7684\u5bc6\u7801\u8fc7\u4e8e\u7b80\u5355\uff0c\u8bf7\u5148<a href="http://passport.baidu.com/passchange" target="_blank">\u5347\u7ea7\u5bc6\u7801</a>\u3002' ],
+//			4 : [ "error", "\u60a8\u5df2\u8bbe\u7f6e\u5b89\u5168\u90ae\u7bb1" ],
+//			5 : [
+//					"error",
+//					"\u4eca\u65e5\u9a8c\u8bc1\u6b21\u6570\u8fc7\u591a\uff0c\u8bf7\u660e\u5929\u518d\u8bd5\u3002" ],
+//			6 : [ "error",
+//					"\u60a8\u8f93\u5165\u5bc6\u7801\u9519\u8bef\u6b21\u6570\u592a\u591a" ],
+//			11 : [
+//					"password",
+//					"\u5bc6\u7801\u9519\u8bef\uff0c\u8bf7\u68c0\u67e5\u662f\u5426\u8f93\u5165\u9519\u8bef\uff0c\u6216\u9519\u6309\u4e86\u5927\u5c0f\u5199\u6309\u952e\u3002" ],
+//			12 : [ "securemail",
+//					"\u8bf7\u8f93\u5165\u9a8c\u8bc1\u90ae\u7bb1\u5730\u5740" ],
+//			13 : [ "securemail",
+//					"\u9a8c\u8bc1\u90ae\u7bb1\u683c\u5f0f\u4e0d\u6b63\u786e" ],
+//			14 : [ "securemail",
+//					"\u9a8c\u8bc1\u90ae\u7bb1\u5730\u5740\u8fc7\u957f" ],
+//			15 : [ "error",
+//					"\u6821\u9a8c\u90ae\u7bb1\u683c\u5f0f\u4e0d\u6b63\u786e" ],
+//			16 : [ "error",
+//					"\u6b64\u90ae\u7bb1\u9a8c\u8bc1\u6b21\u6570\u8fc7\u591a" ],
+//			17 : [
+//					"error",
+//					"\u6b64\u90ae\u7bb1\u5df2\u88ab\u9a8c\u8bc1\u8fc7\uff0c\u6bcf\u4e2a\u90ae\u7bb1\u4ec5\u53ef\u4e3a\u4e00\u4e2a\u7528\u6237\u540d\u63d0\u4f9b\u9a8c\u8bc1\uff0c\u8bf7\u91cd\u65b0\u586b\u5199\u3002" ],
+//			20 : [ "error", "\u7cfb\u7edf\u9519\u8bef" ]
+//		},
+//		lockphone : {
+//			1 : [ "error",
+//					"\u672a\u77e5\u9519\u8bef\uff0c\u8bf7\u91cd\u8bd5\u3002" ],
+//			2 : [ "error", "\u8bf7\u5148\u767b\u5f55" ],
+//			3 : [
+//					"password",
+//					'\u60a8\u7684\u5bc6\u7801\u8fc7\u4e8e\u7b80\u5355\uff0c\u8bf7\u5148<a href="http://passport.baidu.com/passchange" target="_blank">\u5347\u7ea7\u5bc6\u7801</a>\u3002' ],
+//			4 : [ "error", "\u60a8\u5df2\u8bbe\u7f6e\u5b89\u5168\u624b\u673a" ],
+//			5 : [
+//					"error",
+//					"\u4eca\u65e5\u9a8c\u8bc1\u6b21\u6570\u8fc7\u591a\uff0c\u8bf7\u660e\u5929\u518d\u8bd5\u3002" ],
+//			6 : [ "error",
+//					"\u60a8\u8f93\u5165\u5bc6\u7801\u9519\u8bef\u6b21\u6570\u592a\u591a" ],
+//			11 : [
+//					"password",
+//					"\u5bc6\u7801\u9519\u8bef\uff0c\u8bf7\u68c0\u67e5\u662f\u5426\u8f93\u5165\u9519\u8bef\uff0c\u6216\u9519\u6309\u4e86\u5927\u5c0f\u5199\u6309\u952e\u3002" ],
+//			12 : [ "securemobile",
+//					"\u8bf7\u8f93\u5165\u9a8c\u8bc1\u624b\u673a\u53f7\u7801" ],
+//			13 : [
+//					"securemobile",
+//					"\u624b\u673a\u683c\u5f0f\u9519\u8bef\uff0c\u8bf7\u68c0\u67e5\u5e76\u91cd\u65b0\u8f93\u5165\u3002" ],
+//			16 : [
+//					"securemobile",
+//					"\u624b\u673a\u53f7\u7801\u5df2\u88ab\u9a8c\u8bc1\u8d85\u8fc7\u6700\u5927\u6b21\u6570" ],
+//			17 : [ "securemobile",
+//					"\u6b64\u624b\u673a\u5df2\u88ab\u9a8c\u8bc1\u8fc7" ],
+//			20 : [ "error", "\u7cfb\u7edf\u9519\u8bef" ]
+//		}
 	};
 	bdPass.vm = validMessage;
 })();
