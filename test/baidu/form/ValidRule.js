@@ -125,20 +125,24 @@ test("默认类型校验telephone", function() {
 	vr.match('telephone' , "10010" , function(opt){
 		equal(opt, true, "10010");
 	});
-	vr.match('telephone' , 15011112222 , function(opt){
-		equal(opt, true, "15011112222");
-	});
+	//手机号码改为不支持
+//	vr.match('telephone' , 15011112222 , function(opt){
+//		equal(opt, true, "15011112222");
+//	});
 	vr.match('telephone' , "123456F" , function(opt){
 		equal(opt, false, "123456F");
 	});
-	vr.match('telephone' , "+86 10-12345678" , function(opt){
-		equal(opt, true, "+86 10-12345678");
+	vr.match('telephone' , "+86-10-12345678" , function(opt){
+		equal(opt, true, "+86-10-12345678");
 	});
-	vr.match('telephone' , "+119 10-12345678" , function(opt){
-		equal(opt, true, "+119 10-12345678");
+	vr.match('telephone' , "+86-010-12345678" , function(opt){
+		equal(opt, false, "+86-010-12345678");
 	});
-	vr.match('telephone' , "0086 10-12345678" , function(opt){
-		equal(opt, true, "0086 10-12345678");
+	vr.match('telephone' , "+119-10-12345678" , function(opt){
+		equal(opt, true, "+119-10-12345678");
+	});
+	vr.match('telephone' , "0086-10-12345678" , function(opt){
+		equal(opt, true, "0086-10-12345678");
 	});
 });
 
