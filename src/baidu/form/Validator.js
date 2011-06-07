@@ -143,9 +143,9 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
                         resultList.push({type: item, field: name, result: val});
                     }
                     if(count++ >= keyList.length - 1){//当所有都验证完了以后
+                        me.dispatchEvent('validatefield', {field: name, resultList: resultList});
                         baidu.lang.isFunction(callback)
                             && callback(resultList.length <= 0, resultList);
-                        me.dispatchEvent('validatefield', {field: name, resultList: resultList});
                     }
                 },
                 {param: entry.hasOwnProperty('param') ? entry.param : entry});
