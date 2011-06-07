@@ -138,16 +138,20 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
                }),
             resultList = [],
             count = 0;
+        function finish(){//当所有都验证完了以后
+            if(count++ >= keyList.length - 1){
+                me.dispatchEvent('validatefield', {field: name, resultList: resultList});
+                baidu.lang.isFunction(callback)
+                    && callback(resultList.length <= 0, resultList);
+            }
+        }
+        finish();//当keyList是空数组的时候表示没有需要验证的，则先提交
         baidu.array.each(keyList, function(item){
             entry = rules[item];
             me._validRule.match(item, value,
                 function(val){
                     !val && resultList.push({type: item, field: name, result: val});
-                    if(count++ >= keyList.length - 1){//当所有都验证完了以后
-                        me.dispatchEvent('validatefield', {field: name, resultList: resultList});
-                        baidu.lang.isFunction(callback)
-                            && callback(resultList.length <= 0, resultList);
-                    }
+                    finish();
                 },
                 {param: entry.hasOwnProperty('param') ? entry.param : entry});
         });
