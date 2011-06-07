@@ -105,7 +105,7 @@ module('baidu.ui.Calendar');
 							'check date cell ' + idx);
 				});
 		// check current
-		if(de.getHours() >= 12)
+		if(de.getHours() >= 13)
 		    equals(te.doms.content.current.html(), de.getDate(), 'check current');
 		else{
 			equals(te.doms.content.current.html(), de.getDate() - 1, 'check current');//有一天的时差
@@ -505,7 +505,7 @@ test('en-US', function() {
 
 test('英文版界面操作', function() {
 	var date = new Date();
-	if(date.getHours() >= 12){//没有时差
+	if(date.getHours() >= 13){//因为中美时差13个小时，当时间晚于13点时，不会因时差导致日期不同
 		var set_date = te.getDate('2000-1-1');
 	}
 	else{
