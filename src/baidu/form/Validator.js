@@ -145,7 +145,7 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
                     && callback(resultList.length <= 0, resultList);
             }
         }
-        finish();//当keyList是空数组的时候表示没有需要验证的，则先提交
+        keyList.length == 0 && finish();//当keyList是空数组的时候表示没有需要验证的，则先提交
         baidu.array.each(keyList, function(item){
             entry = rules[item];
             me._validRule.match(item, value,
