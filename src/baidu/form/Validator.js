@@ -10,6 +10,7 @@
 ///import baidu.object.keys;
 ///import baidu.object.each;
 ///import baidu.object.extend;
+///import baidu.array.filter;
 ///import baidu.fn.bind;
 ///import baidu.event.on;
 ///import baidu.event.un;
@@ -126,26 +127,26 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
      * @param {Function} callback 验证结束后的回调函数，第一参数表示验证结果，第二参数表示验证的失败项数组，各个项的json格式如：{type: 类型, field: 被验证域名称}
      */
     validateField: function(name, callback){
-        var me = this,
+        var me = this, entry,
             rules = me._fieldRule[name].rule,//一定需要有rule
-            keyList = baidu.object.keys(rules),
+            value = me._form.elements[name].value,
+            keyList = baidu.array.filter(baidu.object.keys(rules),
+                function(item){//过滤一些不需要的验证
+                    entry = rules[item];
+                    return (value || item == 'required')
+                        && (entry.hasOwnProperty('param') ? entry.param : entry) !== false;
+               }),
             resultList = [],
-            count = 0,
-            entry,
-            value;
+            count = 0;
         baidu.array.each(keyList, function(item){
             entry = rules[item];
-            value = me._form.elements[name].value;
             me._validRule.match(item, value,
                 function(val){
-                    if(!val && (item == 'required' || value)){
-                        //处理当是必填时加入，非必填时当有值才加入验证结果
-                        resultList.push({type: item, field: name, result: val});
-                    }
+                    !val && resultList.push({type: item, field: name, result: val});
                     if(count++ >= keyList.length - 1){//当所有都验证完了以后
+                        me.dispatchEvent('validatefield', {field: name, resultList: resultList});
                         baidu.lang.isFunction(callback)
                             && callback(resultList.length <= 0, resultList);
-                        me.dispatchEvent('validatefield', {field: name, resultList: resultList});
                     }
                 },
                 {param: entry.hasOwnProperty('param') ? entry.param : entry});
