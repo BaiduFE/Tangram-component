@@ -141,6 +141,7 @@ test('close, show select',function(){
 	document.body.removeChild(select_a);
 });
 
+
 test('onopen, hide flash, transparent smartCover',function(){
 	expect(4);
 	stop();

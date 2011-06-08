@@ -90,7 +90,7 @@ var testingElement = {}, te = testingElement;
 		}
 	}
 
-	var s = QUnit.testStart, e = QUnit.testDone, ms = QUnit.moduleStart, me = QUnit.moduleEnd, d = QUnit.done;
+	var s = QUnit.testStart, e = QUnit.testDone;
 	QUnit.testStart = function() {
 		mySetup();
 		s.apply(this, arguments);
