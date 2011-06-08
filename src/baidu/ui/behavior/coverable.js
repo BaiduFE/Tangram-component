@@ -56,7 +56,6 @@
             height: container.offsetHeight
         });
 
-        
         baidu.dom.setBorderBoxSize(iframe,{
             width: iframeContainer.offsetWidth
         });
@@ -114,7 +113,7 @@
         });
 
         baidu.dom.setBorderBoxSize(iframe,baidu.extend({
-            width: iframeContainer.offsetWidth
+            width: baidu.getStyle(iframeContainer, 'width')
         },options));
     };
 })();
