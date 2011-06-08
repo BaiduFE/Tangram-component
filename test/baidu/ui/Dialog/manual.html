@@ -14,6 +14,7 @@
 body{
     margin:5px;
 }
+html{background:url(about:blank) fixed}
 h2{
     margin:0.3em 0;
 }
@@ -293,9 +294,15 @@ h2{
                     });
                     s.render('suggestion_input');
                 }else if(type == 'iframe'){
-                    var dialog = new baidu.ui.Dialog.iframe("inner.html", options);
+                    options.type = type;
+                    options.iframeSrc = 'inner.html';
+                    var dialog = new baidu.ui.Dialog(options);
+                    dialog.open();
                 }else{
+                    options.type = type;
+                    options['contentText'] = dialogContent;
                     var dialog = baidu.ui.Dialog[type](dialogContent, options);
+                    dialog.open();
                 }
                 var table = document.getElementById("dialog_instances");
                 dialogPool.push(dialog);
