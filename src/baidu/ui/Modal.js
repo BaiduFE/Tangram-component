@@ -177,7 +177,7 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
         me._getModalStyles(styles || {});
         me._update();
 
-        if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie < 7){
+        if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie <= 7){
             me.windowHandler = me.getWindowHandle();
             baidu.on(window, 'resize', me.windowHandler);
         }
@@ -241,7 +241,7 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
      */
     _removeHandler: function() {
         var me = this;
-        if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie < 7){
+        if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie <= 7){
             baidu.un(window, 'resize', me.windowHandler);
         }
     },
@@ -261,7 +261,7 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
                 height: baidu.page.getViewHeight()
             });
             
-            if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie < 7){
+            if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie <= 7){
                 //iframe 补丁
                 window.top !== window.self && setTimeout(function(){
                     me._getModalStyles({});
@@ -337,7 +337,7 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
             }
         }else {
      
-            if ( baidu.browser.ie >= 7 || !baidu.browser.ie) {
+            if ( baidu.browser.ie > 7 || !baidu.browser.ie) {
                 styles['width'] = '100%';
                 styles['height'] = '100%';
             }else {

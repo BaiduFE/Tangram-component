@@ -94,6 +94,7 @@ test('horizontal, in buff', function() {
 				content : "item~5"
 			} ]
 		});
+		carous.scrollFxOptions.duration = 100;
 		carous.render(te.dom[0]);
 		var item = carous.getItem(0);
 		var offsetItem = item.offsetLeft;
@@ -199,6 +200,7 @@ test('vertical, in buff', function() {
 				content : "item~5"
 			} ]
 		});
+		carous.scrollFxOptions.duration = 100;
 		carous.render(te.dom[0]);
 		var item = carous.getItem(0);
 		var offsetItem = item.offsetLeft;
