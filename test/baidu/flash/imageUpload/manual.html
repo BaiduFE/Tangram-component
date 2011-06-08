@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <head>
+        <title>flash test</title>
+        <meta http-equiv="Content-Type" charset="utf-8" content="text/html;charset=utf-8">
+        <script src='../../../../src/import.php?f=baidu.flash.imageUploader' ></script>
+    </head>
+    <body>
+        <input type="button" value="上传" onclick="javascript:upload1()"/>
+        <div id='content1' style='width:630px; height:360px; display:block;'></div>
+        <script>
+            function upload1(){
+                up1.upload();
+            };
+
+            var options = {
+                createOptions: {
+                    id: "flash1",
+                    url: "MultiImageUploaderExample.swf",
+                    width: "630",
+                    height: "360",
+                    errorMessage: "载入FLASH出错",
+                    ver: "9.0.0",
+                    vars:{
+                        url: "getfile.php",
+                        fileType: "{\"description\":\"图片\", \"extension\":\"*.gif; *.jpeg; *.png; *.jpg; *.bmp\"}",
+                        maxNum: 32,
+                        maxSize: 3,
+                        compressSize: 3,
+                        compressLength: 1200,
+                        uploadDataFieldName: "uploadDataField",
+                        picDescFieldName: "uploadDescField",
+                        ext: "{\"aaa\":\"bbb\", \"ccc\":\"ddd\"}",
+                        supportGif: 1
+                    },
+                    container: 'content1'
+                },
+                allComplete: function(){alert('all');},
+                complete: function(){alert('single');},
+                changeHigh: function(){alert('high');}
+            };
+            var up1 = new baidu.flash.imageUploader(options);  
+        </script>
+    </body>
+</html>
