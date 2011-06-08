@@ -81,7 +81,7 @@ baidu.flash._Base = function(options){
                 callBack: callBack
             });
 
-            (!timeHandle) && (timeHandle = setInterval(_check, 16));
+            (!timeHandle) && (timeHandle = setInterval(_check, 200));
         }
     };
 
@@ -110,7 +110,7 @@ baidu.flash._Base = function(options){
      * @private
      */
     function _check(){
-        if(target.flashInit && target.flashInit()){
+        if(typeof target !== 'undefined' && typeof target.flashInit !== 'undefined' && target.flashInit()){
             clearInterval(timeHandle);
             timeHandle = null;
             _call();
