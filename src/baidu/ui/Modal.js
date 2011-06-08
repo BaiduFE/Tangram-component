@@ -76,7 +76,7 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
      * 获取modal的Container
      * @public
      * @return {HTMLElement} container.
-     `*/
+     */
     getContainer: function() {
         var me = this;
         return baidu.g(me.containerId);
