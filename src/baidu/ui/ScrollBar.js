@@ -19,12 +19,17 @@
  * @config  {Number}    value       滚动条滚动的百分比值，定义域(0, 100)
  * @config  {Number}    dimension   滚动条滑块占全部内容的百分比，定义域(0, 100)
  * @config  {Number}    step        用户自定义当点击滚动按钮时每次滚动百分比距离，定义域(0, 100)
+ * @config  {Function}  onscroll    当滚动时触发该事件，function(evt){}，evt.value可以取得滚动的百分比
  * @author linlingyu
  */
 baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     var me = this;
         me._scrollBarSize = {width: 0, height: 0};//用来存入scrollbar的宽度和高度
-}).extend({
+}).extend(
+/**
+ *  @lends baidu.ui.ScrollBar.prototype
+ */
+{
     uiType: 'scrollbar',
     tplDOM: '<div id="#{id}" class="#{class}"></div>',
     tplThumb: '<div class="#{prev}"></div><div class="#{track}"></div><div class="#{next}"></div>',
@@ -56,6 +61,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     /**
      * 生成滑块的内容字符串
      * @return {String}
+     * @private
      */
     getThumbString: function() {
         var me = this;
@@ -84,6 +90,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
 
     /**
      * 将Button和Slider渲染到body中
+     * @private
      */
     _renderUI: function() {
         var me = this,
@@ -160,6 +167,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     /**
      * 滚动内容到参数指定的百分比位置
      * @param {Number} val 一个百分比值.
+     * @private
      */
     _scrollTo: function(val) {
         //slider有容错处理
@@ -177,8 +185,9 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     },
 
     /**
-     *根据参数实现prev和next按钮的基础滚动
+     * 根据参数实现prev和next按钮的基础滚动
      * @param {String} pos 取值prev|next.
+     * @private
      */
     _basicScroll: function(pos) {
         var me = this;
@@ -188,6 +197,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     /**
      * 滑轮事件侦听器
      * @param {Event} evt 滑轮的事件对象.
+     * @private
      */
     _onMouseWheelHandler: function(evt) {
         var me = this,
@@ -201,6 +211,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     /**
      * 注册一个滚轮事件
      * @param {HTMLElement} target 需要注册的目标dom.
+     * @private
      */
     _registMouseWheelEvt: function(target) {
 //        if(this.orientation != 'vertical'){return;}

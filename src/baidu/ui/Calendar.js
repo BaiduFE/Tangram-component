@@ -431,7 +431,11 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
      * @param {Date} date 一个当地的日期对象
      */
     setDate: function(date){
-        baidu.lang.isDate(date) && (this._initDate = date);
+        if(baidu.lang.isDate(date)){
+            var me = this;
+            me._initDate = date;
+            me._currDate = date;
+        }
     },
     
     /**
