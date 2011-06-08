@@ -14,32 +14,9 @@
 ///import baidu.swf.create;
 ///import baidu.swf.getMovie;
 
-baidu.flash._Base = function(options){
-    var me = this,
-        autoRender = (typeof options.autoRender !== 'undefined' ? options.autoRender : true),
-        createOptions = options.createOptions || {},
-        id = '',
-        target = null,
-        prefix = 'bd__flash__',
-        container = baidu.g(createOptions.container || ''),
-        isReady = false,
-        callQueue = [],
-        timeHandle = null;
-
-    /**
-     * 将flash文件绘制到页面上
-     * @public
-     * @return {Null}
-     */
-    me.render = function(){
-        if(!createOptions.id){
-            createOptions.id = _createString();
-        }
-        id = createOptions.id;
-
-        baidu.swf.create(createOptions, container);
-        target = baidu.swf.getMovie(id);
-    };
+baidu.flash._Base = (function(){
+   
+    var prefix = 'bd__flash__';
 
     /**
      * 创建一个随机的字符串
@@ -49,50 +26,47 @@ baidu.flash._Base = function(options){
     function _createString(){
         return  prefix + Math.floor(Math.random() * 2147483648).toString(36);
     };
-
+   
     /**
-     * 返回flash状态
+     * 检查flash状态
+     * @private
+     * @param {Object} target flash对象
      * @return {Boolean}
      */
-    me.isReady = function(){
-        return isReady;
-    };
-
-    /**
-     * 调用flash接口的统一入口
-     * @param {String} fnName 调用的函数名
-     * @param {Array} params 传入的参数组成的数组,若不许要参数，需传入空数组
-     * @param {Function} [callBack] 异步调用后将返回值作为参数的调用回调函数，如无返回值，可以不传入此参数
-     * @return {Null}
-     */
-    me.call = function(fnName, params, callBack){
-        if(!fnName) return;
-        callBack = callBack || new Function();
-
-        var result = null;
-
-        if(isReady){
-            result = target.call(fnName, params);
-            callBack(result);
+    function _checkReady(target){
+        if(typeof target !== 'undefined' && typeof target.flashInit !== 'undefined' && target.flashInit()){
+            return true;
         }else{
-            callQueue.push({
-                fnName: fnName,
-                params: params,
-                callBack: callBack
-            });
-
-            (!timeHandle) && (timeHandle = setInterval(_check, 200));
+            return false;
         }
     };
 
     /**
+     * 调用之前进行压栈的函数
+     * @private
+     * @param {Array} callQueue 调用队列
+     * @param {Object} target flash对象
+     * @return {Null}
+     */
+    function _callFn(callQueue, target){
+        var result = null;
+        
+        callQueue = callQueue.reverse();
+        baidu.each(callQueue, function(item){
+            result = target.call(item.fnName, item.params);
+            item.callBack(result);
+        });
+    };
+
+    /**
      * 为传入的匿名函数创建函数名
+     * @private
      * @param {String|Function} fun 传入的匿名函数或者函数名
      * @return {String}
      */
-    me.createFunName = function(fun){
+    function _createFunName(fun){
         var name = '';
-        
+
         if(baidu.lang.isFunction(fun)){
             name = _createString();
             window[name] = function(){
@@ -103,39 +77,115 @@ baidu.flash._Base = function(options){
         }else if(baidu.lang.isString){
             return fun;
         }
-    }
+    };
 
     /**
-     * 检查flash状态
+     * 绘制flash
      * @private
+     * @param {Object} options 创建参数
+     * @return {Object} 
      */
-    function _check(){
-        if(typeof target !== 'undefined' && typeof target.flashInit !== 'undefined' && target.flashInit()){
-            clearInterval(timeHandle);
-            timeHandle = null;
-            _call();
-
-            isReady = true;
+    function _render(options){
+        if(!options.id){
+            options.id = _createString();
         }
+        
+        var container = options.container || '';
+        delete(options.container);
+        
+        baidu.swf.create(options, container);
+        
+        return baidu.swf.getMovie(options.id);
     };
 
-    /**
-     * 调用之前进行压栈的函数
-     * @private
-     * @return {Null}
-     */
-    function _call(){
-        var result = null;
-        
-        callQueue = callQueue.reverse();
-        baidu.each(callQueue, function(item){
-            result = target.call(item.fnName, item.params);
-            item.callBack(result);
-        });
-        
-        callQueue = [];
-    };
+    return function(options){
+        var me = this,
+            autoRender = (typeof options.autoRender !== 'undefined' ? options.autoRender : true),
+            createOptions = options.createOptions || {},
+            target = null,
+            isReady = false,
+            callQueue = [],
+            timeHandle = null;
 
-    delete(createOptions.container);
-    autoRender && me.render(); 
-};
+        /**
+         * 将flash文件绘制到页面上
+         * @public
+         * @return {Null}
+         */
+        me.render = function(){
+            target = _render(createOptions);
+        };
+
+        /**
+         * 返回flash状态
+         * @return {Boolean}
+         */
+        me.isReady = function(){
+            return isReady;
+        };
+
+        /**
+         * 调用flash接口的统一入口
+         * @param {String} fnName 调用的函数名
+         * @param {Array} params 传入的参数组成的数组,若不许要参数，需传入空数组
+         * @param {Function} [callBack] 异步调用后将返回值作为参数的调用回调函数，如无返回值，可以不传入此参数
+         * @return {Null}
+        */
+        me.call = function(fnName, params, callBack){
+            if(!fnName) return;
+            callBack = callBack || new Function();
+    
+            var result = null;
+    
+            if(isReady){
+                result = target.call(fnName, params);
+                callBack(result);
+            }else{
+                callQueue.push({
+                    fnName: fnName,
+                    params: params,
+                    callBack: callBack
+                });
+    
+                (!timeHandle) && (timeHandle = setInterval(_check, 200));
+            }
+        };
+    
+        /**
+         * 为传入的匿名函数创建函数名
+         * @public
+         * @param {String|Function} fun 传入的匿名函数或者函数名
+         * @return {String}
+         */
+        me.createFunName = function(fun){
+            return _createFunName(fun);    
+        };
+
+        /**
+         * 检查flash是否ready， 并进行调用
+         * @private
+         * @return {Null}
+         */
+        function _check(){
+            if(_checkReady(target)){
+                clearInterval(timeHandle);
+                timeHandle = null;
+                _call();
+
+                isReady = true;
+            }               
+        };
+
+        /**
+         * 调用之前进行压栈的函数
+         * @private
+         * @return {Null}
+         */
+        function _call(){
+            _callFn(callQueue, target);
+            callQueue = [];
+        }
+
+        autoRender && me.render(); 
+    };
+})();
