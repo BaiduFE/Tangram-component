@@ -20,7 +20,11 @@
  */
 baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
 
-}).extend({
+}).extend(
+/**
+ *  @lends baidu.ui.ScrollPanel.prototype
+ */
+{
     uiType: 'scrollpanel',
     tplDOM: '<div id="#{id}" class="#{class}">#{body}</div>',
     overflow: 'auto',
@@ -46,6 +50,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
 
     /**
      * 取得panel所需要body字符串
+     * @private
      */
     getString: function() {
         var me = this,
@@ -80,6 +85,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
 
     /**
      * 根据参数渲染ScrollBar到容器中
+     * @private
      */
     _renderUI: function() {
         var me = this,
@@ -133,6 +139,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
 
     /**
      * 根据内容智能运算容器是需要显示滚动条还是隐藏滚动条
+     * @private
      */
     _smartVisible: function() {
         var me = this,
