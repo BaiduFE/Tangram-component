@@ -86,5 +86,15 @@ baidu.ui.Accordion = baidu.ui.createUI(function (options){
                 me.setCurrentHead(null);
             }
         }
+    },
+    
+    /**
+     * 销毁实例的析构
+     */
+    dispose: function(){
+        var me = this;
+        me.dispatchEvent('ondispose');
+        baidu.dom.remove(me.getMain());
+        baidu.lang.Class.prototype.dispose.call(me);
     }
 });
