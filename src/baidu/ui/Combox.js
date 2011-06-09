@@ -36,6 +36,7 @@
  * @config {Array|Object}         offset           偏移量，若为数组，索引0为x方向，索引1为y方向; 若为Object，键x为x方向，键y为y方向。单位：px，默认值：[0,0]。
  * @config {Number}               zIndex           浮起combox层的z-index值，默认为1200。
  * @config {Function}             onitemclick      combox中单个条目鼠标点击的回调函数，参数:{data : {value: Item对应的数据, index : Item索引值}}
+ * @config {Function}             onitemclick      combox中单个条目鼠标点击的回调函数，function(evt){}，evt.index返回item的索引，evt.value返回一个json，{content: '', value: ''}
  * @config {Function}             onbeforeclose    关闭之前触发
  * @config {Function}             onclose          关闭时触发
  * @config {Function}             onbeforeopen     打开之前触发
@@ -73,7 +74,7 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
     filter: function(filterStr,data){
         var ret = [];
         baidu.array.each(data || this.data, function(dataItem){
-            var strIndex = (dataItem.value || dataItem.content).indexOf(filterStr);            
+            var strIndex = String(dataItem.value || dataItem.content).indexOf(filterStr);
             if (strIndex >= 0) {
                 ret.push(dataItem);
             } 
@@ -206,7 +207,7 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
     chooseItem : function(data){
         var me = this;
         me.getInput().value = data.value.content;
-        me.dispatchEvent('itemclick', data);
+        me.dispatchEvent('onitemclick', data);
     },
 
     /**
