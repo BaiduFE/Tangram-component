@@ -27,6 +27,10 @@ baidu.ui.Modal.register(function(me){
             me.addEventListeners("onshow,onupdate",function(){
                 me.Coverable_update();
             });
+
+            me.addEventListener("onhide", function(){
+                me.Coverable_hide();
+            })
         }
     }
 });

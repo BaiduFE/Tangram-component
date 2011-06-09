@@ -3,8 +3,6 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 
-
-
 ///import baidu.ui.createUI;
 
 ///import baidu.dom.setAttr;
@@ -23,12 +21,14 @@
 ///import baidu.object.each;
 ///import baidu.object.extend;
 ///import baidu.array.each;
-///import baidu.dom.getAttr;
 
+///import baidu.dom.getAttr;
 ///import baidu.dom.getAncestorBy;
 ///import baidu.dom.getStyle;
 ///import baidu.dom.getPosition;
 ///import baidu.dom.children;
+///import baidu.dom.fixable;
+///import baidu.browser.ie;
 
 ///import baidu.lang.instance;
 
@@ -66,7 +66,7 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
     
 }).extend(
     /**
-     *  @lends baidu.ui.Dialog.prototype
+     *  @lends baidu.ui.Modal.prototype
      */
 {
     uiType: 'modal',
@@ -90,6 +90,7 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
     render: function() {
         var me = this,
             modalInstance,
+            fixableInstance,
             style,
             main,
             id = me.containerId,
@@ -105,12 +106,20 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
             main = me.renderMain();
             if (container !== document.body) {
                 container.appendChild(main);
+            }else{
+                fixableInstance = baidu.dom.fixable(main, {
+                    autofix: false,
+                    vertival: 'top',
+                    horizontal: 'left',
+                    offset: {x:0, y:0}
+                });
             }
             //将参数写入
             baidu.ui.Modal.collection[id] = {
                 mainId: me.mainId,
                 instance: [],
-                flash:{}
+                flash:{},
+                fixableInstance: fixableInstance
             };
         }
 
@@ -129,6 +138,7 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
             main = me.getMain(),
             containerId = me.containerId,
             modalInstanceOptions = baidu.ui.Modal.collection[containerId],
+            fixableInstance = modalInstanceOptions.fixableInstance,
             length = modalInstanceOptions.instance.length,
             lastTop;
 
@@ -141,6 +151,8 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
         }
         options = options || {};
         me._show(options.styles || {});
+        if(fixableInstance)
+            fixableInstance.render();
         main.style.display = 'block';
       
         //将在此层中隐藏flash入库
@@ -165,9 +177,10 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
         me._getModalStyles(styles || {});
         me._update();
 
-        me.windowHandler = me.getWindowHandle();
-        baidu.on(window, 'resize', me.windowHandler);
-        baidu.on(window, 'scroll', me.windowHandler);
+        if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie <= 7){
+            me.windowHandler = me.getWindowHandle();
+            baidu.on(window, 'resize', me.windowHandler);
+        }
     },
 
     /**
@@ -228,9 +241,9 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
      */
     _removeHandler: function() {
         var me = this;
-
-        baidu.un(window, 'resize', me.windowHandler);
-        baidu.un(window, 'scroll', me.windowHandler);
+        if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie <= 7){
+            baidu.un(window, 'resize', me.windowHandler);
+        }
     },
 
     /**
@@ -239,17 +252,22 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
      * @return {NULL}
      */
     getWindowHandle: function() {
-        var me = this;
+        var me = this,
+            main = me.getMain();
 
         return function() {
-            me._getModalStyles({});
-            me._update();
-
-            //TODO:iframe 补丁
-            window.top !== window.self && setTimeout(function(){
-                me._getModalStyles({});
-                me._update();
-            },16);
+            baidu.setStyles(main, {
+                width: baidu.page.getViewWidth(),
+                height: baidu.page.getViewHeight()
+            });
+            
+            if(me.getContainer() === document.body && baidu.browser.ie && baidu.browser.ie <= 7){
+                //iframe 补丁
+                window.top !== window.self && setTimeout(function(){
+                    me._getModalStyles({});
+                    me._update();
+                },16);
+            }
          };
     },
 
@@ -318,20 +336,11 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
                 styles['left'] = parentPosition.left - offsetParentPosition.left + getStyleNum(offsetParent, 'marginLeft');
             }
         }else {
-            
-
-            //如果不是ie6,并且不是quirk模式，设置为fixed
-            if ((baidu.browser.ie >= 7 || !baidu.browser.ie ) && document.compatMode != 'BackCompat') {
-                styles['position'] = 'fixed';
-                styles['top'] = 0;
-                styles['left'] = 0;
-
+     
+            if ( baidu.browser.ie > 7 || !baidu.browser.ie) {
                 styles['width'] = '100%';
                 styles['height'] = '100%';
             }else {
-                styles['top'] = baidu.page.getScrollTop();
-                styles['left'] = baidu.page.getScrollLeft();
-
                 styles['width'] = baidu.page.getViewWidth();
                 styles['height'] = baidu.page.getViewHeight();
             }

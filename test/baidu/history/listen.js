@@ -4,19 +4,19 @@ test('basic', function(){
 	expect(2);
 	var step = 0;
 	stop();
-	ua.importsrc('baidu.browser,baidu.browser.safari', function(){
+	ua.importsrc('baidu.browser,baidu.browser.safari,baidu.browser.maxthon', function(){
 		var callback = function(){
 			step ++;
 			if(step == 1){
 			    equals(location.hash, '#1', 'The hash is ' + location.hash);
-			    if(baidu.browser.ie){
+//			    if(baidu.browser.ie || baidu.browser.maxthon){
 				    setTimeout(function(){
 						window.location.hash = 2;
 				    }, 0);
-			    }
-			    else{
-			    	window.location.hash = 2;
-			    }
+//			    }
+//			    else{
+//			    	window.location.hash = 2;
+//			    }
 			}
 			if(step == 2){
 				equals(location.hash, '#2', 'The hash is ' + location.hash);
@@ -38,9 +38,9 @@ test('prev and next in iframe', function(){
 			step ++;
 			if(step == 1){
 			    equals(w.location.hash, '#3', 'The hash is ' + w.location.hash);
-			    if(baidu.browser.ie || baidu.browser.safari){
+			    if(baidu.browser.ie || baidu.browser.maxthon || baidu.browser.safari){
 				    setTimeout(function(){
-				    	w.location.hash = '';
+				    	w.location.hash = init_hash;
 				    }, 200);
 			    }
 			    else{
@@ -48,11 +48,15 @@ test('prev and next in iframe', function(){
 			    }
 			}
 			if(step == 2){
-				if(baidu.browser.ie)
-					equals(w.location.hash, '#' + init_hash, 'The hash is ' + w.location.hash);
+				if(baidu.browser.ie || baidu.browser.maxthon){
+					if(init_hash == "" && baidu.browser.ie)
+					    equals(w.location.hash, '#' + init_hash, 'The hash is ' + w.location.hash);
+					else
+					    equals(w.location.hash, init_hash, 'The hash is ' + w.location.hash);
+				}
 				else
 					equals(w.location.hash, init_hash, 'The hash is ' + w.location.hash);
-			    if(baidu.browser.ie || baidu.browser.safari){
+			    if(baidu.browser.ie || baidu.browser.maxthon || baidu.browser.safari){
 				    setTimeout(function(){
 				    	w.location.hash = 3;
 				    }, 200);

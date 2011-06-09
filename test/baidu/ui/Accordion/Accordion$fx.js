@@ -36,13 +36,13 @@ test('base', function() {
 	// TODO fx相关的校验应该在fx自身完成，此处仅做简单校验
 	setTimeout(function() {
 		ok(isShown(ui.getBodies()[0]), 'item 0 shown before collapse finish');
-		var height_cur = parseInt($(ui.getBodies()[0]).css('height'));
+		var height_cur = ui.getBodies()[0].offsetHeight;
 		ok(height_cur > 0 && height_cur < height, '折叠中的高度【' + height_cur
 				+ '】小于起始高度【' + height + '】');
 		start();
 	}, 200);
 	ui.render("div_test");
-	var height = parseInt($(ui.getBodies()[0]).css('height'));
+	var height = ui.getBodies()[0].offsetHeight;
 	ui.collapse();
 	stop();
 });
