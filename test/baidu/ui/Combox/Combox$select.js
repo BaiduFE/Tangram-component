@@ -35,7 +35,7 @@ test('Check the basic functions',function(){
 			"The position of the Combox is reset,PUBLICGE-329,PUBLICGE-318");
 	//测试onitemchosen事件能否正确加载监听函数并派发
 	cb.menu.open();
-	cb.menu.itemClick("0-1");
+	TT.event.fire(cb.menu.getItem('0-1'), 'click');
 	equals(cb.select.value, cb.menu.data[1].value, 
 			'The "onitemchosen" event is dispatched and can work well');
 	cb.menu.dispose();
