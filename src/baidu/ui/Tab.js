@@ -98,5 +98,15 @@ baidu.ui.Tab = baidu.ui.createUI( function (options) {
     insertContentHTML: function(item, index){
         var me = this;
         baidu.dom.insertHTML(me.getBodies()[index], 'beforeEnd', item);
+    },
+    
+    /**
+     * 销毁实例的析构
+     */
+    dispose: function(){
+        var me = this;
+        me.dispatchEvent('ondispose');
+        baidu.dom.remove(me.getMain());
+        baidu.lang.Class.prototype.dispose.call(me);
     }
 });
