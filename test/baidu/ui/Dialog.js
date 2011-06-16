@@ -1,5 +1,4 @@
 module("baidu.ui.Dialog");
-ua.importsrc("baidu.dom.getStyle");
 
 /**
  * <ul>
@@ -10,27 +9,31 @@ ua.importsrc("baidu.dom.getStyle");
  */
 test("get methods", function() {
 	expect(6);
-	var options = {
-		titleText : "title",
-		contentText : "content",
-		modal : false
-	};
-	var d = new baidu.ui.Dialog(options), pre = 'tangram-dialog--' + d.guid;
-	d.render();
-	/* get title */
-	equals(d.getTitle().id, pre + "-title", 'check title');
-	/* get title inner */
-	equals(d.getTitleInner().innerHTML, options.titleText, 'check title');
-	/* get title inner */
-	equals(d.getTitleInner().id, pre + "-title-inner", 'check title inner');
-	/* get content */
-	equals(d.getContent().innerHTML, options.contentText, 'check content');
-	/* get content */
-	equals(d.getContent().id, pre + "-content", 'check content');
-	/* get footer */
-	equals(d.getFooter().id, pre + "-footer", 'check footer');
-	te.obj.push(d);
-})
+	stop();
+	ua.importsrc("baidu.dom.getStyle", function(){
+		var options = {
+				titleText : "title",
+				contentText : "content",
+				modal : false
+			};
+			var d = new baidu.ui.Dialog(options), pre = 'tangram-dialog--' + d.guid;
+			d.render();
+			/* get title */
+			equals(d.getTitle().id, pre + "-title", 'check title');
+			/* get title inner */
+			equals(d.getTitleInner().innerHTML, options.titleText, 'check title');
+			/* get title inner */
+			equals(d.getTitleInner().id, pre + "-title-inner", 'check title inner');
+			/* get content */
+			equals(d.getContent().innerHTML, options.contentText, 'check content');
+			/* get content */
+			equals(d.getContent().id, pre + "-content", 'check content');
+			/* get footer */
+			equals(d.getFooter().id, pre + "-footer", 'check footer');
+			te.obj.push(d);
+			start();
+	});
+});
 
 /**
  * <li>check event onOpen, onUpdate, onBeforeClose, onClose
@@ -42,10 +45,10 @@ test("on", function() {
 		contentText : "content",
 		modal : false,
 		onupdate : function() {
-			ok(true, 'on update')
+			ok(true, 'on update');
 		},
 		onopen : function() {
-			ok(true, 'on open')
+			ok(true, 'on open');
 		},
 		onbeforeclose : function() {
 			ok(true, 'on before close');
