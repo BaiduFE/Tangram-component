@@ -48,7 +48,7 @@ module("baidu.ui.Suggestion$input");
 	            }
 	        }        
 	        return -1;
-			}
+			};
 	}
 
 	var s = QUnit.testStart;
@@ -422,7 +422,6 @@ test("suggestion in dialog, key options", function() {
 test("suggestion in dialog, mouse options", function() {
 	stop();
 	var input = te.dom[0];
-	ua.importsrc('baidu.ui.Dialog',function(){
 		var d_options = {
 				titleText : "title",
 				content : input
@@ -447,13 +446,11 @@ test("suggestion in dialog, mouse options", function() {
 		sugg = new baidu.ui.Suggestion(s_options);
 		sugg.render(input);
 		sugg.show('a', [ 'ab', 'ac' ]);
-	},'baidu.ui.Dialog','baidu.ui.Suggestion.Suggestion$input' );
 });
 
 test("suggestion in dialog, hide", function() {
 	stop();
 	var input = te.dom[0];
-	ua.importsrc('baidu.ui.Dialog',function(){
 		var d_options = {
 				titleText : "title",
 				content : input
@@ -478,6 +475,5 @@ test("suggestion in dialog, hide", function() {
 		sugg = new baidu.ui.Suggestion(s_options);
 		sugg.render(input);
 		sugg.show('a', [ 'ab', 'ac' ]);
-	},'baidu.ui.Dialog','baidu.ui.Suggestion.Suggestion$input' );
 });
 // TODO 输入法相关的测试，依然需要一组手工用例

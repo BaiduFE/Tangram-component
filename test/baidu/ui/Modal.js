@@ -202,73 +202,71 @@ test('多个遮罩依次显示及隐藏', function() {
 	document.body.removeChild(t2);
 });
 
-//----------------为了保证用例在测试机上运行通过，暂时屏蔽此用例   begin----------------------------
-//test('hide flash', function() {
-//    expect(16);
-//    stop();
-//	var check = function(){
-//	    var div1 = document.createElement('div');
-//		div1.id = 'flashContainer1';
-//		document.body.appendChild(div1);
-//		baidu.swf.create({
-//	        id: "flash1",
-//	        url: upath + 'Modal/flash/test_flash.swf',
-//	        width:695,
-//	        height:90,
-//	        wmode:'transparent'
-//	    }, "flashContainer1");
-//		var div2 = document.createElement('div');
-//		div2.id = 'flashContainer2';
-//		document.body.appendChild(div2);
-//		baidu.swf.create({
-//	        id: "flash2",
-//	        url: upath + 'Modal/flash/test_flash.swf',
-//	        width:695,
-//	        height:90,
-//	        wmode:'window'
-//	    }, "flashContainer2");
-//		var div3 = document.createElement('div');
-//		div3.id = 'flashContainer3';
-//		document.body.appendChild(div3);
-//		baidu.swf.create({
-//	        id: "flash3",
-//	        url: upath + 'Modal/flash/test_flash.swf',
-//	        width:695,
-//	        height:90,
-//	        wmode:'opaque'
-//	    }, "flashContainer3");
-//	    var m = new baidu.ui.Modal();
-//	    m.render();
-//	    m.show();
-//		equals(m.uiType, 'modal', 'check ui type');
-//		equals(m.styles.backgroundColor, '#000000', 'check color');
-//		equals(m.styles.opacity, '0.6', 'check opacity');
-//		equals(m.styles.zIndex, 1000, 'check z-index');
-//		equals(m.getMain().offsetWidth, baidu.page.getViewWidth(), 'check width after shown');
-//		equals(m.getMain().offsetHeight, baidu.page.getViewHeight(), 'check height after shown');
-//		equals(baidu.g("flashContainer1").firstChild.style.visibility, "", "The transparent flash is not hidden");
-//		equals(baidu.g("flashContainer2").firstChild.style.visibility, "hidden", "The window flash is hidden PUBLICGE-383");
-//		equals(baidu.g("flashContainer3").firstChild.style.visibility, "", "The opaque flash is not hidden");
-//		m.hide();
-//		ok(!isShown(m), "modal isn't shown after hide");
-//		equals(m.styles.color, undefined, 'check color  after hidden');
-//		equals(m.getMain().offsetWidth, 0, 'check width after hidden');
-//		equals(m.getMain().offsetHeight, 0, 'check height after hidden');
-//		equals(baidu.g("flashContainer1").firstChild.style.visibility, "", "The transparent flash is not hidden");
-//		ok(baidu.g("flashContainer2").firstChild.style.visibility ==  "visible" 
-//			|| baidu.g("flashContainer2").firstChild.style.visibility == "inherit", 
-//			"The window flash isn't hidden PUBLICGE-383");
-//		equals(baidu.g("flashContainer3").firstChild.style.visibility, "", "The opaque flash is not hidden");
-//	    document.body.removeChild(div1);
-//	    document.body.removeChild(div2);
-//	    document.body.removeChild(div3);
-//	    m.dispose();
-//	    start();
-//	};
-//    ua.importsrc('baidu.swf.create', 
-//			check ,'baidu.swf.create', 'baidu.ui.Modal');
-//});
-//----------------为了保证用例在测试机上运行通过，暂时屏蔽此用例   end----------------------------
+test('hide flash', function() {
+    expect(16);
+    stop();
+	var check = function(){
+	    var div1 = document.createElement('div');
+		div1.id = 'flashContainer1';
+		document.body.appendChild(div1);
+		baidu.swf.create({
+	        id: "flash1",
+	        url: upath + 'Modal/flash/test_flash.swf',
+	        width:695,
+	        height:90,
+	        wmode:'transparent'
+	    }, "flashContainer1");
+		var div2 = document.createElement('div');
+		div2.id = 'flashContainer2';
+		document.body.appendChild(div2);
+		baidu.swf.create({
+	        id: "flash2",
+	        url: upath + 'Modal/flash/test_flash.swf',
+	        width:695,
+	        height:90,
+	        wmode:'window'
+	    }, "flashContainer2");
+		var div3 = document.createElement('div');
+		div3.id = 'flashContainer3';
+		document.body.appendChild(div3);
+		baidu.swf.create({
+	        id: "flash3",
+	        url: upath + 'Modal/flash/test_flash.swf',
+	        width:695,
+	        height:90,
+	        wmode:'opaque'
+	    }, "flashContainer3");
+	    var m = new baidu.ui.Modal();
+	    m.render();
+	    m.show();
+		equals(m.uiType, 'modal', 'check ui type');
+		equals(m.styles.backgroundColor, '#000000', 'check color');
+		equals(m.styles.opacity, '0.6', 'check opacity');
+		equals(m.styles.zIndex, 1000, 'check z-index');
+		equals(m.getMain().offsetWidth, baidu.page.getViewWidth(), 'check width after shown');
+		equals(m.getMain().offsetHeight, baidu.page.getViewHeight(), 'check height after shown');
+		equals(baidu.g("flashContainer1").firstChild.style.visibility, "", "The transparent flash is not hidden");
+		equals(baidu.g("flashContainer2").firstChild.style.visibility, "hidden", "The window flash is hidden PUBLICGE-383");
+		equals(baidu.g("flashContainer3").firstChild.style.visibility, "", "The opaque flash is not hidden");
+		m.hide();
+		ok(!isShown(m), "modal isn't shown after hide");
+		equals(m.styles.color, undefined, 'check color  after hidden');
+		equals(m.getMain().offsetWidth, 0, 'check width after hidden');
+		equals(m.getMain().offsetHeight, 0, 'check height after hidden');
+		equals(baidu.g("flashContainer1").firstChild.style.visibility, "", "The transparent flash is not hidden");
+		ok(baidu.g("flashContainer2").firstChild.style.visibility ==  "visible" 
+			|| baidu.g("flashContainer2").firstChild.style.visibility == "inherit", 
+			"The window flash isn't hidden PUBLICGE-383");
+		equals(baidu.g("flashContainer3").firstChild.style.visibility, "", "The opaque flash is not hidden");
+	    document.body.removeChild(div1);
+	    document.body.removeChild(div2);
+	    document.body.removeChild(div3);
+	    m.dispose();
+	    start();
+	};
+    ua.importsrc('baidu.swf.create', 
+			check ,'baidu.swf.create', 'baidu.ui.Modal');
+});
 
 test('Check update', function() {
 	expect(6);

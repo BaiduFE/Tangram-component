@@ -117,11 +117,15 @@ test('select date', function() {
 	equals(input.value, baidu.date.format(de, ui.format));
 	$(input).blur();	
 	input.focus();
-	// 显示出来的时间是变更后的
-	te.simplecheck(de);
-	ua.click(te.getDoms().items[0]);
-	de = te.getDates(de, 'sun')[0];
-	equals(input.value, baidu.date.format(de, ui.format));
+	stop();
+	setTimeout(function(){
+		// 显示出来的时间是变更后的
+		te.simplecheck(de);
+		ua.click(te.getDoms().items[0]);
+		de = te.getDates(de, 'sun')[0];
+		equals(input.value, baidu.date.format(de, ui.format));
+		start();
+	}, 10);
 	// ua.click(document);
 	// input.focus();
 	// ua.click($('#' + ui._calendar.getId('next'))[0]);
