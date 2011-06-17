@@ -50,9 +50,6 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     me._dataList = data.slice(0, data.length);
     me._itemIds = [];
     me._items = {};//用来存入被删除的节点，当再次被使用时可以直接拿回来,格式:{element: dom, handler: []}
-    baidu.array.each(me._dataList, function(item) {
-        me._itemIds.push(baidu.lang.guid());
-    });
     me.flip = me.flip.toLowerCase();
     me.orientation = me.orientation.toLowerCase();
 }).extend(
@@ -95,6 +92,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     render: function(target) {
         var me = this;
         if (!target || me.getMain()) {return;}
+        //先把已经存在的dataList生成出来guid
+        baidu.array.each(me._dataList, function(item) {
+	        me._itemIds.push(baidu.lang.guid());
+	    });
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me.getString());
         me._renderItems();
         me._resizeView();

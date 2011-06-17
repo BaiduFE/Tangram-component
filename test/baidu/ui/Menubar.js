@@ -1,5 +1,4 @@
 module('baidu.ui.Menubar');
-ua.importsrc("baidu.dom.getStyle");
 
 (function() {
 	function mySetup() {
@@ -58,8 +57,9 @@ ua.importsrc("baidu.dom.getStyle");
 /**
  * dispose after update
  */
-test('dispose',
-		function() {
+test('dispose',function() {
+	stop();
+	ua.importsrc("baidu.dom.getStyle", function(){
 			var options = {
 				data : [ {
 					content : 'm11'
@@ -75,7 +75,9 @@ test('dispose',
 			menu.dispose();
 			equals(document.body.lastChild.id, 'div_test',
 					'dom removed after dispose');
-		});
+			start();
+	});
+});
 
 /**
  * <li> check item
