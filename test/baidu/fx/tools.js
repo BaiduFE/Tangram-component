@@ -20,7 +20,7 @@
 			return me.instance;
 		},
 		/**
-		 * 校验时间点附近的期望值和实际值，时间点采用等分切割方式
+		 * 校验时间点附近的期望值和实际值，时间点采用等分切割方式，取n点，去头尾，校验中间
 		 * <li>getexpect : 方法，获取每个时间点期望值
 		 * <li>getvalue : 方法，获取每个时间点实际值
 		 * <li>timelinepoint : 整形，定制检查的时间点，默认2
@@ -29,7 +29,7 @@
 		checktimeline : function(getexpect, getvalue, timelinepoint, threshold) {
 			var me = this,
 			// 时间线上的校验点
-			timelinepoint = timelinepoint || 2,
+			timelinepoint = timelinepoint || 4,//调整这个数据来确认2点校验还是3点校验
 			// 允许的误差范围
 			threshold = threshold === 0 ? 0 : (threshold ? threshold : 5),
 			// 记录的真实值列表
@@ -43,23 +43,22 @@
 				if (new Date().getTime() > me.starttime + duration) {
 					// 确认效果结束后启动校验
 					clearInterval(h);
-					for ( var i = 0; i < actuallist.length; i++) {
+					for ( var i = 0; i < actuallist.length - 1; i++) {
 						var a = actuallist[i];
 						// 第一个抽样点是1而不是0，因为启动的时候，setInterval已经开始跑了
-						var e = getexpect(i + 1, timelinepoint);
+						var e = getexpect(i + 1, timelinepoint);// 启动从1开始
 						ok(Math.abs(a - e) < threshold, '检测抽样点数值' + i + ' : e['
 								+ e + '] a[' + a + ']');
 					}
-					expect(timelinepoint);
+//					expect(timelinepoint - 2);// 掐头去尾
 					// 这个地方经常因为元素被移除了而fx还在继续执行导致问题
 					setTimeout(QUnit.start, 200);
 				}
 				actuallist[actuallist.length] = getvalue();
 			},
 			// 启动时间线校验方法
-			h = setInterval(fncheck, duration / timelinepoint);
+			h = setInterval(fncheck, duration / timelinepoint);// 启动从1开始
 			me.starttime = new Date().getTime();
-			// timeline();
 		},
 		/**
 		 * 校验事件序列，默认仅判定是否事件被正确触发，特定事件需要额外校验通过evcallbacks传入
