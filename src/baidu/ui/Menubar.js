@@ -20,6 +20,7 @@
 ///import baidu.array.each;
 ///import baidu.lang.isFunction;
 ///import baidu.event.getTarget;
+///import baidu.event.preventDefault;
 ///import baidu.dom.getAncestorByTag;
 
 /**
@@ -104,7 +105,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
             htmlArr.push(baidu.string.format(me.tplItem, {
                 id: me.getItemId(itemId),
                 "class": (itemData.disabled ? (me.getClass("item") + ' ' + me.getClass("item-disabled")) : me.getClass("item")),
-                onclick: me.getCallString("itemClick", itemId),
+                onclick: me.getCallRef() + ".itemClick('"+itemId+"', event);",
                 onmouseover: itemData.disabled || me.getCallRef() + ".itemMouseOver(event, '" + itemId + "')",
                 onmouseout: itemData.disabled || me.getCallRef() + ".itemMouseOut(event, '" + itemId + "')",
                 content: itemArr.join(''),
@@ -136,9 +137,11 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     /**
      * 单个条目被点击时触发
      * @param {String} idx item索引
+     * @param {Event} evt 浏览器的事件对象
      */
-    itemClick: function(idx){
+    itemClick: function(idx, evt){
         var me = this;
+        baidu.event.preventDefault(evt || window.event);
         me._close();
         me.dispatchEvent("onitemclick", me.getItemEventData(idx));
     },
