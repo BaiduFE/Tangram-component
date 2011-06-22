@@ -141,7 +141,7 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
      */
     itemClick: function(idx, evt){
         var me = this;
-        baidu.event.preventDefault(evt);
+        baidu.event.preventDefault(evt || window.event);
         me._close();
         me.dispatchEvent("onitemclick", me.getItemEventData(idx));
     },
