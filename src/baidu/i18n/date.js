@@ -34,13 +34,13 @@ baidu.i18n.date = baidu.i18n.date || {
     /**
      * 将传入的date对象转换成指定地区的date对象
      * @public
-     * @param {String} tLocale 地区名称简写字符.
      * @param {Date} dateObject
      * @param {String} sLocale dateObject 的地区标识，可选参数，传则以dateObject中获取的为准
+     * @param {String} tLocale 地区名称简写字符.
      * @return {Date}
      */
-    toLocaleDate: function(tLocale, dateObject, sLocale) {
-        return this._basicDate(tLocale, dateObject, sLocale);
+    toLocaleDate: function(dateObject, sLocale, tLocale) {
+        return this._basicDate(dateObject, sLocale, tLocale || baidu.i18n.currentLocale);
     },
 
     /**
@@ -50,8 +50,8 @@ baidu.i18n.date = baidu.i18n.date || {
      * @param {Date} dateObject 需要转换的日期函数.
      * @param {String} sLocale dateObject 的地区标识，可选参数，传则以dateObject中获取的为准
      */
-    _basicDate: function(tLocale, dateObject, sLocale) {
-        var tTimeZone = baidu.i18n.cultures[tLocale].timeZone,
+    _basicDate: function(dateObject, sLocale, tLocale) {
+        var tTimeZone = baidu.i18n.cultures[tLocale || baidu.i18n.currentLocale].timeZone,
             tTimeOffset = tTimeZone * 60,
             sTimeZone,sTimeOffset,
             millisecond = dateObject.getTime();

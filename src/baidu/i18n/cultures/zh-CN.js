@@ -44,3 +44,5 @@ baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] 
         signup: '登录'
     }
 });
+
+baidu.i18n.currentLocale = baidu.i18n.currentLocale || 'zh-CN';
