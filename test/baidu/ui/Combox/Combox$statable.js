@@ -27,7 +27,8 @@ test('',function(){
 		
 		//触发focus事件，没有监听函数
 		$(input).focus();
-		ok(false,  'focus()不能触发，原因待杨博查清');
+		ok(!cb.menu.getBody(),  'The menu is not open');
+		ok((cb.menu.data.length == 3), "The focus event of input is un");
 		
 		//触发keyup事件，没有监听函数，menu没有打开且里面的值没变
 		var datalength = cb.menu.data.length;
@@ -42,7 +43,7 @@ test('',function(){
 		datalength = cb.menu.data.length;
 	    ua.click(arrow);
 	    ok(!cb.menu.getBody(),  'The menu is not open PUBLICGE-369');
-	    ok((cb.menu.data.length == 1 && datalength == 1), "The click event of arrow is on");
+	    ok((cb.menu.data.length == 1 && datalength == 1), "The click event of arrow is un");
 		cb.menu.data = [ {
 			content : 'a'
 		},{
@@ -58,11 +59,16 @@ test('',function(){
 		equals(ic, ie + 3, 'The events are enabled');
 		ok(!$(input).attr("readonly"), "The input is not readonly");
 		
+
 		//触发focus事件，有监听函数
+		$(input).blur();//因为上面focus过一次，所以必须先blur，接下来的focus事件才能触发
+		input.value = "";
+		datalength = cb.menu.data.length;
 		$(input).focus();
-		ok(false,  'focus()不能触发，原因待杨博查清');
+		ok((cb.menu.data.length == 3 && datalength == 3), "The focus event of input is on");
 		//触发keyup事件，有监听函数，menu里面的值被筛选
 		datalength = cb.menu.data.length;
+		input.value = "a";
 		ua.keyup(input);
 		ok((cb.menu.data.length == 1 && datalength == 3), "The keyup event of input is on");
 		

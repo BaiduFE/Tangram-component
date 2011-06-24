@@ -34,11 +34,12 @@
  * @config {Object} contentText 定义carousel组件每一项的字符数据，格式：[{content: 'text-0'}, {content: 'text-1'}, {content: 'text-2'}...]
  * @config {String} flip 定义组件的翻页方式，取值：item:一次滚动一个项, page:一次滚动一页
  * @config {Number} pageSize 描述一页显示多少个滚动项，默认值是3
- * @config {String} onload 当渲染完组件时触发该事件
- * @config {String} onbeforescroll 当开始滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
- * @config {String} onafterscroll 当结束一次滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
- * @config {String} onprev 当翻到前一项或前一页时触发该事件
- * @config {String} onnext 当翻到下一项或下一页时触发该事件
+ * @config {function} onload 当渲染完组件时触发该事件
+ * @config {function} onbeforescroll 当开始滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
+ * @config {function} onafterscroll 当结束一次滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
+ * @config {function} onprev 当翻到前一项或前一页时触发该事件
+ * @config {function} onnext 当翻到下一项或下一页时触发该事件
+ * @config {function} onitemclick 当点击某个项时触发该事件
  * @author linlingyu
  */
 
@@ -50,9 +51,6 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     me._dataList = data.slice(0, data.length);
     me._itemIds = [];
     me._items = {};//用来存入被删除的节点，当再次被使用时可以直接拿回来,格式:{element: dom, handler: []}
-    baidu.array.each(me._dataList, function(item) {
-        me._itemIds.push(baidu.lang.guid());
-    });
     me.flip = me.flip.toLowerCase();
     me.orientation = me.orientation.toLowerCase();
 }).extend(
@@ -95,6 +93,10 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     render: function(target) {
         var me = this;
         if (!target || me.getMain()) {return;}
+        //先把已经存在的dataList生成出来guid
+        baidu.array.each(me._dataList, function(item) {
+	        me._itemIds.push(baidu.lang.guid());
+	    });
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me.getString());
         me._renderItems();
         me._resizeView();
