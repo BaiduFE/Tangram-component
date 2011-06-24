@@ -35,7 +35,10 @@
 	</target>
 
 	<target name="execute" depends="init,coverage">
-		<get src="http://${serverip}/${git.user}/${git.project}/test/tools/br/runall.php?ci=true&amp;cov=true" dest="/tmp/${git.user}_${git.project}.php" />
+		<get src="http://${serverip}/addTask?proj=${git.user}.${git.project}" dest="/tmp/${git.user}_${git.project}.php" />
+	</target>
+	<target name="execute_release" depends="init,coverage">
+		<get src="http://${serverip}/addTask?proj=${git.user}.${git.project}&amp;release=true" dest="/tmp/${git.user}_${git.project}.php" />
 	</target>
 	<target name="getreport" depends="execute">
 		<waitfor maxwait="600" maxwaitunit="second">
@@ -46,4 +49,13 @@
 		<antcall target="mail" />
 		<!-- junit report and mail end -->
 	</target>
+	<target name="getreport_release" depends="execute_release">
+			<waitfor maxwait="1000" maxwaitunit="second">
+				<available file="${report.file}" />
+			</waitfor>
+
+			<!-- junit report and mail -->
+		    <!-- <antcall target="mail" /> -->
+			<!-- junit report and mail end -->
+		</target>
 </project>
