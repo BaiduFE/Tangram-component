@@ -1,5 +1,6 @@
 (function() {
 	function mySetup() {
+		baidu.i18n.cultures = baidu.i18n.cultures || {};
 		baidu.i18n.cultures['en-CA'] = {
 			calendar : {
 				dateFormat : 'yyyy-MM-dd',
@@ -55,12 +56,11 @@
 	var s = QUnit.moduleStart;
 	QUnit.moduleStart = function() {
 		var args = arguments, self = this;
-		stop();
-		ua.importsrc('baidu.i18n.cultures', function() {
+//		stop();
+//		ua.importsrc('baidu.i18n.cultures', function() {
 			mySetup();
-			start();
+//			start();
 			s.apply(self, args);
-		});
+//		});
 	};
 })();
-

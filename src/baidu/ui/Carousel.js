@@ -34,11 +34,12 @@
  * @config {Object} contentText 定义carousel组件每一项的字符数据，格式：[{content: 'text-0'}, {content: 'text-1'}, {content: 'text-2'}...]
  * @config {String} flip 定义组件的翻页方式，取值：item:一次滚动一个项, page:一次滚动一页
  * @config {Number} pageSize 描述一页显示多少个滚动项，默认值是3
- * @config {String} onload 当渲染完组件时触发该事件
- * @config {String} onbeforescroll 当开始滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
- * @config {String} onafterscroll 当结束一次滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
- * @config {String} onprev 当翻到前一项或前一页时触发该事件
- * @config {String} onnext 当翻到下一项或下一页时触发该事件
+ * @config {function} onload 当渲染完组件时触发该事件
+ * @config {function} onbeforescroll 当开始滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
+ * @config {function} onafterscroll 当结束一次滚动时触发该事件，该事件的event参数中可以得到四个属性：index:当前需要滚动的索引, scrollOffset:滚动到可视区域的位置, direction:滚动方向, scrollUnit:需要滚动过多少个项
+ * @config {function} onprev 当翻到前一项或前一页时触发该事件
+ * @config {function} onnext 当翻到下一项或下一页时触发该事件
+ * @config {function} onitemclick 当点击某个项时触发该事件
  * @author linlingyu
  */
 

@@ -1,4 +1,4 @@
-module('baidu.ui.ColorPicker.ColorPalette');
+module('baidu.ui.ColorPalette');
 
 function createColorPalette(options) {
     var colorPalette = baidu.ui.create(baidu.ui.ColorPalette,
