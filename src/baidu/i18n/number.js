@@ -9,15 +9,15 @@ baidu.i18n.number = baidu.i18n.number || {
     /**
      * 将传入的数字或者文字某种语言的格式进行格式化
      * @public
-     * @param {String} tLocale 目标语言
      * @param {String|Number} number 需要进行格式化的数字或者文字
      * @param {String} [sLocale] 可选参数，若传入的number格式为字符串，则该参数必须传入
+     * @param {String} [tLocale] 目标语言
      * @return {String}
      */
-    format: function(tLocale, number, sLocale){
+    format: function(number, sLocale, tLocale){
         var me = this,
             sOpt = sLocale && baidu.i18n.cultures[sLocale].number,
-            tOpt = baidu.i18n.cultures[tLocale].number,
+            tOpt = baidu.i18n.cultures[tLocale || baidu.i18n.currentLocale].number,
             isNegative = false;
 
         if(typeof number === 'string'){
