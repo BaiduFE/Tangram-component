@@ -104,6 +104,32 @@
             _log('timer not exist', 'error');
         }
     };
+
+    /**
+     * 开启dialog进行输出
+     * @public
+     * @return {Null}
+     */
+    log.enableDialog = function(){
+        
+        _enableDialg = true;
+        if(!_dialog && baidu.tools.log.Dialog){
+            _dialog = new baidu.tools.log.Dialog();
+        }else{
+            _dialog.open();
+        }
+    };
+
+    /**
+     * 关闭dialog
+     * @public
+     * @return {Null}
+     */
+    log.disableDialog = function(){
+        
+        _enableDialg = false;
+        _dialog && _dialog.close();
+    };
    
     /**
      * 输出log
@@ -138,11 +164,7 @@
 
         //清空栈
         _logStack = [];
-
-        if(_enableDialg){
-            (!_dialog && baidu.tools.log.Dialog) && (_dialog = new baidu.tools.log.Dialog());
-            _dialog.push(data);
-        }
+        _dialog && _dialog.push(data);
 
         me.callBack.call(data);
     };

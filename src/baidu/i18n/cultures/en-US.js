@@ -45,3 +45,5 @@ baidu.i18n.cultures['en-US'] = baidu.object.extend(baidu.i18n.cultures['en-US'] 
         signup: 'signup'
     }
 });
+
+baidu.i18n.currentLocale = baidu.i18n.currentLocale || 'en-US';
