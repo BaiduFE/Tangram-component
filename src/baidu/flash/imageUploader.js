@@ -9,6 +9,7 @@
 
 /**
  * 创建flash based imageUploader
+ * @class
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
  * @config {Object} vars 创建imageUploader时所需要的参数
  * @config {String} [vars.url] 图片上传的url地址,默认值'Upload.php'
