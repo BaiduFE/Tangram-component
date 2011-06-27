@@ -24,7 +24,7 @@
 ///import baidu.sio.callByServer;
 
 /**
- * 应用实现 login 备注：涉及passport的API接口参数可以参见http://fe.&#98;aidu.com/doc/zhengxin/passport/openapi_help.text
+ * 应用实现 login 备注：涉及passport的API接口参数可以参见http://fe.baidu.com/doc/zhengxin/passport/openapi_help.text
  * @name baidu.ui.Login
  * @class
  * @param  {String|DOMElement}  content               内容或者内容对应的元素
@@ -53,9 +53,9 @@
  * @config {Boolean}            [autoOpen]            是否一开始就打开，默认为true
  * @config {String}             loginURL              登陆地址,无须改动
  * @config {String}             regURL                注册地址,无须改动
- * @config {String}             loginJumpURL          登陆跳转地址,必须，为提交表单跨域使用，可前往 http://fe.&#98;aidu.com/~zhengxin/passport/jump.html  下载，或者线上 http://passport.&#98;aidu.com/jump.html 
- * @config {String}             regJumpURL            注册跳转地址,必须，为提交表单跨域使用，可前往 http://fe.&#98;aidu.com/~zhengxin/passport/jump.html  下载，或者线上
-http://passport.&#98;aidu.com/jump.html 
+ * @config {String}             loginJumpURL          登陆跳转地址,必须，为提交表单跨域使用，可前往 http://fe.baidu.com/~zhengxin/passport/jump.html  下载，或者线上 http://passport.baidu.com/jump.html 
+ * @config {String}             regJumpURL            注册跳转地址,必须，为提交表单跨域使用，可前往 http://fe.baidu.com/~zhengxin/passport/jump.html  下载，或者线上
+http://passport.baidu.com/jump.html 
  * @config {String}             defaultStatus         弹出时初始状态(登录或注册),取值 ['login','reg'],默认为 login
  * @config {Function}           onLoginSuccess        登录成功回调 TODO 默认处理函数 json.un
  * @config {Function}           onLoginFailure        登录失败回调 TODO 默认处理函数, json.error
@@ -71,7 +71,7 @@ baidu.ui.Login = baidu.ui.createUI(function(options){ },{superClass:baidu.ui.Dia
     		//ui控件的class样式前缀 可选
     		classPrefix     : "tangram-dialog",
 		//titleText: '登录',
-		loginURL: 'http://passport.&#98;aidu.com/api/?login&time=&token=&tpl=pp',
+		loginURL: 'http://passport.baidu.com/api/?login&time=&token=&tpl=pp',
 		loginJumpURL: window.location.href,
 		//登录成功回调 TODO 默认处理函数 json.un
 		onLoginSuccess: function(obj, json) {},
@@ -85,7 +85,7 @@ baidu.ui.Login = baidu.ui.createUI(function(options){ },{superClass:baidu.ui.Dia
 	            <div id="#{idLoginContainer}"></div>\
 	            <div id="regDiv">\
                     <hr size="0" style="border-top:1px solid #AAAAAA">\
-                    <div class="reg">没有百度账号？<a href="https://passport.&#98;aidu.com/?reg&tpl=mn" target="_self">立即注册百度账号</a></div>\
+                    <div class="reg">没有百度账号？<a href="https://passport.baidu.com/?reg&tpl=mn" target="_self">立即注册百度账号</a></div>\
                 </div>\
             </div>\
         </div>\
