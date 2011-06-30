@@ -244,7 +244,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
      * @private
      */
     _toLocalDate: function(date){//很多地方都需要使用到转化，为避免总是需要写一长串i18n特地做成方法吧
-        return date ? baidu.i18n.date.toLocaleDate(this.language,date)
+        return date ? baidu.i18n.date.toLocaleDate(date, null, this.language)
             : date;
     },
     

@@ -46,9 +46,9 @@ baidu.i18n.date = baidu.i18n.date || {
     /**
      * 本地日历和格力高利公历相互转换的基础函数
      * @private
-     * @param {string} locale 传入date的地区名称简写字符，不传入则从date中计算得出.
      * @param {Date} dateObject 需要转换的日期函数.
-     * @param {String} sLocale dateObject 的地区标识，可选参数，传则以dateObject中获取的为准
+     * @param {String} sLocale dateObject 的地区标识，可选参数，否则以dateObject中获取的为准
+     * @param {string} tlocale 传入date的地区名称简写字符，不传入则从date中计算得出.
      */
     _basicDate: function(dateObject, sLocale, tLocale) {
         var tTimeZone = baidu.i18n.cultures[tLocale || baidu.i18n.currentLocale].timeZone,
