@@ -343,15 +343,15 @@ test('开放参数', function() {
 		initDate : te.getDate('2012-12-21'),
 		weekStart : 'mon',
 		highlightDates : [ {
-			start : te.getDate('2012-1-1'),// 都应该是包含
-			end : te.getDate('2012-1-6')
+			start : te.getDate('2012-7-1'),// 都应该是包含
+			end : te.getDate('2012-7-6')
 		}, {
-			start : te.getDate('2012-2-1'),
-			end : te.getDate('2012-2-2')
+			start : te.getDate('2012-8-1'),
+			end : te.getDate('2012-8-2')
 		} ],
 		disableDates : [ {
-			start : te.getDate('2012-1-7'),
-			end : te.getDate('2012-1-10')
+			start : te.getDate('2012-7-7'),
+			end : te.getDate('2012-7-10')
 		} ],
 		flipContent : {
 			prev : '<p>prev</p>'// 就设定一个肯定会有问题。。。
@@ -368,7 +368,7 @@ test('开放参数', function() {
 	// 检测highlight
 	// checkHighlight = function() {
 	// current应该是21
-	ui.gotoMonth(0);
+	ui.gotoMonth(6);
 
 //	equals(te.doms.content.current.html(), 21, 'check current');
 	te.update();
