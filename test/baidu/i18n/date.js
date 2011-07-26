@@ -38,17 +38,18 @@ test('toLocaleDate', function(){
 	offset = -5; //-5区 美国时间
 	us = utc + (3600000*offset);
 	date_5 = new Date(us); 
-	var newtoen = baidu.i18n.date.toLocaleDate('en-US', date);
+	baidu.i18n.currentLocale = 'zh-CN';
+	var newtoen = baidu.i18n.date.toLocaleDate(date, undefined, 'en-US');
 	equals(newtoen.toString() ,date_5.toString(), 'Convert to en-US time');
-	var newtozh = baidu.i18n.date.toLocaleDate('zh-CN', date);
+	var newtozh = baidu.i18n.date.toLocaleDate(date);
 	equals(newtozh.toString(), date.toString(), 'Convert to zh-CN time');
-	var newzhtoen = baidu.i18n.date.toLocaleDate('en-US', date, 'zh-CN');
+	var newzhtoen = baidu.i18n.date.toLocaleDate(date, 'zh-CN', 'en-US');
 	equals(newzhtoen.toString() ,date_5.toString(), 'Convert to en-US time');
-	var newzhtozh = baidu.i18n.date.toLocaleDate('zh-CN', date, 'zh-CN');
+	var newzhtozh = baidu.i18n.date.toLocaleDate(date, 'zh-CN', 'zh-CN');
 	equals(newzhtozh.toString(), date.toString(), 'Convert to zh-CN time');
-	var newentoen = baidu.i18n.date.toLocaleDate('en-US', date_5, 'en-US');
+	var newentoen = baidu.i18n.date.toLocaleDate(date_5, 'en-US', 'en-US');
 	equals(newentoen.toString() ,date_5.toString(), 'Convert to en-US time');
-	var newentozh= baidu.i18n.date.toLocaleDate('zh-CN', date_5, 'en-US');
+	var newentozh= baidu.i18n.date.toLocaleDate(date_5, 'en-US', 'zh-CN');
 	equals(newentozh.toString(), date.toString(), 'Convert to zh-CN time');
 });
 
@@ -60,8 +61,8 @@ test('custom language', function(){
 	offset = -4; //-4区 加拿大时间
 	ca = utc + (3600000*offset);
 	date_4 = new Date(ca); 
-	var newentozh= baidu.i18n.date.toLocaleDate('zh-CN', date_4, 'en-CA');
+	var newentozh= baidu.i18n.date.toLocaleDate(date_4, 'en-CA', 'zh-CN');
 	equals(newentozh.toString(), date.toString(), 'Convert to zh-CN time');
-	var newzhtoen = baidu.i18n.date.toLocaleDate('en-CA', date, 'zh-CN');
+	var newzhtoen = baidu.i18n.date.toLocaleDate(date, 'zh-CN', 'en-CA');
 	equals(newzhtoen.toString() ,date_4.toString(), 'Convert to en-US time');
 });
