@@ -10,6 +10,8 @@
 ///import baidu.object.extend;
 ///import baidu.each;
 
+///resource  baidu.flash.fileUploader.swf
+
 /**
  * 创建flash based fileUploader
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档

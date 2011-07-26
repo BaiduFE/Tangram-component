@@ -7,6 +7,8 @@
 ///import baidu.flash;
 ///import baidu.flash._Base;
 
+///resource baidu.flash.avatarMaker.swf
+
 /**
  * 创建flash based avatarMaker
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档

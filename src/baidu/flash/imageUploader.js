@@ -7,6 +7,7 @@
 ///import baidu.flash;
 ///import baidu.flash._Base;
 
+///resource  baidu.flash.imageUploader.swf
 /**
  * 创建flash based imageUploader
  * @class
