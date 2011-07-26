@@ -98,14 +98,15 @@ baidu.flash._Base = (function(){
         return baidu.swf.getMovie(options.id);
     };
 
-    return function(options){
+    return function(options, callBack){
         var me = this,
             autoRender = (typeof options.autoRender !== 'undefined' ? options.autoRender : true),
             createOptions = options.createOptions || {},
             target = null,
             isReady = false,
             callQueue = [],
-            timeHandle = null;
+            timeHandle = null,
+            callBack = callBack || [];
 
         /**
          * 将flash文件绘制到页面上
@@ -114,6 +115,13 @@ baidu.flash._Base = (function(){
          */
         me.render = function(){
             target = _render(createOptions);
+            
+            if(callBack.length > 0){
+                baidu.each(callBack, function(funName, index){
+                    callBack[index] = _createFunName(options[funName] || new Function());
+                });    
+            }
+            me.call('setJSFuncName', [callBack]);
         };
 
         /**
