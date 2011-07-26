@@ -7,6 +7,7 @@
 ///import baidu.flash;
 ///import baidu.flash._Base;
 
+///resource  baidu.flash.imageUploader.swf
 /**
  * 创建flash based imageUploader
  * @class
@@ -28,20 +29,11 @@ baidu.flash.imageUploader = function(options){
    
     var me = this,
         options = options || {},
-        _flash = new baidu.flash._Base(options);
-
-    /**
-     * 为flash 设置完成上传时的回调函数
-     * @private
-     * @return {Null}
-     */
-    me._setCompleteFun = function(){
-        var all = _flash.createFunName(options.allComplete),
-            single = _flash.createFunName(options.complete),
-            changeHigh = options.changeHigh ? _flash.createFunName(options.changeHigh) : new Function();
-        
-        _flash.call('setJSFuncName', [single, all, changeHigh]);
-    };
+        _flash = new baidu.flash._Base(options, [
+                'single',    
+                'allComplete',
+                'changeHigh'
+            ]);
 
     /**
      * 开始或回复上传图片
@@ -60,6 +52,4 @@ baidu.flash.imageUploader = function(options){
     me.pause = function(){
         _flash.call('pause');
     };
-
-    me._setCompleteFun();
 };
