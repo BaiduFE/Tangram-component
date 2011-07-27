@@ -8,7 +8,7 @@
 ///import baidu.flash._Base;
 
 ///import baidu.object.extend;
-///import baidu.each;
+///import baidu.array.each;
 
 ///resource  baidu.flash.fileUploader.swf
 
