@@ -10,7 +10,7 @@
 ///import baidu.object.extend;
 ///import baidu.array.each;
 
-///resource  baidu.flash.fileUploader.swf
+///resource  baidu.flash.fileUploader.swf;
 
 /**
  * 创建flash based fileUploader
