@@ -7,6 +7,8 @@
 ///import baidu.flash;
 ///import baidu.flash._Base;
 
+///resource baidu.flash.avatarMaker.swf
+
 /**
  * 创建flash based avatarMaker
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
@@ -24,14 +26,10 @@ baidu.flash.avatarMaker = function(options){
     var me = this,
         options = options || {},
         _uploadURL = options.uploadURL,
-        _flash = new baidu.flash._Base(options);
-    
-    me._setCompleteFun = function(){
-        var callBack = _flash.createFunName(options.uploadCallBack || new Function()),
-            tipHandler = _flash.createFunName(options.tipHandler || new Function());
-        _flash.call('setJSFuncName', [callBack, tipHandler]);
-    };
-
+        _flash = new baidu.flash._Base(options, [
+                'uploadCallBack',
+                'tipHandler'
+            ]);
     /**
      * 开始上传头像
      * @public
@@ -41,6 +39,4 @@ baidu.flash.avatarMaker = function(options){
     me.upload = function(uploadURL){
         _flash.call('upload', [uploadURL || _uploadURL]);
     };
-
-    me._setCompleteFun();
 };

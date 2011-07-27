@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <title>flash test</title>
+        <meta http-equiv="Content-Type" charset="utf-8" content="text/html;charset=utf-8">
+        <script src='../../../../src/import.php?f=baidu.flash.fileUploader' ></script>
+    </head>
+    <body>
+        <div id="content1" style='border:1px'></div>
+        <script>
+            var options = {
+                createOptions: {
+                    id: "flash1",
+                    url: "fileUpLoader.swf",
+                    errorMessage: "载入FLASH出错",
+                    ver: "9.0.0",
+                    container: 'content1',
+                    width: '100px',
+                    height: '100px'
+                },
+                width: '100px',
+                height: '100px'
+            };
+            var up1 = new baidu.flash.fileUploader(options);
+            //baidu.swf.create(options.createOptions);
+        </script>
+    </body>
+</html>
