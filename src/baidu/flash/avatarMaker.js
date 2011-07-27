@@ -7,7 +7,7 @@
 ///import baidu.flash;
 ///import baidu.flash._Base;
 
-///resource baidu.flash.avatarMaker.swf
+///resource baidu.flash.avatarMaker.swf;
 
 /**
  * 创建flash based avatarMaker
