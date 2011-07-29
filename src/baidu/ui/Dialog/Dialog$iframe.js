@@ -4,8 +4,11 @@
  */
 
 ///import baidu.ui.Dialog;
+
 ///import baidu.string.format;
-///import baidu.browser.ie;
+///import baidu.dom.setStyles;
+///import baidu.object.extend;
+///import baidu.event.on;
 
 baidu.ui.Dialog.register(function(me){
     if(me.type == "iframe"){
@@ -20,6 +23,18 @@ baidu.ui.Dialog.register(function(me){
              */
             getIframe: function(){
                 return baidu.g(this.getId('iframe'));
+            },
+
+            /**
+             * 更新iframe的Style，更新dialog
+             * @public
+             * @param {Object} styles {width:width,height:height}
+             * @return {Null}
+             */
+            updateIframe:function(styles){
+                baidu.setStyles(this.getId('iframe'), styles);
+                me._updatePosition();
+                me.dispatchEvent('onupdate');
             }
         });
         
@@ -41,10 +56,6 @@ baidu.ui.Dialog.register(function(me){
     
             //解决iframe加载后无法准确定位dialog的问题
             baidu.on(iframeElement, 'onload', function() {
-                //同域则获取被包含页的高度并赋予iframe
-                //if(contentWindow = iframeElement.contentWindow){
-                //    iframeElement.height = Math.max(contentWindow.document.documentElement.scrollHeight,contentWindow.document.body.scrollHeight) + "px";   
-                //}
                 me._updatePosition();
                 me.dispatchEvent('onupdate');
             });
