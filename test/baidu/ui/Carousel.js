@@ -324,10 +324,23 @@ test("isLast", function() {
 });
 
 test("focus", function() {
-	expect(4);
+	expect(6);
 	var c = te.dom[0];
 	var carousel = createCarousel(te.dom[0]);
+	var npstep = 0;
+	carousel.onfocus = function check_onfocus(index){
+		npstep ++;
+		if(npstep == 1)
+			equals(index.index, 0, 'check onfocus when render');
+		if(npstep == 2)
+			equals(index.index, 1, 'check onfocus when focus(1)');
+		if(npstep == 3)
+			ok(true, 'check onfocus when focus(-1)');
+		if(npstep == 4)
+			ok(true, 'check onfocus when focus(7)');
+	};
 	carousel.render(c);
+
 	var item = carousel.getItem(0);
 	ok(item.className.indexOf(carousel.getClass("item-focus")) > -1,
 	"item0 is focus");
