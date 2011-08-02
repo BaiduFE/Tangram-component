@@ -56,41 +56,48 @@ test("render--with an argument", function() {
 // 测试input在事件触发时用户定义的函数是否成功调用，并且检查样式是否正确
 test("event", function() {
 	var options = {
-		onfocus : function() {
+		onfocus : function(evt) {
 			ok(true, 'on focus');
 			equals(inputEle.className, "tangram-input tangram-input-focus",
 					"check input onfocus style");
+			equals(evt.DOMEvent.type, 'focus', 'check input event');
 		},
-		onblur : function() {
+		onblur : function(evt) {
 			ok(true, 'on blur');
 			equals(inputEle.className, "tangram-input",
 					"check input onblur style");
+			equals(evt.DOMEvent.type, 'blur', 'check input event');
 		},
-		onchange : function() {
+		onchange : function(evt) {
 			ok(true, 'on change');
 			equals(inputEle.className, "tangram-input",
 					"check input onchange style");
+			equals(evt.DOMEvent.type, 'change', 'check input event');
 		},
-		onkeydown : function() {
+		onkeydown : function(evt) {
 			ok(true, 'on keydown');
 			equals(inputEle.className, "tangram-input tangram-input-focus",
 					"check input onkeydown style");
+			equals(evt.DOMEvent.type, 'keydown', 'check input event');
 		},
-		onkeyup : function() {
+		onkeyup : function(evt) {
 			ok(true, 'on keyup');
 			equals(inputEle.innerHTML, '', 'on up, input value changed');
 			equals(inputEle.className, "tangram-input tangram-input-focus",
 					"check input onkeyup style");
+			equals(evt.DOMEvent.type, 'keyup', 'check input event');
 		},
-		onmouseover : function() {
+		onmouseover : function(evt) {
 			ok(true, 'on mouseover');
 			equals(inputEle.className, "tangram-input tangram-input-hover",
 					"check input onmouseover style");
+			equals(evt.DOMEvent.type, 'mouseover', 'check input event');
 		},
-		onmouseout : function() {
+		onmouseout : function(evt) {
 			ok(true, 'on mouseout');
 			equals(inputEle.className, "tangram-input",
 					"check input onmouseout style");
+			equals(evt.DOMEvent.type, 'mouseout', 'check input event');
 		},
 		onenable : function() {
 			ok(true, 'on enable');
