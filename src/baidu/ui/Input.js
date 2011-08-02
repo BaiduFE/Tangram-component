@@ -27,17 +27,17 @@
  * @param     {Object}                 [options]     选项
  * @config    {String}                 text          input文本信息
  * @config    {Boolean}                disabled      控件是否有效，默认为false（有效）。
- * @config    {Function}               onfocus       聚焦时触发
- * @config    {Function}               onblur        失去焦点时触发
- * @config    {Function}               onchage       input内容改变时触发
- * @config    {Function}               onkeydown     按下键盘时触发
- * @config    {Function}               onkeyup       释放键盘时触发
- * @config    {Function}               onmouseover   鼠标悬停在input上时触发
- * @config    {Function}               onmouseout    鼠标移出input时触发
+ * @config    {Function}               onfocus       聚焦时触发，function(evt){}，evt.DOMEvent取得浏览器的event事件
+ * @config    {Function}               onblur        失去焦点时触发，function(evt){}，evt.DOMEvent取得浏览器的event事件
+ * @config    {Function}               onchage       input内容改变时触发，function(evt){}，evt.DOMEvent取得浏览器的event事件
+ * @config    {Function}               onkeydown     按下键盘时触发，function(evt){}，evt.DOMEvent取得浏览器的event事件
+ * @config    {Function}               onkeyup       释放键盘时触发，function(evt){}，evt.DOMEvent取得浏览器的event事件
+ * @config    {Function}               onmouseover   鼠标悬停在input上时触发，function(evt){}，evt.DOMEvent取得浏览器的event事件
+ * @config    {Function}               onmouseout    鼠标移出input时触发，function(evt){}，evt.DOMEvent取得浏览器的event事件
  * @config    {Function}               ondisable     当调用input的实例方法disable，使得input失效时触发。
  * @config    {Function}               onenable      当调用input的实例方法enable，使得input有效时触发。
  * @config    {Function}               ondispose     销毁实例时触发
- * @returns   {Boolean} 是否有效，true(失效)/false(有效)。
+ * @returns   {Boolean}                              是否有效，true(失效)/false(有效)
  */
 
 baidu.ui.Input = baidu.ui.createUI(new Function).extend(
@@ -61,13 +61,13 @@ baidu.ui.Input = baidu.ui.createUI(new Function).extend(
         var input = this;
         return baidu.format(input.tplBody, {
 				id          : input.getId(),
-				onfocus		: input.getCallString("_onFocus"),
-				onblur		: input.getCallString("_onBlur"),
-				onchange	: input.getCallString("_onChange"),
-				onkeydown	: input.getCallString("_onKeyDown"),
-				onkeyup		: input.getCallString("_onKeyUp"),
-				onmouseover : input.getCallString("_onMouseOver"),
-				onmouseout  : input.getCallString("_onMouseOut"),
+                onfocus		: input.getCallRef() + "._onEventHandle('onfocus', 'focus', event);",
+                onblur		: input.getCallRef() + "._onEventHandle('onblur', null, event);",
+                onchange	: input.getCallRef() + "._onEventHandle('onchange', null, event);",
+                onkeydown	: input.getCallRef() + "._onEventHandle('onkeydown', 'focus', event);",
+                onkeyup		: input.getCallRef() + "._onEventHandle('onkeyup', 'focus', event);",
+                onmouseover : input.getCallRef() + "._onEventHandle('onmouseover', 'hover', event);",
+                onmouseout  : input.getCallRef() + "._onEventHandle('onmouseout', null, event);",
 				text		: input.text,
             	"class"     : input.getClass(input.isDisabled() ? "disable" : "")
         });
@@ -87,62 +87,15 @@ baidu.ui.Input = baidu.ui.createUI(new Function).extend(
         input.getBody().disabled = input.disabled;
 	},
 	
-	_onEventHandle : function(eventName, styleName){
+	_onEventHandle : function(eventName, styleName, evt){
 		var input = this;
 		if(input.isDisabled()){
 			return;
 		}
-		input._changeStyle(styleName);
-		input.dispatchEvent(eventName);
-	}, 
-	
-    /*
-     *  聚焦input框时调用。
-     */    
-	_onFocus : function(){
-        this._onEventHandle("onfocus","focus");
-	},
-    
-    /*
-     *  失去input框焦点时调用。
-     */    
-	_onBlur : function(){
-        this._onEventHandle("onblur");
-	},
-	
-	/*
-     *  input框中内容改变时触发。
-     */    
-	_onChange : function(){
-        this._onEventHandle("onchange");
-	},
-	
-    /*
-     *  鼠标按下按钮时调用。
-     */ 	
-	_onKeyDown : function(){
-		this._onEventHandle("onkeydown","focus");
-	},
-
-    /*
-     *  按钮弹起时调用。
-     */ 
-	_onKeyUp : function(){
-		this._onEventHandle("onkeyup","focus");		
-	},
-	
-    /*
-     *  鼠标移出按钮时调用。
-     */ 	
-	_onMouseOver : function(){
-		this._onEventHandle("onmouseover","hover");	
-	},	
-	
-    /*
-     *  鼠标移出按钮时调用。
-     */ 	
-	_onMouseOut : function(){
-		this._onEventHandle("onmouseout");			
+		styleName && input._changeStyle(styleName);
+		input.dispatchEvent(eventName, {
+		    DOMEvent: evt
+		});
 	},
 	
     /*
@@ -199,7 +152,7 @@ baidu.ui.Input = baidu.ui.createUI(new Function).extend(
 	},
 
     /**
-     *  使input控件失效。
+     * 使input控件失效。
 	 * @public
      */
 	disable : function(){	
@@ -216,5 +169,4 @@ baidu.ui.Input = baidu.ui.createUI(new Function).extend(
 		baidu.dom.remove(input.getBody());
 		baidu.lang.Class.prototype.dispose.call(input);
 	}
-
 });
