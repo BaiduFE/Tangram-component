@@ -57,6 +57,7 @@ test("render--with an argument", function() {
 test("event", function() {
 	var options = {
 		onfocus : function(evt) {
+		    
 			ok(true, 'on focus');
 			equals(inputEle.className, "tangram-input tangram-input-focus",
 					"check input onfocus style");
@@ -125,9 +126,9 @@ test("event", function() {
 
 	input.disable();
 	input.enable();
-
-	input.getBody().focus();
-	input.getBody().blur();
+    
+    TT.event.fire(input.getBody(), 'focus');
+    TT.event.fire(input.getBody(), 'blur');
 
 	input.getBody().value = 'blah blah blah';
 	te.dom.push(input.getMain());
