@@ -10,8 +10,6 @@
 ///import baidu.dom.removeClass;
 ///import baidu.dom.hasClass;
 
-///import baidu.event.on;
-///import baidu.event.un;
 ///import baidu.event.stop;
 ///import baidu.event.preventDefault;
 
@@ -53,10 +51,10 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
 
     me.addEventListener('onload', function() {
         //监听suggestion外面的鼠标点击
-        baidu.on(document, 'mousedown', me.documentMousedownHandler);
+        me.on(document, 'mousedown', me.documentMousedownHandler);
 
         //窗口失去焦点就hide
-        baidu.on(window, 'blur', me.windowBlurHandler);
+        me.on(window, 'blur', me.windowBlurHandler);
     });
 
     //初始化dom事件函数
@@ -522,8 +520,6 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         var me = this;
         me.dispatchEvent('dispose');
 
-        baidu.un(document, 'mousedown', me.documentMousedownHandler);
-        baidu.un(window, 'blur', me.windowBlurHandler);
         baidu.dom.remove(me.mainId);
 
         baidu.lang.Class.prototype.dispose.call(this);

@@ -8,7 +8,6 @@
 ///import baidu.string.format;
 ///import baidu.dom.setStyles;
 ///import baidu.object.extend;
-///import baidu.event.on;
 
 baidu.ui.Dialog.register(function(me){
     if(me.type == "iframe"){
@@ -55,7 +54,7 @@ baidu.ui.Dialog.register(function(me){
             iframeElement = baidu.g(iframeId);
     
             //解决iframe加载后无法准确定位dialog的问题
-            baidu.on(iframeElement, 'onload', function() {
+            me.on(iframeElement, 'onload', function() {
                 me._updatePosition();
                 me.dispatchEvent('onupdate');
             });

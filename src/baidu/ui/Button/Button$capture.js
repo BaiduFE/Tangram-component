@@ -6,8 +6,6 @@
 ///import baidu.ui.Button;
 ///import baidu.fn.bind;
 ///import baidu.dom.contains;
-///import baidu.event.on;
-///import baidu.event.un;
 ///import baidu.event.getTarget;
 
 /**
@@ -38,11 +36,7 @@ baidu.ui.Button.register(function(me) {
                 }
             };
         body.onmouseout = null;
-        baidu.event.on(body, 'mouseout', mouseOutHandler);
-        baidu.event.on(document, 'mouseup', mouseUpHandler);
-        me.addEventListener('dispose', function() {
-            baidu.event.un(body, 'mouseout', mouseOutHandler);
-            baidu.event.un(document, 'mouseup', mouseUpHandler);
-        });
+        me.on(body, 'mouseout', mouseOutHandler);
+        me.on(document, 'mouseup', mouseUpHandler);
     });
 });

@@ -10,8 +10,6 @@
 ///import baidu.ui.Popup;
 
 ///import baidu.ui.Calendar;
-///import baidu.event.on;
-///import baidu.event.un;
 ///import baidu.event.getTarget;
 ///import baidu.dom.contains;
 ///import baidu.date.format;

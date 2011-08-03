@@ -79,7 +79,7 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
             me.dispatchEvent("onleave");
         },me);
 
-        baidu.on(me.element, 'mouseout', me._mouseOutHandle);
+        me.on(me.element, 'mouseout', me._mouseOutHandle);
     },
 
     /**
@@ -135,7 +135,6 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
      */
     dispose:function(){
         var me = this;
-        baidu.un(me.element, 'mouseout', me._mouseOutHandle);
        
         for(i=0; i < me.total; ++i){
             baidu.dom.remove(me.getId(i));

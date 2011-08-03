@@ -19,8 +19,6 @@
 ///import baidu.dom.remove;
 ///import baidu.array.each;
 ///import baidu.fn.bind;
-///import baidu.event.on;
-///import baidu.event.un;
 ///import baidu.string.format;
 
  /**
@@ -140,10 +138,10 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
             });
         }, me);
         
-        baidu.on(input, "focus", me._showMenuHandler);
+        me.on(input, "focus", me._showMenuHandler);
         if(me.editable){
             input.readOnly = '';
-            baidu.on(input, "keyup", me._showMenuHandler);
+            me.on(input, "keyup", me._showMenuHandler);
         }
     },
 
@@ -180,7 +178,7 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
                 data: me.data
             });
         }, me);
-        baidu.on(arrow, 'click', me._showAllMenuHandler);
+        me.on(arrow, 'click', me._showAllMenuHandler);
         return me.menu;
     },
 
@@ -224,9 +222,6 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
      */
     dispose: function(){
         var me = this;
-        baidu.un(me.getInput(), 'keyup', me._showMenuHandler);
-        baidu.un(me.getInput(), 'focus', me._showMenuHandler);
-        baidu.un(me.getArrow(), 'click', me._showAllMenuHandler);
         me.menu && me.menu.dispose();
         me.getMain() && baidu.dom.remove(me.getMain());
         me.dispatchEvent('ondispose');

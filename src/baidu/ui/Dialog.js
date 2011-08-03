@@ -174,7 +174,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         });
         //当居中时，窗口改变大小时候要重新计算位置
         me.windowResizeHandler = me.getWindowResizeHandler();
-        baidu.on(window, 'resize', me.windowResizeHandler);
+        me.on(window, 'resize', me.windowResizeHandler);
 
         me.dispatchEvent('onload');
 
@@ -491,7 +491,6 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         //删除实例引用
         delete baidu.ui.Dialog.instances[me.guid];
         me.dispatchEvent('dispose');
-        baidu.un(window, 'resize', me.windowResizeHandler);
         baidu.dom.remove(me.getMain());
         baidu.lang.Class.prototype.dispose.call(me);
     }

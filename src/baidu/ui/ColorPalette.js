@@ -110,7 +110,7 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
         me._createSlider();
         me._padClickHandler = baidu.fn.bind('_onPadClick', me);
 
-        baidu.event.on(me.getPad(), 'click', me._padClickHandler);
+        me.on(me.getPad(), 'click', me._padClickHandler);
 
         me._setColorImgs();
         me.setSliderDot(me.sliderDotY);
@@ -551,10 +551,10 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
     dispose: function() {
         var me = this;
 
-        baidu.event.un(me.getPad(), 'click', me._padClickHandler);
+        
+        me.dispatchEvent('ondispose');
         me.slider.dispose();
 
-        me.dispatchEvent('ondispose');
         if (me.getMain()) {
             baidu.dom.remove(me.getMain());
         }
