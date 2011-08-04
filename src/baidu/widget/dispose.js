@@ -24,5 +24,5 @@ baidu.widget.dispose = function(name) {
     if (baidu.lang.isFunction(widget.dispose)) {
         widget.dispose();
     }
-    delete baidu.widget._widgetInUse[name];
+    delete baidu.widget._widgetAll[name];
 };

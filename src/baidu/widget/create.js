@@ -30,15 +30,20 @@ baidu.widget.create = function(id, main, options) {
         id: id,
         main: main,
         depends: options.depends || [],
+        exports: {},
         dispose: options.dispose
     };
     baidu.widget._widgetLoading[id] = widget;
+    baidu.widget._widgetAll[id] = widget;
     widget.load = function() {
         var widget = this;
+        if(widget._loaded){
+            return;
+        }
+        widget._loaded = true;
         baidu.widget.load(widget.depends, function(require) {
-            baidu.widget._widgetInUse[widget.id] = widget;
+            baidu.widget._widgetLoading[widget.id] = undefined;
             widget.context = require.context || baidu.widget._defaultContext;
-            widget.exports = {};
             widget.main.call(widget, require, widget.exports);
         });
     };
