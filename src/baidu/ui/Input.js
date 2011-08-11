@@ -92,7 +92,7 @@ baidu.ui.Input = baidu.ui.createUI(new Function).extend(
 		if(input.isDisabled()){
 			return;
 		}
-		styleName && input._changeStyle(styleName);
+		input._changeStyle(styleName);
 		input.dispatchEvent(eventName, {
 		    DOMEvent: evt
 		});
