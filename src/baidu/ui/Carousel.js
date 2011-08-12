@@ -40,7 +40,7 @@
  * @config {function} onprev 当翻到前一项或前一页时触发该事件
  * @config {function} onnext 当翻到下一项或下一页时触发该事件
  * @config {function} onitemclick 当点击某个项时触发该事件
- * * @config {function} onfocus 当某一项获得焦点时触发该事件
+ * @config {function} onfocus 当某一项获得焦点时触发该事件
  * @author linlingyu
  */
 
