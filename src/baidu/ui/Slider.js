@@ -36,7 +36,11 @@
 baidu.ui.Slider = baidu.ui.createUI(function(options){
     var me = this;
     me.range = me.range || [me.min, me.max];//初始化range
-}).extend({
+}).extend(
+/**
+ *  @lends baidu.ui.Dialog.prototype
+ */
+{
     layout: 'horizontal',//滑块的布局方式 horizontal :水平  vertical:垂直
     uiType: 'slider',
     tplBody: '<div id="#{id}" class="#{class}" onmousedown="#{mousedown}" style="position:relative;">#{thumb}</div>',

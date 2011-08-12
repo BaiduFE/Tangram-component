@@ -22,7 +22,7 @@ baidu.widget = baidu.widget || {
      * widget url查找的根路径, 相对根路径或绝对根路径皆可.
      */
     _basePath : '',
-    _widgetAll : {},
+    _widgetInUse : {},
     _widgetLoading : {},
     _defaultContext : {}
 };
