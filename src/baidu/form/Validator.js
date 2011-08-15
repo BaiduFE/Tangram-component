@@ -18,7 +18,7 @@
 
 /**
  * 表单验证组件
- * @name baidu.form.Validate
+ * @name baidu.form.Validator
  * @class
  * @param {HTMLElement|String} form 一个表单对象的引用或是该id的字符串标识
  * @param {Object} fieldRule 对验证规则的配置，一个验证域需要的配置包括验证域名称，验证规则，提示信息(可选，需要Validator$message支持)，提示信息存放容器(可选，需要Validator$message支持)，验证触发事件(可选)，一个完整的配置大致如：fieldName: {rule: {required: {param: true, message: {success: 'success msg', failure: 'failure msg'}}, maxlength: {param: 50, message: 'failure msg'}, email: true}, messageContainer: 'myMsgElement', eventName: 'keyup,blur'}
