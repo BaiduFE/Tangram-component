@@ -19,6 +19,7 @@
 
 /**
  * button基类，创建一个button实例
+ * @name baidu.ui.Button
  * @class button类
  * @param {Object} [options] 选项
  * @config {String}             content     按钮文本信息

@@ -7,7 +7,11 @@
 ///import baidu.tools;
 ///import baidu.array.each;
 ///import baidu.fn.blank;
-
+/**
+ * 打印日志
+ * @name baidu.tools.log
+ * @class
+ */
 (function(){
  
         //日志队列
