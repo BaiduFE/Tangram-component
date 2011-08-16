@@ -18,6 +18,7 @@
 /**
  * 控制元素的透明度 渐变
  * @function
+ * @grammar baidu.fx.opacity(element, options)
  * @param       {String|Object}           element               元素或者元素的ID
  * @param       {Object}                  options               选项。参数的详细说明如下表所示
  * @config      {Number}                  from                  0,//效果起始值。介于0到1之间的一个数字，默认为0。

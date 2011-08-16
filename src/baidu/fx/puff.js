@@ -10,20 +10,10 @@
 
 ///import baidu.fx.zoomOut;
 ///import baidu.object.extend;
-
-/**
- * 将DOM元素放大，并逐渐透明消失
- * 
- * @param   {HTMLElement}   element     DOM元素或者ID
- * @param   {JSON}          options     类实例化时的参数配置
- *          {transformOrigin, from,     to}
- *          {"0px 0px"        number    number}
- * @return  {fx}     效果类的实例
- */
- 
 /**
  * 将DOM元素放大，关逐渐透明消失。
  * @function
+ * @grammar baidu.fx.puff(element, options)
  * @param       {string|HTMLElement}      element               元素或者元素的ID
  * @param       {Object}                  options               选项。参数的详细说明如下表所示
  * @config      {Number}                  duration              800,//效果持续时间，默认值为800ms。

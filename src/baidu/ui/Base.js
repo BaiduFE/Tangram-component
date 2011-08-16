@@ -16,14 +16,17 @@
 
 /**
  * UI基类，所有的UI都应该从这个类中派生出去
- *
+ * @name baidu.ui.Base
+ * @grammar baidu.ui.Base
+ * @class
+ * @return {baidu.ui.Base}
  * @author berg
- *
- * property:
- * 
- * mainId
  */
-baidu.ui.Base = {
+baidu.ui.Base = 
+/**
+ * @lends baidu.ui.Base.prototype
+ */
+{
 
     id : "",
 

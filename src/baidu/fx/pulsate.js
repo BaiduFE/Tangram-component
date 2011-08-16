@@ -16,6 +16,7 @@
 /**
  * 心跳闪现效果。
  * @function
+ * @grammar baidu.fx.pulsate(element, loop, options)
  * @param       {string|HTMLElement}      element               元素或者元素的ID
  * @param       {Number}                  loop                  心跳次数，小于0则为永远跳动，默认为0次。
  * @param       {Object}                  options               选项。参数的详细说明如下表所示

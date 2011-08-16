@@ -15,6 +15,7 @@
 /**
  * 从下向上收拢DOM元素的效果。
  * @function
+ * @grammar baidu.fx.collapse(element, options)
  * @param     {string|HTMLElement}    element            元素或者元素的ID
  * @param     {Object}                options            选项。参数的详细说明如下表所示
  * @config    {Number}                duration           500,//效果持续时间，默认值为500ms
