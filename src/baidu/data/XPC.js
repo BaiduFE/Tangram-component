@@ -148,6 +148,7 @@ baidu.data.XPC = baidu.lang.createClass(function(isParent, url, options) {
     },
     /**
      * 发送消息方法。
+     * @function
      * @param {string} msg 要发送的消息.
      */
     send: function(msg) {
