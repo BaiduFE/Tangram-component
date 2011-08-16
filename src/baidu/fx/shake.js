@@ -18,6 +18,7 @@
  * 颤动的效果。
  * 说明：在效果执行过程中会修改DOM元素的position属性，可能会对包含的DOM元素带来影响
  * @function
+ * @grammar baidu.fx.shake(element, offset, options)
  * @param     {string|HTMLElement}    element            元素或者元素的ID
  * @param     {Array|Object}          offset             震动范围。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向；单位：px，默认值：元素本来的坐标。
  * @param     {Object}                options            选项。参数的详细说明如下表所示

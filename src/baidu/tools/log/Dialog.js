@@ -28,6 +28,11 @@
 ///import baidu.tools;
 ///import baidu.tools.log;
 
+/**
+ * 打印日志
+ * @class
+ * @grammar new baidu.tools.log.Dialog(options)
+ */
 baidu.tools.log.Dialog = function(options){
     var me = this,
         options = options || {};
@@ -74,9 +79,10 @@ baidu.tools.log.Dialog = function(options){
         error: 'red'
     };
 };
+
 baidu.tools.log.Dialog.prototype = {
    
-    _verifyFunction:[
+    _verifyFunction: [
         [baidu.lang.isString,'String'],
         [baidu.lang.isNumber,'Number'],
         [baidu.lang.isDate,'Date'],
@@ -86,7 +92,6 @@ baidu.tools.log.Dialog.prototype = {
 
     /**
      * 打开dialog
-     * @public
      * @return {Null}
      */
     open: function(){

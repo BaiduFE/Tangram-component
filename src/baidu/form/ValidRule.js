@@ -14,6 +14,8 @@
  * 验证规则组件，提供各种基础验证，默认的验证方式有以下几种：required(必填)，remote(Ajax验证)，email(电子邮件验证)，number(数字验证)，maxlength(最大长度验证)，minlength(最小长度验证)，rangelength(长度范围验证)，equal(等于验证)，telephone(电话号码)
  * @name baidu.form.ValidRule
  * @class
+ * @grammar new baidu.form.ValidRule()
+ * @return {baidu.form.ValidRule} validator对象
  */
 baidu.form.ValidRule = baidu.form.ValidRule || baidu.lang.createClass(function(){
     var me = this;

@@ -13,6 +13,7 @@
 /**
  * 获取DOM元素正在运行的效果实例列表
  * @function
+ * @grammar baidu.fx.current(element)
  * @param     {string|HTMLElement}     element     被查询的DOM元素或元素id
  * @see baidu.fx.current
  * @returns {Array} 效果对象

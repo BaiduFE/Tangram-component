@@ -15,6 +15,7 @@
 /**
  * 滚动条滚动到指定位置。
  * @function
+ * @grammar baidu.fx.scrollTo(element, point, options)
  * @param     {string|HTMLElement}    element            元素或者元素的ID
  * @param     {Array|JSON}            point              移动的距离 [,] | {x,y}，支持数组与JSON格式
  * @param     {Object}                options            选项。参数的详细说明如下表所示
