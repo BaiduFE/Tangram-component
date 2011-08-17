@@ -8,9 +8,12 @@
 ///import baidu.array.each;
 ///import baidu.fn.blank;
 /**
- * 打印日志
- * @name baidu.tools.log
+ * 打印log
  * @class
+ * @name baidu.tools.log
+ * @grammar baidu.tools.log
+ * @param {Object} data 需要打印的内容
+ * @return {Null}
  */
 (function(){
  
@@ -35,7 +38,8 @@
      
     /**
      * 打印log
-     * @public
+     * @class
+     * @grammar baidu.tools.log
      * @param {Object} data 需要打印的内容
      * @return {Null}
      */

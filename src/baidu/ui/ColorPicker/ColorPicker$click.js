@@ -14,7 +14,7 @@
 
 /**
  * 创建一个鼠标点击触发的colorPicker
- * @name baidu.ui.ColorPicker.ColorPicker$click
+ * @name baidu.ui.ColorPicker
  * @author walter
  */
 baidu.ui.ColorPicker.extend({

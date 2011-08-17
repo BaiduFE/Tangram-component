@@ -27,11 +27,13 @@
 ///import baidu.string.encodeHTML;
 
 /**
- * @class  Tree：管理和操作TreeNode
+ * Tree：管理和操作TreeNode
+ * @name baidu.ui.Tree
+ * @class
+ * @grammar new baidu.ui.Tree(options)
  * @param {Object} options
  * @config {Object} data 节点数据集合 {text: "", children: [{text: ""},{text: ""}]}
- * @config {Boolean} expandable  是否改变trunk的状态到leaf,当一个trunk的子节点数为0时，
- *                                如果为true,那么就变为leaf的状态，否则就不会变
+ * @config {Boolean} expandable  是否改变trunk的状态到leaf,当一个trunk的子节点数为0时，如果为true,那么就变为leaf的状态，否则就不会变
  * @config {Function} onclick  节点被点击后触发。
  * @config {Function} ontoggle  节点被展开或收起后触发。
  * @config {Function} onload  Tree渲染后触发。
@@ -46,22 +48,7 @@ baidu.ui.Tree = baidu.ui.createUI(function(options) {
 });
 
 //TreeNode类 
-/**
- * 树节点类
- * @Class TreeNode
- * @param {Object} options
- * @config {Boolean} isExpand  是否是展开, 默认值为false
- * @config {Array} children 子节点options数组  默认值为null
- * @config {Boolean} isRoot  是否是根节点,默认值为false
- * @config {Boolean} type  节点类型 trunk|leaf, 默认值为'leaf'
- * @config {String} id  节点的唯一标识ID。默认为null
- * @config {String} text  节点显示名称. 默认值为null
- * @config {String} href 节点的链接href. 默认值为null
- * @config {String} target 节点链接的target,有href的时候才生效。默认值为null
- * @config {String} icon 节点图标的路径. 默认值为null
- * @config {String} skin 节点样式选择符. 默认值为null
- * @config {Boolean} isToggle 是否支持节点展开或收起 默认值为true
- */
+
 //此类做了以下优化。
 //1. TreeNode通过字符串拼装HTML来代替模板format,因为多次使用
 //   format是非常耗性能的。
@@ -75,7 +62,24 @@ baidu.ui.Tree = baidu.ui.createUI(function(options) {
 //   也挺消耗性能的。
 //7. 去掉了不必要的HTML与样式，这些都会耗损渲染性能。
 
-
+/**
+ * 树节点类TreeNode
+ * @name baidu.ui.Tree.TreeNode
+ * @class
+ * @grammar new baidu.ui.Tree.TreeNode(options)
+ * @param {Object} options
+ * @config {Boolean} isExpand  是否是展开, 默认值为false
+ * @config {Array} children 子节点options数组  默认值为null
+ * @config {Boolean} isRoot  是否是根节点,默认值为false
+ * @config {Boolean} type  节点类型 trunk|leaf, 默认值为'leaf'
+ * @config {String} id  节点的唯一标识ID。默认为null
+ * @config {String} text  节点显示名称. 默认值为null
+ * @config {String} href 节点的链接href. 默认值为null
+ * @config {String} target 节点链接的target,有href的时候才生效。默认值为null
+ * @config {String} icon 节点图标的路径. 默认值为null
+ * @config {String} skin 节点样式选择符. 默认值为null
+ * @config {Boolean} isToggle 是否支持节点展开或收起 默认值为true
+ */
 baidu.ui.Tree.TreeNode = function(options) {
     var me = this;
     baidu.object.extend(me, options);
@@ -91,7 +95,11 @@ baidu.ui.Tree.TreeNode = function(options) {
 
 
 
-baidu.ui.Tree.TreeNode.prototype =  {
+baidu.ui.Tree.TreeNode.prototype =  
+/**
+ * @lends baidu.ui.Tree.TreeNode.prototype
+ */
+{
     //ui控件的类型 **必须**
     uiType: 'tree-node',
     //节点的文本属性
@@ -104,6 +112,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * 用来为HTML元素的ID属性生成唯一值。
      * @param {String} key
      * @return {String} id.
+     * @private
      */
     _getId: function(key) {
        return this.id + '-' +key;
@@ -112,6 +121,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * 用来为HTML元素的class属性生成唯一值。
      * @param {String} key
      * @return {String} class.
+     * @private
      */
     _getClass: function(key) {
         var me = this,
@@ -124,6 +134,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 生成当前实例所对应的字符串
      * @return {String} stringRef.
+     * @private
      */
     _getCallRef: function() {
         return "window['$BAIDU$']._instances['" + this.id + "']";
@@ -198,6 +209,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * 取得所有子节点返回的HTMLString
      * @param {Array } array
      * @return {String} string.
+     * @private
      */
     _getSubNodeString: function(childrenData) {
         var me = this,
@@ -245,7 +257,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     },
     /**
      * 将此节点移动至一个目标节点,成为这个目标节点的next节点
-     * @Param {TreeNode} 移动至目标节点
+     * @param {TreeNode} 移动至目标节点
      */
     moveTo: function(treeNode) {
         var me = this,
@@ -274,6 +286,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * @param {Boolean} isDynamic 是否是动态新增 用来区分动态新增节点和初始化json。
      * 初始化的json里面的children是有数据的，而动态新增节点的children是需要手动加的，
      * 所以如果初始化json就不需要对children进行维护，反之亦然.
+     * @private
      */
     _appendChildData: function(treeNode,index,isDynamic) {
         var me = this,
@@ -434,8 +447,9 @@ baidu.ui.Tree.TreeNode.prototype =  {
         }
         me._updateAll();
     },
-    /**
-    *除了更新节点的缩进图标状态外，还更新privious的状态
+   /**
+    * 除了更新节点的缩进图标状态外，还更新privious的状态
+    * @private
     */
     _updateAll: function() {
         var me = this,
@@ -443,8 +457,9 @@ baidu.ui.Tree.TreeNode.prototype =  {
         previous && previous._update();
         me._update();
     },
-    /**
-    *更新节点的缩进，以及图标状态
+   /**
+    * 更新节点的缩进，以及图标状态
+    * @private
     */
     _update: function() {
         var me = this;
@@ -466,12 +481,13 @@ baidu.ui.Tree.TreeNode.prototype =  {
         baidu.extend(me, options);
         (hrefElement ? hrefElement : textElement).innerHTML = me.text;
     },
-    /**
-    *切换toggle状态
-    *@param {String} "block" or "none"
-    *@param {String} "Lminus" or "Lplus"
-    *@param {String} "Tminus" or "Tplus"
-    *@param {Boolean} true or false
+   /**
+    * 切换toggle状态
+    * @param {String} "block" or "none"
+    * @param {String} "Lminus" or "Lplus"
+    * @param {String} "Tminus" or "Tplus"
+    * @param {Boolean} true or false
+    * @private
     */
     _switchToggleState: function(display,lastClassName,className,flag) {
         var me = this,
@@ -498,8 +514,8 @@ baidu.ui.Tree.TreeNode.prototype =  {
         }
         me._switchToggleState('block', 'Lminus', 'Tminus', true);
     },
-    /**
-    *收起节点
+   /**
+    * 收起节点
     */
     collapse: function() {
         this._switchToggleState('none', 'Lplus', 'Tplus', false);
@@ -520,6 +536,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * @param {String className} className
      * @param {Bollean flag} flag
      * @param {String methodName} 方法名.
+     * @private
      */
     _switchFocusState: function(className,flag,methodName) {
         var me = this;
@@ -537,8 +554,8 @@ baidu.ui.Tree.TreeNode.prototype =  {
         me._switchFocusState('trunk', false, 'removeClass');
         me.getTree().setCurrentNode(null);
     },
-    /**
-    *取得焦点,并且让当前节点高亮，让上一节点取消高亮。
+   /**
+    * 取得焦点,并且让当前节点高亮，让上一节点取消高亮。
     */
     focus: function() {
         var me = this,
@@ -552,6 +569,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     },
     /**
      * 鼠标放上去的效果
+     * @private
      */
     _onMouseOver: function(event) {
         var me = this;
@@ -563,29 +581,34 @@ baidu.ui.Tree.TreeNode.prototype =  {
     },
     /**
      * 鼠标离开的效果
+     * @private
      */
     _onMouseOut: function() {
         var me = this;
         baidu.dom.removeClass(me._getNodeElement(), me._getClass('over'));
         me.getTree().dispatchEvent('mouseout', {treeNode: me});
     },
-    /**
-    *点击节点时候的效果
+   /**
+    * 点击节点时候的效果
+    * @private
     */
     _onClick: function(eve) {
         var me = this;
         me.focus();
         me.getTree().dispatchEvent('click', {treeNode: me});
     },
-    /**
-    *mousedown节点时候的效果
+   /**
+    * mousedown节点时候的效果
+    * @private
     */
     _onMouseDown: function(event) {
         var me = this;
         me.dispatchEvent('dragdown', {event: event});
     },
-    /**
-    *当鼠标双击节点时的效果
+    
+   /**
+    * 当鼠标双击节点时的效果
+    * @private
     */
     _onDblClick: function(event) {
         var me = this;
@@ -596,8 +619,9 @@ baidu.ui.Tree.TreeNode.prototype =  {
             event: event
         });
     },
-    /**
-    *当鼠标右击节点时的效果
+   /**
+    * 当鼠标右击节点时的效果\
+    * @private
     */
     _onContextmenu: function(event) {
         var me = this;
@@ -607,8 +631,9 @@ baidu.ui.Tree.TreeNode.prototype =  {
         });
 
     },
-    /**
-    *点击toggle图标时候的效果
+   /**
+    * 点击toggle图标时候的效果
+    * @private
     */
     _onToggleClick: function(event) {
         var me = this;
@@ -619,6 +644,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 获得TreeNode  body的html string
      * @return {String} htmlstring.
+     * @private
      */
     _createBodyStringArray: function() {
         var me = this,
@@ -638,6 +664,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * @param {Array} stringArray.
      * @param {isInit} 是否是初始化节点.
      * @return {Array} stringArray.
+     * @private
      */
     _getImagesString: function(isInit) {
         var me = this,
@@ -659,6 +686,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * 获得TreeNode 缩进线条的String
      * @param {isInit} 是否是初始化节点.
      * @return {string} htmlstring.
+     * @private
      */
     _getIdentString: function(isInit) {
         var me = this,
@@ -679,6 +707,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * 获得TreeNode T线条或者L线条的String
      * @param {Array} stringArray.
      * @param {isInit} 是否是初始化节点.
+     * @private
      */
     _getTLString: function(isInit) {
         var me = this,
@@ -693,6 +722,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
      * 组建TreeNode  Toggle string
      * @param {Array} stringArray.
      * @param {isInit} 是否是初始化节点.
+     * @private
      */
     _getToggleString: function(isInit) {
         var me = this,
@@ -708,6 +738,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     },
     /**
      * 组建TreeNode  Toggle string
+     * @private
      */
     _createIconStringArray: function() {
         var me = this,
@@ -726,6 +757,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 获得TreeNode  text string
      * @return {String} htmlstring.
+     * @private
      */
     _createTextStringArray: function() {
 
@@ -738,6 +770,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 获得TreeNode  href string
      * @return {String} htmlstring.
+     * @private
      */
     _createHrefStringArray: function() {
         var me = this,
@@ -749,6 +782,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 取得图标(线或者blank)的容器
      * @return {HTMLObject} span.
+     * @private
      */
     _getSpanElement: function() {
         return baidu.g(this._getId('span'));
@@ -756,6 +790,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 取得节点图标的HTMLObject
      * @return {HTMLObject}
+     * @private
      */
     _getIconElement: function() {
         return baidu.g(this._getId('icon'));
@@ -763,13 +798,15 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 取得文本父容器的HTMLObject
      * @return {HTMLObject}
-    */
+     * @private
+     */
     _getTextContainer: function() {
         return baidu.g(this._getId('textContainer'));
     },
     /**
      * 取得文本容器的HTMLObject
      * @return {HTMLObject}
+     * @private
      */
     _getTextElement: function() {
         return baidu.g(this._getId('text'));
@@ -777,6 +814,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 取得切换展开或收起的image HTMLObject
      * @return {HTMLObject}
+     * @private
      */
     _getToggleElement: function() {
         return baidu.g(this._getId('toggle'));
@@ -784,6 +822,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 取得装子节点的父容器 HTMLObject
      * @return {HTMLObject}
+     * @private
      */
     _getSubNodesContainer: function() {
         return baidu.g(this._getId('subNodeId'));
@@ -791,6 +830,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 取得href的容器 HTMLObject
      * @return {HTMLObject}
+     * @private
      */
     _getHrefElement: function() {
         return baidu.g(this._getId('link'));
@@ -798,6 +838,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 取得node(不包括子节点)的 HTMLObject
      * @return {HTMLObject}
+     * @private
      */
     _getNodeElement: function() {
         return baidu.g(this._getId('node'));
@@ -805,6 +846,7 @@ baidu.ui.Tree.TreeNode.prototype =  {
     /**
      * 取得node(包括子节点的dom)的容器 HTMLObject
      * @return {HTMLObject}
+     * @private
      */
     _getContainer: function() {
         return baidu.g(this.id);
@@ -968,6 +1010,7 @@ baidu.ui.Tree.extend(
     /**
      * 内部方法,取得树的HTML的内容
      * @return {String} string.
+     * @private
      */
     _getBodyString: function() {
         var string = '',

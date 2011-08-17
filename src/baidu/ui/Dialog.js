@@ -32,6 +32,7 @@
 /**
  * Dialog基类，建立一个dialog实例
  * @class Dialog类
+ * @grammar new baidu.ui.Dialog(options)
  * @param     {Object}        options               选项
  * @config    {DOMElement}    content               要放到dialog中的元素，如果传此参数时同时传contentText，则忽略contentText。
  * @config    {String}        contentText           dialog中的内容
@@ -78,9 +79,9 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     me.titleText = me.titleText || '';
 
 }).extend(
-    /**
-     *  @lends baidu.ui.Dialog.prototype
-     */
+/**
+ *  @lends baidu.ui.Dialog.prototype
+ */
 {
     //ui控件的类型，传入给UIBase **必须**
     uiType: 'dialog',

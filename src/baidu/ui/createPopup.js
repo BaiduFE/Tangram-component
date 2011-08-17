@@ -21,8 +21,8 @@
  * @author: meizz
  * @namespace: baidu.ui.createPopup
  * @version: 2010-06-08
- *
  * @param   {JSON}      options     配置信息
+ * @private
  */
 baidu.ui.createPopup = function(options) {
     var popup = baidu.lang.createSingle({isOpen : false});

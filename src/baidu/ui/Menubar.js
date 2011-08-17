@@ -24,15 +24,17 @@
 ///import baidu.dom.getAncestorByTag;
 
 /**
- * @class  Menubar 下拉菜单
+ * Menubar 下拉菜单
+ * @class
+ * @grammar new baidu.ui.Menubar(options)
  * @param {Object} [options]                             配置选项
- * @param {String} [options.width = '200']               选项宽度
- * @param {String} [options.height]                      选项高度
- * @param {Number} [options.zIndex = 1200]               菜单zIndex
- * @param {String} [options.position = 'bottomCenter']   相对位置
- * @param {Object} [options.data]                        数据项
- * @param {Number} [options.hideDelay = 300]             鼠标移出子菜单多长时间，菜单消失
- * @param {Function} [options.toggle]                    开关函数,返回false时不显示
+ * @param {String} width 选项宽度，默认200
+ * @param {String} height 选项高度
+ * @param {Number} zIndex 菜单zIndex，默认1200
+ * @param {String} position 相对位置，默认bottomCenter
+ * @param {Object} data 数据项
+ * @param {Number} hideDelay 鼠标移出子菜单多长时间，菜单消失，默认300
+ * @param {Function} toggle 开关函数,返回false时不显示
  */
 baidu.ui.Menubar = baidu.ui.createUI(function(options){
     var me = this;
@@ -41,9 +43,9 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     me._initialized = false; //判断是否已经初始化
     me.dispatchEvent("oninit");
 }).extend(
-    /**
-     *  @lends baidu.ui.Menubar.prototype
-     */
+/**
+ * @lends baidu.ui.Menubar.prototype
+ */
 {
     uiType: "menubar",
     width: 200,//这个地方不要写成字符串

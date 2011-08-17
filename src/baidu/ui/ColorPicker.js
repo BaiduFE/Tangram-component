@@ -21,9 +21,10 @@
  * 颜色拾取器
  * @name baidu.ui.ColorPicker
  * @class
+ * @grammar new baidu.ui.ColorPicker(options)
  * @param {Object} options 配置.
- * @param {Number} [options.gridSize = 8] 一行显示的颜色块个数.
- * @param {Function} [options.onchosen] 颜色选择事件.
+ * @config {Number} gridSize 一行显示的颜色块个数，默认8.
+ * @config {Function} onchosen 颜色选择事件.
  * @plugin click 创建一个鼠标点击触发colorPicker的插件
  * @plugin more 弹出调色板插件
  * @author walter
@@ -31,7 +32,11 @@
 baidu.ui.ColorPicker = baidu.ui.createUI(function(options) {
     var me = this;
     me._initialized = false; //判断是否已经初始化
-}).extend({
+}).extend(
+/**
+ * @lends baidu.ui.ColorPicker.prototype
+ */
+{
     uiType: 'colorpicker',
 
     /**
