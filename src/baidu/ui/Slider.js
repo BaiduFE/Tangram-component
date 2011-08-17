@@ -22,6 +22,7 @@
  /**
  * 拖动条控件，可用作音乐播放进度。
  * @class
+ * @grammar new baidu.ui.Slider(options)
  * @param      {String|HTMLElement}     target       存放滑块控件的元素，按钮会渲染到该元素内。
  * @param      {Object}                 [options]    选项layout
  * @config     {Number}                 value        记录滑块的当前进度值
@@ -38,7 +39,7 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
     me.range = me.range || [me.min, me.max];//初始化range
 }).extend(
 /**
- *  @lends baidu.ui.Dialog.prototype
+ *  @lends baidu.ui.Slider.prototype
  */
 {
     layout: 'horizontal',//滑块的布局方式 horizontal :水平  vertical:垂直
@@ -226,6 +227,7 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      * 将刻度转换为像素或是将像素转换为刻度
      * @param {Number} val 刻度值或是像素
      * @param {Object} type 'pix':刻度转换为像素, 'value':像素转换为刻度
+     * @private
      */
     _parseValue: function(val, type){
         var me = this,
@@ -259,19 +261,22 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
     
     /**
      * 获取滑块元素
-     * @public
      * @return {HTMLElement} thumb     滑块元素
      */
     getThumb : function(){
         return baidu.g(this.getId("thumb"));
     },
-    
+    /**
+     * 使slider失去作用
+     */
     disable: function(){
         var me = this;
         me.disabled = true;
         me._updateDragRange([me.value, me.value]);
     },
-    
+    /**
+     * 启用slider
+     */
     enable: function(){
         var me = this;
         me.disabled = false;

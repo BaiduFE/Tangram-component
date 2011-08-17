@@ -23,6 +23,7 @@
  /**
  * 弹出tip层,类似鼠标划过含title属性元素的效果
  * @class
+ * @grammar new baidu.ui.Tooltip(options)
  * @param       {Object}          options         选项.
  * @config      {String|Array}    target          目标元素或元素id。可直接设置多个目标元素
  * @config      {String}          type            （可选）触发展开的类型，可以为:hover和click。默认为click
@@ -54,9 +55,9 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     baidu.ui.Tooltip.showing[me.guid] = me;
 
 }).extend(
-    /**
-     *  @lends baidu.ui.Tooltip.prototype
-     */
+/**
+ *  @lends baidu.ui.Tooltip.prototype
+ */
 {
     uiType: 'tooltip',
 

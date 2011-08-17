@@ -29,8 +29,9 @@
 ///import baidu.ui.get;
 
 /**
- * @class  Suggestion基类，建立一个Suggestion实例
- *
+ * Suggestion基类，建立一个Suggestion实例
+ * @class
+ * @grammar new baidu.ui.Suggestion(options)
  * @param  {Object}   [options]        选项.
  * @config {Function} onshow           当显示时触发。
  * @config {Function} onhide           当隐藏时触发，input或者整个window失去焦点，或者confirm以后会自动隐藏。
@@ -69,9 +70,9 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     me.currentIndex = -1;
 
 }).extend(
-    /**
-     *  @lends baidu.ui.Suggestion.prototype
-     */
+/**
+ *  @lends baidu.ui.Suggestion.prototype
+ */
 {
     uiType: 'suggestion',
     onbeforepick: new Function,

@@ -14,6 +14,7 @@
 /**
  * 创建一个简单的滚动条
  * @class ScrollBar基类
+ * @grammar new baidu.ui.ScrollBar(options)
  * @param   {Object}    options config参数.
  * @config  {String}    orientation 设置横向或是竖向滚动条，默认值：vertical,可取值：horizontal.
  * @config  {Number}    value       滚动条滚动的百分比值，定义域(0, 100)

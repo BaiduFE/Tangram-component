@@ -27,6 +27,7 @@
  * 创建一个日历对象绑定于一个input输入域
  * @name baidu.ui.DatePicker
  * @class
+ * @grammar new baidu.ui.DatePicker(options)
  * @param {Object} options config参数
  * @config {Number} width 日历组件的宽度
  * @config {Number} height 日历组件的高度
@@ -158,7 +159,7 @@ baidu.ui.DatePicker = baidu.ui.createUI(function(options){
         this._popup.close();
     },
     
-    /*
+    /**
      * 析构函数
      */
     dispose: function(){
