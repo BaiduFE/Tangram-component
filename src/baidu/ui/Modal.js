@@ -43,11 +43,10 @@
 
 
 /**
- * 为控件增加遮罩。
+ * 为控件增加遮罩.
  * @class Modal类
+ * @grammar new baidu.ui.Modal()
  */
-
-
 baidu.ui.Modal = baidu.ui.createUI(function(options) {
     var me = this,
         container = (options && options.container) ? baidu.g(options.container) : null;
@@ -65,9 +64,9 @@ baidu.ui.Modal = baidu.ui.createUI(function(options) {
     };
     
 }).extend(
-    /**
-     *  @lends baidu.ui.Modal.prototype
-     */
+/**
+ *  @lends baidu.ui.Modal.prototype
+ */
 {
     uiType: 'modal',
     _showing: false,

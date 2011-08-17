@@ -23,6 +23,7 @@
 /**
  * Input基类，创建一个input实例。
  * @class Input类
+ * @grammar new baidu.ui.Input(options)
  * @param     {String|HTMLElement}     target        存放input控件的元素，input控件会渲染到该元素内。
  * @param     {Object}                 [options]     选项
  * @config    {String}                 text          input文本信息
@@ -41,9 +42,9 @@
  */
 
 baidu.ui.Input = baidu.ui.createUI(new Function).extend(
-	/**
-     *  @lends baidu.ui.Input.prototype
-     */
+/**
+ *  @lends baidu.ui.Input.prototype
+ */
 {
     //ui控件的类型，传入给UIBase **必须**
     uiType            : "input",

@@ -11,12 +11,14 @@
 
 /**
  * 本地数据源类
+ * @function
+ * @grammar baidu.data.dataSource.local(source, options)
  * @param {Object}     source                        数据源
  * @param {Object}     [options]                     配置
- * @param {Number}     [options.maxCache = 10]       缓存数据的最大个数
- * @param {Boolean}    [options.cache = true]        是否使用缓存
- * @param {Function}   [optons.transition]           转换数据算法
- * @param {Function}   [options.onbeforeget]         beforeget事件
+ * @config {Number} maxCache 缓存数据的最大个数，默认10
+ * @config {Boolean} cache 是否使用缓存，默认开启
+ * @config {Function} transition 转换数据算法  
+ * @config {Function} onbeforeget beforeget事件
  */
 baidu.data.dataSource.local = function(source, options){
     options = baidu.object.extend({
