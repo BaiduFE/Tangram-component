@@ -17,7 +17,6 @@
 ///import baidu.dom.removeClass;
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.g;
-///import baidu.event.on;
 ///import baidu.dom.remove;
 ///import baidu.ui.ItemSet;
 

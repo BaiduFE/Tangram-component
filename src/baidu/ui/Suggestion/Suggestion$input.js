@@ -33,7 +33,7 @@ baidu.ui.Suggestion.register(function(me) {
         me.targetKeydownHandler = me.getTargetKeydownHandler();
 
         //加入dom事件
-        baidu.on(target, 'keydown', me.targetKeydownHandler);
+        me.on(target, 'keydown', me.targetKeydownHandler);
 
         target.setAttribute('autocomplete', 'off');
 
@@ -77,7 +77,7 @@ baidu.ui.Suggestion.register(function(me) {
             }
         }, 10);
 
-        baidu.on(target, 'beforedeactivate', me.beforedeactivateHandler);
+        me.on(target, 'beforedeactivate', me.beforedeactivateHandler);
     });
 
     me.addEventListener('onitemclick', function() {
@@ -106,8 +106,6 @@ baidu.ui.Suggestion.register(function(me) {
         },500);
     });
     me.addEventListener('ondispose', function() {
-        baidu.un(target, 'keydown', me.targetKeydownHandler);
-        baidu.un(target, 'beforedeactivate', me.beforedeactivateHandler);
         clearInterval(me.circleTimer);
     });
 });
