@@ -18,8 +18,6 @@
 ///import baidu.dom.create;
 ///import baidu.dom.addClass;
 ///import baidu.dom.removeClass;
-///import baidu.event.on;
-///import baidu.event.un;
 ///import baidu.fn.bind;
 ///import baidu.object.each;
 
@@ -218,7 +216,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
                     {evtName: 'mouseout', handler: baidu.fn.bind('_onMouseHandler', me, 'mouseout')}
                 ];
                 baidu.array.each(entry.handler, function(item) {
-                    baidu.event.on(element, item.evtName, item.handler);
+                    me.on(element, item.evtName, item.handler);
                 });
                 me._items[itemId] = entry;
             }
@@ -474,11 +472,6 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
     dispose: function() {
         var me = this;
         me.dispatchEvent('ondispose');
-        baidu.object.each(me._items, function(item) {
-            item.handler && baidu.array.each(item.handler, function(listener) {
-                baidu.event.un(item.element, listener.evtName, listener.handler);
-            });
-        });
         baidu.dom.remove(me.getMain());
         baidu.lang.Class.prototype.dispose.call(me);
     }
