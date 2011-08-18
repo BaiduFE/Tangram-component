@@ -45,22 +45,17 @@ baidu.widget.load = function(widgets, executer) {
                 widget = baidu.widget.get(widgetName),
                 widgetLoading = baidu.widget._widgetLoading[widgetName];
                 //避免重复加载.若widget正在加载中,则等待加载完成后再触发.否则清空加载状态.
-                if (!widget && widgetLoading && widgetLoading.depends) {
+                if (widgetLoading && widgetLoading.depends.length){
                     window.setTimeout(function() {
                         baidu.widget.load(widgetLoading.depends, realCallback);
                     }, 20);
                     return;
-                } else {
-                    baidu.widget._widgetLoading[widgetName] = undefined;
                 }
-                if (baidu.widget._isWidget(widget)) {
-                    //累加依赖模块的context,并将依赖模块置于context中.
-                    baidu.extend(context, widget.context);
-                    //baidu.extend(context, widget.exports);
-                    //无需注入到相应的名字空间 context.xx.yy
-                    //baidu.lang.module(widgetName, widget, context);
-                    context[widgetName] = widget;
-                }
+                widget.load();
+
+                //累加依赖模块的context，并将依赖模块置于context中，
+                baidu.extend(context, widget.context);
+                context[widgetName] = widget;
             }
             executer(makeRequire(context));
         };
