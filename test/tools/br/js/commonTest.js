@@ -60,9 +60,6 @@ var commonTests = function(testName) {
 			var ui = initObject(UI, options);
 			var l1 = baidu.event._listeners.length;
 			
-			//baidu.ui.DatePicker有些特别，封装了一个Calendar组件
-			if(testName[2] == 'DatePicker')
-				ui = ui._calendar;
 			//baidu.ui.Decorator有些特别，用ui.ui render
 			if(testName[2] == 'Decorator')
 				ui = ui.ui;
@@ -98,7 +95,8 @@ function test_render(ui, target) {
 			ok(true, 'load is dispatch');
 		};
 	ui.render(target);
-	ok(ui.getMain() || ui.getBody(), 'render: main is render');
+	ok(ui.getMain() || (ui._calendar && ui._calendar.getMain())//DatePicker有点儿特殊，必须要这样验证
+			|| ui.getBody(), 'render: main is render');
 };
 
 	 
