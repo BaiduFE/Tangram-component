@@ -22,7 +22,7 @@ test("Draggable", function() {
 		ondragend : function() {
 			if (!de) {
 				de = true;
-				ok(true, 'ondragstart');
+				ok(true, 'ondragend');
 			}
 		},
 		ondrag : function() {
@@ -50,7 +50,7 @@ test("Draggable", function() {
 
 	var move = function(x, y) {
 		if (x > 100) {
-			UserAction.mouseup(document);
+			UserAction.mouseup(di);
 			setTimeout(function() {
 //				console.log(x + ' - ' + startX);
 				equals(parseInt($(dm).css('left')), 110 + startX, 'left before drag');

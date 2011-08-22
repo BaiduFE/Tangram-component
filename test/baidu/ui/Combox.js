@@ -39,6 +39,7 @@ test("createMenu", function() {
 		setTimeout(function() {
 			TT.event.fire(cb.menu.getItem('0-0'), 'click');
 			equal(input.value, 'a-content-1');
+			cb.dispose();
 			start();
 		}, 30);
 	});
@@ -94,15 +95,12 @@ test("events", function() {
     ua.mousedown(arrow);
     ua.mouseup(arrow);
     stop();
-//	ua.keydown(input, {
-//		keyCode : 65
-//	});
-//    ua.keyup(input);
     input.value = 'A';
-    $(input).focus();
+    input.focus();
 	setTimeout(function() {
 		TT.event.fire(cb.menu.getItem('0-0'), 'click');
 		equal(input.value, 'A-a');
+		cb.dispose();
 		start();
 	}, 100);
 
