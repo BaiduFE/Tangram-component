@@ -10,11 +10,10 @@
  * @Object
  * @grammar baidu.i18n.date
  */
-baidu.i18n.date = baidu.i18n.date || {
+baidu.i18n.date = baidu.i18n.date || /**@lends baidu.i18n.date.prototype*/{
 
     /**
      * 获取某年某个月的天数
-     * @name baidu.i18n.date.getDaysInMonth
      * @grammar baidu.i18n.date.getDaysInMonth(year, month)
      * @param {Number} year 年份.
      * @param {Number} month 月份.
@@ -31,7 +30,6 @@ baidu.i18n.date = baidu.i18n.date || {
 
     /**
      * 判断传入年份是否时润年
-     * @name baidu.i18n.date.isLeapYear
      * @grammar baidu.i18n.date.isLeapYear(year)
      * @param {Number} year 年份.
      * @return {Boolean}
@@ -42,7 +40,6 @@ baidu.i18n.date = baidu.i18n.date || {
 
     /**
      * 将传入的date对象转换成指定地区的date对象
-     * @name baidu.i18n.date.toLocaleDate
      * @grammar baidu.i18n.date.toLocaleDate(dateObject, sLocale, tLocale)
      * @param {Date} dateObject
      * @param {String} sLocale dateObject 的地区标识，可选参数，传则以dateObject中获取的为准
