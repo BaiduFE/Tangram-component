@@ -40,7 +40,7 @@
      * @param {Array}  sortElements 被排序的元素数组.
      * @param {Array}  sortParentElement 被排序的元素的父元素，用来做事件代理的。.
      * @param {Object} options 可子定义参数.
-     * sortHandlers {Array} 默认值[]  拖拽手柄数组，这个需要与elements一一对应.
+     * sortHandlers {Array} 默认值[]  拖拽句柄数组，这个需要与elements一一对应.
      *                  如果handlers为空,那么整个sortElement都是可以进行拖拽。.
      *
      * sortDisabled {Boolean} 默认值
