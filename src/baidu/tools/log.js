@@ -174,7 +174,7 @@
         _logStack = [];
         _dialog && _dialog.push(data);
 
-        me.callBack.call(data);
+        me.callBack(data);
     };
 
     /**
