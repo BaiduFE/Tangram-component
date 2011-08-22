@@ -23,7 +23,8 @@
 
  /**
  * combox类
- * @class Combox类
+ * @class
+ * @grammar new baidu.ui.Combox(options)
  * @param  {Object}               [options]        选项，用于创建combox。
  * @config {Element}              target           combox的触发元素
  * @config {Number|String}        width            宽度值。当指定element时，默认为element宽度；否则不设置（可以通过css指定）。
@@ -51,9 +52,9 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
   me.data = me.data || [];
   me.menu = me.menu || false; //下拉menu,用于判断menu是否已存在
 }).extend(
-    /**
-     *  @lends baidu.ui.Combox.prototype
-     */
+/**
+ *  @lends baidu.ui.Combox.prototype
+ */
 {
     uiType: "combox",
     editable: true,

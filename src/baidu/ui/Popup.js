@@ -27,8 +27,9 @@
  */
 
  /**
- * popup基类，建立一个popup实例
+ * popup 基类，建立一个popup实例
  * @class
+ * @grammar new baidu.ui.Popup(options)
  * @param     {Object}             options               选项
  * @config    {DOMElement}         content               要放到popup中的元素，如果传此参数时同时传contentText，则忽略contentText。
  * @config    {String}             contentText           popup中的内容
@@ -59,9 +60,9 @@
 
 baidu.ui.Popup = baidu.ui.createUI(function (options){
 }).extend(
-    /**
-     *  @lends baidu.ui.Popup.prototype
-     */
+/**
+ *  @lends baidu.ui.Popup.prototype
+ */
 {
     //ui控件的类型，传入给UIBase **必须**
     uiType            : "popup",

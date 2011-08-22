@@ -11,6 +11,8 @@
 
 /**
  * 创建flash based avatarMaker
+ * @function
+ * @grammar baidu.flash.avatarMaker(options)
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
  * @config {Object} vars 创建avatarMaker时所需要的参数
  * @config {String} [vars.locale] 地区,现在支持vi、th、ar三种，分别是越南语、泰语和阿拉伯语，当使用阿拉伯语时，界面会变成rtl形式,默认为[zh-cn]

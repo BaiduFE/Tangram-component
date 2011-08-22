@@ -19,6 +19,7 @@
 /**
  * 这个方法改变DOM元素的背景色，实现高亮的效果。
  * @function
+ * @grammar baidu.fx.highlight(element, options)
  * @param      {string|HTMLElement}     element            元素或者元素的ID
  * @param      {Object}                 options            选项。参数的详细说明如下表所示
  * @config     {String}                 beginColor         渐变开始时的背景色，如果设置了背景色则以设置的颜色为默认开始颜色，否则默认为'#FFFF00'

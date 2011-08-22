@@ -27,6 +27,7 @@
  * 创建一个简单的滚动组件
  * @name baidu.ui.Carousel
  * @class
+ * @grammar new baidu.ui.Carousel(options)
  * @param {Object} options config参数.
  * @config {String} orientation 描述该组件是创建一个横向滚动组件或是竖向滚动组件，取值：horizontal:横向, vertical:竖向
  * @config {Object} contentText 定义carousel组件每一项的字符数据，格式：[{content: 'text-0'}, {content: 'text-1'}, {content: 'text-2'}...]
@@ -38,6 +39,7 @@
  * @config {function} onprev 当翻到前一项或前一页时触发该事件
  * @config {function} onnext 当翻到下一项或下一页时触发该事件
  * @config {function} onitemclick 当点击某个项时触发该事件
+ * @config {function} onfocus 当某一项获得焦点时触发该事件
  * @author linlingyu
  */
 
@@ -454,6 +456,7 @@ baidu.ui.Carousel = baidu.ui.createUI(function(options) {
             me._blur();
             baidu.dom.addClass(item.element, me.getClass('item-focus'));
             me.scrollIndex = index;
+            me.dispatchEvent('onfocus', {index: index});
         }
     },
     /**

@@ -15,7 +15,8 @@
 
 /**
  * 从当前页面批量setup所有控件（DOM - 控件）
- *
+ * @function
+ * @grammar baidu.ui.setup(element)
  * @param {DOMElement} element 渲染查找的根元素
  */
 baidu.ui.setup = function(element){

@@ -4,5 +4,5 @@
  */
 
 ///import baidu;
-
+/** @namespace */
 baidu.history = baidu.history || {};

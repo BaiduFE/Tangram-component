@@ -18,5 +18,5 @@
  * @author rocy
  */
 baidu.widget.get = function(name) {
-    return baidu.widget._widgetInUse[name] || null;
+    return baidu.widget._widgetAll[name] || null;
 };

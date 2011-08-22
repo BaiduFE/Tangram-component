@@ -21,11 +21,17 @@
 /**
  *
  * 进度条控件
- *
- * @param options
+ * @class
+ * @param {Object} options 参数
+ * @config {String} layout 取值horizontal横向或是vertical竖向
+ * @config {Number} value 初始值，默认是0
  */
 baidu.ui.ProgressBar = baidu.ui.createUI(function(options) {
-}).extend({
+}).extend(
+/**
+ * @lends baidu.ui.ProgressBar.prototype
+ */
+{
     uiType: 'progressBar',
     tplBody: '<div id="#{id}" class="#{class}">#{bar}</div>',
     tplBar: '<div id="#{barId}" class="#{barClass}"></div>',
@@ -113,6 +119,7 @@ baidu.ui.ProgressBar = baidu.ui.createUI(function(options) {
 
     /**
      * 将value转换为位置信息
+     * @private
      */
     _calcPos: function(value) {
         var me = this;

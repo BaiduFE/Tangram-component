@@ -12,7 +12,7 @@
 
 /**
  * 获取UI控件的父控件
- *
+ * @memberOf baidu.ui.Base.prototype
  * @return {UI} 父控件
  */
 baidu.ui.Base.getParent = function(){
