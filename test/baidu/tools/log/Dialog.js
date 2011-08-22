@@ -6,7 +6,8 @@ module('baidu.tools.log.Dialog');
 test('base', function() {
 
 	ua.loadcss(upath + 'test.css', function() {
-		var dialog = baidu.tools.log.DInstance;
+		baidu.log.enableDialog();
+        var dialog = baidu.tools.log.DInstance;
 
 		var data = [ {
 			head : 'all'

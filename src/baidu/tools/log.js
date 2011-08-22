@@ -122,7 +122,7 @@
         
         _enableDialg = true;
         if(!_dialog && baidu.tools.log.Dialog){
-            _dialog = new baidu.tools.log.Dialog();
+            baidu.tools.log.DInstance = _dialog = new baidu.tools.log.Dialog();
         }else{
             _dialog.open();
         }
@@ -174,7 +174,7 @@
         _logStack = [];
         _dialog && _dialog.push(data);
 
-        me.callBack.call(data);
+        me.callBack(data);
     };
 
     /**
@@ -223,7 +223,6 @@
 
     //回调函数
     log.callBack = baidu.fn.blank;
-
 
     baidu.log = baidu.tools.log = log;
 })();
