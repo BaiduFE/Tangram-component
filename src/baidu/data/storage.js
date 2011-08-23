@@ -16,7 +16,7 @@
 /**
  * 一个本地存储对象，使用key-value的方式来存值，不具备夸浏览器通信功能，根据浏览器的不同自动选择userData或是localStorage或是cookie来存值.
  * @Object
- * @grammar baidu.data.storage.get(key, callback)
+ * @grammar baidu.data.storage
  * @return {baidu.data.storage}
  */
 baidu.data.storage = (function(){
@@ -216,7 +216,7 @@ baidu.data.storage = (function(){
     }
     
     
-    return {
+    return /**@lends baidu.data.storage.prototype*/{
         /**
          * 将一个键值对存入到本地存储中
          * @function

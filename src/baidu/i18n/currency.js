@@ -5,17 +5,17 @@
 
 ///import baidu.i18n;
 ///import baidu.i18n.number;
+///import baidu.i18n.cultures;
 /**
  * currency
  * @name baidu.i18n.currency
  * @Object
  * @grammar baidu.i18n.currency
  */
-baidu.i18n.currency = baidu.i18n.currency || {
+baidu.i18n.currency = baidu.i18n.currency || /** @lends baidu.i18n.currency.prototype */{
     
     /**
      * 将传入的数字或者文字某种语言的货币格式进行格式化
-     * @name baidu.i18n.currency.format
      * @grammar baidu.i18n.currency.format(number, sLocale, tLocale)
      * @param {String|Number} number 需要进行格式化的数字或者文字
      * @param {String} [sLocale] 可选参数，若传入的number格式为字符串，则该参数必须传入
