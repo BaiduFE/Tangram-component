@@ -78,7 +78,9 @@ baidu.data.XPC = baidu.lang.createClass(function(isParent, url, options) {
             this.dispatchEvent(this._createEvent('error', e.message));
         }
     }
-}).extend({
+}).extend(
+/**@lends baidu.data.XPC.prototype*/
+{
     //创建iframe，并返回DOM引用
     _createIframe: function(url) {
         var ifrm = document.createElement('IFRAME');
