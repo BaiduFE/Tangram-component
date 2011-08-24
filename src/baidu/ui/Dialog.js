@@ -32,6 +32,7 @@
 /**
  * Dialog基类，建立一个dialog实例
  * @class Dialog类
+ * @grammar new baidu.ui.Dialog(options)
  * @param     {Object}        options               选项
  * @config    {DOMElement}    content               要放到dialog中的元素，如果传此参数时同时传contentText，则忽略contentText。
  * @config    {String}        contentText           dialog中的内容
@@ -78,9 +79,9 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     me.titleText = me.titleText || '';
 
 }).extend(
-    /**
-     *  @lends baidu.ui.Dialog.prototype
-     */
+/**
+ *  @lends baidu.ui.Dialog.prototype
+ */
 {
     //ui控件的类型，传入给UIBase **必须**
     uiType: 'dialog',
@@ -174,7 +175,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         });
         //当居中时，窗口改变大小时候要重新计算位置
         me.windowResizeHandler = me.getWindowResizeHandler();
-        baidu.on(window, 'resize', me.windowResizeHandler);
+        me.on(window, 'resize', me.windowResizeHandler);
 
         me.dispatchEvent('onload');
 
@@ -491,7 +492,6 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         //删除实例引用
         delete baidu.ui.Dialog.instances[me.guid];
         me.dispatchEvent('dispose');
-        baidu.un(window, 'resize', me.windowResizeHandler);
         baidu.dom.remove(me.getMain());
         baidu.lang.Class.prototype.dispose.call(me);
     }

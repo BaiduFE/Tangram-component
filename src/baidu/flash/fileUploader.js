@@ -14,6 +14,8 @@
 
 /**
  * 创建flash based fileUploader
+ * @function
+ * @grammar baidu.flash.fileUploader(options)
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
  * @param {String} width
  * @param {String} height

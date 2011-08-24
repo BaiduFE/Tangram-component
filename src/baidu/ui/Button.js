@@ -19,7 +19,9 @@
 
 /**
  * button基类，创建一个button实例
- * @class button类
+ * @name baidu.ui.Button
+ * @class
+ * @grammar new baidu.ui.Button(options)
  * @param {Object} [options] 选项
  * @config {String}             content     按钮文本信息
  * @config {Boolean}            disabled    按钮是否有效，默认为false（有效）。
@@ -67,7 +69,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      *  将button绘制到DOM树中。
-     *  @public
      *  @param {HTMLElement|String} target  需要渲染到的元素
      */	
     render: function(target) {
@@ -87,7 +88,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      *  判断按钮是否处于失效状态。
-     *  @public
      *  @return {Boolean} 是否失效的状态
      */
     isDisabled: function() {
@@ -98,7 +98,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      *  销毁实例。
-     *  @public
      */
 	dispose : function(){
 		var me = this,
@@ -116,8 +115,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      * 设置disabled属性
-     * @pubic
-     * 
 	 */
     disable: function() {
         var me = this,
@@ -127,8 +124,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      * 删除disabled属性
-     * @pubic
-     * 
 	 */
     enable: function() {
         var me = this;
@@ -138,7 +133,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      * 触发button事件
-     * @public
      * @param {String} eventName   要触发的事件名称
      * @param {Object} e           事件event
      */
@@ -152,7 +146,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      * 更新button的属性
-	 * @public
      * @param {Object}              options     更新button的属性
 	 * @config {String}             content     按钮文本信息
 	 * @config {Boolean}            disabled    按钮是否有效，默认为false（有效）。

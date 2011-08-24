@@ -30,10 +30,11 @@
  * 复杂颜色拾取器
  * @name baidu.ui.ColorPalette
  * @class
+ * @grammar new baidu.ui.ColorPalette(options)
  * @param {Object}  options 配置.
- * @param {Number}  [options.sliderLength = 150] 滑动条长度.
- * @param {String}  options.coverImgSrc 调色板渐变背景图片地址.
- * @param {String}  options.sliderImgSrc 滑动条背景图片地址.
+ * @config {Number} sliderLength 滑动条长度，默认150.
+ * @config {String} coverImgSrc 调色板渐变背景图片地址.
+ * @config {String} sliderImgSrc 滑动条背景图片地址.
  * @author walter
  */
 baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
@@ -44,7 +45,11 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
     me.sliderDotY = 0;  //滑动块初始值
     me.padDotY = 0; //面板调色块Y轴初始值
     me.padDotX = me.sliderLength; //面板调色块X轴初始值
-}).extend({
+}).extend(
+/**
+ *  @lends baidu.ui.ColorPalette.prototype
+ */
+{
     uiType: 'colorpalette',
 
     tplBody: '<div id="#{id}" class="#{class}">#{content}</div>',
@@ -110,7 +115,7 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
         me._createSlider();
         me._padClickHandler = baidu.fn.bind('_onPadClick', me);
 
-        baidu.event.on(me.getPad(), 'click', me._padClickHandler);
+        me.on(me.getPad(), 'click', me._padClickHandler);
 
         me._setColorImgs();
         me.setSliderDot(me.sliderDotY);
@@ -551,10 +556,10 @@ baidu.ui.ColorPalette = baidu.ui.createUI(function(options) {
     dispose: function() {
         var me = this;
 
-        baidu.event.un(me.getPad(), 'click', me._padClickHandler);
+        
+        me.dispatchEvent('ondispose');
         me.slider.dispose();
 
-        me.dispatchEvent('ondispose');
         if (me.getMain()) {
             baidu.dom.remove(me.getMain());
         }

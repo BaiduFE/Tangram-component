@@ -19,6 +19,7 @@
 /**
  * 将元素放大或缩小的效果。
  * @function
+ * @grammar baidu.fx.scale(element, options)
  * @param       {string|HTMLElement}      element               元素或者元素的ID
  * @param       {Object}                  options               选项。参数的详细说明如下表所示
  * @config      {String}                  transformOrigin       "0px 0px",//起始坐标描述。"x y"：x方向和y方向坐标，取值包括像素(含px字符，百分比，top、left、center、bottom、right，默认"0px 0px"。

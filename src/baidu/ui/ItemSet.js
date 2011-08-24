@@ -17,17 +17,23 @@
 ///import baidu.dom.remove;
 
 /**
- * ItemSet是accordion, tab等多item操作的抽象
+ * ItemSet是Accordion, Tab等多item操作的抽象类
+ * @class
+ * @grammar 抽象类
  * @param {Object} options config参数.
  * @config {String} switchType 事件激发类型，item由什么类型的事件来打开，取值如：click, mouseover等等
- * @config {Number} defaultIndex 初始化后的默认找开项索引，默认值是0
+ * @config {Number} defaultIndex 初始化后的默认打开项索引，默认值是0
  * @author fx
  */
 baidu.ui.ItemSet = baidu.ui.createUI(function(options){
     var me = this;
     me._headIds = [];
     me._bodyIds = [];
-}).extend({
+}).extend(
+/**
+ * @lends baidu.ui.ItemSet.prototype
+ */
+{
     currentClass: 'current',//展开项的css名称
     tplHead: '',
     tplBody: '',

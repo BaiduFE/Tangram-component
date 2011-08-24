@@ -7,7 +7,14 @@
 ///import baidu.tools;
 ///import baidu.array.each;
 ///import baidu.fn.blank;
-
+/**
+ * 打印log
+ * @class
+ * @name baidu.tools.log
+ * @grammar baidu.tools.log
+ * @param {Object} data 需要打印的内容
+ * @return {Null}
+ */
 (function(){
  
         //日志队列
@@ -31,7 +38,8 @@
      
     /**
      * 打印log
-     * @public
+     * @class
+     * @grammar baidu.tools.log
      * @param {Object} data 需要打印的内容
      * @return {Null}
      */
@@ -114,7 +122,7 @@
         
         _enableDialg = true;
         if(!_dialog && baidu.tools.log.Dialog){
-            _dialog = new baidu.tools.log.Dialog();
+            baidu.tools.log.DInstance = _dialog = new baidu.tools.log.Dialog();
         }else{
             _dialog.open();
         }
@@ -166,7 +174,7 @@
         _logStack = [];
         _dialog && _dialog.push(data);
 
-        me.callBack.call(data);
+        me.callBack(data);
     };
 
     /**
@@ -215,7 +223,6 @@
 
     //回调函数
     log.callBack = baidu.fn.blank;
-
 
     baidu.log = baidu.tools.log = log;
 })();

@@ -12,7 +12,8 @@
 
 /**
  * 效果基类。
- * @class
+ * @function
+ * @grammar baidu.fx.collapse(element, options, fxName)
  * @param     {HTMLElement}           element            添加效果的DOM元素
  * @param     {JSON}                  options            时间线的配置参数对象
  * @config    {Function}              transition         function(schedule){return schedule;},时间线函数

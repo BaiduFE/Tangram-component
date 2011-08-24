@@ -13,6 +13,7 @@
 /**
  * 创建一个panel来作为滚动条的容器
  * @class ScrollPanel基类
+ * @grammar new baidu.ui.ScrollPanel(options)
  * @param   {Object}                options config参数.
  * @config  {String}                overflow 取值'overflow-y':创建竖向滚动, 'overflow-x':创建横向滚动条, 'auto':创建滚动条(默认)
  * @config  {String|HTMLElement}    container 需要被滚动条管理的容器对象

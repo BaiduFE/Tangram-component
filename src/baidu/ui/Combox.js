@@ -19,13 +19,12 @@
 ///import baidu.dom.remove;
 ///import baidu.array.each;
 ///import baidu.fn.bind;
-///import baidu.event.on;
-///import baidu.event.un;
 ///import baidu.string.format;
 
  /**
  * combox类
- * @class Combox类
+ * @class
+ * @grammar new baidu.ui.Combox(options)
  * @param  {Object}               [options]        选项，用于创建combox。
  * @config {Element}              target           combox的触发元素
  * @config {Number|String}        width            宽度值。当指定element时，默认为element宽度；否则不设置（可以通过css指定）。
@@ -53,9 +52,9 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
   me.data = me.data || [];
   me.menu = me.menu || false; //下拉menu,用于判断menu是否已存在
 }).extend(
-    /**
-     *  @lends baidu.ui.Combox.prototype
-     */
+/**
+ *  @lends baidu.ui.Combox.prototype
+ */
 {
     uiType: "combox",
     editable: true,
@@ -140,10 +139,10 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
             });
         }, me);
         
-        baidu.on(input, "focus", me._showMenuHandler);
+        me.on(input, "focus", me._showMenuHandler);
         if(me.editable){
             input.readOnly = '';
-            baidu.on(input, "keyup", me._showMenuHandler);
+            me.on(input, "keyup", me._showMenuHandler);
         }
     },
 
@@ -180,7 +179,7 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
                 data: me.data
             });
         }, me);
-        baidu.on(arrow, 'click', me._showAllMenuHandler);
+        me.on(arrow, 'click', me._showAllMenuHandler);
         return me.menu;
     },
 
@@ -224,9 +223,6 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
      */
     dispose: function(){
         var me = this;
-        baidu.un(me.getInput(), 'keyup', me._showMenuHandler);
-        baidu.un(me.getInput(), 'focus', me._showMenuHandler);
-        baidu.un(me.getArrow(), 'click', me._showAllMenuHandler);
         me.menu && me.menu.dispose();
         me.getMain() && baidu.dom.remove(me.getMain());
         me.dispatchEvent('ondispose');
