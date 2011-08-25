@@ -1,7 +1,6 @@
 /*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
- * update 2011.08.23 by zhaochengyang 'add holdHighLight option'
  */
 
 ///import baidu.dom.g;
@@ -47,7 +46,6 @@
  * @config {Function} getData          在需要获取数据的时候会调用此函数来获取数据，传入的参数word是用户在input中输入的数据。
  * @config {String}   prependHTML      写在下拉框列表前面的html
  * @config {String}   appendHTML       写在下拉框列表后面的html
- * @config {Boolean}  holdHighLight    鼠标移出待选项区域后，是否保持高亮元素的状态
  */
 baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     var me = this;
@@ -93,7 +91,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
 
     tplDOM: "<div id='#{0}' class='#{1}' style='position:relative; top:0px; left:0px'></div>",
     tplPrependAppend: "<div id='#{0}' class='#{1}'>#{2}</div>",
-    tplBody: '<table cellspacing="0" cellpadding="2"><tbody>#{0}</tbody></table>',
+    tplBody: "<table cellspacing='0' cellpadding='2'><tbody>#{0}</tbody></table>",
     tplRow: '<tr><td id="#{0}" onmouseover="#{2}" onmouseout="#{3}" onmousedown="#{4}" onclick="#{5}" class="#{6}">#{1}</td></tr>',
 
     /**
@@ -153,7 +151,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 把某个词放到input框中
      * @public
-	 * @param {String} index 条目索引.
+     * @param {String} index 条目索引.
      * @return {Null}
      */
     pick: function(index) {
@@ -181,6 +179,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
      * @return {Null}
      */
     show: function(word, data, showEmpty) {
+
         var i = 0,
             len = data.length,
             me = this;
@@ -223,23 +222,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         //如果已经是隐藏状态就不用派发后面的事件了
         if (!me._isShowing())
             return;
-        
-        //如果当前有选中的条目，将其放到input中
-        if(me.currentIndex >= 0 && me.holdHighLight){
-            console.log(me.currentIndex);
-            console.log(me.currentData);
-            var currentData = me.currentData,
-                j = -1;
-            for(var i=0, len=currentData.length; i<len; i++){
-                if(typeof currentData[i].disable == 'undefined' || currentData[i].disable == false){
-                    j++;
-                    console.log(j +  "    " + i);
-                    if(j == me.currentIndex)
-                        me.pick(i);
-                }
-            }
-        }
-        
+
         me.getMain().style.display = 'none';
         me.dispatchEvent('onhide');
     },
@@ -247,7 +230,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 高亮某个条目
      * @public
-	 * @param {String} index 条目索引.
+     * @param {String} index 条目索引.
      * @return {Null}
      */
     highLight: function(index) {
@@ -308,7 +291,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
 
     /**
      * confirm指定的条目
-	 * @public
+     * @public
      * @param {Number|String} index or item.
      * @param {String} source 事件来源.
      * @return {Null}
@@ -356,7 +339,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     /**
      * 获得input框元素
      * @public
-	 * @return {HTMLElement}
+     * @return {HTMLElement}
      */
     getTarget: function() {
         return baidu.g(this.targetId);
@@ -410,10 +393,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
             ));
         }
 
-        html += baidu.format(
-            me.tplBody, 
-            itemsHTML.join('')
-        );
+        html += baidu.format(me.tplBody, itemsHTML.join(''));
         html += getPrependAppend('append');
         return html;
     },
@@ -446,8 +426,7 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     _itemOut: function(e, index) {
         var me = this;
         baidu.event.stop(e || window.event);
-        if(!me.holdHighLight)
-            me._isEnable(index) && me.clearHighLight();
+        me._isEnable(index) && me.clearHighLight();
 
         me.dispatchEvent('onmouseoutitem', {
             index: index,
