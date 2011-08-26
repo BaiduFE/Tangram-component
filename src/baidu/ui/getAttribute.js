@@ -15,8 +15,6 @@
 
 /**
  *  从指定的dom元素中获取ui控件的属性值
- *
- *  todo: &datasource支持
  */
 
 baidu.ui.getAttribute = function(element){
