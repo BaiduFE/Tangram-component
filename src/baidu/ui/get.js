@@ -6,6 +6,8 @@
 
 /**
  * 获取元素所在的控件
+ * @function
+ * @grammar baidu.ui.get(element)
  * @param {HTMLElement|string} 要查找的元素，如果是字符串，则查找这个guid为此字符串的控件
  * @param {string} optional  type 匹配查找指定类型的控件【暂未支持】
  * @return {object} ui控件

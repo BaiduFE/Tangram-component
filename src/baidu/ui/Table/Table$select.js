@@ -85,7 +85,7 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 			}
 		});
 		if(me.title && baidu.lang.isNumber(index)){//如果存在表格标题,生成全选checkbox
-			if(me.getTitleBody()){//这里和$title插件存在文件载入先后关联
+			if(me.getTitleBody && me.getTitleBody()){//这里和$title插件存在文件载入先后关联
 				me._createTitleScelect(index);
 			}else{
 				me.addEventListener("titleload", function(){

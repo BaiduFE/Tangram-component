@@ -4,4 +4,5 @@
  */
 
 ///import baidu;
+/** @namespace */
 baidu.flash = baidu.flash || {};

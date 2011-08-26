@@ -15,8 +15,11 @@
 
 /**
  * 一个本地存储对象，使用key-value的方式来存值，不具备夸浏览器通信功能，根据浏览器的不同自动选择userData或是localStorage或是cookie来存值.
+ * @Object
+ * @grammar baidu.data.storage
+ * @return {baidu.data.storage}
  */
-baidu.data.storage = baidu.data.storage || (function(){
+baidu.data.storage = (function(){
     var _guid = baidu.lang.guid(),
         _status = {//状态说明
             SUCCESS: 0,
@@ -213,9 +216,11 @@ baidu.data.storage = baidu.data.storage || (function(){
     }
     
     
-    return {
+    return /**@lends baidu.data.storage.prototype*/{
         /**
          * 将一个键值对存入到本地存储中
+         * @function
+         * @grammar baidu.data.storage.set(key, value, callback, options)
          * @param {String} key 一个键名.
          * @param {String} value 一个值.
          * @param {Function} callback 一个回调函数，函数的第一参数返回该次存储的状态码，各状码表示{0: 成功, 1: 失败, 2: 溢出}，第二参数返回当次的value.
@@ -230,6 +235,8 @@ baidu.data.storage = baidu.data.storage || (function(){
         
         /**
          * 依据一个键名称来取得本地存储中的值
+         * @function
+         * @grammar baidu.data.storage.get(key, callback)
          * @param {String} key 一个键名称.
          * @param {Function} callback 一个回调函数，函数的第一参数返回该次存储的状态码，各状码表示{0: 成功, 1: 失败, 2: 溢出}，第二参数返回当次的value.
          */
@@ -241,6 +248,8 @@ baidu.data.storage = baidu.data.storage || (function(){
         
         /**
          * 根据一个键名称来删除在本地存储中的值
+         * @function
+         * @grammar baidu.data.storage.remove(key, callback)
          * @param {String} key 一个键名称.
          * @param {Function} callback 一个回调函数，函数的第一参数返回该次存储的状态码，各状码表示{0: 成功, 1: 失败, 2: 溢出}，第二参数返回当次的value.
          */

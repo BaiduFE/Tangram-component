@@ -16,6 +16,7 @@
 /**
  * 移动渐变效果，该效果使元素移动到指定的位置。注意：对static定位的DOM元素无效。
  * @function
+ * @grammar baidu.fx.moveTo(element, point, options)
  * @param       {string|HTMLElement}      element               元素或者元素的ID
  * @param       {Array|Object}            point                 目标点坐标。若为数组，索引0为x方向，索引1为y方向；若为Object，键x为x方向，键y为y方向；单位：px，默认值：元素本来的坐标。
  * @param       {Object}                  options               选项。参数的详细说明如下表所示

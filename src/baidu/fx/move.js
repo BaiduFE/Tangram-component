@@ -17,6 +17,7 @@
 /**
  * 移动元素，将参数元素移动到指定位置。注意：对static定位的DOM元素无效。
  * @function
+ * @grammar baidu.fx.move(element, options)
  * @param       {string|HTMLElement}      element           元素或者元素的ID
  * @param       {Object}                  options           选项。参数的详细说明如下表所示
  * @config      {Number}                  x                 0,//横坐标移动的偏移量，默认值为0px。

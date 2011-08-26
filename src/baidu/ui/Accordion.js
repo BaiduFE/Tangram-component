@@ -17,14 +17,16 @@
 ///import baidu.dom.removeClass;
 ///import baidu.dom.insertHTML;
 ///import baidu.dom.g;
-///import baidu.event.on;
 ///import baidu.dom.remove;
 ///import baidu.ui.ItemSet;
 
 /**
- * @class 手风琴组件
- * @param {Object}     [options] 选项
- * @param {HTMLElment} [options.target] 渲染的容器元素
+ * 手风琴组件，说明：该组件继承于baidu.ui.ItemSet，相关的方法请参考ItemSet
+ * @class
+ * @grammar new baidu.ui.Accordion(options)
+ * @param {Object} options 选项
+ * @config {Array} items 数据项，格式如：[{head: 'text-0', body: 'content-0'}, {head: 'text-1', body: 'content-1'}...]
+ * @return {baidu.ui.Accordion} Accordion实例
  */
 baidu.ui.Accordion = baidu.ui.createUI(function (options){
     var me = this;

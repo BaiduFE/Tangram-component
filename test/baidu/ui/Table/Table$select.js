@@ -63,22 +63,22 @@ test("selectAll & unselectAll", function(){
 	ok(!val, "all is unselected");
 });
 //
-test("getTitleCheckbox", function(){
-	var table = te.table;
-	var c = table.getTitleCheckbox();
-	ok(table.getTitleBody().rows[0].cells[0].firstChild.nextSibling === c, "this is title checkbox");
-});
+//test("getTitleCheckbox", function(){
+//	var table = te.table;
+//	var c = table.getTitleCheckbox();
+//	ok(table.getTitleBody().rows[0].cells[0].firstChild.nextSibling === c, "this is title checkbox");
+//});
 //
-test("toggleAll", function(){
-	var table = te.table;
-	var state = table.getTitleCheckbox().checked, tab = table.getBody(), val = true;
-	table.toggleAll();
-	for(var i=0;i<tab.rows.length;i++){
-		val = tab.rows[i].cells[0].firstChild.checked == state;
-		if(!val){break;}
-	}
-	ok(val, "toggleAll");
-});
+//test("toggleAll", function(){
+//	var table = te.table;
+//	var state = table.getTitleCheckbox().checked, tab = table.getBody(), val = true;
+//	table.toggleAll();
+//	for(var i=0;i<tab.rows.length;i++){
+//		val = tab.rows[i].cells[0].firstChild.checked == state;
+//		if(!val){break;}
+//	}
+//	ok(val, "toggleAll");
+//});
 //
 test("getSelected", function(){
 	var table = te.table;

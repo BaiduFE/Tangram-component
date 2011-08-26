@@ -13,11 +13,15 @@
 ///import baidu.object.keys;
 
 /**
- * @class 数据源类
- * @param {Object}     [options]                     配置
- * @param {Number}     [options.maxCache = 10]       缓存数据的最大个数
- * @param {Boolean}    [options.cache = true]        是否使用缓存
- * @param {Function}   [optons.transition]           转换数据算法  
+ * 数据源类
+ * @class
+ * @grammar new baidu.data.dataSource.DataSource(options)
+ * @param {Object}      [options]              config参数
+ * @config {Number}     [maxCache = 10]       缓存数据的最大个数
+ * @config {Boolean}    [cache = true]        是否使用缓存
+ * @config {Function}   [transition]          转换数据算法
+ * @return {baidu.data.dataSource.DataSource} 数据源类
+ * @private
  */
 baidu.data.dataSource.DataSource = baidu.lang.createClass(function(options){
     this._cacheData = {};

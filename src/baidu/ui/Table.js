@@ -24,8 +24,9 @@
 ///import baidu.fn.bind;
 
  /**
- * Table表格组件。
- * @class Table基类
+ * Table表格组件
+ * @class
+ * @grammar new baidu.ui.Table(options)
  * @param       {Object} options config参数
  * @config      {Object} data 生成表格的数据，格式[{id: "rsid0", content : ["column0", "column1"]}, {id : "rsid0", content : ["column0", "column1"]}], id不是必要，当有选择列时用来定义用户的checkbox的value
  * @config      {Object} columns 各个列的高级定义，格式[{index : 1, width : 100, type : "select"}, {index : 2, width : "100%", enableEdit : true}, {index : 3, width : "200px"}]
@@ -36,7 +37,11 @@ baidu.ui.Table = baidu.ui.createUI(function(options){
         me._rows = [];                  //所有的Row组件
 //      me.columns = me.columns || [];  //列的设置信息
 });
-baidu.ui.Table.extend({
+baidu.ui.Table.extend(
+/**
+ *  @lends baidu.ui.Table.prototype
+ */
+{
     uiType          : "table",
     tplBody         : '<div><table cellpadding="0" cellspacing="0" border="0" id="#{id}" class="#{class}" #{stateHandler}>#{rows}</table></div>',
     /**
@@ -82,7 +87,6 @@ baidu.ui.Table.extend({
     
     /**
      * 渲染表格
-     * @public 
      * @param {HTMLElement} target       目标父级元素
      */
     render : function(target){
@@ -182,10 +186,8 @@ baidu.ui.Table.extend({
     
     /**
      * 添加行控件
-     * @private
      * @param {Object} optoins  创建Row所需要的options
      * @param {Number} index
-     * @memberOf {TypeName} 
      */
     addRow : function(options, index){
         var me = this;
@@ -213,7 +215,6 @@ baidu.ui.Table.extend({
     
     /**
      * 删除行
-     * @public
      * @param {number} index 要删除的数据索引
      */
     removeRow : function(index){
@@ -234,7 +235,6 @@ baidu.ui.Table.extend({
     
     /**
      * 销毁当前实例
-     * @public
      */
     dispose : function(){
         var me = this;
@@ -243,9 +243,9 @@ baidu.ui.Table.extend({
 });
 
 /**
- * Row表格的行组件。
+ * Row表格的行组件，Row组件，table的组合组件
  * @private
- * @class Row组件，table的组合组件
+ * @class
  * @param       {Object}    options config参数
  * @config      {String}    id 标识该行的id，当该行存在checkbox复选框时，该id会被赋予checkbox的value
  * @config      {Array}     content 该行的单远格字符内容，如['column-1', 'column-2', 'column-3'...]
@@ -253,7 +253,11 @@ baidu.ui.Table.extend({
 baidu.ui.Table.Row = baidu.ui.createUI(function(options){
     this._cells = {};//所有生成的cell集合
     this.addState("selected");
-}).extend({
+}).extend(
+/**
+ * @lends baidu.ui.Table.Row.prototype
+ */
+{
     uiType : "table-row",
     statable : true,
     //tplBody : '<table cellpadding="0" cellspacing="0" border="0" width="#{width}" id="#{id}" class="#{class}" #{stateHandler}>#{rows}</table>',
@@ -411,7 +415,11 @@ baidu.ui.Table.Row = baidu.ui.createUI(function(options){
  * @private
  * @class Cell组件类
  */
-baidu.ui.Table.Cell = baidu.ui.createUI(function(options){}).extend({
+baidu.ui.Table.Cell = baidu.ui.createUI(function(options){}).extend(
+/**
+ *  @lends baidu.ui.Table.Cell.prototype
+ */
+{
     uiType : 'table-cell',
 
     /**

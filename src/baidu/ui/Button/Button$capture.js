@@ -6,17 +6,13 @@
 ///import baidu.ui.Button;
 ///import baidu.fn.bind;
 ///import baidu.dom.contains;
-///import baidu.event.on;
-///import baidu.event.un;
 ///import baidu.event.getTarget;
 
 /**
  * 使按钮支持capture，实现在按钮上点击并保持鼠标按着状态拖离鼠标，请在构造函数的options中定义capture参数为true来激活该状态
- * @name baidu.ui.button.Button$capture
- * @function
- * @grammar baidu.ui.button.create(options)
- * @param {Object} options 创建scrollBar的自定义参数.
- * @param {Boolean} options.capture 当为true时表示需要使按钮是一个capture的按钮.
+ * @class
+ * @param {Object} options options参数.
+ * @config {Boolean} capture 当为true时表示需要使按钮是一个capture的按钮.
  * @author linlingyu
  */
 baidu.ui.Button.register(function(me) {
@@ -38,11 +34,7 @@ baidu.ui.Button.register(function(me) {
                 }
             };
         body.onmouseout = null;
-        baidu.event.on(body, 'mouseout', mouseOutHandler);
-        baidu.event.on(document, 'mouseup', mouseUpHandler);
-        me.addEventListener('dispose', function() {
-            baidu.event.un(body, 'mouseout', mouseOutHandler);
-            baidu.event.un(document, 'mouseup', mouseUpHandler);
-        });
+        me.on(body, 'mouseout', mouseOutHandler);
+        me.on(document, 'mouseup', mouseUpHandler);
     });
 });

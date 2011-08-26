@@ -3,12 +3,17 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 ///import baidu.i18n;
-
-baidu.i18n.number = baidu.i18n.number || {
+/**
+ * number
+ * @name baidu.i18n.number
+ * @Object
+ * @grammar baidu.i18n.number
+ */
+baidu.i18n.number = baidu.i18n.number || /**@lends baidu.i18n.number.prototype*/{
 
     /**
      * 将传入的数字或者文字某种语言的格式进行格式化
-     * @public
+     * @grammar baidu.i18n.number.format(number, sLocale, tLocale)
      * @param {String|Number} number 需要进行格式化的数字或者文字
      * @param {String} [sLocale] 可选参数，若传入的number格式为字符串，则该参数必须传入
      * @param {String} [tLocale] 目标语言

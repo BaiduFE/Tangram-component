@@ -8,8 +8,6 @@
 ///import baidu.dom.draggable;
 ///import baidu.page.getWidth;
 ///import baidu.page.getHeight;
-///import baidu.event.on;
-///import baidu.event.un;
 
 ///import baidu.ui.behavior.draggable;
 
@@ -39,7 +37,7 @@ baidu.ui.Dialog.register(function(me){
                 updateDragRange();
 
                 //如果用户窗口改变，拖拽的范围也要跟着变
-                baidu.on(window, "resize", updateDragRange);
+                me.on(window, "resize", updateDragRange);
             }else{
                 me.dragUpdate();
             }
@@ -48,10 +46,6 @@ baidu.ui.Dialog.register(function(me){
         me.addEventListener("ondragend", function(){
             me.left = baidu.dom.getStyle(me.getMain(), "left");
             me.top = baidu.dom.getStyle(me.getMain(), "top");
-        });
-
-        me.addEventListener("ondispose", function(){
-            baidu.un(window, "resize", updateDragRange);
         });
     }
 });
