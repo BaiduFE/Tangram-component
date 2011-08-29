@@ -46,6 +46,8 @@ test('base', function() {
 								'check data');
 					});
 		}
+		dialog.clear('log');
+		dialog.clear('all');
 		start();
 	}, 'tangram-tab', 'height', '61px');
 	stop();
