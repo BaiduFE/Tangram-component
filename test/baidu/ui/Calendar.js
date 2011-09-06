@@ -7,7 +7,7 @@ module('baidu.ui.Calendar');
 	// 月份信息
 	te._monthDay = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 	te._weekShot = 'sun,mon,tue,wed,thu,fri,sat';
-	te._language = ['zh-CN','zh-CN','zh-CN','zh-CN','zh-CN', 'en-US', 'en-US'];
+	te._language = ['zh-CN','zh-CN','zh-CN','zh-CN','zh-CN', 'en-US', 'en-US', 'zh-CN', 'en-US'];
 	te._language_count = 0;
 	te.getDate = function(date, day) {
 		var d = new Date();
@@ -579,4 +579,21 @@ test('英文版界面操作', function() {
 //	item = te.doms.content.dates[0];// 需要计算时间
 	te.checkEvent(ui, 'onclickdate', te.getDates(d)[0]);
 	ua.click(te.doms.content.dates[0]);// 实际11月，显示11月
+});
+
+test('getToday()', function(){
+	expect(2);
+	var ui = te.getUI();
+	var ui_us = te.getUI();
+	var date = new Date();
+	
+	localTime = date.getTime();
+	localOffset=date.getTimezoneOffset()*60000; //获得当地时间偏移的毫秒数
+	utc = localTime + localOffset; //utc即GMT时间
+	offset = -5; //-5区 美国时间
+	us = utc + (3600000*offset);
+	var date_us = new Date(us); 
+	
+	equals(ui.getToday().toString(), date.toString(), 'The CN Time is right');
+	equals(ui_us.getToday().toString(), date_us.toString(), 'The US Time is right');
 });

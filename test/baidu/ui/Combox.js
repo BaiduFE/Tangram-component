@@ -39,6 +39,10 @@ test("createMenu", function() {
 		setTimeout(function() {
 			TT.event.fire(cb.menu.getItem('0-0'), 'click');
 			equal(input.value, 'a-content-1');
+			ua.click(arrow);
+			equals(cb.menu.getBody().style.display, "");
+			ua.click(arrow);
+			equals(cb.menu.getBody().style.display, "none");
 			cb.dispose();
 			start();
 		}, 30);
