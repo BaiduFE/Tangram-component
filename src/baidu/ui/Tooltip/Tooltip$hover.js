@@ -5,8 +5,8 @@
 
 ///import baidu.ui.Tooltip;
 ///import baidu.ui.get;
-///import baidu.event.on;
-///import baidu.event.un;
+///import baidu.event._eventFilter.mouseenter;
+///import baidu.event._eventFilter.mouseleave;
 ///import baidu.event.getTarget;
 ///import baidu.dom.getAncestorBy;
 ///import baidu.lang.isArray;
@@ -25,33 +25,16 @@ baidu.ui.Tooltip.register(function(me) {
         mouseInContainer = false;//用标识鼠标是否落在Tooltip容器内
 
     //onload时绑定显示方法
-    me.addEventListener("onload",function(){
+    me.addEventListener("onload", function(){
         baidu.each(me.target,function(target){
-            baidu.on(target, 'mouseover', showFn);
+            me.on(target, 'mouseenter', showFn);
+            me.on(target, 'mouseleave', hideFn);
         });
-        baidu.event.on(me.getBody(), 'mouseover', setMouseInContainer);
-        baidu.event.on(me.getBody(), 'mouseout', setMouseInContainer);
-    });
-
-    //dispose时接触事件绑定
-    me.addEventListener("ondispose",function(){
-        baidu.each(me.target,function(target){
-            baidu.un(target, 'mouseover', showFn);
-            baidu.un(target, 'mouseout', hideFn);
-        });
-    });
-
-    //tooltip打开时，绑定和解除方法
-    me.addEventListener('onopen', function(){
-        baidu.on(me.currentTarget, 'mouseout', hideFn);
-    });
-
-    //tooltip隐藏时，绑定和解除方法
-    me.addEventListener('onclose', function(){
-        baidu.on(me.currentTarget, 'mouseover', showFn);
-        baidu.un(me.currentTarget, 'mouseout', hideFn);
+        me.on(me.getBody(), 'mouseover', setMouseInContainer);
+        me.on(me.getBody(), 'mouseout', setMouseInContainer);
     });
     
+    //用于设置鼠标在移入和移出Tooltip-body时标识状态
     function setMouseInContainer(evt){
         mouseInContainer = (evt.type.toLowerCase() == 'mouseover');
         !mouseInContainer && hideFn(evt);
@@ -61,18 +44,12 @@ baidu.ui.Tooltip.register(function(me) {
     function showFn(e){
         hideHandle && clearTimeout(hideHandle);
         me.open(this);
-
-        //停止默认事件及事件传播
-        baidu.event.stop(e || window.event);
     }
 
     //隐藏tooltip
     function hideFn(e){
         hideHandle = setTimeout(function(){
             !mouseInContainer && me.close();
-        },me.hideDelay);
-
-        //停止默认事件及事件传播
-        baidu.event.stop(e || window.event); 
+        }, me.hideDelay);
     }
 });
