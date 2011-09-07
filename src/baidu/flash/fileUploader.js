@@ -17,9 +17,10 @@
  * @function
  * @grammar baidu.flash.fileUploader(options)
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
- * @param {String} width
- * @param {String} height
- * @param {Function|String} selectiFile
+ * @config {String} createOptions.width
+ * @config {String} createOptions.height
+ * @param {Number} maxNum 最大可选文件数
+ * @param {Function|String} selectFile
  * @param {Function|String} exceedMaxSize
  * @param {Function|String} deleteFile
  * @param {Function|String} uploadStart
@@ -36,7 +37,7 @@ baidu.flash.fileUploader = function(options){
     },options.createOptions || {});
     
     var _flash = new baidu.flash._Base(options, [
-        'selectiFile',
+        'selectFile',
         'exceedMaxSize',
         'deleteFile',
         'uploadStart',
@@ -44,6 +45,8 @@ baidu.flash.fileUploader = function(options){
         'uploadError', 
         'uploadProgress'
     ]);
+
+    _flash.call('setMaxNum', options.maxNum ? [options.maxNum] : [1]);
 
     /**
      * 设置当鼠标移动到flash上时，是否变成手型
@@ -102,7 +105,7 @@ baidu.flash.fileUploader = function(options){
     me.deleteFile = function(index, callBack){
 
         var callBackAll = function(list){
-                callBack(list);
+                callBack && callBack(list);
             };
 
         if(typeof index === 'undefined'){
@@ -126,7 +129,10 @@ baidu.flash.fileUploader = function(options){
      * @return {Null};
      */
     me.addFileType = function(type){
-        if(typeof type !== 'Array') type = [type];
+        var type = type || [];
+        if(type instanceof Array) type = [type];
+        else type = [[type]];
+
         _flash.call('addFileTypes', type);
     };
     
@@ -137,7 +143,9 @@ baidu.flash.fileUploader = function(options){
      * @return {Null};
      */
     me.setFileType = function(type){
-        if(typeof type !== 'Array') type = [type];
+        var type = type || [];
+        if(type instanceof Array) type = [type];
+        else type = [[type]];
         _flash.call('setFileTypes', type); 
     };
 
