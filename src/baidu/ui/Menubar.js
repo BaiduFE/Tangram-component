@@ -213,7 +213,10 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
     update: function(options){
         var me = this, 
             main = me.getMain(), 
-            target = me.getTarget();
+            target = me.getTarget(),
+            i = 0,
+            maxListItemNum = me.maxListItemNum,
+            itemList = main.getElementsByTagName('LI');
         options && baidu.object.extend(me, options);
         main.innerHTML = me.getString();
         
@@ -221,8 +224,17 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         
         baidu.dom.setStyle(main, 'z-index', me.zIndex);
         
-        var body = me.getBody();
-        baidu.dom.setStyles(body, {
+        if (me.data.length > me.maxListItemNum) {
+            me.height = 0;
+            for (; i < maxListItemNum; i++) {
+                me.height += itemList[i].offsetHeight;
+            }
+            baidu.dom.setStyles(main.getElementsByTagName('DIV')[0], {
+                'overflow' : 'hidden',
+                'overflow-y' : 'auto'
+            });
+        }
+        baidu.dom.setStyles(me.getBody(), {
             height: me.height,
             width: me.width
         });
@@ -314,6 +326,15 @@ baidu.ui.Menubar = baidu.ui.createUI(function(options){
         }
         me.dispatchEvent("onopen");
         baidu.ui.Menubar.showing = me;
+    },
+    
+    /**
+     * menubar是否已经打开
+     * @return {boolean} menubar是否已经打开
+     */
+    'isOpened' : function() {
+        var me = this;
+        return baidu.dom.getComputedStyle(me.getBody(), 'display') != 'none';
     },
     
     /**

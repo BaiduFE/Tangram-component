@@ -6,10 +6,10 @@
 }
 
 .tangram-menubar-root {
-    height: 180px;
 }
 
 .tangram-menubar, .tangram-menubar-root ul {
+	float : left;
     border: 1px solid #a6c9e2;
     background: #fcfdfd url(image/ui-bg.png) 50% bottom repeat-x;
     color: #222222;

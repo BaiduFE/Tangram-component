@@ -166,18 +166,28 @@ baidu.ui.Combox = baidu.ui.createUI(function (options){
                 onbeforeclose: me.onbeforeclose,
                 onclose: me.onclose,
                 onbeforeopen: me.onbeforeopen,
-                onopen: me.onopen
+                onopen: me.onopen,
+                maxListItemNum : me.maxListItemNum
             };
                  
         me.menu = baidu.ui.create(baidu.ui.Menubar, menuOptions);
         me.menu.close(true);
         
+
+        
         me._showAllMenuHandler = baidu.fn.bind(function(){
             var me = this;
-            me.menu.open();
-            me.menu.update({
-                data: me.data
-            });
+            if (me.menu.getBody() && me.menu.isOpened()) {
+                me.menu.close();
+            } else {
+                me.menu.open();
+                me.menu.update({
+                    data: me.data
+                });
+                me.menu.addEventListener('onbeforeopen', function(e){
+                    e.returnValue = false;
+                });
+            }
         }, me);
         me.on(arrow, 'click', me._showAllMenuHandler);
         return me.menu;
