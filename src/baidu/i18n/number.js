@@ -42,7 +42,7 @@ baidu.i18n.number = baidu.i18n.number || /**@lends baidu.i18n.number.prototype*/
         }
         number = parseFloat(number);
         if(isNaN(number)){
-            return 'Not a number'; 
+            return 'NAN'; 
         }
         
         return tOpt._format ? tOpt._format(number, isNegative) : me._format(number, {

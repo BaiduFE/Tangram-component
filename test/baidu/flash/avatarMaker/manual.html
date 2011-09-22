@@ -3,7 +3,7 @@
     <head>
         <title>flash test</title>
         <meta http-equiv="Content-Type" charset="utf-8" content="text/html;charset=utf-8">
-        <script src='../../../../../src/import.php?f=baidu.flash.avatarMaker' ></script>
+        <script src='../../../../src/import.php?f=baidu.flash.avatarMaker' ></script>
     </head>
     <body>
         <input type="button" value="上传" onclick="javascript:upload1()"/>
@@ -13,14 +13,10 @@
                 up1.upload();
             };
 
-            function callback(){
-                
-            };
-
             var options = {
                 createOptions: {
                     id: "flash1",
-                    url: "avatarMaker.swf",
+                    url: "../../../../resources/baidu/flash/avatarMaker.swf",
                     width: "630",
                     height: "360",
                     errorMessage: "载入FLASH出错",
@@ -36,7 +32,7 @@
                 },
                 uploadURL: 'getfile.php',
                 tipHandle: function(tip){alert(tip);},
-                uploadCallBack: callback
+                uploadCallBack: function(){}
             };
             var up1 = new baidu.flash.avatarMaker(options);
         </script>
