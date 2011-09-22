@@ -66,6 +66,45 @@ test("set,get,remove", function() {
 	});
 });
 
+test("expire time", function() {
+	expect(9);
+	stop();
+	var storage = baidu.data.storage;
+	storage.set('key1', 'value1',function(status, value){
+		equals(status, 0, 'set successfully');
+		equals(value, 'value1', 'set successfully');
+	},{
+		expires : 500
+	});
+	storage.get('key1', function(status, value){
+		equals(status, 0, 'get successfully');
+		equals(value, 'value1', 'get successfully');
+	});
+	setTimeout(function(){
+		storage.get('key1', function(status, value){
+			equals(value, null, 'expire time');
+		});
+		
+		storage.set('key2', 'value2',function(status, value){
+			equals(status, 0, 'set successfully');
+			equals(value, 'value2', 'set successfully');
+		},{
+			expires : new Date(new Date().getTime() + 500)
+		});
+		storage.get('key2', function(status, value){
+			equals(status, 0, 'get successfully');
+			equals(value, 'value2', 'get successfully');
+		});
+		setTimeout(function(){
+			storage.get('key2', function(status, value){
+				equals(value, null, 'expire time');
+				start();
+			});
+		}, 500);
+	}, 500);
+	
+});
+
 test("set,get,remove between iframes", function() {
 	expect(7);
 	stop();
