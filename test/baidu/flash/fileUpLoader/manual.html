@@ -6,23 +6,23 @@
         <script src='../../../../src/import.php?f=baidu.flash.fileUploader' ></script>
     </head>
     <body>
-        <div id="content1" style='border:1px'></div>
+        <div id="content1" style='width:100px; height:100px; border:1px;background:red'></div>
         <script>
             var options = {
                 createOptions: {
                     id: "flash1",
-                    url: "fileUpLoader.swf",
+                    url: "../../../../resources/baidu/flash/fileUploader.swf",
                     errorMessage: "载入FLASH出错",
                     ver: "9.0.0",
                     container: 'content1',
                     width: '100px',
-                    height: '100px'
+                    height: '100px',
+                    wmode: 'transparent'
                 },
                 width: '100px',
                 height: '100px'
             };
             var up1 = new baidu.flash.fileUploader(options);
-            //baidu.swf.create(options.createOptions);
         </script>
     </body>
 </html>
