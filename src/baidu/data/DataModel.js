@@ -7,235 +7,461 @@
 
 ///import baidu.object.extend;
 ///import baidu.object.each;
-///import baidu.object.values;
 ///import baidu.object.keys;
+///import baidu.object.clone;
+///import baidu.object.isEmpty;
+
+///import baidu.fn.blank;
 
 ///import baidu.lang.isArray;
-///import baidu.lang.isObject;
+///import baidu.lang.isNumber;
+///import baidu.lang.isFunction;
+///import baidu.lang.createClass;
 
 ///import baidu.data;
 ///import baidu.data.Field;
 
-baidu.data.DataModel = baidu.data.DataModel || (function(){
+baidu.data.DataModel = (function(){
 
-    var index = 0;
+    var CLONE = baidu.object.clone,
+        ARRAYEACH = baidu.array.each,
+        OBJECTEACH = baidu.object.each;
+
+    var dateAction = {
+        'ADD':'ADD',
+        'REMOVE': 'REMOVE',
+        'UPDATE': 'UPDATE',
+        'NULL': 'NULL'
+    };
 
     /**
      * 创建Field实例
      * @private
      * @param {Object} fields config
+     * @param {baidu.data.DataModel} dataModel
      */
-    function _createField(fields, fieldsItem, fieldsDefaultValue){
+    function _createField(fields, dataModel){
         var fields = fields || {};
 
-        baidu.object.each(fields, function(config, fieldName){
-            fieldsItem[fieldName] = new baidu.data.Field(config);
-            fieldsDefaultValue[fieldName] = config.define.defaultValue;
+        OBJECTEACH(fields, function(config, fieldName){
+            baidu.extend(config,{
+                data: dataModel._data,
+                name: fieldName
+            });
+            dataModel._fields[fieldName] = new baidu.data.Field(config, dataModel);
         });
     };
 
-    /**
-     * 返回唯一的递增id
-     * @private
-     * @return {Number}
-     */
-    function _getNewId(){
-        return index++;
-    };
-
-    /**
-     * 删除垃圾数据
-     * @private
-     * @param {Number} id
-     * @param {Array} fields 
-     */
-    function _clearGarbage(id, fields){
-        if(typeof id == 'undefined') return;
-
-        baidu.object.each(fields, function(item){
-            item.remove(id);
-        });
-    };
-   
     /**
      * DataModel实体类
      * @public
      * @param {Object} options 设置项
      * @config {Object} options.fields 通过ModalManager.defineDM定义的数据结构
-     * @config {baid.data.dataSource.DataSource} options.dataSource 数据源
      * @config {Array} options.data 传入的数据，可选
      */
     var dataModel = function(options){
-
+       
         var me = this,
             options = options || {};
 
-        createField(options.fields || {}, me.fieldsItem, me.fieldsDefaultValue);
-        me.dataSource = options.dataSource || me.dataSource;
-        me.fieldsArray = options.fieldsArray || me.fieldsArray;
+        createField(options.fields || {}, me);
     };
+        
+    /**
+     *  @lends baidu.data.DataModel.prototype
+     */
+    dataModel,prototype = {
+      
+        /**
+         * 数据存储索引
+         * @private
+         * @attribute
+         */
+        _index: 0,
 
-    dataModel.prototype = {
+        /**
+         * 存储Field实例的名值对
+         * @private
+         * @attribute
+         */
+        _fields: {},
+
+        /**
+         * 数据值
+         * @private
+         * @attribute
+         */
+        _data: {},
+
+        /**
+         * 最后一次操作时所涉及的数据
+         * @private
+         * @attribute
+         */
+        _lastChangeObject: {},
+
+        _lastChangeArray: [],
+
+        /**
+         * 最后一次操作时所涉及的数据在修改之前的值
+         * @private
+         * @attribute
+         * */
+        _lastData:{},
+
+        /**
+         * 最后一次操作名称
+         * @private
+         * @attribute
+         */
+        _lastAction: dataAction.NULL,
         
         /**
-         *  @lends baidu.data.DataModel.prototype
+         * 清空相关数组及object对象，并设置lastAction状态
+         * @private
+         * @param {String} action
+         * @return {Null}
          */
-        
-        isEmpty: true,
-        fields: {},
-        dataSource: null,
-        fieldsItem:[],
-        fieldsDefaultValue: {},
-        ids:[],
-
-        /**
-         * 添加新数据
-         * @public
-         * @param {Object|Array} 数据值，可以为名值对JSON,或者与field定义顺序相同的Array数组
-         * @return {Boolean} 数据是否添加成功
-         */
-        add: function(data){
-            var data = data || {},
-                me = this,
-                tmpData = {},
-                id = _getNewId(),
-                result = true;
+        _setLastAction:function(action){
+            var me = this;
             
-            if(baidu.lang.isArray(data)){
-               baidu.each(data, function(item, index){
-                    tmpData[me.fieldsArray[index]] = item;
-               });
-            }else if(baidu.lang.isObject(data)){
-                tmpData = baidu.extend(me.fieldsDefaultValue,data);
-            }
+            me._lastChangeObject = {};
+            me._lastChangeArray = [];
+            me._lastData = {};
+            me._lastAction = action;
+        },
 
-            //这种方式很有可能出现数据冗余
-            //但是只有设置成功才会将id放置到me.ids中，所以冗余数据对外时不可见的
-            baidu.object.each(tmpData, function(item, key){
-                result = me.fields[key].set(id, item);
-                return result;
+        /**
+         * 获取新的id
+         * @private
+         * @attribute
+         * @return {Number}
+         */
+        _getNewId: function(){
+            return this._index++;           
+        },
+
+        /**
+         * 根据传入的index数组返回数据
+         * @private
+         * @param {String|String[]} where
+         * @param {Number|Number[]} indexArr
+         * @return {Object}
+         */
+        _getDataByIndex: function(where, indexArr){
+            var result = {};
+
+            ARRAYEACH(indexArr, function(index){
+                result[index] = me._getDataByName(where, me._data[index]);
             });
-
-            result ? me.ids.push(id) : _clearGarbage(id);
 
             return result;
         },
+        
+        /**
+         * 根据传入的function返回数据
+         * @private
+         * @param {String|String[]} where
+         * @param {Function} fun
+         * @return {Object}
+         */
+        _getDataByFunction: function(where, fun){
+            var me = this,
+                result = {};
+            
+            OBJECTEACH(me._data, function(eachData, dataIndex){
+                if(fun(eachData)){
+                    result[dataIndex] = me._getDataByName(where, eachData);
+                }
+            });
 
+            return result;
+
+        },
+
+        /**
+         * 根据where从单行数据中取出所致定的数据
+         * @private
+         * @param {Array|String} where
+         * @param {Object} data
+         * @return {Object}
+         */
+        _getDataByName: function(where, data){
+            var me = this,
+                result = {};
+
+            if(where == '*'){
+                return CLONE(data); 
+            }
+
+            baidu.lang.isString(where) && (where = where.split(','));
+            ARRAYEACH(where, function(name){
+                result[name] = data[name];
+            });
+            return CLONE(result);
+        },
+
+        /**
+         * 根据条件判断函数获取数据中符合要求的id
+         * @private
+         * @param {Function|Number[]|Number} condition
+         * @return {Number[]}
+         */
+        _getConditionId: function(condition){
+            var me = this,
+                result = [];
+
+            if(baidu.lang.isNumber(condition)){
+                return [condition];
+            }
+
+            if(baidu.lang.isArray(condition)){
+                return condition;
+            }
+
+            if(baidu.lang.isFunction(condition)){
+                OBJECTEACH(me._data, function(eachData, dataIndex){
+                    condition(eachData) && result.push(dataIndex);
+                });    
+                return result;
+            }
+        },
+        
+        /**
+         * 添加新数据
+         * @public
+         * @param {Object} 数据值，可以名值对
+         * @return {fail:[], success[]} fail数据为添加失败的数据的index,success数组为成功插入的数据的索引值 
+         */
+        add: function(data){
+            var me = this,
+                data = data || {},
+                result = {
+                    fail: []
+                    success: []
+                }, 
+                tmpResult, tmpNames, tmpData,
+                dataIndex,length;
+
+            if(baidu.object.isEmpty(data)) return result; 
+
+            if(!baidu.lang.isArray(data)) data = [data];
+            me._setLastAction(dataAction.ADD);
+            
+            baidu.each(data, function(eachData, index){
+
+                tmpResult = true;
+                tmpNames = [];
+                dataIndex = me._getNewId();
+                
+                OBJECTEACH(eachData, function(item, name){
+                    tmpResult = me._fields[name].set(dataIndex, item);
+                    tmpResult ? tmpNames.push(name) : result.fail.push(index); 
+                    return tmpResult;
+                });
+
+                if(!tmpResult){
+                    delete(me._data[dataIndex]);
+                }else{
+                    me._lastChangeObject[dataIndex] = me._data[dataIndex];
+                    me._lastChangeArray.push(me._data[dataIndex]);
+                    result.success.push(dataIndex);
+                }
+            });
+
+            return result;
+        },
+      
+        
         /**
          * 按条件查找并返回数据
          * @public
-         * @param {Object} condition 查找数据所依赖的条件,{find,where}
-         * @return {Array} 找到的数据
+         * @param {String} where 查找那些field的数值,以','分割，支持'*'
+         * @param {Function|Number|Number[]} condition 查找条件方法,或者包含index的数组或者index
+         * @return {Object}
          */
-        get: function(condition){
+        select: function(where, condition){
             var me = this,
-                ids = [],
-                result = [],
-                cond,name;
+                where = where || '*',
+                condition = condition || baidu.fn.blank(),
+                result = [];
 
-            /**
-             * condition:{find:[],where:{}};
-             * TODO:如何优化查找,使用怎样的key做缓存
-             * TODO;支持排序
-             */
-            if(!condition['where']){
-                baidu.each(me.ids, function(id){
-                    baidu.each(condition.find, function(field){
-                        tmp[field] = baidu.object.values(me.fields[field].get(id));
-                    });
-                    result.push(tmp);
-                });
+            if(me._data.length == 0){
                 return result;
             }
-           
-            ids = me._getIds(condition['where']); 
-            result = new Array(ids.length);
-            baidu.each(condition.find, function(name){
-                baidu.each(ids, function(id, index){
-                    !result[index] && (result[index] = {});
-                    result[index][name] = me.fields[name].get(id);
-                });
-            });
-             
-            return result; 
+
+            //整理数组
+            baidu.lang.isNumber(condition) && (condition = [condition]);
+            
+            if(baidu.lang.isArray(condition)){
+                result = me._getDataByIndex(where, condition);
+                return result;
+            }
+
+            if(baidu.lang.isFunction(condition)){
+               result = me._getDataByFunction(where, condition);
+               return result;
+            }
         },
+        
+        
 
         /**
-         * {field: function, field:function}
-         * */
-        _getIds: function(condition){
-            var where = [],
-                cond,name,tmp,ids,
-                me = this;
-
-            baidu.object.each(condition, function(name,fn){
-                 where.push({
-                    name:fn
-                 });
-            });
-
-            cond = where.shift();
-            name = cond.name;
-            tmp[name] = me.fields[name].get(cond.fn);
-            ids = baidu.object.keys(tmp[name]);
-
-            /**
-             * TODO：不许要保存value值
-             */
-            baidu.each(where, function(cond){
-                var t = [];
-                tmp[cond.name] = {};
-                baidu.each(ids, function(id){
-                    var d = me.fields[cond.name].get(id);
-                    if(cond.fn(d)){
-                        t.push(id);
-                        tmp[cond.name][id] = d; 
-                    }
-                }); 
-                ids = t;
-            });
-
-            return ids;
-        };
-
-        /**
-         * 根据条件设置filed的值
+         * 根据条件设置field的值
          * @public
-         * @param {object} condition, {value,where}
-         * @return {Boolean} 设置是否成功
-         */
-        set: function(condition){
+         * @param {Object} data
+         * @param {Function|Number[]|Number} condition 查找条件方法,或者包含index的数组或者index
+         * @return {Number} 跟新的行数
+        */
+        update: function(data, condition){
             var me = this,
-                ids = me._getIds(condition['where'] || {}),
-                field;
+                condition = condition || baidu.fn.blank(),
+                data = data || {},
+                resultId = [],
+                isFirst = true,
+                lastData,
+                tmpResult,
+                tmpData,
+                result = 0;
+           
+            if(baidu.object.isEmpty(data)){
+                return result;
+            } 
 
-            baidu.object.each(condition['value'] || {}, function(name, value){
-                field = me.fields[name];
-                baidu.each(ids, function(key){
-                    field.set(key, value);
-                });
+            data = CLONE(data);
+            resultId = me._getConditionId(condition);
+            ARRAYEACH(resultId, function(dataIndex){
+                if(isFirst){
+                    lastData = CLONE(me._data[dataIndex]);
+                
+                    OBJECTEACH(data, function(item, name){
+                        tmpResult = me._fields[name].set(dataIndex, item);
+                        tmpResult && tmpNames.push(name);
+                        return tmpResult;
+                    });
+                    if(!tmpResult){
+                        me._data[dataIndex] = lastData;
+                        result = false;
+                        return false;
+                    }
+                    
+                    isFirst = false;
+                    me._setLastAction(dataAction.UPDATE);
+                   
+                    me._lastChange[dataIndex] = me._data[dataIndex];
+                    me._lastChangeArray.push(me._data[dataIndex]);
+                    me._lastData[dataIndex] = lastData;
+                    
+                    result++;
+                }else{
+                    
+                    me._lastData[dataIndex] = CLONE(me._data[dataIndex]);
+                    me._lastDataObject[dataIndex] = me._data[dataIndex];
+                    me._lastChangeArray.push(me._data[dataIndex]);
+                    result++;
+
+                    OBJECTEACH(data, function(item, name){
+                        me._data[dataIndex][name] = item;
+                    });
+                }
             });
-        },
+
+            return result;
+         },
 
         /**
          * 删除数据
          * @public
-         * @param {Object} condition 删除数据所依赖的条件
-         * @return {Array} 被删除的数据
+         * @param {Function|Number[]|Number} condition 查找条件方法,或者包含index的数组或者index
+         * @return {Number} 被删除行数
          */
         remove: function(condition){
             var me = this,
-                ids = me._getIds(condition),
-                result = [];
+                resultId = me._getConditionId(condition || baidu.fn.blank()),
+                result = 0,data;
 
-            baidu.each(ids.function(key, index){
-                result.push[{}];
-                baidu.object.each(me.fields, function(item, name){
-                    result[index][name] = item.remove(key);
-                }); 
+            if(resultId.length == 0){
+                return result;
+            }
+            
+            me._setLastAction(dataAction.REMOVE);
+            baidu.each(resultId, function(dataIndex){
+                
+                data = CLONE(me._data[dataIndex]);
+                me._lastData[dataIndex] = data;
+                me._lastChangeObject[dataIndex] = data;
+                me._lastChangeArray.push(data);
+                
+                result++;
+                delete(me._data[dataIndex]);
             });
             
             return result;
+        },
+
+        /**
+         * 回复上次操作之前的结果
+         * @public
+         * @return {Object[]}
+         */
+        cancel: function(){
+            var me = this,
+                result = {
+                    lastAction: dataAction.NULL,
+                    row: 0
+                },
+                data;
+
+            switch (me._lastAction){
+                case dataAction.ADD:
+                    OBJECTEACH(me._lastData, function(data, dataIndex){
+                        delete(me._data[dataIndex]);
+                    });
+                    result = {
+                        row: me._lastChangeArray.length,
+                        lastAction: dataAction.ADD
+                    };
+                    break;
+                case dateAction.REMOVE:
+                    OBJECTEACH(me._lastData, function(data, dataIndex){
+                        me._data[dataIndex] = data;
+                    });
+                    result = {
+                        row: me._lastChangeArray.length,
+                        lastAction: dateAction.REMOVE
+                    };
+                    break;
+                case 'UPDATE':
+                    OBJECTEACH(me._lastData, function(data, dataIndex){
+                        me._data[dataIndex] = data;
+                    });
+                    result = {
+                        row: me._lastChangeArray.length,
+                        lastAction: dateAction.UPDATE
+                    };
+                    break;
+                default:
+                    return result;
+            };
+           
+            me._lastChangeObject = me._lastData;
+            me._lastChangeArray = [];
+            OBJECTEACH(me._lastData, function(data){
+                me._lastChangeArray.push(data);
+            });
+            me._lastData = {};
+            me._lastAction = dataAction.NULL;
+
+            return result;
+        },
+
+        /**
+         * 返回最后一次修改时所涉及的数据
+         * @public
+         * @return {Object}
+         */
+        getLastChange: function(){
+            return CLONE(me._lastChangeObject); 
         }
     };
 
