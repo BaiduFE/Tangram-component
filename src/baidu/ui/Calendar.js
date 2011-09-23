@@ -416,7 +416,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
      * @return {Date} 返回一个本地当天的时间
      */
     getToday: function(){
-        return me._toLocalDate(new Date());
+        return this._toLocalDate(new Date());
     },
     
     /**

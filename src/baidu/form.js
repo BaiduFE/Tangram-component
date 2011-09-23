@@ -4,5 +4,8 @@
  */
 
 ///import baidu;
-/** @namespace */
+/**
+ * 和表单相关的数据验证
+ * @namespace baidu.form
+ */
 baidu.form = baidu.form || {};
