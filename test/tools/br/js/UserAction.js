@@ -314,6 +314,8 @@ var UserAction = {
 			case "click":
 			case "dblclick":
 			case "mousemove":
+			case "mouseenter":// 非标准支持，仅为测试提供，该项仅IE下work
+			case "mouseleave":
 				break;
 			default:
 				throw new Error("simulateMouseEvent(): Event type '" + type
