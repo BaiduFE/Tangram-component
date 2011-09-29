@@ -14,7 +14,7 @@
 
 /**
  * 创建flash based fileUploader
- * @function
+ * @class
  * @grammar baidu.flash.fileUploader(options)
  * @param {Object} options
  * @config {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
@@ -29,7 +29,7 @@
  * @config {Function|String} uploadError
  * @config {Function|String} uploadProgress
  */
-baidu.flash.fileUploader = function(options){
+baidu.flash.fileUploader = baidu.flash.fileUploader || function(options){
     var me = this,
         options = options || {};
     
