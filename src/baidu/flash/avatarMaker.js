@@ -11,7 +11,7 @@
 
 /**
  * 创建flash based avatarMaker
- * @function
+ * @class
  * @grammar baidu.flash.avatarMaker(options)
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
  * @config {Object} vars 创建avatarMaker时所需要的参数
@@ -24,7 +24,7 @@
  * @config {Function|String} tipHandler js提示函数，当flash发生异常，调用此函数显示出错信息。该函数接收一个String类型的参数，为需要显示的文字 
  * @config {Function|String} uploadCallBack 上传之后的回调函数
  */
-baidu.flash.avatarMaker = function(options){
+baidu.flash.avatarMaker = baidu.flash.avatarMaker || function(options){
     var me = this,
         options = options || {},
         _uploadURL = options.uploadURL,
