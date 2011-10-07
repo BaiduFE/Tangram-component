@@ -149,6 +149,7 @@ baidu.data.DataStore = (function(){
             typeof snyc != 'undefined' && (this._snyc = snyc);  
         },
 
+        //TODO: 如何处理数据冲突
         /**
          * DataSource从其数据源拉取数据
          * @param {Object} options

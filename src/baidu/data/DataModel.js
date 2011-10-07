@@ -21,7 +21,7 @@
 ///import baidu.data;
 ///import baidu.data.Field;
 
-baidu.data.DataModel = (function(){
+baidu.data.DataModel = baidu.data.DataModel || (function(){
 
     var CLONE = baidu.object.clone,
         ARRAYEACH = baidu.array.each,
