@@ -2,169 +2,144 @@
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  *
- * code from jsonpath
+ * code from jpath
  */
 
 ///import baidu.parser;
 ///import baidu.parser.Parser;
-///import baidu.lang.createClass;
+
+///import baidu.json.parse;
+///import baidu.ajax.get;
+///import baidu.ajax.post;
 
 baidu.parser.Json = baidu.parser.Json || (function(){
 
-    function jsonPath(obj, expr, arg) {
-        var P = {
-            resultType: arg && arg.resultType || "VALUE",
-            result: [],
-            normalize: function(expr) {
-                var subx = [];
-                return expr.replace(/[\['](\??\(.*?\))[\]']|\['(.*?)'\]/g, function($0,$1,$2){return "[#"+(subx.push($1||$2)-1)+"]";})  /* http://code.google.com/p/jsonpath/issues/detail?id=4 */
-                        .replace(/'?\.'?|\['?/g, ";")
-                        .replace(/;;;|;;/g, ";..;")
-                        .replace(/;$|'?\]|'$/g, "")
-                        .replace(/#([0-9]+)/g, function($0,$1){return subx[$1];});
-                },
-            
-            asPath: function(path) {
-                var x = path.split(";"), p = "$";
-                for (var i=1,n=x.length; i<n; i++)
-                    p += /^[0-9*]+$/.test(x[i]) ? ("["+x[i]+"]") : ("['"+x[i]+"']");
-                return p;
-            },
-            store: function(p, v) {
-                   if (p) P.result[P.result.length] = P.resultType == "PATH" ? P.asPath(p) : v;
-                   return !!p;
-            },
-            trace: function(expr, val, path) {
-                if (expr !== "") {
-                    var x = expr.split(";"), loc = x.shift();
-                    x = x.join(";");
-                    if (val && val.hasOwnProperty(loc))
-                        P.trace(x, val[loc], path + ";" + loc);
-                    else if (loc === "*")
-                        P.walk(loc, x, val, path, function(m,l,x,v,p) { P.trace(m+";"+x,v,p); });
-                    else if (loc === "..") {
-                        P.trace(x, val, path);
-                        P.walk(loc, x, val, path, function(m,l,x,v,p) { typeof v[m] === "object" && P.trace("..;"+x,v[m],p+";"+m); });
-                    }
-                    else if (/^\(.*?\)$/.test(loc)) // [(expr)]
-                        P.trace(P.eval(loc, val, path.substr(path.lastIndexOf(";")+1))+";"+x, val, path);
-                    else if (/^\?\(.*?\)$/.test(loc)) // [?(expr)]
-                        P.walk(loc, x, val, path, function(m,l,x,v,p) { if (P.eval(l.replace(/^\?\((.*?)\)$/,"$1"), v instanceof Array ? v[m] : v, m)) P.trace(m+";"+x,v,p); }); // issue 5 resolved
-                    else if (/^(-?[0-9]*):(-?[0-9]*):?([0-9]*)$/.test(loc)) // [start:end:step]  phyton slice syntax
-                        P.slice(loc, x, val, path);
-                    else if (/,/.test(loc)) { // [name1,name2,...]
-                        for (var s=loc.split(/'?,'?/),i=0,n=s.length; i<n; i++)
-                            P.trace(s[i]+";"+x, val, path);
-                    }
-                }
-                else
-                    P.store(path, val);
-            },
-            walk: function(loc, expr, val, path, f) {
-                if (val instanceof Array) {
-                    for (var i=0,n=val.length; i<n; i++)
-                        if (i in val)
-                            f(i,loc,expr,val,path);
-                }
-                else if (typeof val === "object") {
-                    for (var m in val)
-                        if (val.hasOwnProperty(m))
-                            f(m,loc,expr,val,path);
-                }
-            },
-            slice: function(loc, expr, val, path) {
-                if (val instanceof Array) {
-                    var len=val.length, start=0, end=len, step=1;
-                    loc.replace(/^(-?[0-9]*):(-?[0-9]*):?(-?[0-9]*)$/g, function($0,$1,$2,$3){start=parseInt($1||start);end=parseInt($2||end);step=parseInt($3||step);});
-                    start = (start < 0) ? Math.max(0,start+len) : Math.min(len,start);
-                    end   = (end < 0)   ? Math.max(0,end+len)   : Math.min(len,end);
-                    for (var i=start; i<end; i+=step)
-                        P.trace(i+";"+expr, val, path);
-                }
-            },
-            eval: function(x, _v, _vname) {
-                      try { return $ && _v && eval(x.replace(/(^|[^\\])@/g, "$1_v").replace(/\\@/g, "@")); }  // issue 7 : resolved ..
-                      catch(e) { throw new SyntaxError("jsonPath: " + e.message + ": " + x.replace(/(^|[^\\])@/g, "$1_v").replace(/\\@/g, "@")); }  // issue 7 : resolved ..
+    var jpath = (function() {
+        function _u(arr) { for (var a=arr.slice(0), i=1, l=arguments.length; i<l; i++) { a.unshift(arguments[i]); } return a; }
+        function merge(a,b) { return a.push.apply(a, b); }
+        function jp(obj, path, parents) {
+            if (!path.length)           { return [ obj ]; }
+            var id = path[0];
+            if (id == "..")             { return jp(parents.shift(), path.slice(1), parents); }
+            if (typeof obj != "object") { return path.length == 1 && id == "*" ? [ obj ] : []; }
+            if (id == "last()")         { return obj.length ? jp(obj[obj.length-1], path.slice(1), _u(parents, obj)) : []; }
+            var out = [];
+            if (id !== "") { // Find children
+                    if (obj.hasOwnProperty(id))     { merge(out, jp(obj[id], path.slice(1), _u(parents, obj))); }
+                    else if (id == "*")             { for (var i in obj) { if (obj.hasOwnProperty(i)) { merge(out, jp(obj[i], path.slice(1), _u(parents, obj))); } } }
             }
-        };
-
-        var $ = obj;
-        if (expr && obj && (P.resultType == "VALUE" || P.resultType == "PATH")) {
-            P.trace(P.normalize(expr).replace(/^\$;?/,""), obj, "$");  // issue 6 resolved
-            return P.result.length ? P.result : false;
+            else { // Find desendants
+                id = path[1];
+                for (var i in obj) { if (obj.hasOwnProperty(i)) {
+                    if (obj[i].hasOwnProperty(id))  { merge(out, jp(obj[i][id], path.slice(2), _u(parents, obj, obj[i]))); }
+                    else if (id == "*" || i === id) { merge(out, jp(obj[i],     path.slice(2), _u(parents, obj        ))); }
+                    else                            { merge(out, jp(obj[i],     path,          _u(parents, obj        ))); }
+                } }
+            }
+            // TODO: Remove duplicates in out
+            return out;
         }
-    };
+    
+        function jpstr(obj, str) {
+            if (str.charAt(0) != "/") { str = "/" + str; }  // Add leading slash if required
+            var arr = str.replace(/\/+$/, "")               // Remove trailing slashes
+                        .replace(/\/\/+/, "//")            // Convert /// -> //
+                        .replace(/\[(\d+)\]/, "/$1")       // Convert chapter[0]/para to chapter/0/para
+                        .replace(/\/(\.\/)+/g, "/").replace(/^\.\//, "/").replace(/\/\.$/, "")    // Ignore "."
+                        .split("/").slice(1);
+    
+            var arr2 = [];
+            for (var i=0,l=arr.length,depth=0; i<l; i++) {
+                if (depth <= 0) { arr2.push(arr[i]); } else { arr2[arr2.length-1] += "/" + arr[i]; }
+                var open  = arr[i].match(/\[/g);
+                var close = arr[i].match(/\]/g);
+                depth += (open ? open.length : 0) - (close ? close.length : 0);
+            }
+    
+            return jp(obj, arr2, []);
+        }
+    
+        return jpstr;
+    })();
 
     /**
-     * xml操作解析器
+     * JSON操作解析器
      * @public
      * @class
      */
-    return baidu.lang.createClass(function(){
-     
-     },{
-        superClass: 'baidu.parser.Parser'
-     }).extend({
-      
-        loadSrc: function(fileSrc){
-            var me = this;
+    return function(options){
+        
+        var parser = new baidu.parser.Parser(options);
 
-            if(!me._XMLHttpRequest){
-                me._XMLHttpRequest = _createHttpRequest();
-                AXO && (me._DOMParser = me._XMLHttpRequest);
+        baidu.extend(parser, {
+       
+            _jPath: null,
 
-                me._XMLHttpRequest.onreadystatechange = function(){
-                    if(this.readyState == 4){
-                        me._isLoad = true;
-                        me._dom = this.responseXML;
+            /**
+             * 加在JSON文件
+             * @public
+             * @param {String} fileSrc
+             * @param {String} method 'GET','POST'
+             * @param {String} data
+             */
+            _loadSrc: function(fileSrc, method, data){
+                var me = this,
+                    onsuccess = function(xhr, responseText){
+                        me._paser(responseText) && me.dispatchEvent('onload');
+                    };
 
-                        this.abort();
-                        me.dispatchEvent('onload');
+                me._method == 'GET' ? baidu.ajax.get(fileSrc, onsuccess) : baidu.ajax.post(fileSrc, data, onsuccess);
+            },
 
-                    }
-                };    
-            }
-            
-            _loadXML(me._XMLHttpRequest, fileSrc);
-        },
+            /**
+             * 将传入的String转换成JSON
+             * @public
+             * @param {String} JSONString
+             * @return {Object}
+             */
+           loadData: function(JSONString){
+                var me = this,
+                    JSONString = JSONString || '',
+                    result = {};
 
-        /**
-         * 直接加载xml字符串数据
-         * @public
-         * @param {String} xmlString
-         */
-        loadData: function(xmlString){
-        },
+                me._isLoad = false;
+                me._paser(JSONString) && me.dispatchEvent('onload');
+            },
 
-        /**
-         * 使用xpath获取数据
-         * @public
-         * @param {String} xPath
-         * @param {Boolean} cache 是否使用缓存的数据，默认为true
-         * @return {Array}
-         */
-        query: function(xPath, cache){
-            var me = this,
-                cache = typeof cache != 'undefined' ? cache : true,
-                result = [], nod = null, tmpResult;
+           /**
+            * 转换数据
+            * @private
+            * @param {String} JSONString
+            * @return {Boolean}
+            */
+            _paser: function(JSONString){
+                var me = this;
 
-            if(!me._isLoad)
-                return result;
-           
-            if(cache && me._queryData[xPath]) return me._queryData[xPath];
+                try{
+                    result = baidu.json.parse(JSONString);
+                    me._jPath = new jpath(result);
 
-            if(AXO){
-                result = me.getRoot.selectNodes(xPath);
-            }else if(IMP){
-                tmpResult = me.getRoot.evaluate(xPath, me.getRoot(), null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-                while((nod = tmpResult.iterateNext()) != null) {   
-                    result.push(nod);
+                    me._dom = me._jPath.root();
+                    me._isLoad = true;
+
+                    return true;
+                }catch(e){
+                    return false;
                 }   
+            },
+
+            /**
+             * 使用JPath获取数据并返回
+             * @public
+             * @param {String} Path
+             * @return {Array}
+             */
+            _query: function(JPath){
+                var me = this;
+                return me._jPath ? me._jPath.query(JPath) ? [];
             }
-            me._queryData[xPath] = result;
 
-            return result;
-        };
-     });
-
+        });
+        return parser;
+    };
 })();
