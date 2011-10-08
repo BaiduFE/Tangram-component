@@ -6,33 +6,19 @@
 ///import baidu.parser;
 ///import baidu.lang.createClass;
 
-baidu.parser.Parser = baidu.parser.Parser || (function(){
+///import baidu.fn.blank;
+///import baidu.ajax.get;
+///import baidu.ajax.post;
 
-    /**
-     * 创建XMLHttpRequest对象
-     * @private
-     * @return XMLHttpRequest
-     */
-    function _createHttpRequest(){
-        if (window.ActiveXObject) {
-            try {
-                return new ActiveXObject("Msxml2.XMLHTTP");
-            } catch (e) {
-                try {
-                    return new ActiveXObject("Microsoft.XMLHTTP");
-                } catch (e) {}
-            }
-        }
-        if (window.XMLHttpRequest) {
-            return new XMLHttpRequest();
-        }
-    };
+baidu.parser.Parser = baidu.parser.Parser || (function(){
 
     /**
      * 提供数据处理的基类方法
      * @class
      * @public
      * @param {Object} options
+     * @config {String} method ‘GET’，'POST' 默认为GET
+     * @config {Function} onload
      */
     return baidu.lang.createClass(function(options){
    
@@ -40,6 +26,7 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
             options = options || {};
 
         me._method = options.method || me._method;
+        me.onload = options.onload || baidu.fn.blank();
 
     },{
         className: 'baidu.parser.Parser'
@@ -60,16 +47,22 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
         */
         _queryData: {},
    
-        _createXHR: function(){
-            return _createHttpRequest();
-        },
-
         /**
          * 加载数据，支持xml，json，html
          * @public
          * @param {String} dataString
         */
-        loadData: function(dataString){},
+        load: function(dataString){
+            var me = this,
+                dataString = dataString || '';
+
+            me._isLoad = false;
+            if(me._paser(dataString)){
+                me._queryData = {};
+                me._isLoad = true;
+                me.dispatchEvent('onload');
+            }
+        },
    
         /**
          * 加载数据片段
@@ -78,13 +71,21 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
          * @param {String} method 'GET','POST'
          * @param {String} data
          */
-        loadSrc: function(fileSrc, method, data){
+        loadUrl: function(fileSrc, method, data){
             var me = this,
                 fileSrc = fileSrc || '',
                 method = method || me._method,
-                data = data || '';
-
-            me._loadSrc(fileSrc, method, data);
+                data = data || '',
+                onsuccess = function(xhr, responseText){
+                    if(me._paser(responseText)){
+                        me._isLoad = true;
+                        me._queryData = {};
+                        me.dispatchEvent('onload');
+                    }
+                };
+            
+            me._isLoad = false;
+            me._method == 'GET' ? baidu.ajax.get(fileSrc, onsuccess) : baidu.ajax.post(fileSrc, data, onsuccess);
         },
 
         /**

@@ -5,7 +5,8 @@
 
 ///import baidu.parser;
 ///import baidu.parser.Parser;
-///import baidu.lang.createClass;
+
+///import baidu.object.extend;
 
 ///TODO: 能否使用baidu.ajax.*来实现这个类？
 baidu.parser.Xml = baidu.parser.xml || (function(){
@@ -13,21 +14,8 @@ baidu.parser.Xml = baidu.parser.xml || (function(){
     var AXO = window.ActiveXObject;
     var IMP = document.implementation && document.implementation.createDocument;
 
-    /**
-     * 加在xml文件
-     * @private
-     * @param {XMLHttpRequest} XMLHttpRequest
-     * @param {String} fileSrc 文件路径
-     */
-    function _loadXML(XMLHttpRequest, fileSrc){
-        
-        if (AXO){
-            XMLHttpRequest.load(fileSrc);
-            XMLHttpRequest.setProperty('SelectionLanguage', 'XPath')
-        }else if(IMP){
-            XMLHttpRequest.open("GET",fileSrc,true);
-            XMLHttpRequest.send(null);
-        }
+    function _createXMLDOM(){
+       return new ActiveXObject('Microsoft.XMLDOM');
     };
 
     /**
@@ -38,12 +26,12 @@ baidu.parser.Xml = baidu.parser.xml || (function(){
      * @return {XMLRoot}
      */
     function _loadXMLString(DOMParser, xmlString){
-        if(AXO)
+        if(AXO){
             DOMParser.async = false;
-            DOMParser.loadXml(xmlString);
+            DOMParser.loadXML(xmlString);
             DOMParser.setProperty('SelectionLanguage', 'XPath');
-            return DOMParser.responseXML; 
-        else if(IMP){
+            return DOMParser;
+        }else if(IMP){
             return DOMParser.parseFromString(xmlString, 'text/xml');
         }
     };
@@ -53,64 +41,33 @@ baidu.parser.Xml = baidu.parser.xml || (function(){
      * @public
      * @class
      */
-    return function(){
+    return function(options){
         
-        var parser = new baidu.parser.Parser();
+        var parser = new baidu.parser.Parser(options);
 
         baidu.extend(parser, {
     
-            _XMLHttpRequest: null;
-            _DOMParser: null;
-
+            _DOMParser: null,
+          
             /**
-            * 加载xml文件
-            * @public
-            * @param {String} 文件路径
-            */
-           loadSrc: function(fileSrc){
+             * 将字符串转换为XMLDOM
+             * @private
+             * @param {String} XMLString
+             * @return {Boolean}
+             */
+            _paser: function(XMLString){
                 var me = this;
-    
-                if(!me._XMLHttpRequest){
-                    me._XMLHttpRequest = me._createXHR;
-                    AXO && (me._DOMParser = me._XMLHttpRequest);
-    
-                    me._XMLHttpRequest.onreadystatechange = function(){
-                        if(this.readyState == 4){
-                            me._isLoad = true;
-                            me._dom = this.responseXML;
-    
-                            this.abort();
-                            me.dispatchEvent('onload');
-    
-                        }
-                    };    
-                }   
-             
-                _loadXML(me._XMLHttpRequest, fileSrc);
-            },  
 
-            /**
-            * 直接加载xml字符串数据
-            * @public
-            * @param {String} xmlString
-            */
-            loadData: function(xmlString){
-                var me = this;
-    
-                me._isLoad = false;
                 if(!me._DOMParser){
                     IMP && (me._DOMParser = new DOMParser());
-                    AXO && (me._DOMParser = me._XMLHttpRequest = me._XMLHttpRequest || me._createXHR());
+                    AXO && (me._DOMParser = _createXMLDOM());
                 }
-    
-                me._dom = _loadXMLString(me._DOMParser, xmlString);
-             
-                if(me._dom){
-                    me._isLoad = true; 
-                    me.dispatchEvent('onload');
-                }
+
+                me._dom = _loadXMLString(me._DOMParser, XMLString);
+                
+                return me._dom ? true : false; 
             },
-    
+
             /**
             * 使用xpath获取数据
             * @public
@@ -124,16 +81,16 @@ baidu.parser.Xml = baidu.parser.xml || (function(){
                     tmpResult;
 
                 if(AXO){
-                    result = me.getRoot.selectNodes(XPath);
+                    result = me.getRoot().selectNodes(XPath);
                 }else if(IMP){
-                    tmpResult = me.getRoot.evaluate(XPath, me.getRoot(), null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+                    tmpResult = me.getRoot().evaluate(XPath, me.getRoot(), null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
                     while((nod = tmpResult.iterateNext()) != null) {   
                         result.push(nod);
-                    }   
+                    }
                 }
     
                 return result;
-            };
+            }
         });
 
         return parser;
