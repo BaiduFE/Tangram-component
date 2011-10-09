@@ -10,6 +10,9 @@
 ///import baidu.data.DataSource.DataSource;
 
 ///import baidu.lang.isFunction;
+///import baidu,parser.creat;
+
+///import baidu.parser.create;
 
 baidu.data.DataStore = (function(){
    
@@ -38,9 +41,9 @@ baidu.data.DataStore = (function(){
     return baidu.lang.creatClass(function(options){
         var me = this;
             dataModel = options.dataModel,
-            dataStore = options.dataStore,
+            dataSource = options.dataSource,
             action = options.action,
-           `snyc = options.snyc;
+            snyc = options.snyc;
 
         dataModel && (me._dataModel = dataModel);
         dataSource && (me._dataSource = dataSource);
@@ -52,7 +55,9 @@ baidu.data.DataStore = (function(){
             
             if(baidu.lang.isFunction(action))
                 me._action = action;
-            else me._action = actionType[action] ? actionType[action] : 'APPEND';
+            else{
+                me._action == actionType[action] ? actionType[action] : 'APPEND';
+            }
         }
 
         me._mergeFields = options.mergeFields || [];
@@ -145,8 +150,13 @@ baidu.data.DataStore = (function(){
             return false;              
         },
 
+        /**
+         * 设置是DataSource数据保持同步
+         * @pubic
+         * @param {Boolean} snyc 是否同步
+         */
         setSnyc: function(snyc){
-            typeof snyc != 'undefined' && (this._snyc = snyc);  
+            this._snyc = snyc;  
         },
 
         //TODO: 如何处理数据冲突
@@ -155,32 +165,39 @@ baidu.data.DataStore = (function(){
          * @param {Object} options
          * @See baidu.data.dataSource
          * @param {Boolean} snyc
+         * @param {baidu.parser.type} 请求的数据类型，如不提供此参数，则不会向自定义函数传入经过parser包装对象，传入原始数据
          */
-        load: function(options, snyc){
+        load: function(options, snyc, type){
 
             var me = this,
                 dataSource = me._dataSource,
                 dataModel = me._dataModel,
                 snyc = typeof snyc != 'undefined' ? snyc : me._snyc;
                 success = options.onsuccess || baidu.fn.blank(),
-                failture = options.onfailture || baidu.fn.blank();
+                failture = options.onfailture || baidu.fn.blank(),
+                tmpData = [];
         
             if(!dataSource) return;
 
-            if(snycDataModel){
+            function createParser(data){
+                return type ? baidu.parser.create(type) : data;
+            };
+
+            if(snyc){
                 options.onsuccess = function(data){
                     switch (me._action){
-                        case 'APPEND': 
-                            dataModel.add(data);
-                            success(data);       
+                        case 'APPEND':
+                            tmpData = success.call(me, createParser(data));
+                            dataModel.add(tmpData);
                             break;
                         case 'REPLACE':
                             dataModel.clear();
-                            dataModel.add(data);
-                            success(data);
+                            tmpData = success.call(me, createParser(data));
+                            dataModel.add(tmpData);
                             break;
                         case 'MERGE':
-                            baidu.each(data, function(item){
+                            tmpData = success.call(me, createParser(data));
+                            baidu.each(tmpData, function(item){
                                 dataModel.update(item, function(dataLine){
                                     var result = true;
                                     baidu.each(me._mergeFields, function(name){
@@ -191,16 +208,15 @@ baidu.data.DataStore = (function(){
                                     return result;
                                 });
                             });
-                            success(data);
                             break;
                         default: 
-                            me._action.call(me, data);
-                            success(data);
+                            tmpData = success.call(me, createParser(data));
+                            me._action.call(me, tmpData);
                     }     
                 };
 
                 options.onfailture = function(){
-                    onfailture.apply(arguments);    
+                    failture.apply(me, arguments);    
                 };
             }
 
@@ -212,18 +228,18 @@ baidu.data.DataStore = (function(){
          * DataSource commit数据
          * @public
          * @param {Object} options
-         * @param {String} data 'ALL|LC' 默认值为'LC'
+         * @param {String} dataType 'ALL|LC' 默认值为'LC'
          * @see baidu.data.dataSource.DataSource.commit
          */
-        save: function(options, data){
+        save: function(options, dataType){
             var me = this,
                 dataModel = me._dataModel,
                 dataSource = me._dataSource,
-                data = data || 'LC';
+                dataType= dataType || 'LC';
 
-            dataSource.commit(
+            dataSource.set(
                 options, 
-                data == 'ALL' ? dataModel.select('*') : dataModel.getLastChange()
+                dataType == 'ALL' ? dataModel.select('*') : dataModel.getLastChange()
             );
         },
 
