@@ -13,6 +13,11 @@
 ///import baidu.object.keys;
 
 /**
+ * 1.maxCache这里应该就不许要了，数据直接存储在DataModel中
+ * 2.Cache应该也不许要了，在DataStore中使用
+ */
+
+/**
  * 数据源类
  * @class
  * @grammar new baidu.data.dataSource.DataSource(options)
@@ -66,6 +71,11 @@ baidu.data.dataSource.DataSource = baidu.lang.createClass(function(options){
     get: function(options){
     
     },
+
+    /**
+     * 存储数据接口,由具体的dataSource实现
+     */
+    set: function(){},
     
     /**
      * 转换数据格式并调用回调函数
