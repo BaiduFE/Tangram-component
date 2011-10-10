@@ -16,6 +16,25 @@
 ///import baidu.event.un;
 ///import baidu.event.preventDefault;
 
+
+
+
+/**
+ *
+ *
+ * 拆分方法，将baidu.data.form中方法拆分到baidu.validator.Validator中
+ * 当前文件保留，但使用上述类中验证方法进行验证
+ * 当前文件中方法只进行对form表单的事件绑定，message显示等操作
+ *
+ *
+ *
+ * */
+
+
+
+
+
+
 /**
  * 表单验证组件
  * @name baidu.form.Validator
