@@ -9,6 +9,9 @@
  *
  */
 
+///import baidu.ui.Base.getId;
+///import baidu.event.getTarget;
+///import baidu.dom.create;
 ///import baidu.dom.setStyles;
 ///import baidu.dom.getStyle;
 ///import baidu.ui.behavior;
@@ -38,7 +41,7 @@
      *
      *
      * @param {Array}  sortElements 被排序的元素数组.
-     * @param {Array}  sortParentElement 被排序的元素的父元素，用来做事件代理的。.
+     * @param {HTMLElement}  sortParentElement 被排序的元素的父元素，用来做事件代理的。.
      * @param {Object} options 可子定义参数.
      * sortHandlers {Array} 默认值[]  拖拽句柄数组，这个需要与elements一一对应.
      *                  如果handlers为空,那么整个sortElement都是可以进行拖拽。.
@@ -118,6 +121,7 @@
      * 事件代理，放在sortElement的父元素上
      */
     function mouseDownHandler(event) {
+        var me = Sortable;
         var element = baidu.event.getTarget(event),
             position = baidu.dom.getPosition(element),
             parent = element.offsetParent,
@@ -212,13 +216,13 @@
 
     //取得空占位符的dom元素
     function _getBlankDiv(me) {
-        return baidu.g(me.getId('sortBlankDiv'));
+        return baidu.g(baidu.ui.Base.getId('sortBlankDiv'));
     }
 
     //创建一个空占位符的层
     function _createBlankDiv(trigger, me) {
         var div = baidu.dom.create('div', {
-            id: me.getId('sortBlankDiv'),
+            id: baidu.ui.Base.getId('sortBlankDiv'),
             className: trigger.className
         });
         baidu.dom.setStyles(div, {
