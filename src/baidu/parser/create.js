@@ -16,9 +16,9 @@ baidu.parser.create = function(type, options){
     var type = type || '',
         options = options || {};
 
-    type = baidu.parser.type[type];
-
-    if(baidu.parser[type]) return new baidu.parser[type](options);
+    if(baidu.parser[type]){
+        return new baidu.parser[type](options);
+    }
 
     return null;
 };

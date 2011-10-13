@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Data Center 整体测试</title>
+<script language='JavaScript' src='../../../../src/import.php?f=baidu.data.DataStore,baidu.data.ModelManager'></script>
+<script language='JavaScript' src='../../../../src/import.php?f=baidu.data.dataSource.ajax'></script>
+<script language='JavaScript' src='../../../../src/import.php?f=baidu.parser.Xml'></script>
+</head>
+<body>
+</body>
+<script language='JavaScript'>
+    //book的dataModel的结构
+    var bookDMDefine = {
+        fields:[{
+            name: 'category'
+        },{
+            name: 'cover'
+        },{
+            name: 'lang',
+            defaultValue: 'en'
+        },{
+            name: 'title'
+        },{
+            name: 'author'
+        },{
+            name: 'year',
+            type: 'number',
+            defaultValue: 2000
+        },{
+            name: 'price',
+            type: 'number',
+            defaultValue: '0'
+        }],
+        validations:[]
+    };
+    baidu.data.ModelManager.defineDM('book', bookDMDefine);
+    var DM = baidu.data.ModelManager.createDM('book');
+    DM = DM[1];
+    console.log('dataModel: ', DM);
+
+    //设置dataSource,不建议使用缓存
+    var url = 'books.xml';
+    var dsOptions = {
+        cache: false,
+        dataType:  baidu.parser.type.XML,
+        transition: function(parser){
+            var books = [],
+            data,length,item;
+
+            console.log(parser.query('//book'));
+            console.log(parser.query('//book/@category'));
+            console.log(parser.query('/bookstore/book/author'));
+
+            data = parser.query('//book');
+            var category = parser.query('//book/@category');
+            var title = parser.query('//book/title');
+            var year = parser.query('//book/year');
+            var price = parser.query('//book/price');
+
+            baidu.each(data, function(book, index){
+                item = {};
+
+                item.category = category[index].nodeValue;
+                item.cover = book.getAttribute('cover') || '';
+                item.lang = title[index].getAttribute('lang');
+                item.title = title[index].textContent;
+                item.year = parseInt(year[index].textContent);
+                item.price = parseInt(price[index].textContent);
+
+                var authors = parser.query('//book[' + (index + 1) + ']/author');
+                var name = [];
+                baidu.each(authors, function(author){
+                    name.push(author.textContent);
+                });
+                item.author = name.join(',');
+                books.push(item);
+            });
+            console.log(books);
+
+            return books;
+        }
+    };
+    var dataSource = baidu.data.dataSource.ajax(url, dsOptions);
+    console.log('dataSource: ', dataSource);
+    
+    //创建DataStore
+    var dataStore = new baidu.data.DataStore({
+        'dataModel': DM,
+        'dataSource': dataSource,
+        'action': 'APPEND'
+    });
+
+    //历史性的一刻出现了！！！第一次调啊！！一定要过啊！！！！
+    dataStore.load({
+        onsuccess: function(data){
+            console.log(data);
+
+            console.log(this.select('*'));
+        },
+        onfailture: function(data){
+        },
+    }, true, baidu.parser.type.XML);
+</script>
+</html>

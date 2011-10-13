@@ -5,7 +5,14 @@
 
 ///import baidu.array.each;
 ///import baidu.data;
+///import baidu.data.DataModel;
 
+/**
+ * DataModel管理类
+ * @class
+ * @public
+ * 事件派发
+ */
 baidu.data.ModelManager = baidu.data.ModelManager || (function(){
  
     var _DMDefine = {},
@@ -24,7 +31,7 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
      * @return {baidu.data.DataModel|undefined}
      */
     function _getModel(model){
-        return model instanceof Number ? _DMInstanceByIndex{model} : model;
+        return model instanceof Number ? _DMInstanceByIndex[model] : model;
     };
 
     /**
@@ -34,13 +41,7 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
      * @return {Object}
      */
     function _getDefualtValue(type){
-        var value = _default[type];
-
-        if(typeof value != 'undefined'){
-            return value;
-        }else{
-            return '';
-        }
+        return (_default[type] || '');
     };
 
     /**
@@ -62,7 +63,7 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
          * @public
          * @param {String} type DataModel类型的唯一标识符
          * @param {Object} options 设置项
-         * @config {Array} options.fields 数据字段设置，{name[String],type[String],defaultValue[Object}
+         * @config {Array} options.fields 数据字段设置，{name[String],type[String],defaultValue{Object}}
          * @config {Array} options.validations 验证方式,{type{String},field{String},config}
          */
         defineDM: function(type, options){
@@ -72,13 +73,12 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
                 result = {},
                 fieldName = '',
                 fieldType = '',
-                defaultValue = null,
-                fieldsArray = [];
+                defaultValue = null;
            
             baidu.each(fields, function(field){
                 fieldName = field['name'];
-                fieldType = field['type'];
-                defaultValue = field.defaultValue ||_getDefualtValue(fieldType);
+                fieldType = field['type'] || 'string';
+                defaultValue = field.defaultValue || _getDefualtValue(fieldType);
                 
                 result[fieldName] = {
                     'define': {
@@ -87,10 +87,7 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
                     },
                     'validation': []
                 };
-                fieldsArray.push[fieldName];
             });
-            result.fieldsArray = fieldsArray;
-            fieldsArray = [];
 
             baidu.each(validations, function(validation){
                 fieldName = validation['field'];
@@ -108,22 +105,23 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
          * @return {Array} [index,DataModel]
          */
         createDM: function(type, options){
-            var options = options || {},
-                options.fields = DMDefine[name] || {},
+            var options = options || {
+                    fields: _DMDefine[type] || {}
+                },
                 DM = new baidu.data.DataModel(options);
             
-            _DMInstanceByType[type] || _DMInstanceByType[type] = {};
-            _DMInstanceByType[type][_index++] = DM;
+            _DMInstanceByType[type] || (_DMInstanceByType[type] = {});
+            _DMInstanceByType[type][_index] = DM;
             _DMInstanceByIndex[_index] = DM;
 
-            return [_index, DM];
+            return [_index++, DM];
         },
 
         /**
          * 通过标识获取DataModel
          * @public
          * @param {Number} index DataModel的index
-         * @return DataModel
+         * @return {baidu.data.DataModel}
          */
         getDMByIndex: function(index){
            return _DMInstanceByIndex[index] || null; 
@@ -133,12 +131,11 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
          * 通过DataModel类型唯一标识符获取DataModel实例
          * @public
          * @param {String} type 类型唯一标识
-         * @return {Array}
+         * @return {Object}
          */
-        getDMSByType: function(type){
+        getDMByType: function(type){
             return _DMInstanceByType[type] || [];
         }
-
     };
 
     return new modelManager();

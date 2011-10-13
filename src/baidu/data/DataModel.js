@@ -21,13 +21,21 @@
 ///import baidu.data;
 ///import baidu.data.Field;
 
+/**
+ * DataModel实体类
+ * @class
+ * @public
+ * @param {Object} options 设置项
+ * @config {Object} options.fields 通过ModalManager.defineDM定义的数据结构
+ * @config {Array} options.data 传入的数据，可选
+ */
 baidu.data.DataModel = baidu.data.DataModel || (function(){
 
     var CLONE = baidu.object.clone,
         ARRAYEACH = baidu.array.each,
         OBJECTEACH = baidu.object.each;
 
-    var dateAction = {
+    var dataAction = {
         'ADD':'ADD',
         'REMOVE': 'REMOVE',
         'UPDATE': 'UPDATE',
@@ -64,13 +72,13 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
         var me = this,
             options = options || {};
 
-        createField(options.fields || {}, me);
+        _createField(options.fields || {}, me);
     };
         
     /**
      *  @lends baidu.data.DataModel.prototype
      */
-    dataModel,prototype = {
+    dataModel.prototype = {
       
         /**
          * 数据存储索引
@@ -149,7 +157,8 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          * @return {Object}
          */
         _getDataByIndex: function(where, indexArr){
-            var result = {};
+            var result = {},
+                me = this;
 
             ARRAYEACH(indexArr, function(index){
                 result[index] = me._getDataByName(where, me._data[index]);
@@ -237,7 +246,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
             var me = this,
                 data = data || {},
                 result = {
-                    fail: []
+                    fail: [],
                     success: []
                 }, 
                 tmpResult, tmpNames, tmpData,
@@ -283,7 +292,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
         select: function(where, condition){
             var me = this,
                 where = where || '*',
-                condition = condition || baidu.fn.blank(),
+                condition = condition || baidu.object.keys(me._data),
                 result = [];
 
             if(me._data.length == 0){
@@ -422,13 +431,13 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                         lastAction: dataAction.ADD
                     };
                     break;
-                case dateAction.REMOVE:
+                case dataAction.REMOVE:
                     OBJECTEACH(me._lastData, function(data, dataIndex){
                         me._data[dataIndex] = data;
                     });
                     result = {
                         row: me._lastChangeArray.length,
-                        lastAction: dateAction.REMOVE
+                        lastAction: dataAction.REMOVE
                     };
                     break;
                 case 'UPDATE':
@@ -437,7 +446,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                     });
                     result = {
                         row: me._lastChangeArray.length,
-                        lastAction: dateAction.UPDATE
+                        lastAction: dataAction.UPDATE
                     };
                     break;
                 default:

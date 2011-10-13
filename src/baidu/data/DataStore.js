@@ -3,17 +3,24 @@
  * Copyright 2010 Baidu Inc. All rights reserved.
  */
 
-///import baidu.fn.blank;
-
 ///import baidu.data;
 ///import baidu.data.DataModel;
-///import baidu.data.DataSource.DataSource;
+///import baidu.data.dataSource.DataSource;
 
+///import baidu.fn.blank;
 ///import baidu.lang.isFunction;
-///import baidu,parser.creat;
-
 ///import baidu.parser.create;
 
+/**
+ * 数据仓库类
+ * @class
+ * @public
+ * @param {String|baidu.data.DataModel} dataModel DataModel实例
+ * @param {String|baidu.data.dataSource.DataSource} dataSource DataSource实例
+ * @param {String|Function} action {'append','replace','merge',Function} 当完成load时，向DataModel中填写数据时使用的策略,默认为append
+ * @param {Array[String]} mergeFields 当action 为merge时，合并数据时使用的依据变量
+ * @param {Boolean} usingLocal 当merge时出现数据冲突，以local为主还是remote数据为主,默认为本地.action为Function时，该选项不无效
+ */
 baidu.data.DataStore = (function(){
    
     var actionType = {
@@ -32,13 +39,13 @@ baidu.data.DataStore = (function(){
      * 数据仓库类
      * @class
      * @public
-     * @param {String|baidu.data.DataModel} dataModel DataModel实例
-     * @param {String|baidu.data.dataSource.DataSource} dataSource DataSource实例
-     * @param {String|Function} action {'append','replace','merge',Function} 当完成load时，向DataModel中填写数据时使用的策略,默认为append
+     * @param {baidu.data.DataModel} dataModel DataModel实例
+     * @param {baidu.data.dataSource.DataSource} dataSource DataSource实例
+     * @param {String|Function} action {'APPEND','REPLACE','MERGE',Function} 当完成load时，向DataModel中填写数据时使用的策略,默认为append
      * @param {Array[String]} mergeFields 当action 为merge时，合并数据时使用的依据变量
      * @param {Boolean} usingLocal 当merge时出现数据冲突，以local为主还是remote数据为主,默认为本地.action为Function时，该选项不无效
      */
-    return baidu.lang.creatClass(function(options){
+    return baidu.lang.createClass(function(options){
         var me = this;
             dataModel = options.dataModel,
             dataSource = options.dataSource,
@@ -56,7 +63,7 @@ baidu.data.DataStore = (function(){
             if(baidu.lang.isFunction(action))
                 me._action = action;
             else{
-                me._action == actionType[action] ? actionType[action] : 'APPEND';
+                me._action = actionType[action] ? actionType[action] : 'APPEND';
             }
         }
 
@@ -172,32 +179,25 @@ baidu.data.DataStore = (function(){
             var me = this,
                 dataSource = me._dataSource,
                 dataModel = me._dataModel,
-                snyc = typeof snyc != 'undefined' ? snyc : me._snyc;
+                snyc = typeof snyc != 'undefined' ? snyc : me._snyc,
                 success = options.onsuccess || baidu.fn.blank(),
                 failture = options.onfailture || baidu.fn.blank(),
                 tmpData = [];
         
             if(!dataSource) return;
 
-            function createParser(data){
-                return type ? baidu.parser.create(type) : data;
-            };
-
             if(snyc){
                 options.onsuccess = function(data){
                     switch (me._action){
                         case 'APPEND':
-                            tmpData = success.call(me, createParser(data));
-                            dataModel.add(tmpData);
+                            success.call(me, dataModel.add(data));
                             break;
                         case 'REPLACE':
                             dataModel.clear();
-                            tmpData = success.call(me, createParser(data));
-                            dataModel.add(tmpData);
+                            success.call(me, dataModel.add(tmpData));
                             break;
                         case 'MERGE':
-                            tmpData = success.call(me, createParser(data));
-                            baidu.each(tmpData, function(item){
+                            baidu.each(data, function(item){
                                 dataModel.update(item, function(dataLine){
                                     var result = true;
                                     baidu.each(me._mergeFields, function(name){
@@ -208,10 +208,10 @@ baidu.data.DataStore = (function(){
                                     return result;
                                 });
                             });
+                            success.call(me, data);
                             break;
                         default: 
-                            tmpData = success.call(me, createParser(data));
-                            me._action.call(me, tmpData);
+                            success.call(me, me._action.call(me, data));
                     }     
                 };
 
