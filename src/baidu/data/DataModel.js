@@ -70,37 +70,37 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
     var dataModel = function(options){
        
         var me = this,
-            options = options || {},
+            options = options || {};
             
             /**
              * 存储Field实例的名值对
              * @private
              * @attribute
              */
-            me._fields = {},
+            me._fields = {};
             
             /**
              * 数据值
              * @private
              * @attribute
              */
-            me._data = {},
+            me._data = {};
 
             /**
              * 最后一次操作时所涉及的数据
              * @private
              * @attribute
              */
-            me._lastChangeObject = {},
+            me._lastChangeObject = {};
 
-            me._lastChangeArray = [],
+            me._lastChangeArray = [];
 
             /**
              * 最后一次操作时所涉及的数据在修改之前的值
              * @private
              * @attribute
              */
-            me._lastData:{};
+            me._lastData = {};
 
         _createField(options.fields || {}, me);
     };
