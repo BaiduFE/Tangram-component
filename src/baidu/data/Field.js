@@ -30,7 +30,7 @@ baidu.data.Field = baidu.data.Field || (function(){
             validation = options.validation || [];
        
         me.defaultValue = define.defaultValue || me.defaultValue;
-        me.validation = validation || me.validation;
+        me.validation = validation || [];
         
         me.data = options.data || {};
         me.name = options.name || '';
@@ -44,8 +44,6 @@ baidu.data.Field = baidu.data.Field || (function(){
          */
 
         defaultValue: '',
-        validation: [],
-        data: {},
         name: '',
         
 
