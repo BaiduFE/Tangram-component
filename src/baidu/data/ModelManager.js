@@ -26,15 +26,6 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
         };
 
     /**
-     * 返回model实例
-     * @param {baidu.data.DataModel|Numbere} DataModel实例或者DataModel的index
-     * @return {baidu.data.DataModel|undefined}
-     */
-    function _getModel(model){
-        return model instanceof Number ? _DMInstanceByIndex[model] : model;
-    };
-
-    /**
      * 返回该类型的default值
      * @private
      * @param {String} type
@@ -78,7 +69,7 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
             baidu.each(fields, function(field){
                 fieldName = field['name'];
                 fieldType = field['type'] || 'string';
-                defaultValue = field.defaultValue || _getDefualtValue(fieldType);
+                defaultValue = typeof field.defaultValue != 'undefined' ? field.defaultValue : _getDefualtValue(fieldType);
                 
                 result[fieldName] = {
                     'define': {
@@ -102,6 +93,8 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
          * 创建DataModel实例
          * @public
          * @param {String} type DataModel类型唯一标识
+         * @param {Object} options 创建DataModel使用的参数
+         * @see baidu.data.DataModel
          * @return {Array} [index,DataModel]
          */
         createDM: function(type, options){

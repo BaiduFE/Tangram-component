@@ -65,7 +65,6 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
      * @public
      * @param {Object} options 设置项
      * @config {Object} options.fields 通过ModalManager.defineDM定义的数据结构
-     * @config {Array} options.data 传入的数据，可选
      */
     var dataModel = function(options){
        
