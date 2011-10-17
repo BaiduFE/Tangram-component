@@ -180,8 +180,8 @@ baidu.data.DataStore = (function(){
                 dataSource = me._dataSource,
                 dataModel = me._dataModel,
                 snyc = typeof snyc != 'undefined' ? snyc : me._snyc,
-                success = options.onsuccess || baidu.fn.blank(),
-                failture = options.onfailture || baidu.fn.blank(),
+                success = options.onsuccess || baidu.fn.blank,
+                failture = options.onfailture || baidu.fn.blank,
                 tmpData = [];
         
             if(!dataSource) return;
@@ -272,7 +272,8 @@ baidu.data.DataStore = (function(){
          */
         select: function(where, condition){
             var where = where || '*',
-                condition = condition || baidu.fn.blank();
+                condition = (typeof condition == 'undefined' && '*');
+            
             return this._dataModel.select(where, condition);
         },
 
@@ -287,7 +288,7 @@ baidu.data.DataStore = (function(){
         update: function(data, condition){
             var me = this,
                 data = data || {},
-                condition = condition || baidu.fn.blank(),
+                condition = (typeof condition == 'undefined' && '*'),
                 row = me._dataModel.update(data, condition);
 
             me.dispatchEvent('onupdate',{
@@ -309,7 +310,8 @@ baidu.data.DataStore = (function(){
          */
         remove: function(condition){
             var me = this,
-                row = me._dataModel.remove(condition || baidu.fn.blank());
+                condition = (typeof condition == 'undefined' && '*'),
+                row = me._dataModel.remove(condition);
 
             me.dispatchEvent('ondelete', {
                 row: row,

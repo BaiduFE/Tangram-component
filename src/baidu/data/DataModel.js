@@ -11,8 +11,6 @@
 ///import baidu.object.clone;
 ///import baidu.object.isEmpty;
 
-///import baidu.fn.blank;
-
 ///import baidu.lang.isArray;
 ///import baidu.lang.isNumber;
 ///import baidu.lang.isFunction;
@@ -219,6 +217,9 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
             var me = this,
                 result = [];
 
+            if(condition == '*')
+                return baidu.object.keys(me._data);
+
             if(baidu.lang.isNumber(condition)){
                 return [condition];
             }
@@ -233,6 +234,8 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                 });    
                 return result;
             }
+
+            return result;
         },
         
         /**
@@ -290,26 +293,17 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          */
         select: function(where, condition){
             var me = this,
-                where = where || '*',
-                condition = condition || baidu.object.keys(me._data),
-                result = [];
+                result = [],
+                index;
 
             if(me._data.length == 0){
                 return result;
             }
 
-            //整理数组
-            baidu.lang.isNumber(condition) && (condition = [condition]);
-            
-            if(baidu.lang.isArray(condition)){
-                result = me._getDataByIndex(where, condition);
-                return result;
-            }
+            index = me._getConditionId(condition);
+            result = me._getDataByIndex(where, index);
 
-            if(baidu.lang.isFunction(condition)){
-               result = me._getDataByFunction(where, condition);
-               return result;
-            }
+            return result;
         },
         
         
@@ -323,8 +317,6 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
         */
         update: function(data, condition){
             var me = this,
-                condition = condition || baidu.fn.blank(),
-                data = data || {},
                 resultId = [],
                 isFirst = true,
                 lastData,
@@ -356,7 +348,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                     isFirst = false;
                     me._setLastAction(dataAction.UPDATE);
                    
-                    me._lastChange[dataIndex] = me._data[dataIndex];
+                    me._lastChangeObject[dataIndex] = me._data[dataIndex];
                     me._lastChangeArray.push(me._data[dataIndex]);
                     me._lastData[dataIndex] = lastData;
                     
@@ -364,7 +356,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                 }else{
                     
                     me._lastData[dataIndex] = CLONE(me._data[dataIndex]);
-                    me._lastDataObject[dataIndex] = me._data[dataIndex];
+                    me._lastChangeObject[dataIndex] = me._data[dataIndex];
                     me._lastChangeArray.push(me._data[dataIndex]);
                     result++;
 
@@ -385,7 +377,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          */
         remove: function(condition){
             var me = this,
-                resultId = me._getConditionId(condition || baidu.fn.blank()),
+                resultId = me._getConditionId(condition),
                 result = 0,data;
 
             if(resultId.length == 0){
