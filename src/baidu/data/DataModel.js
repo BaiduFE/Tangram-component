@@ -251,22 +251,21 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                     fail: [],
                     success: []
                 }, 
-                tmpResult, tmpNames, tmpData,
-                dataIndex,length;
+                tmpResult, tmpNames,
+                dataIndex,length,isFirst = true;
 
             if(baidu.object.isEmpty(data)) return result; 
 
             if(!baidu.lang.isArray(data)) data = [data];
-            me._setLastAction(dataAction.ADD);
             
             baidu.each(data, function(eachData, index){
 
                 tmpResult = true;
                 tmpNames = [];
                 dataIndex = me._getNewId();
-                
-                OBJECTEACH(eachData, function(item, name){
-                    tmpResult = me._fields[name].set(dataIndex, item);
+            
+                OBJECTEACH(me._fields, function(field, name){
+                    tmpResult = field.set(dataIndex, eachData[name]);
                     tmpResult ? tmpNames.push(name) : result.fail.push(index); 
                     return tmpResult;
                 });
@@ -274,8 +273,13 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                 if(!tmpResult){
                     delete(me._data[dataIndex]);
                 }else{
+                    
+                    isFirst && me._setLastAction(dataAction.ADD);
+                    isFirst = false;
+
                     me._lastChangeObject[dataIndex] = me._data[dataIndex];
                     me._lastChangeArray.push(me._data[dataIndex]);
+                    me._lastData[dataIndex] = me._data[dataIndex];
                     result.success.push(dataIndex);
                 }
             });
@@ -318,11 +322,11 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
         update: function(data, condition){
             var me = this,
                 resultId = [],
-                isFirst = true,
                 lastData,
                 tmpResult,
-                tmpData,
-                result = 0;
+                tmpNames = [],
+                result = 0,
+                dataIndex;
            
             if(baidu.object.isEmpty(data)){
                 return result;
@@ -330,40 +334,40 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
 
             data = CLONE(data);
             resultId = me._getConditionId(condition);
-            ARRAYEACH(resultId, function(dataIndex){
-                if(isFirst){
-                    lastData = CLONE(me._data[dataIndex]);
-                
-                    OBJECTEACH(data, function(item, name){
-                        tmpResult = me._fields[name].set(dataIndex, item);
-                        tmpResult && tmpNames.push(name);
-                        return tmpResult;
-                    });
-                    if(!tmpResult){
-                        me._data[dataIndex] = lastData;
-                        result = false;
-                        return false;
-                    }
-                    
-                    isFirst = false;
-                    me._setLastAction(dataAction.UPDATE);
-                   
-                    me._lastChangeObject[dataIndex] = me._data[dataIndex];
-                    me._lastChangeArray.push(me._data[dataIndex]);
-                    me._lastData[dataIndex] = lastData;
-                    
-                    result++;
-                }else{
-                    
-                    me._lastData[dataIndex] = CLONE(me._data[dataIndex]);
-                    me._lastChangeObject[dataIndex] = me._data[dataIndex];
-                    me._lastChangeArray.push(me._data[dataIndex]);
-                    result++;
+            
+            //第一次更新时做数据验证
+            if(resultId.length > 0){
+               dataIndex = resultId.shift();
+               lastData = CLONE(me._data[dataIndex]);
+               
+               OBJECTEACH(data, function(item, name){
+                   tmpResult = me._fields[name].set(dataIndex, item);
+                   tmpResult && tmpNames.push(name);
+                   return tmpResult;
+               });
+               if(!tmpResult){
+                   me._data[dataIndex] = lastData;
+                   return result;
+               }
 
-                    OBJECTEACH(data, function(item, name){
-                        me._data[dataIndex][name] = item;
-                    });
-                }
+               me._setLastAction(dataAction.UPDATE);
+
+               me._lastChangeObject[dataIndex] = me._data[dataIndex];
+               me._lastChangeArray.push(me._data[dataIndex]);
+               me._lastData[dataIndex] = lastData;
+
+               result++;
+            }
+            
+            ARRAYEACH(resultId, function(dataIndex){
+                me._lastData[dataIndex] = CLONE(me._data[dataIndex]);
+                me._lastChangeObject[dataIndex] = me._data[dataIndex];
+                me._lastChangeArray.push(me._data[dataIndex]);
+                result++;
+
+                OBJECTEACH(data, function(item, name){
+                    me._data[dataIndex][name] = item;
+                });
             });
 
             return result;
@@ -461,7 +465,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          * @return {Object}
          */
         getLastChange: function(){
-            return CLONE(me._lastChangeObject); 
+            return CLONE(this._lastChangeObject); 
         }
     };
 

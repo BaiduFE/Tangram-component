@@ -32,8 +32,8 @@ baidu.data.Field = baidu.data.Field || (function(){
         me.defaultValue = define.defaultValue || me.defaultValue;
         me.validation = validation || [];
         
-        me.data = options.data || {};
-        me.name = options.name || '';
+        me._data = options.data || {};
+        me._name = options.name || '';
 
     };
 
@@ -44,7 +44,7 @@ baidu.data.Field = baidu.data.Field || (function(){
          */
 
         defaultValue: '',
-        name: '',
+        _name: '',
         
 
         /**
@@ -83,8 +83,8 @@ baidu.data.Field = baidu.data.Field || (function(){
         _set: function(index, data){
             var me = this;
 
-            me.data[index] = me.data[index] || {};
-            me.data[index][me.name] = data;
+            me._data[index] = me._data[index] || {};
+            me._data[index][me._name] = data;
         }
     };
 

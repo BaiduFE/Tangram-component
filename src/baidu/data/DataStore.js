@@ -50,11 +50,11 @@ baidu.data.DataStore = (function(){
             dataModel = options.dataModel,
             dataSource = options.dataSource,
             action = options.action,
-            snyc = options.snyc;
+            sync = options.sync;
 
         dataModel && (me._dataModel = dataModel);
         dataSource && (me._dataSource = dataSource);
-        typeof snyc != 'undefined' && (me._snyc = snyc);
+        typeof sync != 'undefined' && (me._sync = sync);
        
         if(!action){
             me._action = 'APPEND';
@@ -108,7 +108,7 @@ baidu.data.DataStore = (function(){
          * @private
          * @property
          */
-        _snyc: false,
+        _sync: false,
 
         /**
          * 设DataModel实例
@@ -116,9 +116,9 @@ baidu.data.DataStore = (function(){
          * @param {DataModel} dataModel
          * @return {Boolean}
          */
-        setDataModel:function(DataModel){
+        setDataModel:function(dataModel){
             
-            if(DataModel instanceof baidu.data.DataModel){
+            if(dataModel instanceof baidu.data.DataModel){
                 this._dataModel = dataModel;
                 return true;
             }
@@ -150,7 +150,7 @@ baidu.data.DataStore = (function(){
          * @return {Boolean}
          */
         setDataSource: function(dataSource){
-            if(dataSource instanceof baidu.data.DataSource.DataSource){
+            if(dataSource instanceof baidu.data.DataSource.dataSource){
                 this._dataSource = dataSource;
                 return true;
             }
@@ -160,10 +160,10 @@ baidu.data.DataStore = (function(){
         /**
          * 设置是DataSource数据保持同步
          * @pubic
-         * @param {Boolean} snyc 是否同步
+         * @param {Boolean} sync 是否同步
          */
-        setSnyc: function(snyc){
-            this._snyc = snyc;  
+        setSnyc: function(sync){
+            this._sync = sync;  
         },
 
         //TODO: 如何处理数据冲突
@@ -171,22 +171,22 @@ baidu.data.DataStore = (function(){
          * DataSource从其数据源拉取数据
          * @param {Object} options
          * @See baidu.data.dataSource
-         * @param {Boolean} snyc
+         * @param {Boolean} sync
          * @param {baidu.parser.type} 请求的数据类型，如不提供此参数，则不会向自定义函数传入经过parser包装对象，传入原始数据
          */
-        load: function(options, snyc, type){
+        load: function(options, sync, type){
 
             var me = this,
                 dataSource = me._dataSource,
                 dataModel = me._dataModel,
-                snyc = typeof snyc != 'undefined' ? snyc : me._snyc,
+                sync = typeof sync != 'undefined' ? sync : me._sync,
                 success = options.onsuccess || baidu.fn.blank,
                 failture = options.onfailture || baidu.fn.blank,
                 tmpData = [];
         
             if(!dataSource) return;
 
-            if(snyc){
+            if(sync){
                 options.onsuccess = function(data){
                     switch (me._action){
                         case 'APPEND':
@@ -288,7 +288,7 @@ baidu.data.DataStore = (function(){
         update: function(data, condition){
             var me = this,
                 data = data || {},
-                condition = (typeof condition == 'undefined' && '*'),
+                condition = (typeof condition != 'undefined' ? condition : '*'),
                 row = me._dataModel.update(data, condition);
 
             me.dispatchEvent('onupdate',{
@@ -310,7 +310,7 @@ baidu.data.DataStore = (function(){
          */
         remove: function(condition){
             var me = this,
-                condition = (typeof condition == 'undefined' && '*'),
+                condition = (typeof condition != 'undefined' ? condition : '*'),
                 row = me._dataModel.remove(condition);
 
             me.dispatchEvent('ondelete', {

@@ -15,7 +15,8 @@
         fields:[{
             name: 'category'
         },{
-            name: 'cover'
+            name: 'cover',
+            defaultValue: 'no cover'
         },{
             name: 'lang',
             defaultValue: 'en'
@@ -55,17 +56,17 @@
             data = parser.query('//book');
             var category = parser.query('//book/@category');
             var title = parser.query('//book/title');
-            var year = parser.query('//book/year');
+            //var year = parser.query('//book/year');
             var price = parser.query('//book/price');
 
             baidu.each(data, function(book, index){
                 item = {};
 
                 item.category = category[index].nodeValue;
-                item.cover = book.getAttribute('cover') || '';
+                book.getAttribute('cover') && (item.cover = book.getAttribute('cover'));
                 item.lang = title[index].getAttribute('lang');
                 item.title = title[index].textContent;
-                item.year = parseInt(year[index].textContent);
+              //  item.year = parseInt(year[index].textContent);
                 item.price = parseInt(price[index].textContent);
 
                 var authors = parser.query('//book[' + (index + 1) + ']/author');
@@ -96,6 +97,8 @@
         onsuccess: function(data){
             console.log(data);
 
+            console.log('update row:', this.update({title: '哈哈哈', lang:'cn'}, [0,2]));
+            
             console.log('data', this.select('*'));
         },
         onfailture: function(data){
