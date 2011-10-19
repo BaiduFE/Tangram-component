@@ -3,14 +3,14 @@
  * Copyright 2011 Baidu Inc. All rights reserved.
  */
 
-///import baidu.lang.isArray
-///import baidu.lang.isBoolean
-///import baidu.lang.isDate
-///import baidu.lang.isFunction
-///import baidu.lang.isNumber
-///import baidu.lang.isObject
-///import baidu.lang.isString
-///import baidu.array.each
+///import baidu.lang.isArray;
+///import baidu.lang.isBoolean;
+///import baidu.lang.isDate;
+///import baidu.lang.isFunction;
+///import baidu.lang.isNumber;
+///import baidu.lang.isObject;
+///import baidu.lang.isString;
+///import baidu.array.each;
 
 baidu.data.Validator.validatorRules = (function(){
     var rules = {

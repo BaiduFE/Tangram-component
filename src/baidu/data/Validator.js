@@ -3,29 +3,33 @@
  * Copyright 2011 Baidu Inc. All rights reserved.
  */
 
-///import baidu.data
-///import baidu.data.validatorRules
+///import baidu.ajax.request;
 
-///import baidu.lang.createClass
-///import baidu.lang.isBoolean
+///import baidu.array.each;
+///import baidu.array.contains;
 
-///import baidu.array.each
-///import baidu.array.contains
-///import baidu.string.trim
-///import baidu.object.each
-///import baidu.object.clone
-///import baidu.ajax.request
-///import baidu.fn.blank
+///import baidu.data;
+///import baidu.data.validatorRules;
+///import baidu.data.validatorResultTypes;
+
+///import baidu.fn.blank;
+
+///import baidu.lang.createClass;
+///import baidu.lang.isBoolean;
+
+///import baidu.object.each;
+///import baidu.object.clone;
+
+///import baidu.string.trim;
 
 
 /**
  * 数据验证组件
  * @name baidu.data.Validator
  * @class
- * @grammar new baidu.data.Validator(validations, onValidate)
- * @param {Object} options 对validator的配置。一个典型的配置包括每个待验证项对应的验证规则（可能是一个，也可能是一组）、所有验证项验证完成后的回调函数
+ * @grammar new baidu.data.Validator(validations)
+ * @param {Object} validations 每个验证规则的具体配置
  *  {
- *      validations:{
  *          val1: [
  *                    {rule: "length", conf: {len:20}},
  *                    {rule:"email" }
@@ -33,22 +37,11 @@
  *          val2: [
  *                    {rule: "remote", conf: {url:'#', onsuccess: function(){}, onfailure: function(){}}}
  *                ]
- *      },
- *      onValidate: function(result){}
  *  }
- * @config {Object} validations 每个待验证项对应的验证规则
- * @config {Function} onValidate 所有验证项验证完成后的回调函数
  */
-baidu.data.Validator = baidu.lang.createClass(function(options){
+baidu.data.Validator = baidu.lang.createClass(function(validations){
     var me = this;
-    me._validations = options.validations || {};
-    me.onvalidate = options.onValidate || baidu.fn.blank();
-    me._result = {
-        'result': true,
-        'detail': []
-    };
-    me._validatedIndexs = {};//用来保存已验证过的数据的索引值
-    me._unValidateAmount = 0;//用来保存尚未验证的数据个数
+    me._validations = validations || {};
     me._rules = {};//用来保存用户自定义的验证函数
 }).extend(
 /**
@@ -63,9 +56,9 @@ baidu.data.Validator = baidu.lang.createClass(function(options){
      *      ["chengyang", "isNick"], 
      *      ["chengyang", "isName"]
      *  ]
-     * @return {Object} 验证结果，例如：
+     * @return {Object} 验证反馈（包括该组数据的验证结果和验证失败的具体情况），例如：
      *  {
-     *     result: false;
+     *     result: resultType;
      *     detail: [{
      *          index: 0;
      *          type: "numberRange"
@@ -76,67 +69,87 @@ baidu.data.Validator = baidu.lang.createClass(function(options){
      *  }
      */
     validate: function(values){
-        var me = this, value, validation, result;
+        var me = this, value, validation, 
+            feedback = {
+                'result': [],
+                'detail': []
+            },
+            itemResult,
+            resultType = baidu.data.Validator.validatorResultTypes;
         
-        if(values.length <= 0)
+        if(values.length <= 0){
             return;
-        me._unValidateAmount = values.length;
-        
-        console.log('me._unValidateAmount:' + me._unValidateAmount);
-        
+        }
+       
+       //逐个验证
         baidu.array.each(values, function(item, index){
             value = item[0];
             validation = item[1];
-            result = me._validations[validation] ? me._singleValidate(value, me._validations[validation], index) : {'result': false};
-            me.dispatchEvent('onvalidatefield', {
-                'value': value, 
-                'result': result, 
-                'index': index
-            });
-
-            if(!result['result']){
-                me._result['result'] = false;
-                me._result['detail'].push({
+            itemResult = me._validations[validation] ? me._singleValidate(value, me._validations[validation]) : {'result': false};
+            if(itemResult['result'] != true){
+                feedback['detail'].push({
                     'index': index,
-                    'rule': result.rule || validation
+                    'rule': itemResult.rule || validation
                 });
             }
-            if(baidu.lang.isBoolean(result.result)){
-                me._validated(index);
-            }
+            feedback['result'].push(itemResult['result']);
         });
         
-        return me._result;
+        feedback['result'] = me._wrapResult(feedback['result']);
+        
+        return feedback;
     },
     
     /**
-     * 对单个数据项进行验证
+     * 将数组形式的验证结果包装成validatorResultTypes中的枚举类型
+     * @param {Object} result 验证结果
+     */
+    _wrapResult: function(result){
+        var me = this,
+            resultTypes = baidu.data.Validator.validatorResultTypes;
+        if(baidu.array.contains(result, false)){
+            result = resultTypes['FAILURE'];
+        }else if(!baidu.array.contains(result, false) && baidu.array.contains(result, 'loading')){
+            result = resultTypes['SUCCESSWITHOUTREMOTE'];
+        }else{
+            result = resultTypes['SUCCESS'];
+        }
+        return result;
+    },
+    
+    /**
+     * 对单个数据项进行验证（内部使用）
      * @param {String | Number} value 待验证项的值
      * @param {Array} validation 验证规则名称
-     * @param {Number} index 待验证数据项的索引值
      * @return {Boolean} 验证结果
      */
-    _singleValidate: function(value, validation, index){
-        var me = this, ruleType, rule, result = {'result': true};
+    _singleValidate: function(value, validation){
+        var me = this, ruleType, rule, itemResult = {'result': true}, remoteConf;//TODO 如果一个值同时使用多个remote方式验证，会出错
         
         baidu.each(validation, function(val){
             ruleType = val.rule;
             if(ruleType == 'remote'){
-                me._remote(value, val.conf, index);
-                result.result = 'loading';
-                result.rule = 'remote';
+                remoteConf = val.conf;
             }else{
                 rule = me._getRule(ruleType);
                 if(!rule(value, val.conf)){
-                    result.result = false;
-                    result.rule = ruleType;
-                    
-                    return result;//只要有一个验证函数的验证结果为false，就直接返回，不继续验证
+                    itemResult['result'] = false;
+                    itemResult['rule'] = ruleType;
                 }
             }
         });
         
-        return result;
+        //如果除remote以外的验证都返回true，则调用remote验证；如果有一项为false，则无须进行remote验证
+        if(!itemResult['result']){
+            return itemResult;
+        }
+        
+        if(remoteConf){
+            me._remote(value, remoteConf);
+            itemResult['result'] = 'loading';
+            itemResult['rule'] = 'remote';
+        }
+        return itemResult;
     },
 
     /**
@@ -177,9 +190,8 @@ baidu.data.Validator = baidu.lang.createClass(function(options){
      * 调用远程接口对数据项进行验证
      * @param {String | Number} value 待验证项的值
      * @param {Object} option 参数
-     * @param {Number} index 待验证项的索引值
      */
-    _remote: function(value, option, index){
+    _remote: function(value, option){
         var url = option.url,
             key = option.key,//需要在配置项中指定待验证项对应的key
             option = baidu.object.clone(option),
@@ -194,43 +206,19 @@ baidu.data.Validator = baidu.lang.createClass(function(options){
         
         if(option.callback){//如果只提供了callback方法，则将其作为onsuccess和onfailure的回调方法
             option['onsuccess'] = option['onfailure'] = function(xhr, responseText){
-                var result = option.callback(xhr, resopnseText);//callback方法中需要返回验证的结果（true或者false）
-                me._result['result'] = me._result['result'] && result;
-                    if(!result){
-                        me._result['detail'].push({
-                            'index': index,
-                            'rule': 'remote'
-                        });
-                    }
-                me._validated(index);
+                option.callback(xhr, resopnseText);//callback方法中需要返回验证的结果（true或者false）
             };
         }else{
             if(option.onsuccess){
                 var successCache = option.onsuccess;
                 option['onsuccess'] = function(xhr, responseText){
-                    var result = successCache(xhr, responseText);//onsuccess方法中需要返回验证的结果（true或者false）
-                    me._result['result'] = me._result['result'] && result;
-                    if(!result){
-                        me._result['detail'].push({
-                            'index': index,
-                            'rule': 'remote'
-                        });
-                    }
-                    me._validated(index);
+                    successCache(xhr, responseText);//onsuccess方法中需要返回验证的结果（true或者false）
                 };
             }
             if(option.onfailure){
                 var failureCache = option.onfailure;
                 option['onfailure'] = function(xhr){
-                    var result = failureCache(xhr);//onfailure方法中需要返回验证的结果（true或者false）
-                    me._result['result'] = me._result['result'] && result;
-                    if(!result){
-                        me._result['detail'].push({
-                            'index': index,
-                            'rule': 'remote'
-                        });
-                    }
-                    me._validated(index);
+                    failureCache(xhr);//onfailure方法中需要返回验证的结果（true或者false）
                 };
             }
         }
@@ -252,31 +240,6 @@ baidu.data.Validator = baidu.lang.createClass(function(options){
         });
     },
     
-    /**
-     * 计算未完成验证的数据项个数。每完成一个数据的验证，将计数减一，并在所有数据都验证完成时触发自定义事件onvalidate
-     * @param {String} index 已完成验证的数据项的索引
-     */
-    _validated: function(index){
-        var me = this;
-        
-        if(!me._validatedIndexs[index]){
-            --me._unValidateAmount;
-            me._validatedIndexs[index] = true;
-        }
-        console.log('current amount:' + me._unValidateAmount);
-        if(me._unValidateAmount == 0){
-            console.log("over");
-            me._validatedIndexs = {};
-            me.dispatchEvent('onvalidate', {
-                'result': me._result
-            });//会同时执行me.onvalidate
-            me._result = {
-                'result': true,
-                'detail': []
-            };//将me._result还原
-        }
-    },
-  
     /**
      * 根据规则名取得对应的规则函数
      * @param {String} name 规则名
