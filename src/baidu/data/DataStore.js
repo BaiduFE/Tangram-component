@@ -3,14 +3,24 @@
  * Copyright 2010 Baidu Inc. All rights reserved.
  */
 
-///import baidu.fn.blank;
-
 ///import baidu.data;
 ///import baidu.data.DataModel;
-///import baidu.data.DataSource.DataSource;
+///import baidu.data.dataSource.DataSource;
 
+///import baidu.fn.blank;
 ///import baidu.lang.isFunction;
+///import baidu.parser.create;
 
+/**
+ * 数据仓库类
+ * @class
+ * @public
+ * @param {String|baidu.data.DataModel} dataModel DataModel实例
+ * @param {String|baidu.data.dataSource.DataSource} dataSource DataSource实例
+ * @param {String|Function} action {'append','replace','merge',Function} 当完成load时，向DataModel中填写数据时使用的策略,默认为append
+ * @param {Array[String]} mergeFields 当action 为merge时，合并数据时使用的依据变量
+ * @param {Boolean} usingLocal 当merge时出现数据冲突，以local为主还是remote数据为主,默认为本地.action为Function时，该选项不无效
+ */
 baidu.data.DataStore = (function(){
    
     var actionType = {
@@ -29,22 +39,22 @@ baidu.data.DataStore = (function(){
      * 数据仓库类
      * @class
      * @public
-     * @param {String|baidu.data.DataModel} dataModel DataModel实例
-     * @param {String|baidu.data.dataSource.DataSource} dataSource DataSource实例
-     * @param {String|Function} action {'append','replace','merge',Function} 当完成load时，向DataModel中填写数据时使用的策略,默认为append
+     * @param {baidu.data.DataModel} dataModel DataModel实例
+     * @param {baidu.data.dataSource.DataSource} dataSource DataSource实例
+     * @param {String|Function} action {'APPEND','REPLACE','MERGE',Function} 当完成load时，向DataModel中填写数据时使用的策略,默认为append
      * @param {Array[String]} mergeFields 当action 为merge时，合并数据时使用的依据变量
      * @param {Boolean} usingLocal 当merge时出现数据冲突，以local为主还是remote数据为主,默认为本地.action为Function时，该选项不无效
      */
-    return baidu.lang.creatClass(function(options){
+    return baidu.lang.createClass(function(options){
         var me = this;
             dataModel = options.dataModel,
-            dataStore = options.dataStore,
+            dataSource = options.dataSource,
             action = options.action,
-           `snyc = options.snyc;
+            sync = options.sync;
 
         dataModel && (me._dataModel = dataModel);
         dataSource && (me._dataSource = dataSource);
-        typeof snyc != 'undefined' && (me._snyc = snyc);
+        typeof sync != 'undefined' && (me._sync = sync);
        
         if(!action){
             me._action = 'APPEND';
@@ -52,7 +62,9 @@ baidu.data.DataStore = (function(){
             
             if(baidu.lang.isFunction(action))
                 me._action = action;
-            else me._action = actionType[action] ? actionType[action] : 'APPEND';
+            else{
+                me._action = actionType[action] ? actionType[action] : 'APPEND';
+            }
         }
 
         me._mergeFields = options.mergeFields || [];
@@ -96,7 +108,7 @@ baidu.data.DataStore = (function(){
          * @private
          * @property
          */
-        _snyc: false,
+        _sync: false,
 
         /**
          * 设DataModel实例
@@ -104,9 +116,9 @@ baidu.data.DataStore = (function(){
          * @param {DataModel} dataModel
          * @return {Boolean}
          */
-        setDataModel:function(DataModel){
+        setDataModel:function(dataModel){
             
-            if(DataModel instanceof baidu.data.DataModel){
+            if(dataModel instanceof baidu.data.DataModel){
                 this._dataModel = dataModel;
                 return true;
             }
@@ -138,15 +150,20 @@ baidu.data.DataStore = (function(){
          * @return {Boolean}
          */
         setDataSource: function(dataSource){
-            if(dataSource instanceof baidu.data.DataSource.DataSource){
+            if(dataSource instanceof baidu.data.DataSource.dataSource){
                 this._dataSource = dataSource;
                 return true;
             }
             return false;              
         },
 
-        setSnyc: function(snyc){
-            typeof snyc != 'undefined' && (this._snyc = snyc);  
+        /**
+         * 设置是DataSource数据保持同步
+         * @pubic
+         * @param {Boolean} sync 是否同步
+         */
+        setSnyc: function(sync){
+            this._sync = sync;  
         },
 
         //TODO: 如何处理数据冲突
@@ -154,30 +171,30 @@ baidu.data.DataStore = (function(){
          * DataSource从其数据源拉取数据
          * @param {Object} options
          * @See baidu.data.dataSource
-         * @param {Boolean} snyc
+         * @param {Boolean} sync
+         * @param {baidu.parser.type} 请求的数据类型，如不提供此参数，则不会向自定义函数传入经过parser包装对象，传入原始数据
          */
-        load: function(options, snyc){
+        load: function(options, sync, type){
 
             var me = this,
                 dataSource = me._dataSource,
                 dataModel = me._dataModel,
-                snyc = typeof snyc != 'undefined' ? snyc : me._snyc;
-                success = options.onsuccess || baidu.fn.blank(),
-                failture = options.onfailture || baidu.fn.blank();
+                sync = typeof sync != 'undefined' ? sync : me._sync,
+                success = options.onsuccess || baidu.fn.blank,
+                failture = options.onfailture || baidu.fn.blank,
+                tmpData = [];
         
             if(!dataSource) return;
 
-            if(snycDataModel){
+            if(sync){
                 options.onsuccess = function(data){
                     switch (me._action){
-                        case 'APPEND': 
-                            dataModel.add(data);
-                            success(data);       
+                        case 'APPEND':
+                            success.call(me, dataModel.add(data));
                             break;
                         case 'REPLACE':
                             dataModel.clear();
-                            dataModel.add(data);
-                            success(data);
+                            success.call(me, dataModel.add(tmpData));
                             break;
                         case 'MERGE':
                             baidu.each(data, function(item){
@@ -191,16 +208,15 @@ baidu.data.DataStore = (function(){
                                     return result;
                                 });
                             });
-                            success(data);
+                            success.call(me, data);
                             break;
                         default: 
-                            me._action.call(me, data);
-                            success(data);
+                            success.call(me, me._action.call(me, data));
                     }     
                 };
 
                 options.onfailture = function(){
-                    onfailture.apply(arguments);    
+                    failture.apply(me, arguments);    
                 };
             }
 
@@ -212,18 +228,18 @@ baidu.data.DataStore = (function(){
          * DataSource commit数据
          * @public
          * @param {Object} options
-         * @param {String} data 'ALL|LC' 默认值为'LC'
+         * @param {String} dataType 'ALL|LC' 默认值为'LC'
          * @see baidu.data.dataSource.DataSource.commit
          */
-        save: function(options, data){
+        save: function(options, dataType){
             var me = this,
                 dataModel = me._dataModel,
                 dataSource = me._dataSource,
-                data = data || 'LC';
+                dataType= dataType || 'LC';
 
-            dataSource.commit(
+            dataSource.set(
                 options, 
-                data == 'ALL' ? dataModel.select('*') : dataModel.getLastChange()
+                dataType == 'ALL' ? dataModel.select('*') : dataModel.getLastChange()
             );
         },
 
@@ -256,7 +272,8 @@ baidu.data.DataStore = (function(){
          */
         select: function(where, condition){
             var where = where || '*',
-                condition = condition || baidu.fn.blank();
+                condition = (typeof condition == 'undefined' && '*');
+            
             return this._dataModel.select(where, condition);
         },
 
@@ -271,7 +288,7 @@ baidu.data.DataStore = (function(){
         update: function(data, condition){
             var me = this,
                 data = data || {},
-                condition = condition || baidu.fn.blank(),
+                condition = (typeof condition != 'undefined' ? condition : '*'),
                 row = me._dataModel.update(data, condition);
 
             me.dispatchEvent('onupdate',{
@@ -293,7 +310,8 @@ baidu.data.DataStore = (function(){
          */
         remove: function(condition){
             var me = this,
-                row = me._dataModel.remove(condition || baidu.fn.blank());
+                condition = (typeof condition != 'undefined' ? condition : '*'),
+                row = me._dataModel.remove(condition);
 
             me.dispatchEvent('ondelete', {
                 row: row,

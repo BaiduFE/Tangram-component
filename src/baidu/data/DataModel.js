@@ -11,8 +11,6 @@
 ///import baidu.object.clone;
 ///import baidu.object.isEmpty;
 
-///import baidu.fn.blank;
-
 ///import baidu.lang.isArray;
 ///import baidu.lang.isNumber;
 ///import baidu.lang.isFunction;
@@ -21,13 +19,21 @@
 ///import baidu.data;
 ///import baidu.data.Field;
 
+/**
+ * DataModel实体类
+ * @class
+ * @public
+ * @param {Object} options 设置项
+ * @config {Object} options.fields 通过ModalManager.defineDM定义的数据结构
+ * @config {Array} options.data 传入的数据，可选
+ */
 baidu.data.DataModel = baidu.data.DataModel || (function(){
 
     var CLONE = baidu.object.clone,
         ARRAYEACH = baidu.array.each,
         OBJECTEACH = baidu.object.each;
 
-    var dateAction = {
+    var dataAction = {
         'ADD':'ADD',
         'REMOVE': 'REMOVE',
         'UPDATE': 'UPDATE',
@@ -57,20 +63,49 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
      * @public
      * @param {Object} options 设置项
      * @config {Object} options.fields 通过ModalManager.defineDM定义的数据结构
-     * @config {Array} options.data 传入的数据，可选
      */
     var dataModel = function(options){
        
         var me = this,
             options = options || {};
+            
+            /**
+             * 存储Field实例的名值对
+             * @private
+             * @attribute
+             */
+            me._fields = {};
+            
+            /**
+             * 数据值
+             * @private
+             * @attribute
+             */
+            me._data = {};
 
-        createField(options.fields || {}, me);
+            /**
+             * 最后一次操作时所涉及的数据
+             * @private
+             * @attribute
+             */
+            me._lastChangeObject = {};
+
+            me._lastChangeArray = [];
+
+            /**
+             * 最后一次操作时所涉及的数据在修改之前的值
+             * @private
+             * @attribute
+             */
+            me._lastData = {};
+
+        _createField(options.fields || {}, me);
     };
         
     /**
      *  @lends baidu.data.DataModel.prototype
      */
-    dataModel,prototype = {
+    dataModel.prototype = {
       
         /**
          * 数据存储索引
@@ -78,36 +113,6 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          * @attribute
          */
         _index: 0,
-
-        /**
-         * 存储Field实例的名值对
-         * @private
-         * @attribute
-         */
-        _fields: {},
-
-        /**
-         * 数据值
-         * @private
-         * @attribute
-         */
-        _data: {},
-
-        /**
-         * 最后一次操作时所涉及的数据
-         * @private
-         * @attribute
-         */
-        _lastChangeObject: {},
-
-        _lastChangeArray: [],
-
-        /**
-         * 最后一次操作时所涉及的数据在修改之前的值
-         * @private
-         * @attribute
-         * */
-        _lastData:{},
 
         /**
          * 最后一次操作名称
@@ -149,7 +154,8 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          * @return {Object}
          */
         _getDataByIndex: function(where, indexArr){
-            var result = {};
+            var result = {},
+                me = this;
 
             ARRAYEACH(indexArr, function(index){
                 result[index] = me._getDataByName(where, me._data[index]);
@@ -211,6 +217,9 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
             var me = this,
                 result = [];
 
+            if(condition == '*')
+                return baidu.object.keys(me._data);
+
             if(baidu.lang.isNumber(condition)){
                 return [condition];
             }
@@ -225,6 +234,8 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                 });    
                 return result;
             }
+
+            return result;
         },
         
         /**
@@ -237,25 +248,24 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
             var me = this,
                 data = data || {},
                 result = {
-                    fail: []
+                    fail: [],
                     success: []
                 }, 
-                tmpResult, tmpNames, tmpData,
-                dataIndex,length;
+                tmpResult, tmpNames,
+                dataIndex,length,isFirst = true;
 
             if(baidu.object.isEmpty(data)) return result; 
 
             if(!baidu.lang.isArray(data)) data = [data];
-            me._setLastAction(dataAction.ADD);
             
             baidu.each(data, function(eachData, index){
 
                 tmpResult = true;
                 tmpNames = [];
                 dataIndex = me._getNewId();
-                
-                OBJECTEACH(eachData, function(item, name){
-                    tmpResult = me._fields[name].set(dataIndex, item);
+            
+                OBJECTEACH(me._fields, function(field, name){
+                    tmpResult = field.set(dataIndex, eachData[name]);
                     tmpResult ? tmpNames.push(name) : result.fail.push(index); 
                     return tmpResult;
                 });
@@ -263,8 +273,13 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                 if(!tmpResult){
                     delete(me._data[dataIndex]);
                 }else{
+                    
+                    isFirst && me._setLastAction(dataAction.ADD);
+                    isFirst = false;
+
                     me._lastChangeObject[dataIndex] = me._data[dataIndex];
                     me._lastChangeArray.push(me._data[dataIndex]);
+                    me._lastData[dataIndex] = me._data[dataIndex];
                     result.success.push(dataIndex);
                 }
             });
@@ -282,26 +297,17 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          */
         select: function(where, condition){
             var me = this,
-                where = where || '*',
-                condition = condition || baidu.fn.blank(),
-                result = [];
+                result = [],
+                index;
 
             if(me._data.length == 0){
                 return result;
             }
 
-            //整理数组
-            baidu.lang.isNumber(condition) && (condition = [condition]);
-            
-            if(baidu.lang.isArray(condition)){
-                result = me._getDataByIndex(where, condition);
-                return result;
-            }
+            index = me._getConditionId(condition);
+            result = me._getDataByIndex(where, index);
 
-            if(baidu.lang.isFunction(condition)){
-               result = me._getDataByFunction(where, condition);
-               return result;
-            }
+            return result;
         },
         
         
@@ -315,14 +321,12 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
         */
         update: function(data, condition){
             var me = this,
-                condition = condition || baidu.fn.blank(),
-                data = data || {},
                 resultId = [],
-                isFirst = true,
                 lastData,
                 tmpResult,
-                tmpData,
-                result = 0;
+                tmpNames = [],
+                result = 0,
+                dataIndex;
            
             if(baidu.object.isEmpty(data)){
                 return result;
@@ -330,40 +334,40 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
 
             data = CLONE(data);
             resultId = me._getConditionId(condition);
-            ARRAYEACH(resultId, function(dataIndex){
-                if(isFirst){
-                    lastData = CLONE(me._data[dataIndex]);
-                
-                    OBJECTEACH(data, function(item, name){
-                        tmpResult = me._fields[name].set(dataIndex, item);
-                        tmpResult && tmpNames.push(name);
-                        return tmpResult;
-                    });
-                    if(!tmpResult){
-                        me._data[dataIndex] = lastData;
-                        result = false;
-                        return false;
-                    }
-                    
-                    isFirst = false;
-                    me._setLastAction(dataAction.UPDATE);
-                   
-                    me._lastChange[dataIndex] = me._data[dataIndex];
-                    me._lastChangeArray.push(me._data[dataIndex]);
-                    me._lastData[dataIndex] = lastData;
-                    
-                    result++;
-                }else{
-                    
-                    me._lastData[dataIndex] = CLONE(me._data[dataIndex]);
-                    me._lastDataObject[dataIndex] = me._data[dataIndex];
-                    me._lastChangeArray.push(me._data[dataIndex]);
-                    result++;
+            
+            //第一次更新时做数据验证
+            if(resultId.length > 0){
+               dataIndex = resultId.shift();
+               lastData = CLONE(me._data[dataIndex]);
+               
+               OBJECTEACH(data, function(item, name){
+                   tmpResult = me._fields[name].set(dataIndex, item);
+                   tmpResult && tmpNames.push(name);
+                   return tmpResult;
+               });
+               if(!tmpResult){
+                   me._data[dataIndex] = lastData;
+                   return result;
+               }
 
-                    OBJECTEACH(data, function(item, name){
-                        me._data[dataIndex][name] = item;
-                    });
-                }
+               me._setLastAction(dataAction.UPDATE);
+
+               me._lastChangeObject[dataIndex] = me._data[dataIndex];
+               me._lastChangeArray.push(me._data[dataIndex]);
+               me._lastData[dataIndex] = lastData;
+
+               result++;
+            }
+            
+            ARRAYEACH(resultId, function(dataIndex){
+                me._lastData[dataIndex] = CLONE(me._data[dataIndex]);
+                me._lastChangeObject[dataIndex] = me._data[dataIndex];
+                me._lastChangeArray.push(me._data[dataIndex]);
+                result++;
+
+                OBJECTEACH(data, function(item, name){
+                    me._data[dataIndex][name] = item;
+                });
             });
 
             return result;
@@ -377,7 +381,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          */
         remove: function(condition){
             var me = this,
-                resultId = me._getConditionId(condition || baidu.fn.blank()),
+                resultId = me._getConditionId(condition),
                 result = 0,data;
 
             if(resultId.length == 0){
@@ -422,13 +426,13 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                         lastAction: dataAction.ADD
                     };
                     break;
-                case dateAction.REMOVE:
+                case dataAction.REMOVE:
                     OBJECTEACH(me._lastData, function(data, dataIndex){
                         me._data[dataIndex] = data;
                     });
                     result = {
                         row: me._lastChangeArray.length,
-                        lastAction: dateAction.REMOVE
+                        lastAction: dataAction.REMOVE
                     };
                     break;
                 case 'UPDATE':
@@ -437,7 +441,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                     });
                     result = {
                         row: me._lastChangeArray.length,
-                        lastAction: dateAction.UPDATE
+                        lastAction: dataAction.UPDATE
                     };
                     break;
                 default:
@@ -461,7 +465,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          * @return {Object}
          */
         getLastChange: function(){
-            return CLONE(me._lastChangeObject); 
+            return CLONE(this._lastChangeObject); 
         }
     };
 

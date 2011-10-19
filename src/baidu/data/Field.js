@@ -6,8 +6,15 @@
 ///import baidu.object.clone;
 
 ///import baidu.data;
-///import baidu.validator.Validator;
 
+/**
+ * Field构造函数
+ * @class
+ * @public
+ * @param {Object} options 参数
+ * @config {Object} options.define 定义参数，包含{fieldType,defaultValue}
+ * @config {Object} options.validation 条件限制，是否有长度，最大值，最小值等限制，类型见baidu.validator
+ */
 baidu.data.Field = baidu.data.Field || (function(){
     
     /**
@@ -23,10 +30,10 @@ baidu.data.Field = baidu.data.Field || (function(){
             validation = options.validation || [];
        
         me.defaultValue = define.defaultValue || me.defaultValue;
-        me.validation = validation || me.validation;
+        me.validation = validation || [];
         
-        me.data = options.data || {};
-        me.name = options.name || '';
+        me._data = options.data || {};
+        me._name = options.name || '';
 
     };
 
@@ -37,9 +44,7 @@ baidu.data.Field = baidu.data.Field || (function(){
          */
 
         defaultValue: '',
-        validation: [],
-        data: {},
-        name: '',
+        _name: '',
         
 
         /**
@@ -58,22 +63,28 @@ baidu.data.Field = baidu.data.Field || (function(){
             }
             
             //TODO: 按照validator的设计进行修改
-            if( baidu.validator.Validator.verifyType(data, me.type) && 
+            /*if( baidu.validator.Validator.verifyType(data, me.type) && 
                 baidu.Validator.Validator.verify(data, me.validation)){
                 
                 data = baidu.object.clone(data);
                 me._set(index, data); 
                 return true;
             }
-
+            
             return false;
-        },
+            */
+
+            data = baidu.object.clone(data);
+            me._set(index, data); 
+            return true;
+
+                   },
 
         _set: function(index, data){
             var me = this;
 
-            me.data[index] = me.data[index] || {};
-            me.data[index][me.name] = data;
+            me._data[index] = me._data[index] || {};
+            me._data[index][me._name] = data;
         }
     };
 
