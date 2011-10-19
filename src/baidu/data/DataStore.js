@@ -199,18 +199,17 @@ baidu.data.DataStore = (function(){
                         case 'MERGE':
                        
                             //TODO: 看日后需求，如果需要将无冲突项进行append到dm中，在此处添加部分逻辑
-                            (me._mergeFields.length != 0) &&  baidu.each(data, function(item){
-                                    dataModel.update(item, function(dataLine){
-                                        var result = true;
-                                        baidu.each(me._mergeFields, function(name){
-                                            result = (dataLine[name] == item[name]);
-                                            return result;
-                                        });
-
+                            (me._mergeFields.length != 0) && baidu.each(data, function(item){
+                                dataModel.update(item, function(dataLine){
+                                    var result = true;
+                                    baidu.each(me._mergeFields, function(name){
+                                        result = (dataLine[name] == item[name]);
                                         return result;
                                     });
-                                });   
-                            }
+
+                                    return result;
+                                });
+                            });
                             success.call(me, data);
                             break;
                         default: 
