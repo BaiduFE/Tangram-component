@@ -193,7 +193,7 @@ baidu.data.DataStore = (function(){
                             success.call(me, dataModel.add(data));
                             break;
                         case 'REPLACE':
-                            dataModel.clear();
+                            dataModel.remove();
                             success.call(me, dataModel.add(data));
                             break;
                         case 'MERGE':
