@@ -21,6 +21,7 @@ baidu.parser.Json = baidu.parser.Json || (function(){
     return function(options){
         
         var parser = new baidu.parser.Parser(options);
+        parser._type = baidu.parser.JSON;
 
         baidu.extend(parser, {
        
@@ -32,7 +33,7 @@ baidu.parser.Json = baidu.parser.Json || (function(){
             * @param {String|Object} JSON
             * @return {Boolean}
             */
-            _paser: function(JSON){
+            _parser: function(JSON){
                 var me = this;
 
                 if(baidu.lang.isString(JSON)){

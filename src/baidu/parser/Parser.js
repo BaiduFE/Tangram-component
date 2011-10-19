@@ -4,6 +4,8 @@
  */
 
 ///import baidu.parser;
+///import baidu.Parser.type;
+
 ///import baidu.lang.createClass;
 
 ///import baidu.fn.blank;
@@ -46,6 +48,8 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
          * @private
         */
         _queryData: {},
+
+        _type: '',
    
         /**
          * 加载数据，支持xml，json，html
@@ -53,11 +57,14 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
          * @param {String} dataString
         */
         load: function(dataString){
-            var me = this,
-                dataString = dataString || '';
+            var me = this;
+           
+            if(typeof dataString == 'undefined'){
+                return;
+            }
 
             me._isLoad = false;
-            if(me._paser(dataString)){
+            if(me._parser(dataString)){
                 me._queryData = {};
                 me._isLoad = true;
                 me.dispatchEvent('onload');
@@ -128,6 +135,14 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
         */
         getRoot: function(){
             return this._dom;        
+        }, 
+
+        /**
+         * 获取parser的类型
+         * @return {baidu.parser.type}
+         */
+        getType: function(){
+            return this._type;         
         }
     });
 })();
