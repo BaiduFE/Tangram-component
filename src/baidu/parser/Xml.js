@@ -44,18 +44,19 @@ baidu.parser.Xml = baidu.parser.xml || (function(){
     return function(options){
         
         var parser = new baidu.parser.Parser(options);
+        parser._type = baidu.parser.XML;
 
         baidu.extend(parser, {
     
             _DOMParser: null,
-          
+         
             /**
              * 将字符串转换为XMLDOM
              * @private
              * @param {String} XMLString
              * @return {Boolean}
              */
-            _paser: function(XMLString){
+            _parser: function(XMLString){
                 var me = this;
 
                 if(!me._DOMParser){
