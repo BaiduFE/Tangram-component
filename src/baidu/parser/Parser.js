@@ -28,7 +28,7 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
             options = options || {};
 
         me._method = options.method || me._method;
-        me.onload = options.onload || baidu.fn.blank();
+        me.onload = options.onload || baidu.fn.blank;
 
     },{
         className: 'baidu.parser.Parser'
@@ -84,7 +84,7 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
                 method = method || me._method,
                 data = data || '',
                 onsuccess = function(xhr, responseText){
-                    if(me._paser(responseText)){
+                    if(me._parser(responseText)){
                         me._isLoad = true;
                         me._queryData = {};
                         me.dispatchEvent('onload');
@@ -92,7 +92,7 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
                 };
             
             me._isLoad = false;
-            me._method == 'GET' ? baidu.ajax.get(fileSrc, onsuccess) : baidu.ajax.post(fileSrc, data, onsuccess);
+            method == 'GET' ? baidu.ajax.get(fileSrc, onsuccess) : baidu.ajax.post(fileSrc, data, onsuccess);
         },
 
         /**
@@ -126,6 +126,16 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
          */
         _query: function(path){
             return [];
+        },
+        
+        /**
+         * 转换数据
+         * @private
+         * @param {String|Object} str
+         * @return {Boolean}
+         */
+        _parser: function(){
+            return false;         
         },
 
         /**

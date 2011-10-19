@@ -44,7 +44,7 @@ baidu.data.dataSource.ajax = function(url, options){
         options = options || {};
         options.key = options.key || (me.url + (options.param ? "?" + baidu.json.stringify(options.param) : ""));
         if (!me.dispatchEvent("onbeforeget", options)) {
-            baidu.ajax.request(me.url, me.ajaxOption ||
+            baidu.ajax.request(key, me.ajaxOption ||
             {
                 method: options.method || 'get',
                 data: options.param,
