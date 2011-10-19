@@ -29,8 +29,8 @@
 		}, 20);
 		
 		//田丽丽添加   调用公共用例
-		var testName = name.split('.');
-		commonTests(testName);
+//		var testName = name.split('.');
+//		commonTests(testName);
 	};
 	
 	QUnit.done = function() {
