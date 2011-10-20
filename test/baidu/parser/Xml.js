@@ -48,7 +48,7 @@ test("_query", function() {
 
 	parser._parser(text);
     equals(parser._query('//name').length, 0, "The result is right");
-	equals(parser._query('//book')[0].childNodes[0].textContent, "Harry Potter", "The title is right");
-	equals(parser._query('//book/title')[0].textContent, 'Harry Potter', "The title is right");
-	equals(parser._query('/bookstore/book/year')[0].textContent, '2005', "The year is right");
+	equals(parser._query('//book')[0].getElementsByTagName('title')[0].childNodes[0].nodeValue, "Harry Potter", "The title is right");
+	equals(parser._query('//book/title')[0].childNodes[0].nodeValue, 'Harry Potter', "The title is right");
+	equals(parser._query('/bookstore/book/year')[0].childNodes[0].nodeValue, '2005', "The year is right");
 });
