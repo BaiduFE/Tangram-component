@@ -62,7 +62,7 @@ test("load", function() {
 	            'title' :'继母',
 	            'author' : {
 	                'name' : '严歌苓',
-	                'gentle' : 'female',
+	                'gentle' : 'female'
 	            }
 	        };
 	 
@@ -176,7 +176,7 @@ test("query", function() {
 	            'title' :'继母',
 	            'author' : {
 	                'name' : '严歌苓',
-	                'gentle' : 'female',
+	                'gentle' : 'female'
 	            }
 	        };
 
@@ -217,7 +217,7 @@ test("getRoot", function() {
 	            'title' :'继母',
 	            'author' : {
 	                'name' : '严歌苓',
-	                'gentle' : 'female',
+	                'gentle' : 'female'
 	            }
 	        };
 

@@ -233,7 +233,7 @@ test("select", function() {
 	var result = dataStore.select('title', [1]);
 	equals(result[1].title, "继母", "The result is right");
 	
-	result =  dataStore.select();
+	result = dataStore.select();
 	equals(result[0].title, "小姨多鹤", "The result is right");
 	equals(result[0].author, "严歌苓", "The result is right");
 	equals(result[1].title, "继母", "The result is right");

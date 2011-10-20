@@ -55,7 +55,7 @@ test("_parser", function() {
             'title' :'继母',
             'author' : {
                 'name' : '严歌苓',
-                'gentle' : 'female',
+                'gentle' : 'female'
             }
         };
     var lib1String = '{"title":"继母","author":{"name":"严歌苓","gentle":"female"}}';
