@@ -90,7 +90,7 @@ module("baidu.data.DataStore");
 test("create", function() {
 	expect(12);
 	stop();
-	ua.importsrc('baidu.data.ModelManager,baidu.data.dataSource.ajax,baidu.parser.Xml', function(){
+	ua.importsrc('baidu.data.ModelManager,baidu.data.dataSource.ajax,baidu.parser.Xml,baidu.parser.Json', function(){
 		var DM = te.createDM();
 		var dataSource = te.createDataSource();
 		
@@ -182,7 +182,7 @@ test("save", function() {
 });
 
 test("add", function() {
-	expect(6);
+	expect(10);
 	var DM = te.createDM();
 	var dataSource = te.createDataSource();
 	
@@ -201,35 +201,7 @@ test("add", function() {
 		equals(data.row, 2, "The row is right");
 		equals(data.data[0].author, "严歌苓", "The data is right");
 		equals(data.data[0].title, "小姨多鹤", "The data is right");
-		equals(data.data[1].title, "继母", "The data is right");
-		
-	});
-	var result = dataStore.add(data);
-	
-	equals(result.fail.length, 0, "The result is right");
-	equals(result.success.length, 2, "The result is right");
-});
-
-test("add", function() {
-	expect(9);
-	var DM = te.createDM();
-	var dataSource = te.createDataSource();
-	
-	var data = [{
-		title : "小姨多鹤",
-		author : "严歌苓"
-	}, {
-		title : "继母"
-	}];
-	
-	var dataStore = new baidu.data.DataStore({
-        'dataModel': DM,
-        'dataSource': dataSource
-    });
-	dataStore.addEventListener("onadd", function(event, data){
-		equals(data.row, 2, "The row is right");
-		equals(data.data[0].author, "严歌苓", "The data is right");
-		equals(data.data[0].title, "小姨多鹤", "The data is right");
+		equals(data.data[0].price, "0", "The data is right");
 		equals(data.data[1].title, "继母", "The data is right");
 	});
 	var result = dataStore.add(data);
@@ -273,13 +245,16 @@ test("select", function() {
 });
 
 test("update", function() {
-	expect(22);
+	expect(28);
 	var DM = te.createDM();
 	var dataSource = te.createDataSource();
 	
 	var data = [{
 		title : "小姨多鹤",
 		author : "严歌苓"
+	}, {
+		title : "荷包里的单人床",
+		author : "张小娴"
 	}, {
 		title : "继母"
 	}];
@@ -303,14 +278,14 @@ test("update", function() {
 			equals(data.data[1].author, "亦舒", "The data is right");
 		}
 		if(num == 2){
-			equals(data.row, 0, "The row is right");
-			equals(data.data[1].title, "喜宝", "The data is right");
-			equals(data.data[1].author, "亦舒", "The data is right");
-		}
-		if(num == 3){
-			equals(data.row, 0, "The row is right");
+			equals(data.row, 1, "The row is right");
 			equals(data.data[0].title, "喜宝", "The data is right");
 			equals(data.data[0].author, "亦舒", "The data is right");
+		}
+		if(num == 3){
+			equals(data.row, 1, "The row is right");
+			equals(data.data[2].title, "喜宝", "The data is right");
+			equals(data.data[2].author, "亦舒", "The data is right");
 		}
 	});
 	
@@ -321,13 +296,7 @@ test("update", function() {
 	equals(dataStore._dataModel._data[0].author, "严歌苓", "The data is right");
 	equals(dataStore._dataModel._data[1].title, "喜宝", "The data is right");
 	equals(dataStore._dataModel._data[1].author, "亦舒", "The data is right");
-	
-	result =  dataStore.update();
-	equals(result, 0, "The result is right");
-	equals(dataStore._dataModel._data[0].title, "小姨多鹤", "The data is right");
-	equals(dataStore._dataModel._data[0].author, "严歌苓", "The data is right");
-	equals(dataStore._dataModel._data[1].title, "喜宝", "The data is right");
-	equals(dataStore._dataModel._data[1].author, "亦舒", "The data is right");
+	equals(dataStore._dataModel._data[2].title, "继母", "The data is right");
 	
 	result =  dataStore.update(data1, 0);
 	equals(result, 1, "The result is right");
@@ -335,6 +304,17 @@ test("update", function() {
 	equals(dataStore._dataModel._data[0].author, "亦舒", "The data is right");
 	equals(dataStore._dataModel._data[1].title, "喜宝", "The data is right");
 	equals(dataStore._dataModel._data[1].author, "亦舒", "The data is right");
+	equals(dataStore._dataModel._data[2].title, "继母", "The data is right");
+	
+	result =  dataStore.update();
+	equals(result, 0, "The result is right");
+	equals(dataStore._dataModel._data[0].title, "小姨多鹤", "The data is right");
+	equals(dataStore._dataModel._data[0].author, "严歌苓", "The data is right");
+	equals(dataStore._dataModel._data[1].title, "喜宝", "The data is right");
+	equals(dataStore._dataModel._data[1].author, "亦舒", "The data is right");
+	equals(dataStore._dataModel._data[2].title, "喜宝", "The data is right");
+	equals(dataStore._dataModel._data[2].author, "亦舒", "The data is right");
+
 });
 
 test("remove", function() {
@@ -345,6 +325,9 @@ test("remove", function() {
 	var data = [{
 		title : "小姨多鹤",
 		author : "严歌苓"
+	}, {
+		title : "荷包里的单人床",
+		author : "张小娴"
 	}, {
 		title : "继母"
 	}];
@@ -359,16 +342,15 @@ test("remove", function() {
 		num ++;
 		if(num == 1){
 			equals(data.row, 1, "The row is right");
-			equals(data.data[1].title, "继母", "The data is right");
+			equals(data.data[1].title, "荷包里的单人床", "The data is right");
 		}
 		if(num == 2){
-			equals(data.row, 0, "The row is right");
-			equals(data.data[1].title, "继母", "The data is right");
+			equals(data.row, 1, "The row is right");
+			equals(data.data[0].title, "小姨多鹤", "The data is right");
 		}
 		if(num == 3){
 			equals(data.row, 1, "The row is right");
-			equals(data.data[0].title, "小姨多鹤", "The data is right");
-			equals(data.data[0].author, "严歌苓", "The data is right");
+			equals(data.data[2].title, "继母", "The data is right");
 		}
 	});
 	
@@ -376,11 +358,13 @@ test("remove", function() {
 	var result = dataStore.remove([1]);
 	equals(result, 1, "The result is right");
 	
-	result =  dataStore.remove();
-	equals(result, 0, "The result is right");
-	
 	result =  dataStore.remove(0);
 	equals(result, 1, "The result is right");
+	
+	result =  dataStore.remove();
+	equals(result, 1, "The result is right");
+	
+	ok(te.isEmpty(dataStore._dataModel._data), "All removed");
 });
 
 test("cancel", function() {
@@ -599,6 +583,69 @@ test("load merge", function() {
         onfailture: function(data){
         },
     }, true);
+});
+
+
+test("Json", function() {
+	expect(11);
+	stop();
+    var bookDMDefine = {
+            fields:[{
+                name: 'title'
+            },{
+                name: 'isbn'
+            },{
+                name: 'category'
+            },{
+                name: 'available',
+                type: 'string',
+                defaultValue: '0'
+            },{
+                name: 'chapters',
+                type: 'array'
+            }],
+            validations:[]
+        };
+    baidu.data.ModelManager.defineDM('lib', bookDMDefine);
+    var DM = baidu.data.ModelManager.createDM('lib');
+    DM = DM[1];
     
-   
+    var url = '../../baidu/data/dataStore/lib.json';
+    var dsOptions = {
+        cache: false,
+        dataType:  baidu.parser.type.JSON,
+        transition: function(parser){
+            var books = [],
+            data,length,item;
+
+            books = parser.query('//books');
+            return books;
+        }
+    };
+    var dataSource = baidu.data.dataSource.ajax(url, dsOptions);
+    
+    var dataStore = new baidu.data.DataStore({
+        'dataModel': DM,
+        'dataSource': dataSource,
+        'action': 'APPEND'
+    });
+
+    dataStore.load({
+        onsuccess: function(data){
+        	equals(this._dataModel._index, 3, "the _index is right");
+        	equals(this._dataModel._data[0].title, "Harry Potter", "the _data is right");
+        	equals(this._dataModel._data[0].isbn, "1234-1234", "the _data is right");
+        	equals(this._dataModel._data[0].category, "Childrens", "the _data is right");
+        	equals(this._dataModel._data[0].available, "3", "the _data is right");
+        	equals(this._dataModel._data[0].chapters.length, "2", "the _data is right");
+        	equals(this._dataModel._data[1].title, "Brief History of time", "the _data is right");
+        	equals(this._dataModel._data[1].isbn, "1234-ABCD", "the _data is right");
+        	equals(this._dataModel._data[1].category, "Science", "the _data is right");
+        	equals(this._dataModel._data[1].available, "0", "the _data is right");
+        	equals(this._dataModel._data[1].chapters.length, "2", "the _data is right");
+        	start();
+        },
+        onfailture: function(data){
+        },
+    }, true);
 });
