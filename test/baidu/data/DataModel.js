@@ -76,7 +76,7 @@ test("create", function() {
     
     ok(isEmpty(DM._data), "The _data is right");
     ok(DM._fields.age, "The _field is right");
-    ok(isEmpty(DM._fields.age._data), "The data is right");
+    ok(isEmpty(DM._fields.age._dataModel._data), "The data is right");
     equals(DM._fields.age.defaultValue, 20, "The defaultvalue is right");
     equals(DM._fields.age._name, 'age', "The name is right");
     equals(DM._fields.age.validation.length, 0, "The validation is right");
@@ -286,7 +286,7 @@ test("add", function(){
 });
 
 test("update", function(){
-	expect(48);
+	expect(45);
 	var DM = te.DM1;
 	var isEmpty = te.isEmpty;
 
@@ -355,9 +355,6 @@ test("update", function(){
 	equals(DM._data[2].title, "喜宝", "The _data is right");
 	equals(DM._data[2].author, "亦舒", "The _data is right");
 	equals(lastAction, "UPDATE", "The _lastAction is right");
-	equals(lastChangeArray.length, "1", "The_lastChangeArray is right");
-	equals(lastChangeArray[0].title, "喜宝", "The _lastChangeArray is right");
-	equals(lastChangeArray[0].author, "亦舒", "The _lastChangeArray is right");
 	equals(lastChangeObject[2].title, "喜宝", "The _lastChangeObject is right");
 	equals(lastChangeObject[2].author, "亦舒", "The _lastChangeObject is right");
 	equals(lastData[2].title, "继母", "The _lastData is right");
@@ -485,7 +482,7 @@ test("remove", function(){
 });
 
 test("cancel", function(){
-	expect(34);
+	expect(18);
 	var DM = te.DM1;
 	var isEmpty = te.isEmpty;
 	
@@ -502,47 +499,41 @@ test("cancel", function(){
 
     ok(isEmpty(DM._data), "The _data is right");
     equals(DM._actionQueue.length, 0, "The _actionQueue is right");
-    equals(DM._index, 0, "The _index is right");
     
     DM.add(data);
-    DM.update(data1, [0]);
+    DM.update(data1, [1]);
     DM.cancel();
 	var lastChangeObject = DM._actionQueue[DM._actionQueue.length - 1].lastChange;
 	var lastData = DM._actionQueue[DM._actionQueue.length - 1].lastData;
 	var lastAction = DM._actionQueue[DM._actionQueue.length - 1].action;
 
-    equals(DM._data[0].title, "小姨多鹤", "The _data is right");
-    equals(DM._data[0].author, "严歌苓", "The _data is right");
-    equals(DM._actionQueue.length, 0, "The _lastChangeObject is right");
-    equals(lastChangeObject[0].author, "严歌苓", "The _lastChangeObject is right");
-    ok(isEmpty(lastData), "The _lastData is right");
-    equals(DM._index, 1, "The _index is right");
-    equals(lastAction, 'NULL', "The _lastAction is right");
+    equals(DM._data[1].title, "小姨多鹤", "The _data is right");
+    equals(DM._data[1].author, "严歌苓", "The _data is right");
+    equals(DM._actionQueue.length, 1, "The _lastChangeObject is right");
+    equals(lastChangeObject[1].author, "严歌苓", "The _lastChangeObject is right");
+    equals(lastData[1], 'undefined', "The _lastData is right");
+    equals(DM._index, 2, "The _index is right");
+    equals(lastAction, 'ADD', "The _lastAction is right");
     
-    DM.remove([0]);
+    DM.remove([1]);
     DM.cancel();
 	var lastChangeObject = DM._actionQueue[DM._actionQueue.length - 1].lastChange;
 	var lastData = DM._actionQueue[DM._actionQueue.length - 1].lastData;
 	var lastAction = DM._actionQueue[DM._actionQueue.length - 1].action;
-    
-    equals(DM._data[0].title, "小姨多鹤", "The _data is right");
-    equals(DM._data[0].author, "严歌苓", "The _data is right");
-    equals(lastChangeObject[0].title, "小姨多鹤", "The _lastChangeObject is right");
-    equals(lastChangeObject[0].author, "严歌苓", "The _lastChangeObject is right");
-    ok(isEmpty(lastData), "The _lastData is right");
-    equals(DM._index, 1, "The _index is right");
-    equals(lastAction, 'NULL', "The _lastAction is right");
+   
+    equals(DM._data[1].title, "小姨多鹤", "The _data is right");
+    equals(DM._data[1].author, "严歌苓", "The _data is right");
+    equals(DM._actionQueue.length, 1, "The _lastChangeObject is right");
+    equals(lastChangeObject[1].author, "严歌苓", "The _lastChangeObject is right");
+    equals(lastData[1], 'undefined', "The _lastData is right");
+    equals(DM._index, 2, "The _index is right");
+    equals(lastAction, 'ADD', "The _lastAction is right");
     
     DM.select("*");
     DM.cancel();
-    
-    equals(DM._data[0].title, "小姨多鹤", "The _data is right");
-    equals(DM._data[0].author, "严歌苓", "The _data is right");
-    equals(lastChangeObject[0].title, "小姨多鹤", "The _lastChangeObject is right");
-    equals(lastChangeObject[0].author, "严歌苓", "The _lastChangeObject is right");
-    ok(isEmpty(lastData), "The _lastData is right");
-    equals(DM._index, 1, "The _index is right");
-    equals(lastAction, 'NULL', "The _lastAction is right");
+
+    ok(isEmpty(DM._data), "The _data is right");
+    equals(DM._actionQueue.length, 0, "The _actionQueue is right");
 });
 
 test("getLastChange", function(){

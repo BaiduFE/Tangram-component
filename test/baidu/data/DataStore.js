@@ -32,7 +32,7 @@ module("baidu.data.DataStore");
 		};
 		  
 		te.createDataSource = function(){
-			 var url = '../../baidu/data/dataStore/books.xml';
+			 var url = '../../baidu/data/DataStore/books.xml';
 			    var dsOptions = {
 			        cache: false,
 			        dataType:  baidu.parser.type.XML,
@@ -244,7 +244,10 @@ test("select", function() {
 });
 
 test("update", function() {
-	expect(28);
+	expect(26);
+
+    var isEmpty = te.isEmpty;
+
 	var DM = te.createDM();
 	var dataSource = te.createDataSource();
 	
@@ -282,9 +285,8 @@ test("update", function() {
 			equals(data.data[0].author, "亦舒", "The data is right");
 		}
 		if(num == 3){
-			equals(data.row, 1, "The row is right");
-			equals(data.data[2].title, "喜宝", "The data is right");
-			equals(data.data[2].author, "亦舒", "The data is right");
+			equals(data.row, 0, "The row is right");
+			ok(isEmpty(data.data), "The data is right");
 		}
 	});
 	
@@ -307,12 +309,11 @@ test("update", function() {
 	
 	result =  dataStore.update();
 	equals(result, 0, "The result is right");
-	equals(dataStore._dataModel._data[0].title, "小姨多鹤", "The data is right");
-	equals(dataStore._dataModel._data[0].author, "严歌苓", "The data is right");
+	equals(dataStore._dataModel._data[0].title, "喜宝", "The data is right");
+	equals(dataStore._dataModel._data[0].author, "亦舒", "The data is right");
 	equals(dataStore._dataModel._data[1].title, "喜宝", "The data is right");
 	equals(dataStore._dataModel._data[1].author, "亦舒", "The data is right");
-	equals(dataStore._dataModel._data[2].title, "喜宝", "The data is right");
-	equals(dataStore._dataModel._data[2].author, "亦舒", "The data is right");
+	equals(dataStore._dataModel._data[2].title, "继母", "The data is right");
 
 });
 
@@ -393,23 +394,21 @@ test("cancel", function() {
 	dataStore.addEventListener("oncancel", function(event, data){
 		num ++;
 		if(num == 1){
-			equals(data.lastAction, "ADD", "The lastAction is right");
+			equals(data.cancelAction, "ADD", "The lastAction is right");
 			equals(data.row, 2, "The row is right");
-			ok(isEmpty(data.data), "The data is right");
+			equals(data.lastChange[0].title, '小姨多鹤', "The data is right");
+            equals(data.lastChange[1].title, '继母', "The data is right");
 		}
 		if(num == 2){
-			equals(data.lastAction, "UPDATE", "The lastAction is right");
+			equals(data.cancelAction, "UPDATE", "The lastAction is right");
 			equals(data.row, 1, "The row is right");
-			equals(data.data[0].title, "小姨多鹤", "The data is right");
-			equals(data.data[0].author, "亦舒", "The data is right");
-			equals(data.data[1].title, "继母", "The data is right");
+			equals(data.lastChange[1].title, "喜宝", "The data is right");
 		}
 		if(num == 3){
-			equals(data.lastAction, "REMOVE", "The lastAction is right");
-			equals(data.row, 1, "The row is right");
-			equals(data.data[0].title, "小姨多鹤", "The data is right");
-			equals(data.data[0].author, "亦舒", "The data is right");
-			equals(data.data[1].title, "继母", "The data is right");
+			//equals(data.cancelAction, "REMOVE", "The lastAction is right");
+			//equals(data.row, 1, "The row is right");
+			//equals(data.lastChange[1].title, '小姨多鹤', "The data is right");
+            //equals(data.lastChange[2].title, '继母', "The data is right");
 		}
 	});
 	
@@ -491,7 +490,7 @@ test("load append", function() {
 });
 
 test("load replace", function() {
-	expect(20);
+	expect(24);
 	stop();
 	var DM = te.createDM();
 	var dataSource = te.createDataSource();
@@ -516,18 +515,22 @@ test("load replace", function() {
         	
         	dataStore._action = "REPLACE";
             dataStore.load({
-            	key : '../../baidu/data/dataStore/newbooks.xml',
+            	key : '../../baidu/data/DataStore/newbooks.xml',
                 onsuccess: function(data){
                 	equals(data.success.length, 2, "The data is right");
                 	equals(data.fail.length, 0, "The data is right");
-                	equals(this._dataModel._index, 4, "the _index is right");
-                	equals(this._dataModel._data[0].author, "TT", "the _data is right");
-                	equals(this._dataModel._data[0].category, "law", "the _data is right");
-                	equals(this._dataModel._data[0].cover, "", "the _data is right");
-                	equals(this._dataModel._data[0].lang, "en", "the _data is right");
-                	equals(this._dataModel._data[0].price, 20, "the _data is right");
-                	equals(this._dataModel._data[0].title, "lawyer", "the _data is right");
-                	equals(this._dataModel._data[0].year, 2011, "the _data is right");	
+                    equals(this._dataModel._index, 6, "the _index is right");
+                    equals(typeof this._dataModel._data[0], "undefined", "the _data is right");
+                    equals(typeof this._dataModel._data[1], "undefined", "the _data is right");
+                    equals(typeof this._dataModel._data[2], "undefined", "the _data is right");
+                    equals(typeof this._dataModel._data[3], "undefined", "the _data is right");
+                	equals(this._dataModel._data[4].author, "TT", "the _data is right");
+                	equals(this._dataModel._data[4].category, "law", "the _data is right");
+                	equals(this._dataModel._data[4].cover, "", "the _data is right");
+                	equals(this._dataModel._data[4].lang, "en", "the _data is right");
+                	equals(this._dataModel._data[4].price, 20, "the _data is right");
+                	equals(this._dataModel._data[4].title, "lawyer", "the _data is right");
+                	equals(this._dataModel._data[4].year, 2011, "the _data is right");	
                 	start();
                 },
                 onfailture: function(data){
@@ -541,7 +544,7 @@ test("load replace", function() {
 });
 
 test("load merge", function() {
-	expect(15);
+	expect(8);
 	stop();
 	var DM = te.createDM();
 	var dataSource = te.createDataSource();
@@ -556,23 +559,16 @@ test("load merge", function() {
         onsuccess: function(data){
         	dataStore._action = "MERGE";
             dataStore.load({
-            	key : '../../baidu/data/dataStore/newbooks.xml',
+            	key : '../../baidu/data/DataStore/newbooks.xml',
                 onsuccess: function(data){
-                	equals(this._dataModel._index, 5, "the _index is right");
-                	equals(this._dataModel._data[0].author, "TT", "the _data is right");
-                	equals(this._dataModel._data[0].category, "law", "the _data is right");
+                	equals(this._dataModel._index, 4, "the _index is right");
+                	equals(this._dataModel._data[0].author, "Rowling", "the _data is right");
+                	equals(this._dataModel._data[0].category, "young", "the _data is right");
                 	equals(this._dataModel._data[0].cover, "", "the _data is right");
                 	equals(this._dataModel._data[0].lang, "en", "the _data is right");
-                	equals(this._dataModel._data[0].price, 20, "the _data is right");
-                	equals(this._dataModel._data[0].title, "lawyer", "the _data is right");
-                	equals(this._dataModel._data[0].year, 2011, "the _data is right");	
-                	equals(this._dataModel._data[1].author, "Rowling", "the _data is right");
-                	equals(this._dataModel._data[1].category, "young", "the _data is right");
-                	equals(this._dataModel._data[1].cover, "", "the _data is right");
-                	equals(this._dataModel._data[1].lang, "en", "the _data is right");
-                	equals(this._dataModel._data[1].price, 30, "the _data is right");
-                	equals(this._dataModel._data[1].title, "Harry Potter", "the _data is right");
-                	equals(this._dataModel._data[1].year, 2009, "the _data is right");	
+                	equals(this._dataModel._data[0].price, 30, "the _data is right");
+                	equals(this._dataModel._data[0].title, "Harry Potter", "the _data is right");
+                	equals(this._dataModel._data[0].year, 2009, "the _data is right");	
                 	start();
                 },
                 onfailture: function(data){
@@ -609,7 +605,7 @@ test("Json", function() {
     var DM = baidu.data.ModelManager.createDM('lib');
     DM = DM[1];
     
-    var url = '../../baidu/data/dataStore/lib.json';
+    var url = '../../baidu/data/DataStore/lib.json';
     var dsOptions = {
         cache: false,
         dataType:  baidu.parser.type.JSON,

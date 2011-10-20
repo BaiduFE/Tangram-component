@@ -51,7 +51,6 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
 
         OBJECTEACH(fields, function(config, fieldName){
             baidu.extend(config,{
-                data: dataModel._data,
                 name: fieldName
             });
             dataModel._fields[fieldName] = new baidu.data.Field(config, dataModel);
@@ -323,6 +322,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
             } 
 
             data = CLONE(data);
+            resultId = me._getConditionId(condition);
             //第一次更新时做数据验证
             if(resultId.length > 0){
                dataIndex = resultId.shift();
@@ -393,31 +393,45 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          */
         cancel: function(){
             var me = this,
-                lastAction;
+                lastAction,
+                result = {
+                    row: 0,
+                    cancelAction: dataAction.NULL,
+                    lastChange: {}
+                };
             
             if(me._actionQueue.length == 0)
-               return;
+               return result;
 
             lastAction = me._actionQueue.pop();
-            switch (lastAction.lastAction){
+            result.lastChange = lastAction.lastChange;
+            switch (lastAction.action){
                 case dataAction.ADD:
                     OBJECTEACH(lastAction.lastData, function(data, dataIndex){
                         delete(me._data[dataIndex]);
+                        result.row ++;
                     });
+                    result.cancelAction = dataAction.ADD;
                     break;
                 case dataAction.REMOVE:
-                    OBJECTEACH(lastData.lastData, function(data, dataIndex){
+                    OBJECTEACH(lastAction.lastData, function(data, dataIndex){
                         me._data[dataIndex] = data;
+                        result.row ++;
                     });
+                    result.cancelAction = dataAction.REMOVE;
                     break;
                 case dataAction.UPDATE:
-                    OBJECTEACH(lastData.lastData, function(data, dataIndex){
+                    OBJECTEACH(lastAction.lastData, function(data, dataIndex){
                         me._data[dataIndex] = data;
+                        result.row ++;
                     });
+                    result.cancelAction = dataAction.UPDATE;
                     break;
                 default:
                     return result;
             };
+
+            return result;
         },
 
         /**
@@ -426,7 +440,10 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          * @return {Object}
          */
         getLastChange: function(){
-            return CLONE(this._actionQueue[this._actionQueue.length - 1].lastChange); 
+            var me = this;
+                data = me._actionQueue.length > 0 ? CLONE(me._actionQueue[me._actionQueue.length - 1].lastChange) : [];
+            
+            return data; 
         }
     };
 
