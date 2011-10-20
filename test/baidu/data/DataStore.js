@@ -477,15 +477,15 @@ test("load append", function() {
                         	start();
                         },
                         onfailture: function(data){
-                        },
+                        }
                     }, true);
                 },
                 onfailture: function(data){
-                },
+                }
             }, true);
         },
         onfailture: function(data){
-        },
+        }
     });
 });
 
@@ -534,11 +534,11 @@ test("load replace", function() {
                 	start();
                 },
                 onfailture: function(data){
-                },
+                }
             }, true);
         },
         onfailture: function(data){
-        },
+        }
     }, true);
     
 });
@@ -572,11 +572,11 @@ test("load merge", function() {
                 	start();
                 },
                 onfailture: function(data){
-                },
+                }
             }, true);
         },
         onfailture: function(data){
-        },
+        }
     }, true);
 });
 
@@ -641,6 +641,6 @@ test("Json", function() {
         	start();
         },
         onfailture: function(data){
-        },
+        }
     }, true);
 });

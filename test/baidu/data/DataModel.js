@@ -361,7 +361,7 @@ test("update", function(){
 	equals(lastData[2].author, "严歌苓", "The _lastData is right");
 
 	var data = {
-			title : "喜宝",
+			title : "喜宝"
 		};
 	var result = DM.update(data, fun);
 	var lastChangeObject = DM._actionQueue[DM._actionQueue.length - 1].lastChange;
