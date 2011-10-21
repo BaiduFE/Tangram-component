@@ -32,7 +32,7 @@ test("key和cache", function() {
 
 	check.add(function() {
 		ajaxSource.get({
-			key : 'test',
+			key : url + '?key=test',
 			onsuccess : function(response) {
 				ok(/\d+/.test(response), 'reponse matched \\d+: ' + response);
 				cache = response;
@@ -45,7 +45,7 @@ test("key和cache", function() {
 			'url' : url + '?key=1'
 		});// 更换URL，确保不会在ajax请求时被浏览器cache
 		ajaxSource.get({
-			key : 'test',
+			key : url + '?key=test',
 			onsuccess : function(response) {
 				equals(response, cache, "cached");
 				check.next(20);
@@ -70,7 +70,7 @@ test('ajaxOption', function() {
 		}
 	});
 	ajaxSource.get({
-		key : 'post'
+		key : url + '?key=post'
 	});
 });
 

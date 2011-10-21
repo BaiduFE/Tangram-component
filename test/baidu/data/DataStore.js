@@ -52,14 +52,14 @@ module("baidu.data.DataStore");
 			                item.category = category[index].nodeValue;
 			                item.cover = book.getAttribute('cover') || '';
 			                item.lang = title[index].getAttribute('lang');
-			                item.title = title[index].textContent;
-			                item.year = parseInt(year[index].textContent);
-			                item.price = parseInt(price[index].textContent);
+			                item.title = title[index].childNodes[0].nodeValue;
+			                item.year = parseInt(year[index].childNodes[0].nodeValue);
+			                item.price = parseInt(price[index].childNodes[0].nodeValue);
 
 			                var authors = parser.query('//book[' + (index + 1) + ']/author');
 			                var name = [];
 			                baidu.each(authors, function(author){
-			                    name.push(author.textContent);
+			                    name.push(author.childNodes[0].nodeValue);
 			                });
 			                item.author = name.join(',');
 			                books.push(item);
@@ -477,15 +477,15 @@ test("load append", function() {
                         	start();
                         },
                         onfailture: function(data){
-                        },
+                        }
                     }, true);
                 },
                 onfailture: function(data){
-                },
+                }
             }, true);
         },
         onfailture: function(data){
-        },
+        }
     });
 });
 
@@ -534,11 +534,11 @@ test("load replace", function() {
                 	start();
                 },
                 onfailture: function(data){
-                },
+                }
             }, true);
         },
         onfailture: function(data){
-        },
+        }
     }, true);
     
 });
@@ -572,11 +572,11 @@ test("load merge", function() {
                 	start();
                 },
                 onfailture: function(data){
-                },
+                }
             }, true);
         },
         onfailture: function(data){
-        },
+        }
     }, true);
 });
 
@@ -641,6 +641,6 @@ test("Json", function() {
         	start();
         },
         onfailture: function(data){
-        },
+        }
     }, true);
 });

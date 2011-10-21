@@ -51,7 +51,7 @@ test("load", function() {
 	equals(xmlparser._isLoad, true, "The _isLoad is right");
 	ok(te.isEmpty(xmlparser._queryData), "The _queryData is right");
 	ok(xmlparser._dom, "The _dom is right");
-	equals(xmlparser._query('//book')[0].childNodes[0].textContent, "Harry Potter", "The title is right");
+	equals(xmlparser._query('//book')[0].getElementsByTagName('title')[0].childNodes[0].nodeValue, "Harry Potter", "The title is right");
 	
 	var jsonparser = baidu.parser.Json({
 		onload : function(){
@@ -86,7 +86,7 @@ test("loadUrl xml get", function() {
 			equals(xmlparser._isLoad, true, "The _isLoad is right");
 			ok(te.isEmpty(xmlparser._queryData), "The _queryData is right");
 			ok(xmlparser._dom, "The _dom is right");
-			equals(xmlparser._query('//title')[0].childNodes[0].textContent, "Harry Potter", "The title is right");
+			equals(xmlparser._query('//title')[0].childNodes[0].nodeValue, "Harry Potter", "The title is right");
 			start();
 		}
 	});
@@ -103,7 +103,7 @@ test("loadUrl xml post", function() {
 			equals(xmlparser._isLoad, true, "The _isLoad is right");
 			ok(te.isEmpty(xmlparser._queryData), "The _queryData is right");
 			ok(xmlparser._dom, "The _dom is right");
-			equals(xmlparser._query('//title')[0].childNodes[0].textContent, "Everyday Italian", "The title is right");
+			equals(xmlparser._query('//title')[0].childNodes[0].nodeValue, "Everyday Italian", "The title is right");
 			start();
 		}
 	});
@@ -165,7 +165,7 @@ test("query", function() {
 
 	xmlparser.load(text);
 	result = xmlparser.query('//title');
-	equals(xmlparser.query('//title')[0].textContent, "Harry Potter", "The result is right");
+	equals(xmlparser.query('//title')[0].childNodes[0].nodeValue, "Harry Potter", "The result is right");
 	
 	var jsonparser = baidu.parser.Json({
 		onload : function(){
