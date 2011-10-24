@@ -40,9 +40,17 @@
  *  }
  */
 baidu.data.Validator = baidu.lang.createClass(function(validations){
-    var me = this;
+    var me = this,
+        i = 0,
+        fn = baidu.data.Validator,
+        count = fn._addons.length;
     me._validations = validations || {};
     me._rules = {};//用来保存用户自定义的验证函数
+    
+    //执行插件
+    for(; i < count; i++){
+        fn._addons[i](me);
+    }
 }).extend(
 /**
  * @lends baidu.data.Validator
@@ -251,3 +259,13 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
         return me._rules[name] || baidu.data.Validator.validatorRules[name];//先从用户自定义的rules中查找，再从内置的rules中查找
     }
 });
+
+//构造函数插件
+baidu.data.Validator._addons = [];
+/**
+ * @private
+ */
+baidu.data.Validator.register = function(fn){
+    typeof fn == 'function'
+        && baidu.data.Validator._addons.push(fn);
+}
