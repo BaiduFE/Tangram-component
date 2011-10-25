@@ -204,19 +204,19 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
         
         if(option.callback){//如果只提供了callback方法，则将其作为onsuccess和onfailure的回调方法
             option['onsuccess'] = option['onfailure'] = function(xhr, responseText){
-                option.callback(xhr, responseText);//callback方法中需要返回验证的结果（true或者false）
+                option.callback(value, xhr, responseText);//callback方法中需要返回验证的结果（true或者false）
             };
         }else{
             if(option.onsuccess){
                 var successCache = option.onsuccess;
                 option['onsuccess'] = function(xhr, responseText){
-                    successCache(xhr, responseText);//onsuccess方法中需要返回验证的结果（true或者false）
+                    successCache(value, xhr, responseText);//onsuccess方法中需要返回验证的结果（true或者false）
                 };
             }
             if(option.onfailure){
                 var failureCache = option.onfailure;
                 option['onfailure'] = function(xhr){
-                    failureCache(xhr);//onfailure方法中需要返回验证的结果（true或者false）
+                    failureCache(value, xhr);//onfailure方法中需要返回验证的结果（true或者false）
                 };
             }
         }
@@ -231,7 +231,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
     addRule: function(name, handler){
         var me = this;
         
-        me._rules[name] = handler || baidu.fn.blank();
+        me._rules[name] = handler || baidu.fn.blank;
         me.dispatchEvent('onAddRule', {
             'name': name, 
             'handler': handler
