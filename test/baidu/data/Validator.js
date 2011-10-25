@@ -13,7 +13,7 @@ module("baidu.data.Validator");
                        url: '../../baidu/data/Validator/remote_get.php?_charset=utf_8',
                        key: 'nick',
                        method: 'get',
-                       onsuccess: function(xhr, responseText){
+                       onsuccess: function(value, xhr, responseText){
                     	   if(responseText == 'yangyang')
                     		   ok(true, "The remote is rihgt : yangyang");
                     	   start();
@@ -30,7 +30,7 @@ module("baidu.data.Validator");
                               url: '../../baidu/data/Validator/remote_post.php',
                               key: 'nick',
                               method: 'post',
-                              callback: function(xhr, responseText){
+                              callback: function(value, xhr, responseText){
                            	   if(responseText == 'yangyang')
                            		   ok(true, "The remote is rihgt : yangyang");
                            	   start();
