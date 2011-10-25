@@ -150,7 +150,7 @@ baidu.data.DataStore = (function(){
          * @return {Boolean}
          */
         setDataSource: function(dataSource){
-            if(dataSource instanceof baidu.data.DataSource.dataSource){
+            if(dataSource instanceof baidu.data.dataSource.DataSource){
                 this._dataSource = dataSource;
                 return true;
             }
@@ -193,16 +193,18 @@ baidu.data.DataStore = (function(){
                             success.call(me, dataModel.add(data));
                             break;
                         case 'REPLACE':
-                            dataModel.clear();
-                            success.call(me, dataModel.add(tmpData));
+                            dataModel.remove('*');
+                            success.call(me, dataModel.add(data));
                             break;
                         case 'MERGE':
-                            baidu.each(data, function(item){
+                       
+                            //TODO: 看日后需求，如果需要将无冲突项进行append到dm中，在此处添加部分逻辑
+                            (me._mergeFields.length != 0) && baidu.each(data, function(item){
                                 dataModel.update(item, function(dataLine){
                                     var result = true;
                                     baidu.each(me._mergeFields, function(name){
                                         result = (dataLine[name] == item[name]);
-                                        return result
+                                        return result;
                                     });
 
                                     return result;
@@ -256,7 +258,7 @@ baidu.data.DataStore = (function(){
            
             me.dispatchEvent('onadd', {
                 row: result.success.length,
-                data: me._dataModel.getLastChange()
+                data: (result.success.length > 0 ? me._dataModel.getLastChange() : {})
             })
 
             return result;
@@ -272,7 +274,7 @@ baidu.data.DataStore = (function(){
          */
         select: function(where, condition){
             var where = where || '*',
-                condition = (typeof condition == 'undefined' && '*');
+                condition = (typeof condition != 'undefined' ? condition : '*'); 
             
             return this._dataModel.select(where, condition);
         },
@@ -293,7 +295,7 @@ baidu.data.DataStore = (function(){
 
             me.dispatchEvent('onupdate',{
                 row: row,
-                data: me._dataModel.getLastChange()
+                data: (row ? me._dataModel.getLastChange() : {})
                 
             });
 
@@ -315,7 +317,7 @@ baidu.data.DataStore = (function(){
 
             me.dispatchEvent('ondelete', {
                 row: row,
-                data: me._dataModel.getLastChange()
+                data: (row ? me._dataModel.getLastChange() : {})
             });
 
             return row;
@@ -331,9 +333,9 @@ baidu.data.DataStore = (function(){
                 result = me._dataModel.cancel();
 
             me.dispatchEvent('oncancel',{
-                lastAction: dataAction[result.cancelAction],
+                cancelAction: result.cancelAction,
                 row: result.row,
-                data: me._dataModel.getLastChange()
+                lastChange: result.lastChange
             });
 
             return result.row;

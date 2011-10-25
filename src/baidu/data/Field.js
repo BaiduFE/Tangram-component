@@ -24,7 +24,7 @@ baidu.data.Field = baidu.data.Field || (function(){
      * @config {Object} options.define 定义参数，包含{fieldType,defaultValue}
      * @config {Object} options.validation 条件限制，是否有长度，最大值，最小值等限制，类型见baidu.validator
      */
-    var Field = function(options){
+    var Field = function(options, dataModel){
         var me = this,
             define = options.define || {},
             validation = options.validation || [];
@@ -32,7 +32,7 @@ baidu.data.Field = baidu.data.Field || (function(){
         me.defaultValue = define.defaultValue || me.defaultValue;
         me.validation = validation || [];
         
-        me._data = options.data || {};
+        me._dataModel = dataModel;
         me._name = options.name || '';
 
     };
@@ -78,13 +78,13 @@ baidu.data.Field = baidu.data.Field || (function(){
             me._set(index, data); 
             return true;
 
-                   },
+        },
 
         _set: function(index, data){
             var me = this;
 
-            me._data[index] = me._data[index] || {};
-            me._data[index][me._name] = data;
+            me._dataModel._data[index] = me._dataModel._data[index] || {};
+            me._dataModel._data[index][me._name] = data;
         }
     };
 

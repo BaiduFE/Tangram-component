@@ -29,8 +29,9 @@ baidu.parser.Xml = baidu.parser.xml || (function(){
         if(AXO){
             DOMParser.async = false;
             DOMParser.loadXML(xmlString);
-            DOMParser.setProperty('SelectionLanguage', 'XPath');
-            return DOMParser;
+            DOMParser.setProperty("SelectionNamespaces", "xmlns:xsl='http://www.w3.org/1999/XSL/Transform'");
+            DOMParser.setProperty("SelectionLanguage", "XPath");
+            return DOMParser.documentElement;
         }else if(IMP){
             return DOMParser.parseFromString(xmlString, 'text/xml');
         }
