@@ -13,7 +13,13 @@
 ///import baidu.fn.blank;
 
 ///import baidu.lang.createClass;
+///import baidu.lang.isArray;
 ///import baidu.lang.isBoolean;
+///import baidu.lang.isDate;
+///import baidu.lang.isFunction;
+///import baidu.lang.isNumber;
+///import baidu.lang.isObject;
+///import baidu.lang.isString;
 
 ///import baidu.object.each;
 ///import baidu.object.clone;
@@ -337,13 +343,11 @@ baidu.data.Validator.validatorRules = (function(){
         url: function(value){
             return /^(https?|ftp|rmtp|mms):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(:(\d+))?\/?/i.test(value);
         }
-    };
+    },
     //将baidu.lang中的is***部分添加到_rules中
-    var ruleNames = ['array', 'boolean', 'date', 'function', 'number', 'object', 'string'];
+    ruleNames = ['array', 'boolean', 'date', 'function', 'number', 'object', 'string'];
     baidu.array.each(ruleNames, function(item){
-        rules[item] = baidu.lang['is' + item.replace(/(\w)/, function(){
-            return RegExp['\x241'].toUpperCase();
-        })];
+        rules[item] = baidu.lang['is' + item.substr(0,1).toUpperCase() + item.substr(1)];
     });
     return rules;
 })();
