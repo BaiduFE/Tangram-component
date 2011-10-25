@@ -5,6 +5,8 @@
 
 ///import baidu.object.extend;
 
+///import baidu.data.Validator;
+
 
 baidu.data.Validator.register(function(me){
     /**

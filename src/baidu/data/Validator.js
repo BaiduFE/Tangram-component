@@ -9,8 +9,6 @@
 ///import baidu.array.contains;
 
 ///import baidu.data;
-///import baidu.data.validatorRules;
-///import baidu.data.validatorResultTypes;
 
 ///import baidu.fn.blank;
 

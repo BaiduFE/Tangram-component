@@ -16,6 +16,8 @@
 ///import baidu.object.register;
 ///import baidu.object.extend;
 
+///import baidu.data.Validator;
+
 baidu.data.Validator.register(function(me){
     baidu.data.Validator.validatorRules = (function(){
         var rules = {
