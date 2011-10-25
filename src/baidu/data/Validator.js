@@ -38,17 +38,9 @@
  *  }
  */
 baidu.data.Validator = baidu.lang.createClass(function(validations){
-    var me = this,
-        i = 0,
-        fn = baidu.data.Validator,
-        count = fn._addons.length;
+    var me = this;
     me._validations = validations || {};
     me._rules = {};//用来保存用户自定义的验证函数
-    
-    //执行插件
-    for(; i < count; i++){
-        fn._addons[i](me);
-    }
 }).extend(
 /**
  * @lends baidu.data.Validator
@@ -212,7 +204,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
         
         if(option.callback){//如果只提供了callback方法，则将其作为onsuccess和onfailure的回调方法
             option['onsuccess'] = option['onfailure'] = function(xhr, responseText){
-                option.callback(xhr, resopnseText);//callback方法中需要返回验证的结果（true或者false）
+                option.callback(xhr, responseText);//callback方法中需要返回验证的结果（true或者false）
             };
         }else{
             if(option.onsuccess){
@@ -258,12 +250,100 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
     }
 });
 
-//构造函数插件
-baidu.data.Validator._addons = [];
 /**
- * @private
+ * 用于存储返回值的枚举类
  */
-baidu.data.Validator.register = function(fn){
-    typeof fn == 'function'
-        && baidu.data.Validator._addons.push(fn);
-}
+baidu.data.Validator.validatorResultTypes = {
+    'SUCCESS': 'success',   //表示所有值都验证通过
+    'FAILURE': 'failure',   //表示存在验证不通过的值
+    'SUCCESSWITHOUTREMOTE': 'successwithoutremote' //表示除了使用remote方式验证的值，其他的都验证通过
+};
+
+/**
+ * 内置的rules
+ */
+baidu.data.Validator.validatorRules = (function(){
+    var rules = {
+        /**
+         * Returns true if the given value is empty.
+         * @param {String} value The value to validate
+         * @return {Boolean} True if the validation passed
+         */
+        require: function(value){
+            return baidu.string.trim(value) !== '';
+        },
+        /**
+         * Returns true if the given value`s length is equal to the given length.
+         * @param {String} value The value to validate
+         * @param {Object} conf Config object 
+         * @return {Boolean} True if the validation passed
+         */
+        length: function(value, conf){
+            return value.length == conf.len;
+        },
+        /**
+         * Returns true if the given value is equal to the reference value.
+         * @param {String || Number} value The value to validate
+         * @param {Object} conf Config object 
+         * @return {Boolean} True if the validation passed
+         */
+        equalTo: function(value, conf){
+            return value === conf.refer;
+        },
+        /**
+         * Returns true if the given value`s length is between the configured min and max length.
+         * @param {String || Number} value The value to validate
+         * @param {Object} conf Config object 
+         * @return {Boolean} True if the validation passed
+         */
+        lengthRange: function(value, conf){
+            var len = value.length,
+                min = conf.min,
+                max = conf.max;
+            if((min && len<min) || (max && len>max)){
+                return false;
+            }else{
+                return true;
+            }
+        },
+        /**
+         * Returns true if the given value is between the configured min and max values.
+         * @param {String || Number} value The value to validate
+         * @param {Object} conf Config object 
+         * @return {Boolean} True if the validation passed
+         */
+        numberRange: function(value, conf){
+            var min = conf.min,
+                max = conf.max;
+            if((min && value<min) || (max && value>max)){
+                return false;
+            }else{
+                return true;
+            }
+        },
+        /**
+         * Returns true if the given value is in the correct email format.
+         * @param {String || Number} value The value to validate
+         * @return {Boolean} True if the validation passed
+         */
+        email: function(value){
+            return /^[\w!#\$%'\*\+\-\/=\?\^`{}\|~]+([.][\w!#\$%'\*\+\-\/=\?\^`{}\|~]+)*@[-a-z0-9]{1,20}[.][a-z0-9]{1,10}([.][a-z]{2})?$/i.test(value);
+        },
+        /**
+         * Returns true if the given value is in the correct url format.
+         * @param {String || Number} value The value to validate
+         * @return {Boolean} True if the validation passed
+         */
+        url: function(value){
+            return /^(https?|ftp|rmtp|mms):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(:(\d+))?\/?/i.test(value);
+        }
+    };
+    //将baidu.lang中的is***部分添加到_rules中
+    var ruleNames = ['array', 'boolean', 'date', 'function', 'number', 'object', 'string'];
+    baidu.array.each(ruleNames, function(item){
+        rules[item] = baidu.lang['is' + item.replace(/(\w)/, function(){
+            return RegExp['\x241'].toUpperCase();
+        })];
+    });
+    return rules;
+})();
