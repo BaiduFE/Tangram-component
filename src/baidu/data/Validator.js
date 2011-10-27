@@ -12,14 +12,6 @@
 
 ///import baidu.fn.blank;
 
-///import baidu.lang.createClass;
-///import baidu.lang.isArray;
-///import baidu.lang.isBoolean;
-///import baidu.lang.isDate;
-///import baidu.lang.isFunction;
-///import baidu.lang.isNumber;
-///import baidu.lang.isObject;
-///import baidu.lang.isString;
 
 ///import baidu.object.each;
 ///import baidu.object.clone;
@@ -34,26 +26,33 @@
  * @grammar new baidu.data.Validator(validations)
  * @param {Object} validations 每个验证规则的具体配置
  *  {
- *          val1: [
- *                    {rule: "length", conf: {len:20}},
- *                    {rule:"email" }
- *                ],
- *          val2: [
- *                    {rule: "remote", conf: {url:'#', onsuccess: function(){}, onfailure: function(){}}}
- *                ]
+ *     val1: [
+ *               {rule: "length", conf: {len:20}},
+ *               {rule:"email" }
+ *           ],
+ *     val2: [
+ *               {rule: "remote", conf: {url:'#', onsuccess: function(){}, onfailure: function(){}}}
+ *           ]
  *  }
  */
 baidu.data.Validator = baidu.lang.createClass(function(validations){
+
     var me = this;
     me._validations = validations || {};
-    me._rules = {};//用来保存用户自定义的验证函数
+    
+    //用来保存用户自定义的验证函数
+    me._rules = {}; 
+
 }).extend(
-/**
- * @lends baidu.data.Validator
- */
+
+    /**
+     * @lends baidu.data.Validator
+     */
+
 {
     /**
      * 对多个数据进行验证
+     * @public
      * @param {Array} values 需要验证的数据项，例如：
      *  [
      *      [28, "isAge"], 
@@ -106,6 +105,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
     
     /**
      * 将数组形式的验证结果包装成validatorResultTypes中的枚举类型
+     * @private
      * @param {Object} result 验证结果
      */
     _wrapResult: function(result){
@@ -123,6 +123,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
     
     /**
      * 对单个数据项进行验证（内部使用）
+     * @private
      * @param {String | Number} value 待验证项的值
      * @param {Array} validation 验证规则名称
      * @return {Boolean} 验证结果
@@ -158,6 +159,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
 
     /**
      * 对单个数据项进行验证
+     * @public
      * @param {String | Number} value 待验证项的值
      * @param {String} rule 验证规则
      * @param {Object} conf 配置项
@@ -182,6 +184,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
     
     /**
      * 添加一条规则
+     * @public
      * @param {String} name 规则名称
      * @param {Array} validation 验证规则
      */
@@ -192,6 +195,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
     
     /**
      * 调用远程接口对数据项进行验证
+     * @private
      * @param {String | Number} value 待验证项的值
      * @param {Object} option 参数
      */
@@ -231,6 +235,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
     
     /**
      * 添加一条规则
+     * @public
      * @param {String} name 规则名
      * @param {Function} handler 执行规则的函数
      */
@@ -246,13 +251,16 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
     
     /**
      * 根据规则名取得对应的规则函数
+     * @private
      * @param {String} name 规则名
      * @return {Function} 验证函数
      */
     _getRule: function(name){
-        var me = this;
+        var me = this,
+            rules = baidu.data.Validator.validatorRules || {};
         
-        return me._rules[name] || baidu.data.Validator.validatorRules[name];//先从用户自定义的rules中查找，再从内置的rules中查找
+        //先从用户自定义的rules中查找，再从内置的rules中查找
+        return me._rules[name] || rules[name] || new Function('return false;');
     }
 });
 
@@ -264,90 +272,3 @@ baidu.data.Validator.validatorResultTypes = {
     'FAILURE': 'failure',   //表示存在验证不通过的值
     'SUCCESSWITHOUTREMOTE': 'successwithoutremote' //表示除了使用remote方式验证的值，其他的都验证通过
 };
-
-/**
- * 内置的rules
- */
-baidu.data.Validator.validatorRules = (function(){
-    var rules = {
-        /**
-         * Returns true if the given value is empty.
-         * @param {String} value The value to validate
-         * @return {Boolean} True if the validation passed
-         */
-        require: function(value){
-            return baidu.string.trim(value) !== '';
-        },
-        /**
-         * Returns true if the given value`s length is equal to the given length.
-         * @param {String} value The value to validate
-         * @param {Object} conf Config object 
-         * @return {Boolean} True if the validation passed
-         */
-        length: function(value, conf){
-            return value.length == conf.len;
-        },
-        /**
-         * Returns true if the given value is equal to the reference value.
-         * @param {String || Number} value The value to validate
-         * @param {Object} conf Config object 
-         * @return {Boolean} True if the validation passed
-         */
-        equalTo: function(value, conf){
-            return value === conf.refer;
-        },
-        /**
-         * Returns true if the given value`s length is between the configured min and max length.
-         * @param {String || Number} value The value to validate
-         * @param {Object} conf Config object 
-         * @return {Boolean} True if the validation passed
-         */
-        lengthRange: function(value, conf){
-            var len = value.length,
-                min = conf.min,
-                max = conf.max;
-            if((min && len<min) || (max && len>max)){
-                return false;
-            }else{
-                return true;
-            }
-        },
-        /**
-         * Returns true if the given value is between the configured min and max values.
-         * @param {String || Number} value The value to validate
-         * @param {Object} conf Config object 
-         * @return {Boolean} True if the validation passed
-         */
-        numberRange: function(value, conf){
-            var min = conf.min,
-                max = conf.max;
-            if((min && value<min) || (max && value>max)){
-                return false;
-            }else{
-                return true;
-            }
-        },
-        /**
-         * Returns true if the given value is in the correct email format.
-         * @param {String || Number} value The value to validate
-         * @return {Boolean} True if the validation passed
-         */
-        email: function(value){
-            return /^[\w!#\$%'\*\+\-\/=\?\^`{}\|~]+([.][\w!#\$%'\*\+\-\/=\?\^`{}\|~]+)*@[-a-z0-9]{1,20}[.][a-z0-9]{1,10}([.][a-z]{2})?$/i.test(value);
-        },
-        /**
-         * Returns true if the given value is in the correct url format.
-         * @param {String || Number} value The value to validate
-         * @return {Boolean} True if the validation passed
-         */
-        url: function(value){
-            return /^(https?|ftp|rmtp|mms):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(:(\d+))?\/?/i.test(value);
-        }
-    },
-    //将baidu.lang中的is***部分添加到_rules中
-    ruleNames = ['array', 'boolean', 'date', 'function', 'number', 'object', 'string'];
-    baidu.array.each(ruleNames, function(item){
-        rules[item] = baidu.lang['is' + item.substr(0,1).toUpperCase() + item.substr(1)];
-    });
-    return rules;
-})();

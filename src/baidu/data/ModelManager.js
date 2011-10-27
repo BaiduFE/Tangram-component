@@ -37,10 +37,15 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
 
     /**
      * DataModel管理类
-     *
-     * 事件派发
+     * @param {Object} options
+     * @config {baidu.data.Validator} validator
      */
-    var modelManager = function(){};
+    var modelManager = function(options){
+        var me = this,
+            options = options || {};
+        
+        me._validator = options.validator || null;
+    };
     
     modelManager.prototype = 
     
@@ -98,10 +103,12 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
          * @return {Array} [index,DataModel]
          */
         createDM: function(type, options){
-            var options = options || {
-                    fields: _DMDefine[type] || {}
-                },
-                DM = new baidu.data.DataModel(options);
+            options = baidu.extend({
+                fields: _DMDefine[type] || {},
+                validator: this.validator
+            }, options);
+
+            var DM = new baidu.data.DataModel(options);
             
             _DMInstanceByType[type] || (_DMInstanceByType[type] = {});
             _DMInstanceByType[type][_index] = DM;

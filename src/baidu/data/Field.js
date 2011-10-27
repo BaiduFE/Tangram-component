@@ -21,20 +21,20 @@ baidu.data.Field = baidu.data.Field || (function(){
      * Field构造函数
      * @public
      * @param {Object} options 参数
-     * @config {Object} options.define 定义参数，包含{fieldType,defaultValue}
+     * @config {Object} options.define 定义参数，包含{fieldType,defaultValue},
+     * @config {String} options.name
      * @config {Object} options.validation 条件限制，是否有长度，最大值，最小值等限制，类型见baidu.validator
      */
     var Field = function(options, dataModel){
         var me = this,
-            define = options.define || {},
-            validation = options.validation || [];
+            define = options.define || {};
        
-        me.defaultValue = define.defaultValue || me.defaultValue;
-        me.validation = validation || [];
-        
+        me._defaultValue = define.defaultValue || me.defaultValue;
+        me._type = define.type || ''; 
+        me._validation = options.validation || [];
         me._dataModel = dataModel;
-        me._name = options.name || '';
-
+        me._name = options.name;
+        me._validator = me._dataModel._validator;
     };
 
     Field.prototype = {
@@ -43,7 +43,7 @@ baidu.data.Field = baidu.data.Field || (function(){
          * @lends baidu.data.Field.prototype
          */
 
-        defaultValue: '',
+        _defaultValue: '',
         _name: '',
         
 
@@ -54,35 +54,31 @@ baidu.data.Field = baidu.data.Field || (function(){
          * @return {Boolean}
          */
         set: function(index, data){
-            var me = this;
+            var me = this,
+                result = {
+                    'result': true
+                };
             
             if(typeof data == 'undefined'){
-                data = baidu.object.clone(me.defaultValue);
-                me._set(index, data);
-                return true;
-            }
-            
-            //TODO: 按照validator的设计进行修改
-            /*if( baidu.validator.Validator.verifyType(data, me.type) && 
-                baidu.Validator.Validator.verify(data, me.validation)){
                 
-                data = baidu.object.clone(data);
+                me._set(index, me._defaultValue);
+            
+            }else if(me._validator){
+               
+                result = me.validator.test(data, me._type, me.validation);
+                result.result && me._set(index, data);   
+            
+            }else{   
                 me._set(index, data); 
-                return true;
             }
             
-            return false;
-            */
-
-            data = baidu.object.clone(data);
-            me._set(index, data); 
-            return true;
-
+            return result;
         },
 
         _set: function(index, data){
             var me = this;
 
+            data = baidu.object.clone(data);
             me._dataModel._data[index] = me._dataModel._data[index] || {};
             me._dataModel._data[index][me._name] = data;
         }

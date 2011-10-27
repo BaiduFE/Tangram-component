@@ -62,29 +62,32 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
      * @public
      * @param {Object} options 设置项
      * @config {Object} options.fields 通过ModalManager.defineDM定义的数据结构
+     * @config {Number} options.recodeLength cancel操作的记录数
+     * @config {baidu.data.Validator} validator
      */
     var dataModel = function(options){
        
         var me = this,
             options = options || {};
             
-            /**
-             * 存储Field实例的名值对
-             * @private
-             * @attribute
-             */
-            me._fields = {};
-            
-            /**
-             * 数据值
-             * @private
-             * @attribute
-             */
-            me._data = {};
+        /**
+         * 存储Field实例的名值对
+         * @private
+         * @attribute
+         */
+        me._fields = {};
+        
+        /**
+         * 数据值
+         * @private
+         * @attribute
+         */
+        me._data = {};
 
-            me._actionQueue = [];
-            me.recodeLength = options.recodeLength || me.recodeLength;
-            
+        me._actionQueue = [];
+        me._recodeLength = options.recodeLength || me.recodeLength;
+        
+        me._validator = options.validator;
         _createField(options.fields || {}, me);
     };
         
@@ -105,7 +108,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
          * @public
          * @attribute
          */
-        recodeLength: 5,
+        _recodeLength: 5,
 
         /**
          * lastAction 压如队列
@@ -122,7 +125,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
                 'lastChange': lastChange
             });
 
-            me._actionQueue.length > me.recodeLenght && me._actionQueue.shift();
+            me._actionQueue.length > me._recodeLength && me._actionQueue.shift();
         },
 
         /**
