@@ -24,6 +24,7 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
             'number': 0,
             'boolean': true
         };
+    	_validator = null;
 
     /**
      * 返回该类型的default值
@@ -37,15 +38,8 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
 
     /**
      * DataModel管理类
-     * @param {Object} options
-     * @config {baidu.data.Validator} validator
      */
-    var modelManager = function(options){
-        var me = this,
-            options = options || {};
-        
-        me._validator = options.validator || null;
-    };
+    var modelManager = function(options){};
     
     modelManager.prototype = 
     
@@ -54,6 +48,16 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
          */
 
     {
+    	
+    	
+    	/**
+    	 * 设置validator
+    	 * @param {baidu.data.Validator} validator
+    	 * */	
+    	setValidator: function(validator){
+    		_validator = validator;
+    	},	
+    	
         /**
          * 对DataModel数据结构进行定义
          * @public
@@ -88,7 +92,7 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
             baidu.each(validations, function(validation){
                 fieldName = validation['field'];
                 delete(validation['field']);
-                result[fieldName]['validation'].push(validation);
+                result[fieldName]['validation'] = validation.val || [];
             });
 
             _DMDefine[type] = result;
@@ -105,7 +109,7 @@ baidu.data.ModelManager = baidu.data.ModelManager || (function(){
         createDM: function(type, options){
             options = baidu.extend({
                 fields: _DMDefine[type] || {},
-                validator: this.validator
+                validator: _validator
             }, options);
 
             var DM = new baidu.data.DataModel(options);

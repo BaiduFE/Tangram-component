@@ -29,9 +29,14 @@ baidu.data.Field = baidu.data.Field || (function(){
         var me = this,
             define = options.define || {};
        
-        me._defaultValue = define.defaultValue || me.defaultValue;
+        me._defaultValue = typeof define.defaultValue != 'undefined' ? define.defaultValue : me._defaultValue;
         me._type = define.type || ''; 
+        
         me._validation = options.validation || [];
+        me._validation.push({
+        	'rule': me._type
+        });
+        
         me._dataModel = dataModel;
         me._name = options.name;
         me._validator = me._dataModel._validator;
@@ -65,7 +70,7 @@ baidu.data.Field = baidu.data.Field || (function(){
             
             }else if(me._validator){
                
-                result = me.validator.test(data, me._type, me.validation);
+                result = me._validator.test(data, me._validation);
                 result.result && me._set(index, data);   
             
             }else{   

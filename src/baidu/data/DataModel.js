@@ -259,11 +259,11 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
             
                 OBJECTEACH(me._fields, function(field, name){
                     tmpResult = field.set(dataIndex, eachData[name]);
-                    tmpResult ? tmpNames.push(name) : result.fail.push(index); 
-                    return tmpResult;
+                    tmpResult.result ? tmpNames.push(name) : result.fail.push(index); 
+                    return tmpResult.result;
                 });
 
-                if(!tmpResult){
+                if(!tmpResult.result){
                     delete(me._data[dataIndex]);
                 }else{
 

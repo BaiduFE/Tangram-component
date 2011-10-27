@@ -11,12 +11,13 @@
 ///import baidu.data;
 
 ///import baidu.fn.blank;
-
+///baidu.lang.isArray
 
 ///import baidu.object.each;
 ///import baidu.object.clone;
 
 ///import baidu.string.trim;
+///import baidu.lang.createClass;
 
 
 /**
@@ -166,7 +167,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
      * @return {Object} 验证结果
      */
     test: function(value, rule, conf){
-        var me = this, validation;
+        var me = this, validation,tmpVal = [];
         
         if(me._validations[rule]){
             validation = me._validations[rule];
@@ -175,6 +176,17 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
                 'rule': rule, 
                 'conf': conf
             }];
+        }else if(baidu.lang.isArray(rule)){
+        	
+        	baidu.each(rule, function(name){
+        		if(me._validations[name.rule]){
+        			tmpVal = tmpVal.concat(me._validations[name.rule]);
+        		}else{
+        			tmpVal.push(name);
+        		}
+        		
+        	});
+        	return me._singleValidate(value, tmpVal);
         }else{
             return false;
         }
@@ -260,7 +272,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
             rules = baidu.data.Validator.validatorRules || {};
         
         //先从用户自定义的rules中查找，再从内置的rules中查找
-        return me._rules[name] || rules[name] || new Function('return false;');
+        return me._rules[name] || rules[name] || null;
     }
 });
 
