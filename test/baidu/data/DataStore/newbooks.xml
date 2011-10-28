@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<bookstore>
+<book category="law">
+<title lang="en">lawyer</title>
+<author>TT</author>
+<year>2011</year>
+<price>20</price>
+</book>
+<book category="young">
+<title lang="en">Harry Potter</title>
+<author>Rowling</author>
+<year>2009</year>
+<price>30</price>
+</book>
+</bookstore>

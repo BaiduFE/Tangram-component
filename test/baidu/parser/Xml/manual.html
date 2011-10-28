@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+    <head>
+        <title>xml parser</title>
+        <meta http-equiv="Content-Type" charset="utf-8" content="text/html;charset=utf-8">
+        <script src='../../../../src/import.php?f=baidu.parser.Xml,baidu.array.each,baidu.dom.insertHTML'></script>
+    </head>
+    <body>
+        <div id='Contenter'></div>
+        <script>
+            var Contenter = document.getElementById('Contenter');
+            var xmlParser = new baidu.parser.Xml({
+                onload: function(){
+                    var books = xmlParser.query('//book', false);
+                    //console.log(books);
+                    //console.log(books.length);
+
+                    baidu.each(books, function(book, index){
+                        baidu.insertHTML(Contenter, 'BEFOREEND', '<br />');
+                        baidu.insertHTML(Contenter, 'BEFOREEND',  book.getElementsByTagName("title")[0].childNodes[0].nodeValue);
+                        baidu.insertHTML(Contenter, 'BEFOREEND', '<br />');
+                        baidu.insertHTML(Contenter, 'BEFOREEND', book.getElementsByTagName("author")[0].childNodes[0].nodeValue);
+                        baidu.insertHTML(Contenter, 'BEFOREEND', '<br />');
+                        baidu.insertHTML(Contenter, 'BEFOREEND',  book.getElementsByTagName("year")[0].childNodes[0].nodeValue);
+                        baidu.insertHTML(Contenter, 'BEFOREEND', '<br />');
+                    });
+
+                    baidu.insertHTML(Contenter, 'BEFOREEND', '=====================================');
+                }
+            });
+//            xmlParser.loadUrl('books.xml');
+
+ //           setTimeout(function(){
+                
+                var text="<bookstore>";
+                text=text+"<book>";
+                text=text+"<title>Harry Potter</title>";
+                text=text+"<author>J K. Rowling</author>";
+                text=text+"<year>2005</year>";
+                text=text+"</book>";
+                text=text+"</bookstore>";
+
+                xmlParser.load(text);
+   //         }, 3000);
+        </script>
+        
+    </body>
+</html>
