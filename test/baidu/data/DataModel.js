@@ -77,9 +77,9 @@ test("create", function() {
     ok(isEmpty(DM._data), "The _data is right");
     ok(DM._fields.age, "The _field is right");
     ok(isEmpty(DM._fields.age._dataModel._data), "The data is right");
-    equals(DM._fields.age.defaultValue, 20, "The defaultvalue is right");
+    equals(DM._fields.age._defaultValue, 20, "The defaultvalue is right");
     equals(DM._fields.age._name, 'age', "The name is right");
-    equals(DM._fields.age.validation.length, 0, "The validation is right");
+    equals(DM._fields.age._validation.length, 1, "The validation is right");
     equals(DM._actionQueue.length, 0, "The _lastChangeObject is right");
     equals(DM._index, 0, "The _index is right");
 });

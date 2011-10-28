@@ -644,3 +644,148 @@ test("Json", function() {
         }
     }, true);
 });
+
+test("validator, default validations", function() {
+	expect(9);
+	stop();
+	ua.importsrc("baidu.data.Validator.validatorRules", function(){
+	    var bookDMDefine = {
+	            fields:[{
+	                name: 'title'
+	            },{
+	                name: 'isbn'
+	            },{
+	                name: 'category'
+	            },{
+	                name: 'available',
+	                type: 'string',
+	                defaultValue: '0'
+	            },{
+	                name: 'chapters',
+	                type: 'array'
+	            }],
+	            validations:[]
+	        };
+	   
+	    baidu.data.ModelManager.defineDM('lib', bookDMDefine);
+	    var validator = new baidu.data.Validator();
+	    baidu.data.ModelManager.setValidator(validator);
+	    var DM = baidu.data.ModelManager.createDM('lib');
+	    DM = DM[1];
+	    
+	    var url = '../../baidu/data/DataStore/newlib.json';
+	    var dsOptions = {
+	        cache: false,
+	        dataType:  baidu.parser.type.JSON,
+	        transition: function(parser){
+	            var books = [],
+	            data,length,item;
+	
+	            books = parser.query('//books');
+	            return books;
+	        }
+	    };
+	    var dataSource = baidu.data.dataSource.ajax(url, dsOptions);
+	    
+	    var dataStore = new baidu.data.DataStore({
+	        'dataModel': DM,
+	        'dataSource': dataSource,
+	        'action': 'APPEND'
+	    });
+	
+	    dataStore.load({
+	        onsuccess: function(data){
+	        	equals(this._dataModel._fields.title._validation[0].rule, 'string', "The validation is right");
+	        	equals(this._dataModel._fields.isbn._validation[0].rule, 'string', "The validation is right");
+	        	equals(this._dataModel._fields.category._validation[0].rule, 'string', "The validation is right");
+	        	equals(this._dataModel._fields.available._validation[0].rule, 'string', "The validation is right");
+	        	equals(this._dataModel._fields.chapters._validation[0].rule, 'array', "The validation is right");
+	        	
+	        	equals(this._dataModel._index, 3, "the _index is right");
+	        	equals(this._dataModel._data[0].title, "Harry Potter", "the _data is right");
+	        	equals(this._dataModel._data[1].title, "Brief History of time", "the _data is right");
+	        	equals(this._dataModel._data[2].title, "Lord of the Rings", "the _data is right");
+	        	start();
+	        },
+	        onfailture: function(data){
+	        }
+	    }, true);
+	}, "baidu.data.Validator", "baidu.data.DataStore");
+});
+
+test("validator, validations and setValidator", function() {
+	expect(11);
+	stop();
+	    var bookDMDefine = {
+	            fields:[{
+	                name: 'title'
+	            },{
+	                name: 'isbn'
+	            },{
+	                name: 'category'
+	            },{
+	                name: 'available',
+	                type: 'string',
+	                defaultValue: '3'
+	            },{
+	                name: 'chapters',
+	                type: 'array'
+	            }],
+	            validations:[
+	                        {field:'title',val:[{rule:'new'}, {rule:'lengthRange', conf:{min:0, max:20}}]},
+	                        {field:'available',val:[{rule:'equalTo', conf:{refer : '3'}}]}
+	            ]
+	        };
+	    
+	    var validations = {
+	            "new": [
+	                {rule: "require"}
+	            ]
+	        };
+	    
+	    baidu.data.ModelManager.defineDM('lib', bookDMDefine);
+	    var validator = new baidu.data.Validator(validations);
+	    baidu.data.ModelManager.setValidator(validator);
+	    var DM = baidu.data.ModelManager.createDM('lib');
+	    DM = DM[1];
+	    
+	    var url = '../../baidu/data/DataStore/newlib.json';
+	    var dsOptions = {
+	        cache: false,
+	        dataType:  baidu.parser.type.JSON,
+	        transition: function(parser){
+	            var books = [],
+	            data,length,item;
+	
+	            books = parser.query('//books');
+	            return books;
+	        }
+	    };
+	    var dataSource = baidu.data.dataSource.ajax(url, dsOptions);
+	    
+	    var dataStore = new baidu.data.DataStore({
+	        'dataModel': DM,
+	        'dataSource': dataSource,
+	        'action': 'APPEND'
+	    });
+	
+	    dataStore.load({
+	        onsuccess: function(data){
+	        	equals(this._dataModel._fields.title._validation[0].rule, 'new', "The validation is right");
+	        	equals(this._dataModel._fields.title._validation[1].rule, 'lengthRange', "The validation is right");
+	        	equals(this._dataModel._fields.title._validation[2].rule, 'string', "The validation is right");
+	        	equals(this._dataModel._fields.isbn._validation[0].rule, 'string', "The validation is right");
+	        	equals(this._dataModel._fields.category._validation[0].rule, 'string', "The validation is right");
+	        	equals(this._dataModel._fields.available._validation[0].rule, 'equalTo', "The validation is right");
+	        	equals(this._dataModel._fields.available._validation[1].rule, 'string', "The validation is right");
+	        	equals(this._dataModel._fields.chapters._validation[0].rule, 'array', "The validation is right");
+	        	
+	        	equals(this._dataModel._index, 2, "the _index is right");
+	        	equals(this._dataModel._data[0].title, "Harry Potter", "the _data is right");
+	        	equals(this._dataModel._data[1].title, "Lord of the Rings", "the _data is right");
+	        	start();
+	        },
+	        onfailture: function(data){
+	        }
+	    }, true);
+});
