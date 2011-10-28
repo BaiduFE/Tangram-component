@@ -137,6 +137,15 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
         _getNewId: function(){
             return this._index++;           
         },
+        
+        /**
+         * 回滚id
+         * @private
+         * @attribute
+         */
+        _revertId: function(){
+        	this._index--;
+        },
 
         /**
          * 根据传入的index数组返回数据
@@ -265,6 +274,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
 
                 if(!tmpResult.result){
                     delete(me._data[dataIndex]);
+                    me._revertId();
                 }else{
 
                     lastData[dataIndex] = 'undefined';
