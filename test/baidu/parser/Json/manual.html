@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+        <title>json parser</title>
+        <meta http-equiv="Content-Type" charset="utf-8" content="text/html;charset=utf-8">
+        <script src='../../../../src/import.php?f=baidu.parser.Json,baidu.dom.insertHTML' ></script>
+    </head>
+    <body>
+        <div id='container'></div>
+        <script>
+            var Container = document.getElementById('container');
+            var parser = baidu.parser.Json({
+                onload: function(){
+                    baidu.insertHTML(Container, 'BEFOREEND', '<br />');
+                    baidu.insertHTML(Container, 'BEFOREEND', parser.query('address/city'));
+                    baidu.insertHTML(Container, 'BEFOREEND', '<br />');
+                    baidu.insertHTML(Container, 'BEFOREEND', parser.query('books[1]'));
+                    baidu.insertHTML(Container, 'BEFOREEND', '<br />');
+                    baidu.insertHTML(Container, 'BEFOREEND', parser.query('//category'));
+                    baidu.insertHTML(Container, 'BEFOREEND', '<br />');
+                    baidu.insertHTML(Container, 'BEFOREEND', parser.query('/books[available]'));
+                    baidu.insertHTML(Container, 'BEFOREEND', '<br />');
+                    baidu.insertHTML(Container, 'BEFOREEND', parser.query("categories[name == /books[last()]/category ]/description"));
+                    baidu.insertHTML(Container, 'BEFOREEND', '<br />');
+                    baidu.insertHTML(Container, 'BEFOREEND', '====================================');
+                }
+            });
+            parser.loadUrl('lib.json');
+
+            setTimeout(function(){
+                var lib = {
+                    'name' :'My Library',
+                    '@open' : '2007-17-7',
+                    'address' : {
+                        'city' : 'beijing',
+                        'zip' : '12345',
+                        'state' : 'MI',
+                        'street' : 'Mockingbird Lane'
+                    },
+                    'books':[{
+                        'title' : 'Harry Potter',
+                        'isbn'  : '1234-1234',
+                        'category' : 'Childrens',
+                        'available' : '3',
+                        'chapters' : [ 'Chapter 1', 'Chapter 2' ]
+                    },
+                    {
+                        'title' : 'Brief History of time',
+                        'isbn'  : '1234-ABCD',
+                        'category' : 'Science',
+                        'chapters' : [ '1', '2' ]
+                    },
+                    {
+                        'title' : 'Lord of the Rings',
+                        'isbn'  : '1234-PPPP',
+                        'category' : 'Fiction',
+                        'chapters' : [ 'Section 1', 'Section 2' ]
+                    }],
+                    'categories' : [
+                    {'name':'Childrens', 'description':'Childrens books'},
+                    {'name':'Science', 'description':'Books about science'},
+                    {'name':'Fiction', 'description':'Fiction books'}
+                    ]
+                };
+                
+                parser.load(lib);
+            }, 3000);
+        </script>
+    </body>
+</html>

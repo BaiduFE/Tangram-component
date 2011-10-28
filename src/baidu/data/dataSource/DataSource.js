@@ -12,6 +12,8 @@
 ///import baidu.object.extend;
 ///import baidu.object.keys;
 
+///import baidu.parser.create;
+
 /**
  * 数据源类
  * @class
@@ -19,6 +21,7 @@
  * @param {Object}      [options]              config参数
  * @config {Number}     [maxCache = 10]       缓存数据的最大个数
  * @config {Boolean}    [cache = true]        是否使用缓存
+ * @config {baidu.parser.type} [dataType = '']    传入的数据为何种类型，当该值传入时会试图创建对应的parser
  * @config {Function}   [transition]          转换数据算法
  * @return {baidu.data.dataSource.DataSource} 数据源类
  * @private
@@ -47,7 +50,9 @@ baidu.data.dataSource.DataSource = baidu.lang.createClass(function(options){
 	maxCache: 100,
     
 	cache: true,
-	
+
+    dataType: '',
+
     /**
      * 更新配置
      * @param {Object} options
@@ -66,6 +71,11 @@ baidu.data.dataSource.DataSource = baidu.lang.createClass(function(options){
     get: function(options){
     
     },
+
+    /**
+     * 存储数据接口,由具体的dataSource实现
+     */
+    set: function(){},
     
     /**
      * 转换数据格式并调用回调函数
@@ -76,7 +86,23 @@ baidu.data.dataSource.DataSource = baidu.lang.createClass(function(options){
     _get: function(options){
         var me = this, 
 			data;
-        data = me.transition.call(me, me.source);
+       
+        //创建parser
+        function createParser(type, data){
+            var parser = null;
+
+            if(type){
+                parser = baidu.parser.create(type);
+                parser && parser.load(data);
+                return parser ? parser : data;
+            }
+
+            return  data;
+        };
+
+        data = createParser(me.dataType, me.source);
+        data = me.transition.call(me, data);
+        
         me.cache && options.key && data && me._addCacheData(options.key, data);
         options.onsuccess && options.onsuccess.call(me, data);
         return data;
