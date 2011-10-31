@@ -11,6 +11,7 @@
  * Field构造函数
  * @class
  * @public
+ * @grammar new baidu.data.Field(options)
  * @param {Object} options 参数
  * @config {Object} options.define 定义参数，包含{fieldType,defaultValue}
  * @config {Object} options.validation 条件限制，是否有长度，最大值，最小值等限制，类型见baidu.validator

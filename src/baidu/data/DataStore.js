@@ -15,6 +15,7 @@
  * 数据仓库类
  * @class
  * @public
+ * @grammar new baidu.data.DataStore(options)
  * @param {String|baidu.data.DataModel} dataModel DataModel实例
  * @param {String|baidu.data.dataSource.DataSource} dataSource DataSource实例
  * @param {String|Function} action {'append','replace','merge',Function} 当完成load时，向DataModel中填写数据时使用的策略,默认为append
