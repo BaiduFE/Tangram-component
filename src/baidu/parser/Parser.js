@@ -4,7 +4,7 @@
  */
 
 ///import baidu.parser;
-///import baidu.Parser.type;
+///import baidu.parser.type;
 
 ///import baidu.lang.createClass;
 

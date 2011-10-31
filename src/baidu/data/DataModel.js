@@ -22,6 +22,7 @@
 /**
  * DataModel实体类
  * @class
+ * @grammar new baidu.data.DataModel(options);
  * @public
  * @param {Object} options 设置项
  * @config {Object} options.fields 通过ModalManager.defineDM定义的数据结构
