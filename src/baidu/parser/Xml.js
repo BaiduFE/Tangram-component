@@ -8,7 +8,7 @@
 
 ///import baidu.object.extend;
 
-baidu.parser.Xml = baidu.parser.xml || (function(){
+baidu.parser.Xml = baidu.parser.Xml || (function(){
 
     var AXO = window.ActiveXObject;
     var IMP = document.implementation && document.implementation.createDocument;
