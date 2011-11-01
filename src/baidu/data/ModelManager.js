@@ -12,7 +12,6 @@
  * @class
  * @public
  * @grammar new baidu.data.ModelManager([options])
- * 事件派发
  */
 baidu.data.ModelManager = baidu.data.ModelManager || (function(){
  
