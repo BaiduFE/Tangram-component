@@ -8,7 +8,6 @@
 
 ///import baidu.object.extend;
 
-///TODO: 能否使用baidu.ajax.*来实现这个类？
 baidu.parser.Xml = baidu.parser.xml || (function(){
 
     var AXO = window.ActiveXObject;
