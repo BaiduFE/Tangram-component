@@ -21,7 +21,8 @@
  * @param {String|Function} action {'append','replace','merge',Function} 当完成load时，向DataModel中填写数据时使用的策略,默认为append
  * @param {Array[String]} mergeFields 当action 为merge时，合并数据时使用的依据变量
  * @param {Boolean} usingLocal 当merge时出现数据冲突，以local为主还是remote数据为主,默认为本地.action为Function时，该选项不无效
- */
+ * @return {baidu.data.DataStore} DataStore 实例
+ *  */
 baidu.data.DataStore = (function(){
    
     var actionType = {
@@ -39,7 +40,7 @@ baidu.data.DataStore = (function(){
     /**
      * 数据仓库类
      * @class
-     * @public
+     * @private
      * @param {baidu.data.DataModel} dataModel DataModel实例
      * @param {baidu.data.dataSource.DataSource} dataSource DataSource实例
      * @param {String|Function} action {'APPEND','REPLACE','MERGE',Function} 当完成load时，向DataModel中填写数据时使用的策略,默认为append
@@ -75,7 +76,7 @@ baidu.data.DataStore = (function(){
     }).extend({
         
         /**
-         *  @lends baidu.data.dataStore.DataStore.prototype
+         *  @lends baidu.data.DataStore.prototype
          */ 
 
         /**
