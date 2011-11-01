@@ -26,7 +26,9 @@
  * @public
  * @param {Object} options 设置项
  * @config {Object} options.fields 通过ModalManager.defineDM定义的数据结构
- * @config {Array} options.data 传入的数据，可选
+ * @config {Number} options.recodeLength cancel操作的记录数
+ * @config {baidu.data.Validator} validator
+ * @return {baidu.data.DataModel} DataModel 实例
  */
 baidu.data.DataModel = baidu.data.DataModel || (function(){
 
@@ -60,7 +62,7 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
 
     /**
      * DataModel实体类
-     * @public
+     * @private
      * @param {Object} options 设置项
      * @config {Object} options.fields 通过ModalManager.defineDM定义的数据结构
      * @config {Number} options.recodeLength cancel操作的记录数
@@ -92,10 +94,12 @@ baidu.data.DataModel = baidu.data.DataModel || (function(){
         _createField(options.fields || {}, me);
     };
         
+    
+    dataModel.prototype = 
     /**
      *  @lends baidu.data.DataModel.prototype
      */
-    dataModel.prototype = {
+    {
       
         /**
          * 数据存储索引
