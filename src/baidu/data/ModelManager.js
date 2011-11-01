@@ -12,6 +12,7 @@
  * @class
  * @public
  * @grammar new baidu.data.ModelManager([options])
+ * @return {baidu.data.ModelManager} ModelManager 实例
  */
 baidu.data.ModelManager = baidu.data.ModelManager || (function(){
  

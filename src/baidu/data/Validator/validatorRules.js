@@ -18,7 +18,11 @@
 ///import baidu.array.each;
 
 /**
- * 默认提供以下常用验证 
+ * 默认提供以下常用验证：require, length, equalTo, lengthRange, numberRange, email, url
+ * @Object
+ * @name baidu.data.Validator.validatorRules
+ * @grammar baidu.data.Validator.validatorRules
+ * @return {baidu.data.Validator.validatorRules} validatorRules 实例
  */
 baidu.data.Validator.validatorRules = (function(){
     var rules = {

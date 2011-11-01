@@ -22,9 +22,8 @@
 
 /**
  * 数据验证组件
- * @name baidu.data.Validator
  * @class
- * @grammar new baidu.data.Validator(validations)
+ * @grammar new baidu.data.Validator(options)
  * @param {Object} validations 每个验证规则的具体配置
  *  {
  *     val1: [
@@ -35,11 +34,12 @@
  *               {rule: "remote", conf: {url:'#', onsuccess: function(){}, onfailure: function(){}}}
  *           ]
  *  }
+ * @return {baidu.data.Validator} Validator实例
  */
-baidu.data.Validator = baidu.lang.createClass(function(validations){
+baidu.data.Validator = baidu.lang.createClass(function(options){
 
     var me = this;
-    me._validations = validations || {};
+    me._validations = options || {};
     
     //用来保存用户自定义的验证函数
     me._rules = {}; 
@@ -47,7 +47,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
 }).extend(
 
     /**
-     * @lends baidu.data.Validator
+     * @lends baidu.data.Validator.prototype
      */
 
 {
@@ -70,7 +70,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
      *          index: 2;
      *          type: "length"
      *      }]
-     *  }
+     *  }，验证结果resultType是一个枚举，他的值分别是success: 表示所有值都验证通过, failure: 表示存在验证不通过的值, successwithoutremote: 表示除了使用remote方式验证的值，其他的都验证通过
      */
     validate: function(values){
         var me = this, value, validation, 
@@ -278,6 +278,7 @@ baidu.data.Validator = baidu.lang.createClass(function(validations){
 
 /**
  * 用于存储返回值的枚举类
+ * @private
  */
 baidu.data.Validator.validatorResultTypes = {
     'SUCCESS': 'success',   //表示所有值都验证通过
