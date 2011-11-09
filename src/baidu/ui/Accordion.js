@@ -26,6 +26,7 @@
  * @grammar new baidu.ui.Accordion(options)
  * @param {Object} options 选项
  * @config {Array} items 数据项，格式如：[{head: 'text-0', body: 'content-0'}, {head: 'text-1', body: 'content-1'}...]
+ * @plugin fx  手风琴的动画效果
  * @return {baidu.ui.Accordion} Accordion实例
  */
 baidu.ui.Accordion = baidu.ui.createUI(function (options){

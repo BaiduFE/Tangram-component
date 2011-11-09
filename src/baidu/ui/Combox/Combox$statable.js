@@ -8,7 +8,9 @@
 ///import baidu.event.un;
 
 /**
- * 提供enable、disable行为
+ * 状态插件，提供enable、disable行为
+ * @name baidu.ui.Carousel.Combox.Combox$statable
+ * @addon baidu.ui.Carousel.Combox
  */
 baidu.ui.Combox.register(function(me){
  

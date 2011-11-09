@@ -32,7 +32,7 @@
  * @config     {Array}                  range        可拖动的范围，取值min到max之间，例如[30, 80]
  * @config     {Boolean}                disabled     是否禁用
  * @config     {String}                 skin         自定义样式名称前缀
- * @plugin     progressBar              进度条跟随滑块的滑动
+ * @plugin     progressBar              支持进度条跟随滑动
  */
 baidu.ui.Slider = baidu.ui.createUI(function(options){
     var me = this;

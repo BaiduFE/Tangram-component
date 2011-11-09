@@ -18,6 +18,8 @@
 
 /**
  * 为Suggestion提供位置校准功能
+ * @name  baidu.ui.Suggestion.Suggestion$fixWidth
+ * @addon baidu.ui.Suggestion
  * @author berg
  */
 baidu.ui.Suggestion.extend({

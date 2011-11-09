@@ -16,6 +16,8 @@
 
 /**
  *  鼠标hover触发menubar插件
+ * @name baidu.ui.Menubar.Menubar$hover
+ * @addon baidu.ui.Menubar
  */
 baidu.ui.Menubar.extend({
    

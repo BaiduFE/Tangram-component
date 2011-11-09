@@ -9,6 +9,8 @@
 
 /**
  * 为滚动组件增加自动滚动功能
+ * @name baidu.ui.Carousel.Carousel$autoScroll
+ * @addon baidu.ui.Carousel.Carousel
  * @param {Object} options config参数.
  * @config {Boolean} isAutoScroll 是否支持自动滚动，默认支持
  * @config {Number} scrollInterval 以毫秒描述每次滚动的时间间隔
@@ -60,6 +62,9 @@ baidu.ui.Carousel.extend(
     },
     /**
      * 从停止状态开始自动滚动
+	 * @name baidu.ui.Carousel.Carousel$autoScroll.startAutoScroll
+	 * @addon baidu.ui.Carousel.Carousel$autoScroll
+	 * @function 
      */
     startAutoScroll: function(){
         var me = this,
@@ -70,6 +75,9 @@ baidu.ui.Carousel.extend(
     },
     /**
      * 停止当前自动滚动状态
+	 * @name baidu.ui.Carousel.Carousel$autoScroll.stopAutoScroll
+	 * @addon baidu.ui.Carousel.Carousel$autoScroll
+	 * @function 
      */
     stopAutoScroll: function(){
         var me = this;

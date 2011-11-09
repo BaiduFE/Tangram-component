@@ -10,10 +10,9 @@
 ///import baidu.event.un;
 
 /**
- *
- * 键盘支持模块
- * 1. esc 关闭最上层的dialog
- * 2. enter 确认alert和confirm
+ * 键盘支持模块，支持esc关闭最上层的dialog，enter确认alert和confirm
+ * @name baidu.ui.Dialog.Dialog$keyboard
+ * @addon baidu.ui.Dialog
  */
 baidu.extend(baidu.ui.Dialog.prototype,{
     enableKeyboard : true,

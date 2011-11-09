@@ -14,6 +14,8 @@
 
 /**
  * 创建一个鼠标点击触发的menubar
+ * @name baidu.ui.Menubar.Menubar$click
+ * @addon baidu.ui.Menubar
  */
 baidu.ui.Menubar.extend({
     /**

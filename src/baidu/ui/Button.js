@@ -35,7 +35,8 @@
  * @config {Function}           ondisable   当调用button的实例方法disable，使得按钮失效时触发。
  * @config {Function}           onenable    当调用button的实例方法enable，使得按钮有效时触发。
  * @returns {Button}                        Button类
- * @plugin statable             状态行为，为button组件添加事件和样式。
+ * @plugin  capture            使按钮支持capture
+ * @plugin  poll               使按钮支持poll轮询
  * @remark  创建按钮控件时，会自动为控件加上四种状态的style class，分别为正常情况(tangram-button)、鼠标悬停在按钮上(tangram-button-hover)、鼠标按下按钮时(tangram-button-press)、按钮失效时(tangram-button-disable)，用户可自定义样式。
  */
 baidu.ui.Button = baidu.ui.createUI(new Function).extend(

@@ -16,6 +16,11 @@
 
 ///import baidu.event.stop;
 
+/**
+ * 支持单击隐藏显示Tooltip
+ * @name  baidu.ui.Tooltip.Tooltip$title
+ * @addon baidu.ui.Tooltip
+ */
 baidu.ui.Tooltip.register(function(me) {
     
     if (me.type == 'click') {

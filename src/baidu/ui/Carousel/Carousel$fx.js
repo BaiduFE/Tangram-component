@@ -9,6 +9,8 @@
 ///import baidu.object.extend;
 /**
  * 为滚动组件增加动画滚动功能
+ * @name baidu.ui.Carousel.Carousel$fx
+ * @addon baidu.ui.Carousel
  * @param {Object} options config参数.
  * @config {Boolean} enableFx 是否支持动画插件
  * @config {Function} scrollFx 描述组件的动画执行过程，默认是baidu.fx.scrollTo

@@ -30,6 +30,11 @@
  * @param       {Object} options config参数
  * @config      {Object} data 生成表格的数据，格式[{id: "rsid0", content : ["column0", "column1"]}, {id : "rsid0", content : ["column0", "column1"]}], id不是必要，当有选择列时用来定义用户的checkbox的value
  * @config      {Object} columns 各个列的高级定义，格式[{index : 1, width : 100, type : "select"}, {index : 2, width : "100%", enableEdit : true}, {index : 3, width : "200px"}]
+ * @plugin      btn		为翻页功能增加相关按钮
+ * @plugin 		edit	支持单元格编辑
+ * @plugin 		page	支持翻页
+ * @plugin 		select	增加选择列
+ * @plugin 		title	支持列标题
  */
 baidu.ui.Table = baidu.ui.createUI(function(options){
     var me = this;
