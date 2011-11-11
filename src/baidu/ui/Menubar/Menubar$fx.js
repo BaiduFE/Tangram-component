@@ -9,7 +9,7 @@
 
 ///import baidu.dom.g;
 /**
- * 为Menubar增加动画效果
+ * 涓篗enubar澧炲姞鍔ㄧ敾鏁堟灉
  * @name baidu.ui.Menubar.Menubar$fx
  * @addon baidu.ui.Menubar
  */
