@@ -19,7 +19,7 @@
  * 增加列标题
  * @name  baidu.ui.Table.Table$title
  * @addon baidu.ui.Table
- * @param   {Object} optoins config参数
+ * @param   {Object} options config参数
  * @config  {Object} title 在表格头上增加一个行来说明各个表格列的标题，参数格式：['column-1', 'column-2', 'column-3'...]
  */
 baidu.ui.Table.register(function(me){
