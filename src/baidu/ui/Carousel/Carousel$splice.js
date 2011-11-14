@@ -14,7 +14,7 @@
 
 /**
  * 为滚动组件提供动态增加或是删减滚动项功能
- * @name baidu.ui.Carousel.Carousel$
+ * @name baidu.ui.Carousel.Carousel$splice
  * @addon baidu.ui.Carousel
  */
 baidu.ui.Carousel.extend(
@@ -82,8 +82,8 @@ baidu.ui.Carousel.extend(
     },
     /**
      * 将一个字符串的内容插入到索引指定的位置
-	 * @name baidu.ui.Carousel.Carousel$fx.addText
-	 * @addon baidu.ui.Carousel.Carousel$fx
+	 * @name baidu.ui.Carousel.Carousel$splice.addText
+	 * @addon baidu.ui.Carousel.Carousel$splice
 	 * @function 
      * @param {String} content 需要插入项的字符内容
      * @param {Number} index 插入位置
@@ -95,8 +95,8 @@ baidu.ui.Carousel.extend(
     },
     /**
      * 将一个element项的内容插入到索引指定的位置
-	 * @name baidu.ui.Carousel.Carousel$fx.addItem
-	 * @addon baidu.ui.Carousel.Carousel$fx
+	 * @name baidu.ui.Carousel.Carousel$splice.addItem
+	 * @addon baidu.ui.Carousel.Carousel$splice
 	 * @function 
      * @param {HTMLElement} element 需要插入项的元素
      * @param {Number} index 插入位置
@@ -108,8 +108,8 @@ baidu.ui.Carousel.extend(
     },
     /**
      * 移除索引指定的某一项
-	 * @name baidu.ui.Carousel.Carousel$fx.removeItem
-	 * @addon baidu.ui.Carousel.Carousel$fx
+	 * @name baidu.ui.Carousel.Carousel$splice.removeItem
+	 * @addon baidu.ui.Carousel.Carousel$splice
 	 * @function 
      * @param {Number} index 要移除项的索引
      * @return {HTMLElement} 当移除项存在于页面时返回该节点

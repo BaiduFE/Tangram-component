@@ -9,8 +9,8 @@
 
 /**
  * 状态插件，提供enable、disable行为
- * @name baidu.ui.Carousel.Combox.Combox$statable
- * @addon baidu.ui.Carousel.Combox
+ * @name baidu.ui.Combox.Combox$statable
+ * @addon baidu.ui.Combox
  */
 baidu.ui.Combox.register(function(me){
  

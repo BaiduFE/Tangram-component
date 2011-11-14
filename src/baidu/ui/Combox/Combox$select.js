@@ -12,8 +12,8 @@
 
 /**
  * select插件，支持通过select控件的数据创建combox   
- * @name baidu.ui.Carousel.Combox.Combox$select
- * @addon baidu.ui.Carousel.Combox
+ * @name baidu.ui.Combox.Combox$select
+ * @addon baidu.ui.Combox
  * @param   {Object}            [options]   参数对象
  * @config  {Element|String}    select      select对象的id或者element本身
  * @config  {String}            type        启动插件参数，设置为'select'

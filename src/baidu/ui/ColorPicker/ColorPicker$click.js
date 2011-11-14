@@ -14,8 +14,8 @@
 
 /**
  * 支持触发模式为鼠标点击
- * @name baidu.ui.Carousel.ColorPicker.ColorPicker$click
- * @addon baidu.ui.Carousel.ColorPicker
+ * @name baidu.ui.ColorPicker.ColorPicker$click
+ * @addon baidu.ui.ColorPicker
  * @author walter
  */
 baidu.ui.ColorPicker.extend({
