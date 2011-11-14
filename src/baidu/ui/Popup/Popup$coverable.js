@@ -7,7 +7,7 @@
 ///import baidu.ui.behavior.coverable;
 ///import baidu.lang.Class.addEventListeners;
 /**
- * Ö§³Ö±³¾°ÕÚÕÖÑÚ¸Çselect¡¢flash¡¢iframeÔªËØ
+ * æ”¯æŒèƒŒæ™¯é®ç½©æ©ç›–selectã€flashã€iframeå…ƒç´ 
  * @name baidu.ui.Popup.Popup$coverable
  * @addon baidu.ui.Popup
  */
