@@ -18,7 +18,7 @@
 
 /**
  * 支持单击隐藏显示Tooltip
- * @name  baidu.ui.Tooltip.Tooltip$title
+ * @name  baidu.ui.Tooltip.Tooltip$click
  * @addon baidu.ui.Tooltip
  */
 baidu.ui.Tooltip.register(function(me) {

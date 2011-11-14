@@ -38,7 +38,7 @@
  * @param {Function} toggle 开关函数,返回false时不显示
  * @plugin click	支持点击触发
  * @plugin fx		动画效果
- * @plugin hvoer	鼠标hover触发
+ * @plugin hover	鼠标hover触发
  * @plugin icon		菜单支持图标
  */
 baidu.ui.Menubar = baidu.ui.createUI(function(options){
