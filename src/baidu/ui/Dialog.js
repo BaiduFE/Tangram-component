@@ -57,7 +57,7 @@
  * @config    {Function}      ondragstart           draggable模块支持，当拖拽开始时触发
  * @config    {Function}      ondrag                draggable模块支持，拖拽过程中触发
  * @config    {Function}      ondragend             draggable模块支持，拖拽结束时触发
- * @plugin    autoDIspose		支持关闭后自动销毁组建
+ * @plugin    autoDispose		支持关闭后自动销毁组建
  * @plugin    button			Dialog底部按钮
  * @plugin    closeButton		支持关闭按钮
  * @plugin    coverable			支持遮盖页面的任意元素
