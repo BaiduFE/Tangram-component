@@ -10,7 +10,7 @@
 
 /**
  * 关闭后自动销毁插件
- * @name baidu.ui.Dialog.Dialog$Dispose
+ * @name baidu.ui.Dialog.Dialog$autoDispose
  * @addon baidu.ui.Dialog
  */
 
