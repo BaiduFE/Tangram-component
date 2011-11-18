@@ -191,8 +191,8 @@ baidu.ui.Table.extend(
     
     /**
      * 添加行控件
-     * @param {Object} optoins  创建Row所需要的options
-     * @param {Number} index
+     * @param {Object} options  创建Row所需要的options
+     * @param {Number} index	在索引位置后创建Row
      */
     addRow : function(options, index){
         var me = this;
