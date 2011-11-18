@@ -21,11 +21,13 @@
 baidu.ui.ColorPicker.extend({
     /**
      * @param {String} type 默认为click，点击插件触发方式
+	 * @private
      */
     type: 'click',
 
     /**
      * @param {Object} e 事件. body点击事件，点击body关闭菜单
+	 * @private
      */
     bodyClick: function(e) {
         var me = this,

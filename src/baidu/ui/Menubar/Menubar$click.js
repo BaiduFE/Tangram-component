@@ -20,12 +20,14 @@
 baidu.ui.Menubar.extend({
     /**
      * 插件触发方式，默认为点击
+	 * @private
      * @param {String} [options.type = 'click']
      */
     type: 'click',
     
     /**
      * body点击事件，点击body关闭菜单
+	 * @private
      * @param {Object} e 事件
      */
     bodyClick: function(e){

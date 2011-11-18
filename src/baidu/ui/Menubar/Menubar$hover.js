@@ -15,7 +15,7 @@
 ///import baidu.fn.bind;
 
 /**
- *  鼠标hover触发menubar插件
+ * 鼠标hover触发menubar插件
  * @name baidu.ui.Menubar.Menubar$hover
  * @addon baidu.ui.Menubar
  */
@@ -23,24 +23,28 @@ baidu.ui.Menubar.extend({
    
     /**
      * 插件触发方式，默认为点击
+	 * @private
      * @param {String} [options.type = 'hover']
      */
     type: 'hover',
 
     /**
      * 菜单显示延迟时间
+	 * @private
      * @param {Number} [options.showDelay = 100]
      */
     showDelay: 100,
     
     /**
      * 菜单关闭延迟时间
+	 * @private
      * @param {Number} [options.hideDelay = 500]
      */
     hideDelay: 500,
     
     /**
      * 鼠标浮动到target上显示菜单
+	 * @private
      */
     targetHover: function(){
         var me = this;
@@ -52,6 +56,7 @@ baidu.ui.Menubar.extend({
     
     /**
      * 鼠标移出target关闭菜单
+	 * @private
      */
     targetMouseOut: function(){
         var me = this;
@@ -64,6 +69,7 @@ baidu.ui.Menubar.extend({
 	
    /**
      * 清除hideHandler
+	 * @private
      */
     clearHideHandler:function(){
         clearTimeout(this.hideHandler);
