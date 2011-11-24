@@ -38,7 +38,22 @@
 		equal(page.itemCount, 10, 'default itemcount is 10');
 		equal(page.leftItemCount, 4, 'default leftItemCount is 4');
 		ok(page.getMain(), 'get main');
-
+	})
+	
+	test('only one page', function() {
+		expect(2);
+		var options = {
+			beginPage : 1,
+			endPage : 1,
+			currentPage : 1,
+			itemCount : 1,
+			leftItemCount : 0
+		}
+		var page = new baidu.ui.Pager(options);
+		page.render();
+		equal(page.getBody().childNodes.length, 1, 'only 1 page');
+		equal($('.tangram-pager-current',page.getMain()).attr('page'), 1, 'current is 1');
+		page.dispose();
 	})
 
 	test('update', function() {
@@ -113,7 +128,7 @@
 		testSpec('first', 10);
 		testSpec('previous', 24);
 		testSpec('next', 26);
-		testSpec('last', 49);
+		testSpec('last', 50);
 	});
 
 	test("特殊链接自动隐藏规则", 4, function (){
