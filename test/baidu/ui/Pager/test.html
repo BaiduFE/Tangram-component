@@ -1,32 +1,57 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>test pager</title>
-<!--qunit js -->
-<script type="text/javascript" src="../../../tools/jquery-1.3.2.js"></script>
-<script type="text/javascript" src="../../../tools/tools.js"></script>
-<script type="text/javascript" src="../../../tools/testrunner.js"></script>
-<link media="screen" href="../../../tools/testsuite.css" type="text/css" rel="stylesheet" />
-<!--qunit js -->
-<script type="text/javascript" src="../../../../src/loader.js?include=baidu.ui.pager.Pager"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>test pager</title>
+    <script src='../../../../src/import.php?f=baidu.ui.Pager'></script>
+    <link type='text/css' rel='stylesheet' href="http://tangram.baidu.com/demo/baidu_ui_Pager/default.css"/>
 </head>
 <body>
-<h1 id="qunit-header">Pager Test ***Pls don't move mouse during test.***</h1>
-<h2 id="qunit-banner"></h2>
-<h2 id="qunit-userAgent"></h2>
-<ol id="qunit-tests"></ol>
-<div id="box" style="position:absolute; height: 1024px; widows:768px; visibility: hidden;"></div>
-<script type="text/javascript" src="../../../tools/include.js"></script>
-<script type="text/javascript">
-	include({			
-		cases : [
-		 	"test.js"
-		],
-		srcpath : "../../../../src/",
-		srcs : [
-		]
-	});
-</script>
+    <div id="pagerBox1" style="margin:20px;padding:10px;border:1px solid #9cc;"></div>
+    <div id="pagerBox2" style="margin:20px;padding:10px;border:1px solid #9cc;"></div>
+    <div id="pagerBox3" style="margin:20px;padding:10px;border:1px solid #9cc;"></div>
+
+    <script type='text/javascript'>
+        var instance = new baidu.ui.Pager({
+            beginPage: 1, 
+            endPage: 30, 
+            currentPage: 5, 
+            itemCount: 5, 
+            ongotopage: function(obj) { 
+                alert("选择第"+obj.page+"页"); 
+            }, 
+            element: "pagerBox1", 
+            autoRender: true, 
+            leftItemCount: 2
+        });
+    </script>
+    <script type='text/javascript'>
+        var instance = new baidu.ui.Pager({
+            beginPage: 1, 
+            endPage: 1, 
+            currentPage: 1, 
+            itemCount: 5, 
+            ongotopage: function(obj) { 
+                alert("选择第"+obj.page+"页"); 
+            }, 
+            element: "pagerBox2", 
+            autoRender: true, 
+            leftItemCount: 2
+        });
+    </script>
+    <script type='text/javascript'>
+        var instance = new baidu.ui.Pager({
+            beginPage: 1, 
+            endPage: 3, 
+            currentPage: 1, 
+            itemCount: 5, 
+            ongotopage: function(obj) { 
+                alert("选择第"+obj.page+"页"); 
+            }, 
+            element: "pagerBox3", 
+            autoRender: true, 
+            leftItemCount: 2
+        });
+    </script>
 </body>
 </html>
