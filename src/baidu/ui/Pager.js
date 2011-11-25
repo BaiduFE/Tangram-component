@@ -157,7 +157,7 @@ baidu.ui.Pager = baidu.ui.createUI(function (options){
      * @private
      */
     _genBody: function (){
-        var me = this
+        var me = this,
             begin = me.beginPage,
             end = me.endPage,
             current = me.currentPage,
