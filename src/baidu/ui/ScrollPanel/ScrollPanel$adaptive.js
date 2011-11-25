@@ -56,6 +56,7 @@ baidu.ui.ScrollPanel.extend({
         var me = this,
             main = me.getMain(),
             container = me.getContainer(),
+            defaultVisible = {y: me._yVisible, x: me._xVisible},
             _bounds = {
                 w: bounds && baidu.lang.isNumber(bounds.width) ? bounds.width : container.clientWidth,
                 h: bounds && baidu.lang.isNumber(bounds.height) ? bounds.height : container.clientHeight
@@ -65,6 +66,8 @@ baidu.ui.ScrollPanel.extend({
         container.style.height = _bounds.h + 'px';
         main.style.width = container.offsetWidth + 'px';
         main.style.height = container.offsetHeight + 'px';
-        me.setVisible(true);
+        me._yVisible = defaultVisible.y;
+        me._xVisible = defaultVisible.x;
+        me._smartVisible();
     }
 });
