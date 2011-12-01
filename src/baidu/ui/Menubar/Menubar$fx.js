@@ -8,7 +8,11 @@
 ///import baidu.fx.collapse;
 
 ///import baidu.dom.g;
-
+/**
+ * 为Menubar增加动画效果
+ * @name baidu.ui.Menubar.Menubar$fx
+ * @addon baidu.ui.Menubar
+ */
 baidu.ui.Menubar.extend({
     enableFx:true,
     showFx : baidu.fx.expand,

@@ -7,7 +7,11 @@
 
 ///import baidu.ui.Suggestion;
 ///import baidu.ui.behavior.coverable;
-
+/**
+ * 支持背景遮罩掩盖select、flash、iframe元素
+ * @name baidu.ui.Suggestion.Suggestion$coverable
+ * @addon baidu.ui.Suggestion
+ */
 baidu.extend(baidu.ui.Suggestion.prototype, {
     coverable: true,
     coverableOptions: {}

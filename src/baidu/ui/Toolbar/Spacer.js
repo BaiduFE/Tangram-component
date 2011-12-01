@@ -26,21 +26,25 @@ baidu.ui.Toolbar.Spacer = baidu.ui.createUI(function(options) {
 {
     /**
      * statable
+     * @private
      */
     statable: false,
 
     /**
      * uiType
+     * @private
      */
     uiType: 'toolbar-spacer',
 
     /**
      * 默认宽度
+     * @private
      */
     width: '10px',
 
     /**
      * html 模板
+     * @private
      */
     tplBody: '<div #{style} id="#{id}" class="#{class}"></div>',
 
@@ -61,6 +65,7 @@ baidu.ui.Toolbar.Spacer = baidu.ui.createUI(function(options) {
     /**
      * 绘制item
      * @param {String|HTMLDom} [container=this.container] Item容器.
+     * @private
      */
     render: function(container) {
         var me = this;

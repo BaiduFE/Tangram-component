@@ -6,7 +6,11 @@
 ///import baidu.ui.Popup;
 ///import baidu.ui.behavior.coverable;
 ///import baidu.lang.Class.addEventListeners;
-
+/**
+ * 支持背景遮罩掩盖select、flash、iframe元素
+ * @name baidu.ui.Popup.Popup$coverable
+ * @addon baidu.ui.Popup
+ */
 baidu.extend(baidu.ui.Popup.prototype,{
     coverable: true,
     coverableOptions: {}

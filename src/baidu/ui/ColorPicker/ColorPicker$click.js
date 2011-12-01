@@ -13,20 +13,21 @@
 ///import baidu.fn.bind;
 
 /**
- * 创建一个鼠标点击触发的colorPicker
- * @name baidu.ui.ColorPicker
+ * 支持触发模式为鼠标点击
+ * @name baidu.ui.ColorPicker.ColorPicker$click
+ * @addon baidu.ui.ColorPicker
  * @author walter
  */
 baidu.ui.ColorPicker.extend({
     /**
-     * 插件触发方式，默认为点击
-     * @param {String} [options.type = 'click'].
+     * @param {String} type 默认为click，点击插件触发方式
+	 * @private
      */
     type: 'click',
 
     /**
-     * body点击事件，点击body关闭菜单
-     * @param {Object} e 事件.
+     * @param {Object} e 事件. body点击事件，点击body关闭菜单
+	 * @private
      */
     bodyClick: function(e) {
         var me = this,

@@ -13,7 +13,9 @@
 
 /**
  * 为Dialog添加拖拽功能
- * @param {Boolean} draggable 是否启用draggable
+ * @name baidu.ui.Dialog.Dialog$draggable
+ * @addon baidu.ui.Dialog
+ * @param {Boolean} draggable 是否启用draggable，默认为true
  * */
 baidu.ui.Dialog.prototype.draggable = true;
 

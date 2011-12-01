@@ -12,7 +12,11 @@
 ///import baidu.lang.isArray;
 ///import baidu.array.each;
 ///import baidu.event.stop;
-
+/**
+ * 支持鼠标滑过隐藏显示
+ * @name  baidu.ui.Tooltip.Tooltip$hover
+ * @addon baidu.ui.Tooltip
+ */
 baidu.ui.Tooltip.extend({
     hideDelay: 500
 });

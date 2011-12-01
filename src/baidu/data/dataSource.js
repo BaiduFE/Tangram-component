@@ -10,6 +10,7 @@
 ///import baidu.data;
 
 /**
- * @namespace 定义命名空间
+ * 数据源类
+ * @namespace baidu.data.dataSource
  */
 baidu.data.dataSource = baidu.dataSource = baidu.data.dataSource || {};

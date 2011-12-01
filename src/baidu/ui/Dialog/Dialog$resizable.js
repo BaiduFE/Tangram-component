@@ -10,11 +10,12 @@
 
 /**
  * 为Dialog添加缩放功能
- * 可选参数
- * @param {Number} minWidth 最小宽度.
- * @param {Number} minHeight 最小高度.
- * @param {Boolean} resizable 是否启用resizable.
- * @direction {Array} direction 可已经resize的方向，默认为["s","e","se"]3方向
+ * @name baidu.ui.Dialog.Dialog$resizable
+ * @addon baidu.ui.Dialog
+ * @param {Number} minWidth 可选，最小宽度.
+ * @param {Number} minHeight 可选，最小高度.
+ * @param {Boolean} resizable 可选，是否启用resizable.
+ * @param {Array} direction 可选，允许resize的方向，默认为["s","e","se"]3方向
  */
 baidu.extend(baidu.ui.Dialog.prototype, {
     resizable: true,

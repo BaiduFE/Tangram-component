@@ -11,8 +11,9 @@
 ///import baidu.event.stopPropagation;
 
 /**
- * addon
- * 关闭按钮
+  * 支持关闭按钮插件
+ * @name baidu.ui.Dialog.Dialog$closeButton
+ * @addon baidu.ui.Dialog
  */
 
 baidu.extend(baidu.ui.Dialog.prototype,{
