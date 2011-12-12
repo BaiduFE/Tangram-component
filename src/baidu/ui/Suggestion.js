@@ -230,14 +230,11 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
         
         //如果当前有选中的条目，将其放到input中
         if(me.currentIndex >= 0 && me.holdHighLight){
-            console.log(me.currentIndex);
-            console.log(me.currentData);
             var currentData = me.currentData,
                 j = -1;
             for(var i=0, len=currentData.length; i<len; i++){
                 if(typeof currentData[i].disable == 'undefined' || currentData[i].disable == false){
                     j++;
-                    console.log(j +  "    " + i);
                     if(j == me.currentIndex)
                         me.pick(i);
                 }
