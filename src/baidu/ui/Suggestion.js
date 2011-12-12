@@ -48,6 +48,10 @@
  * @config {String}   prependHTML      写在下拉框列表前面的html
  * @config {String}   appendHTML       写在下拉框列表后面的html
  * @config {Boolean}  holdHighLight    鼠标移出待选项区域后，是否保持高亮元素的状态
+ * @plugin coverable  支持背景遮罩
+ * @plugin data		  提供数据内存缓存
+ * @plugin fixWidth	  提供位置校准功能
+ * @plugin input	  支持快捷键操作
  */
 baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
     var me = this;

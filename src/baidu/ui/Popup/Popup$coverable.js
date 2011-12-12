@@ -6,7 +6,11 @@
 ///import baidu.ui.Popup;
 ///import baidu.ui.behavior.coverable;
 ///import baidu.lang.Class.addEventListeners;
-
+/**
+ * Ö§³Ö±³¾°ÕÚÕÖÑÚ¸Çselect¡¢flash¡¢iframeÔªËØ
+ * @name baidu.ui.Popup.Popup$coverable
+ * @addon baidu.ui.Popup
+ */
 baidu.extend(baidu.ui.Popup.prototype,{
     coverable: true,
     coverableOptions: {}

@@ -61,6 +61,7 @@
  * @config {Function}           onLoginFailure        登录失败回调 TODO 默认处理函数, json.error
  * @config {Function}           onRegisterSuccess     注册成功回调函数
  * @config {Function}           onRegisterFailure     注册失败回调函数
+ * @plugin register				应用实现tab:login
  *
  */
 

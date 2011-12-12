@@ -9,6 +9,8 @@
 ///import baidu.dom.children;
 /**
  * 为滚动组件增加无限循环滚动功能
+ * @name baidu.ui.Carousel.Carousel$cycle
+ * @addon baidu.ui.Carousel
  * @param {Object} options config参数.
  * @config {Boolean} isCycle 是否支持循环滚动，默认支持
  * @author linlingyu

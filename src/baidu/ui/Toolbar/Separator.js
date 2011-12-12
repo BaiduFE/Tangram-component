@@ -22,16 +22,19 @@ baidu.ui.Toolbar.Separator = baidu.ui.createUI(function(options) {
 {
     /**
      * statable
+     * @private
      */
     statable: false,
 
     /**
      * uiType
+     * @private
      */
     uiType: 'toolbar-separator',
 
     /**
      * 模板
+	 * @private
      */
     tplMain: '<span id="#{id}" class="#{class}" style="display:block"></span>',
 
@@ -51,6 +54,7 @@ baidu.ui.Toolbar.Separator = baidu.ui.createUI(function(options) {
 
     /**
      * 绘制控件
+     * @private
      * @return void.
      */
     render: function(container) {

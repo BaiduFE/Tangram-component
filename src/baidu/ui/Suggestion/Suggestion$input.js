@@ -8,7 +8,11 @@
 ///import baidu.dom.g;
 ///import baidu.event.on;
 ///import baidu.event.un;
-
+/**
+ * 支持快捷键操作，如上下，回车等
+ * @name  baidu.ui.Suggestion.Suggestion$input
+ * @addon baidu.ui.Suggestion
+ */
 baidu.ui.Suggestion.register(function(me) {
     var target,
 
