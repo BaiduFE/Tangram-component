@@ -8,6 +8,12 @@
 ///import baidu.lang.isString;
 ///import baidu.object.extend;
 
+/**
+ * 关闭后自动销毁插件
+ * @name baidu.ui.Dialog.Dialog$autoDispose
+ * @addon baidu.ui.Dialog
+ */
+
 baidu.extend(baidu.ui.Dialog.prototype,{
     autoDispose: true
 });

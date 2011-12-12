@@ -10,12 +10,11 @@
 
 /**
  * 创建关闭按钮
+ * @param {String} headContent  内容
+ * @name  baidu.ui.Tooltip.Tooltip$close
+ * @addon baidu.ui.Tooltip
  */
 baidu.ui.Tooltip.extend({
-    /**
-     * 标题内容
-     * @param {String} [options.headContent].
-     */
     headContent: '',
     tplhead: '<div class="#{headClass}" id="#{id}">#{headContent}</div>'
 });

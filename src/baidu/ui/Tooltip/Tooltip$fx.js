@@ -9,6 +9,12 @@
 
 ///import baidu.dom.g;
 
+/**
+ * 为Tooltip添加动画效果支持
+ * @name  baidu.ui.Tooltip.Tooltip$fx
+ * @addon baidu.ui.Tooltip
+ */
+
 baidu.ui.Tooltip.extend({
 	//是否使用效果,默认开启
 	enableFx: true,
@@ -20,9 +26,7 @@ baidu.ui.Tooltip.extend({
 	hideFxOptions: {duration: 500}
 });
 
-/**
- * 为Tooltip添加效果支持
- */
+
 baidu.ui.Tooltip.register(function(me) {
 	if (me.enableFx) {
 	

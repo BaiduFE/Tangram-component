@@ -6,7 +6,11 @@
 ///import baidu.ui.Dialog;
 ///import baidu.ui.Modal;
 ///import baidu.ui.Modal.Modal$coverable;
-
+/**
+ *支持遮罩
+ * @name baidu.ui.Dialog.Dialog$modal
+ * @addon baidu.ui.Dialog
+ */
 baidu.extend(baidu.ui.Dialog.prototype, {
     modal : true,
     modalColor : "#000000",

@@ -11,13 +11,14 @@
 ///import baidu.ui.Button;
 ///import baidu.event.stopPropagation;
 /**
- * 应用实现 tab:login&&register 备注：涉及passport的API接口参数可以参见http://fe.baidu.com/doc/zhengxin/passport/openapi_help.text
- * @function
+ * 应用实现tab:login&&register备注：涉及passport的API接口参数可以参见http://fe.baidu.com/doc/zhengxin/passport/openapi_help.text
+ * @name baidu.ui.Login.Login$register
+ * @addon baidu.ui.Login
  * @config {String}             regURL                注册地址,无须改动
- * @config {String}             regJumpURL            注册跳转地址,必须，为提交表单跨域使用，可前往 http://fe.baidu.com/~zhengxin/passport/jump.html  下载，或者线上
+ * @config {String}             regJumpURL            注册跳转地址,必须，为提交表单跨域使用，可前往 http://fe.baidu.com/~zhengxin/passport/jump.html下载，或者线上
  * @config {Function}           onRegisterSuccess     注册成功回调函数
  * @config {Function}           onRegisterFailure     注册失败回调函数
- * @config {String}             defaultStatus         弹出时初始状态(登录或注册),取值 ['login','reg'],默认为 login
+ * @config {String}             defaultStatus         弹出时初始状态(登录或注册),取值['login','reg'],默认为login
  */ 
 baidu.extend(baidu.ui.Login.prototype,{
 

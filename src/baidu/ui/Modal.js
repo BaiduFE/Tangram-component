@@ -46,6 +46,7 @@
  * 为控件增加遮罩.
  * @class Modal类
  * @grammar new baidu.ui.Modal()
+ * @plugin coverable 支持背景遮罩
  */
 baidu.ui.Modal = baidu.ui.createUI(function(options) {
     var me = this,

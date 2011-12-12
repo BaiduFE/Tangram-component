@@ -247,7 +247,7 @@ baidu.ui.Tree.TreeNode.prototype =
     },
     /**
      * 将已有节点添加到目标节点中，成为这个目标节点的子节点。
-     * @param : parentNode
+     * @param {TreeNode} parentNode 节点对象
      */
     appendTo: function(parentNode) {
         var me = this;
@@ -257,7 +257,7 @@ baidu.ui.Tree.TreeNode.prototype =
     },
     /**
      * 将此节点移动至一个目标节点,成为这个目标节点的next节点
-     * @param {TreeNode} 移动至目标节点
+     * @param {TreeNode}  treeNode 移动至目标节点
      */
     moveTo: function(treeNode) {
         var me = this,
@@ -307,14 +307,9 @@ baidu.ui.Tree.TreeNode.prototype =
     },
 
     /**
-     * 新增一个子节点
-     * 1.先判断子节点是否被渲染过，如果渲染过，就将子节点append到自己subNodes容器里
-     *   否则就inertHTML的子节点的getString
-     * 2.对parentNode与childNodes进行变更。
-     * 3.更新treeNode与tree的update
-     * @param {TreeNode} 需要加入的节点(分为已经渲染的节点和为被渲染的节点)
-     *                  通过treeNode._getContainer()返回值来判断是否被渲染.
-     * @param {index}  此节点做为 节点集合的[index+1]的值
+     * 新增一个子节点，1.先判断子节点是否被渲染过，如果渲染过，就将子节点append到自己subNodes容器里，否则就inertHTML的子节点的getString，2.对parentNode与childNodes进行变更， 3.更新treeNode与tree的update。
+     * @param  {TreeNode}  treeNode 需要加入的节点(分为已经渲染的节点和为被渲染的节点)，通过treeNode._getContainer()返回值来判断是否被渲染.
+     * @param  {Number}  index 此节点做为 节点集合的[index+1]的值
      * @return {TreeNode} treeNode 返回被新增的child
     */
     appendChild: function(treeNode,index) {
