@@ -21,6 +21,7 @@
  * @config  {Number}    dimension   滚动条滑块占全部内容的百分比，定义域(0, 100)
  * @config  {Number}    step        用户自定义当点击滚动按钮时每次滚动百分比距离，定义域(0, 100)
  * @config  {Function}  onscroll    当滚动时触发该事件，function(evt){}，evt.value可以取得滚动的百分比
+ * @plugin  container	支持绑定一个容器
  * @author linlingyu
  */
 baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {

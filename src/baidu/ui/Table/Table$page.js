@@ -13,6 +13,8 @@
 ///import baidu.dom.g;
 /**
  * 表格翻页的插件
+ * @name  baidu.ui.Table.Table$page
+ * @addon baidu.ui.Table
  * @param   {Object} options config参数
  * @config  {Number} pageSize 一页显多少行的数字表示形式
  */
@@ -35,8 +37,10 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	},
 	/**
 	 * 直接翻到索引指定的页数
+	 * @name  baidu.ui.Table.Table$page.gotoPage
+	 * @addon baidu.ui.Table.Table$page
+	 * @function
 	 * @param {Object} index
-	 * @memberOf {TypeName} 
 	 */
 	gotoPage : function(index){
 		var me = this,
@@ -66,7 +70,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 翻到上一页
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$page.prevPage
+	 * @addon baidu.ui.Table.Table$page
+	 * @function
 	 */
 	prevPage : function(){
 		var me = this;
@@ -75,7 +81,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 翻到下一页
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$page.nextPage
+	 * @addon baidu.ui.Table.Table$page
+	 * @function
 	 */
 	nextPage : function(){
 		var me = this;
@@ -84,7 +92,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 取得总记录数
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$page.getTotalCount
+	 * @addon baidu.ui.Table.Table$page
+	 * @function
 	 * @return {number} 
 	 */
 	getTotalCount : function(){
@@ -93,7 +103,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 取得总页数
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$page.getTotalPage
+	 * @addon baidu.ui.Table.Table$page
+	 * @function
 	 * @return {number} 
 	 */
 	getTotalPage : function(){
@@ -104,7 +116,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 取得当前页数
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$page.getCurrentPage
+	 * @addon baidu.ui.Table.Table$page
+	 * @function
 	 * @return {number} 
 	 */
 	getCurrentPage : function(){
@@ -115,7 +129,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	 * 新增一个行，
 	 * @param {Object} options 格式同table的addRow
 	 * @param {Number} index 在索引的行之前插入，可选项，默认值是在最后插入
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$page.addRow
+	 * @addon baidu.ui.Table.Table$page
+	 * @function
 	 */
 	addRow : function(options, index){
 		var me = this,
@@ -146,7 +162,8 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	/**
 	 * 移除一个行
 	 * @param {Object} index 需要移除的行的索引
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$page.removeRow
+	 * @addon baidu.ui.Table.Table$page
 	 */
 	removeRow : function(index){
 		var me = this,

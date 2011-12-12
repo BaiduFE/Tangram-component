@@ -53,7 +53,7 @@
  * @config    {Function}           ondragstart           draggable模块支持，当拖拽开始时触发
  * @config    {Function}           ondrag                draggable模块支持，拖拽过程中触发
  * @config    {Function}           ondragend             draggable模块支持，拖拽结束时触发
- * @plugin    smartCover                                 智能遮罩
+ * @plugin 	  coverable 		   支持背景遮罩
  * @remark
  * @return {baidu.ui.Popup}                                    Popup类
  */

@@ -25,7 +25,7 @@
  * @param {Object} options 配置.
  * @config {Number} gridSize 一行显示的颜色块个数，默认8.
  * @config {Function} onchosen 颜色选择事件.
- * @plugin click 创建一个鼠标点击触发colorPicker的插件
+ * @plugin click 支持触发模式为鼠标点击
  * @plugin more 弹出调色板插件
  * @author walter
  */

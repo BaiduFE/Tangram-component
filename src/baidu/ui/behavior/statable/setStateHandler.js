@@ -34,6 +34,7 @@ baidu.extend(baidu.ui.behavior.statable, {
      * @param {Object} group 状态类型，同一类型的相同状态会被加上相同的css
      * @param {Object} key 索引，在同一类中的索引
      * @memberOf {TypeName}
+	 * @private
      * @return {Object} 格式：{evntName0 : handler0, evntName1 : handler1}
      */
     setStateHandler : function(element, group, key){

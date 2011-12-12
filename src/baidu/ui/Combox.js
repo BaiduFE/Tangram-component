@@ -44,7 +44,7 @@
  * @config {Function}             onmouseout       离开时触发
  * @config {Function}             onmousedown      鼠标按下时触发
  * @config {Function}             onmouseup        鼠标抬起时触发
- * @plugin statable 状态插件
+ * @plugin statable 状态插件，提供enable、disable行为
  * @plugin select   通过select控件的数据创建combox     
  */
 baidu.ui.Combox = baidu.ui.createUI(function (options){

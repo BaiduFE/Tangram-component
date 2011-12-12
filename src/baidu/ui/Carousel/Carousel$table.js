@@ -13,7 +13,9 @@
 ///import baidu.object.extend;
 
 /**
- * 
+ * 支持在一个滚动项中放多个图片或是其它文字内容
+ * @name baidu.ui.Carousel.Carousel$table
+ * @addon baidu.ui.Carousel.Carousel
  * @param {Object} options config参数.
  * @config {Boolean} supportTable 是否支持表格项，默认支持
  * @config {Object} gridLayout 描述一个滚动项的内容是以多行多列的数据形式，例如：{row:3, col:2}
@@ -60,6 +62,8 @@ baidu.ui.Carousel.extend(
     },
     /**
      * 在指定索引处插入一个新的多行多列表格
+	 * @name baidu.ui.Carousel.Carousel$table.addTableItem
+	 * @addon baidu.ui.Carousel.Carousel$table
      * @param {Object} data 需要插入的数据（一维数组），格式：[{content: 'col-0'}, {content: 'col-1'}, {content: 'col-2'}....]
      * @param {Number} index 在指定的索引处插入，默认在末端插入
      */
@@ -72,6 +76,8 @@ baidu.ui.Carousel.extend(
     },
     /**
      * 移除由索引指定的项
+	 * @name baidu.ui.Carousel.Carousel$table.removeTableItem
+	 * @addon baidu.ui.Carousel.Carousel$table
      * @param {Number} index 需要移除的索引项
      * @return {HTMLElement} 被移除的表格对象，不存在该对象或不存在于当前页面的返回null
      */
@@ -84,6 +90,8 @@ baidu.ui.Carousel.extend(
     },
     /**
      * 根据索引取得表格
+	 * @name baidu.ui.Carousel.Carousel$table.getTable
+	 * @addon baidu.ui.Carousel.Carousel$table
      * @param {Number} index 索引
      * @return {baidu.ui.Table} 该索引对应的表格对象，不存在该表格对象的返回null
      */

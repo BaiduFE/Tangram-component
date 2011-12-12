@@ -7,7 +7,11 @@
 
 ///import baidu.ui.Suggestion;
 ///import baidu.ui.behavior.coverable;
-
+/**
+ * Ö§³Ö±³¾°ÕÚÕÖÑÚ¸Çselect¡¢flash¡¢iframeÔªËØ
+ * @name baidu.ui.Suggestion.Suggestion$coverable
+ * @addon baidu.ui.Suggestion
+ */
 baidu.extend(baidu.ui.Suggestion.prototype, {
     coverable: true,
     coverableOptions: {}

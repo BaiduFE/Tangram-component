@@ -10,6 +10,8 @@
 
 /**
  * 使按钮支持capture，实现在按钮上点击并保持鼠标按着状态拖离鼠标，请在构造函数的options中定义capture参数为true来激活该状态
+ * @name baidu.ui.Button.Button$capture
+ * @addon baidu.ui.Button
  * @class
  * @param {Object} options options参数.
  * @config {Boolean} capture 当为true时表示需要使按钮是一个capture的按钮.

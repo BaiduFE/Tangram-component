@@ -7,8 +7,8 @@
 ///import baidu.string.format;
 /**
  * 为滚动组件添加控制按钮插件
- * @name baidu.ui.Carousel
- * @class
+ * @name baidu.ui.Carousel.Carousel$btn
+ * @addon baidu.ui.Carousel
  * @param {Object} options config参数.
  * @config {Boolean} showButton 是否显示按钮，默认显示
  * @config {Object} btnLabel 设置按钮的文字描述，参考值：{prev: 'left', next: 'right'}

@@ -9,7 +9,11 @@
 ///import baidu.browser.isWebkit;
 ///import baidu.browser.isGecko;
 ///import baidu.lang.Class.addEventListeners;
-
+/**
+ * Ö§³Ö±³¾°ÕÚÕÖÑÚ¸Çselect¡¢flash¡¢iframeÔªËØ
+ * @name baidu.ui.Modal.Modal$coverable
+ * @addon baidu.ui.Modal
+ */
 baidu.extend(baidu.ui.Modal.prototype,{
     coverable: true,
     coverableOptions: {}

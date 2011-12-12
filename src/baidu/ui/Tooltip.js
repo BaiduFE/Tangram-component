@@ -41,7 +41,10 @@
  * @config      {Function}        onclose         （可选）关闭tooltip时触发。
  * @config      {Function}        onbeforeopen    （可选）打开tooltip前触发。
  * @config      {Function}        onbeforeclose   （可选）关闭tooltip前触发。
- * @plugin      fx                Tooltip的展现和消失效果支持。
+ * @plugin      click				支持单击隐藏显示
+ * @plugin      close				支持关闭按钮
+ * @plugin      fx					动画效果
+ * @plugin      hover				支持鼠标滑过隐藏显示
  * @return     {baidu.ui.Tooltip}        Tooltip实例
  */
 
