@@ -157,31 +157,30 @@ baidu.ui.Pager = baidu.ui.createUI(function (options){
      * @private
      */
     _genBody: function (){
-        var me = this;
-        var begin = me.beginPage;
-        var end = me.endPage;
-        var current = me.currentPage;
-        // 处理范围小于显示数量的情况
-        var numlist = Math.min(end - begin, me.itemCount);
-        // 处理当前页面在范围的两端的情况
-        var leftcnt = Math.min(current - begin, me.leftItemCount);
-        leftcnt = Math.max(numlist - (end - current), leftcnt);
-        var startPage = current - leftcnt;
-        // 生成特殊链接
-        var pageMap = {
-            first: begin,
-            last: end - 1,
-            previous: current - 1,
-            next: current + 1
-        };
-        var spec = {};
+        var me = this,
+            begin = me.beginPage,
+            end = me.endPage,
+            current = me.currentPage,
+            numlist = Math.min( Math.max(end - begin + 1, 1), me.itemCount),  // 处理范围小于显示数量的情况
+            leftcnt = Math.min(current - begin, me.leftItemCount), // 处理当前页面在范围的两端的情况
+            leftcnt = Math.max(numlist - (end + 1 - current), leftcnt),
+            startPage = current - leftcnt,
+            pageMap = {
+                first: begin,
+                last: end,
+                previous: current - 1,
+                next: current + 1
+            }, // 生成特殊链接
+            spec = {};
+
         baidu.object.each(pageMap, function (s, k){
             spec[k] = me._genItem(s, k);
         });
+
         spec.previous = pageMap.previous < begin ? '' : spec.previous;
-        spec.next = pageMap.next >= end ? '' : spec.next;
+        spec.next = pageMap.next > end ? '' : spec.next;
         spec.first = startPage == begin ? '' : spec.first;
-        spec.last = startPage + numlist >= end - 1 ? '' : spec.last;
+        spec.last = startPage + numlist > end ? '' : spec.last;
         // 生成常规链接
         var buff = [];
         for (var i=0; i<numlist; i++) {
