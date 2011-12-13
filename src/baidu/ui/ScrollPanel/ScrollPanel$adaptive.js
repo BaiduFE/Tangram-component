@@ -9,8 +9,11 @@
 
 /**
  * 为滚动面板增加自动适应功能
+ * @name baidu.ui.ScrollPanel.ScrollPanel$poll
+ * @addon baidu.ui.ScrollPanel
  * @param {Object} options config参数.
  * @config {Boolean} adaptive 是否支持当滚动容器大小发生变化时自适应滚动面板，默认支持
+ * @author linlingyu
  */
 baidu.ui.ScrollPanel.register(function(me){
     if(!me.adaptive){return;}
@@ -50,6 +53,9 @@ baidu.ui.ScrollPanel.extend({
     
     /**
      * 根据滚动容器的大小来重新刷新滚动条面板的外观
+     * @name baidu.ui.ScrollPanel.ScrollPanel$adaptive.flushBounds
+     * @addon baidu.ui.ScrollPanel.ScrollPanel$adaptive
+     * @function
      * @param {Object} bounds 给予一个滚动容器的大小变化值，例如：{width: 320, height:240}，该参数是可选，如果给出该参数，滚动容器将以该参数来重新设置，如果不给出该参数，滚动条的外观将以当时滚动容器的大小来自适应。
      */
     flushBounds: function(bounds){
