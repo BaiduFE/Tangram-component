@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
@@ -9,7 +9,7 @@
 
 ///import baidu.dom.g;
 /**
- * ÎªMenubarÔö¼Ó¶¯»­Ğ§¹û
+ * ä¸ºMenubarå¢åŠ åŠ¨ç”»æ•ˆæœ
  * @name baidu.ui.Menubar.Menubar$fx
  * @addon baidu.ui.Menubar
  */

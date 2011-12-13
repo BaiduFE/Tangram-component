@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
@@ -10,7 +10,7 @@
 ///import baidu.browser.isGecko;
 ///import baidu.lang.Class.addEventListeners;
 /**
- * Ö§³Ö±³¾°ÕÚÕÖÑÚ¸Çselect¡¢flash¡¢iframeÔªËØ
+ * æ”¯æŒèƒŒæ™¯é®ç½©æ©ç›–selectã€flashã€iframeå…ƒç´ 
  * @name baidu.ui.Modal.Modal$coverable
  * @addon baidu.ui.Modal
  */

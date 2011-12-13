@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
@@ -7,7 +7,7 @@
 ///import baidu.ui.behavior.coverable;
 ///import baidu.lang.Class.addEventListeners;
 /**
- * Ö§³ÖÕÚ¸ÇÒ³ÃæµÄÈÎÒâÔªËØ
+ * æ”¯æŒé®ç›–é¡µé¢çš„ä»»æ„å…ƒç´ 
  * @name baidu.ui.Dialog.Dialog$coverable
  * @addon baidu.ui.Dialog
  */
