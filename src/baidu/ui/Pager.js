@@ -22,7 +22,7 @@
  * @grammar new baidu.ui.Pager(option)
  * @param     {Object}            [options]         更新选项，若选项值不符合规则，则此次更新不予更新任何选项
  * @config    {Number}            beginPage         页码范围：起始页码，默认值1。
- * @config    {Number}            endPage           页码范围：最后页码+1，必须大于起始页码，默认值100。
+ * @config    {Number}            endPage           页码范围：最后页码，大于或者等于起始页码，默认值100。
  * @config    {Number}            currentPage       必须在页码范围内，若未指定currentPage且当前页码已超出页码范围，则会自动将currentPage更新到beginPage。
  * @config    {Number}            itemCount         默认显示多少个页面的链接（不包括“首页”等特殊链接），默认值10。
  * @config    {Number}            leftItemCount     当前页面链接在页面链接列表中的默认位置，必须小于itemCount，默认值4。

@@ -229,15 +229,23 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
                         || [];
                 return matcher[1] == 'mozilla' ? 'DOMMouseScroll' : 'mousewheel';
             },
-            entry = {
+            entry = me._mouseWheelEvent = {
                 target: target,
                 evtName: getEvtName(),
                 handler: baidu.fn.bind('_onMouseWheelHandler', me)
             };
         baidu.event.on(entry.target, entry.evtName, entry.handler);
-        me.addEventListener('dispose', function() {
-            baidu.event.un(entry.target, entry.evtName, entry.handler);
-        });
+    },
+    
+    /**
+     * 对已经注册了滚轮事件的容器进行解除.
+     * @private
+     */
+    _cancelMouseWheelEvt: function(){
+        var entry = this._mouseWheelEvent;
+        if(!entry){return;}
+        baidu.event.un(entry.target, entry.evtName, entry.handler);
+        this._mouseWheelEvent = null;
     },
 
     /**
@@ -282,6 +290,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     dispose: function() {
         var me = this;
         me.dispatchEvent('dispose');
+        me._cancelMouseWheelEvt();
         me._prev.dispose();
         me._thumbButton.dispose();
         me._slider.dispose();
