@@ -19,25 +19,25 @@
  * @grammar baidu.data.storage
  * @return {baidu.data.storage}
  */
-baidu.data.storage = (function(){
+baidu.data.storage = (function() {
     var _guid = baidu.lang.guid(),
         _status = {//状态说明
             SUCCESS: 0,
             FAILURE: 1,
             OVERFLOW: 2
         };
-    function _getKey(key){
+    function _getKey(key) {
         //escape spaces in name，单下划线替换为双下划线，空格替换为_s
         return key.replace(/[_\s]/g, function(matcher) {
             return matcher == '_' ? '__' : '_s';
         });
     }
-    
-    function _getElement(){
+
+    function _getElement() {
         return baidu.dom.g(_guid + '-storage');
     }
-    
-    function _getInstance(){
+
+    function _getInstance() {
         var _storage;
         if (window.ActiveXObject && baidu.ie.browser < 9) { //IE9不再支持userData，暂时采用版本判断的临时方法解决。by xiadengping
             _storage = _createUserData();
@@ -48,13 +48,13 @@ baidu.data.storage = (function(){
         }
         return _storage;
     }
-    
+
     /**
      * 将userData进行包装并返回一个只包含三个方法的对象
      * @return {Object} 一个对象，包括set, get, del接口.
      * @private
      */
-    function _createUserData(){
+    function _createUserData() {
         baidu.dom.insertHTML(document.body,
             'beforeEnd',
             baidu.string.format('<div id="#{id}" style="display:none;"></div>',
@@ -117,13 +117,13 @@ baidu.data.storage = (function(){
             }
         };
     }
-    
+
     /**
      * 将localstorage进行包装并返回一个只包含三个方法的对象
      * @return {Object} 一个对象，包括set, get, del接口.
      * @private
      */
-    function _createLocalStorage(){
+    function _createLocalStorage() {
         return {
 //            size: 10 * 1024 * 1024,
             set: function(key, value, callback, options) {
@@ -157,7 +157,7 @@ baidu.data.storage = (function(){
                     if (new Date(time).getTime() > new Date().getTime()
                         || time == 0) {
                         val = val.substring(index + 1, val.length);
-                    }else{
+                    }else {
                         val = null;
                         status = _status.FAILURE;
                         this.del(key);
@@ -188,13 +188,13 @@ baidu.data.storage = (function(){
             }
         };
     }
-    
+
     /**
      * 将baidu.cookie进行包装并返回一个只包含三个方法的对象
      * @return {Object} 一个对象，包括set, get, del接口.
      * @private
      */
-    function _createCookie(){
+    function _createCookie() {
         return {
 //            size: 4 * 1024,
             set: function(key, value, callback, options) {
@@ -214,8 +214,8 @@ baidu.data.storage = (function(){
             }
         };
     }
-    
-    
+
+
     return /**@lends baidu.data.storage.prototype*/{
         /**
          * 将一个键值对存入到本地存储中
@@ -227,12 +227,12 @@ baidu.data.storage = (function(){
          * @param {Object} options config参数.
          * @config {Date|Number} expires 设置一个过期时间，值的类型必须是一个Date对象或是一个毫秒数
          */
-        set: function(key, value, callback, options){
+        set: function(key, value, callback, options) {
             var me = this;
             !me._storage && (me._storage = _getInstance());
             me._storage.set.apply(me._storage, arguments);
         },
-        
+
         /**
          * 依据一个键名称来取得本地存储中的值
          * @function
@@ -240,12 +240,12 @@ baidu.data.storage = (function(){
          * @param {String} key 一个键名称.
          * @param {Function} callback 一个回调函数，函数的第一参数返回该次存储的状态码，各状码表示{0: 成功, 1: 失败, 2: 溢出}，第二参数返回当次的value.
          */
-        get: function(key, callback){
+        get: function(key, callback) {
             var me = this;
             !me._storage && (me._storage = _getInstance());
             me._storage.get.apply(me._storage, arguments);
         },
-        
+
         /**
          * 根据一个键名称来删除在本地存储中的值
          * @function
@@ -253,7 +253,7 @@ baidu.data.storage = (function(){
          * @param {String} key 一个键名称.
          * @param {Function} callback 一个回调函数，函数的第一参数返回该次存储的状态码，各状码表示{0: 成功, 1: 失败, 2: 溢出}，第二参数返回当次的value.
          */
-        remove: function(key, callback){
+        remove: function(key, callback) {
             var me = this;
             !me._storage && (me._storage = _getInstance());
             me._storage.del.apply(me._storage, arguments);
