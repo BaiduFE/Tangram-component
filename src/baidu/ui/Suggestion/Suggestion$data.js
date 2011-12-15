@@ -6,16 +6,21 @@
 ///import baidu.ui.Suggestion;
 
 /**
- * 为Suggestion提供数据内存缓存
- * 扩展这里可做本地缓存
+ * 为Suggestion提供数据内存缓存，可对其扩展做本地缓存
+ * @name baidu.ui.Suggestion.Suggestion$data
+ * @addon baidu.ui.Suggestion
  * @author berg
  */
 
 baidu.ui.Suggestion.extend({
-    /*
-     * 设置一组数据给suggestion
-     * 调用者可以选择是否立即显示这组数据: noShow
-     * @public
+    /**
+     * 设置一组数据给suggestion，调用者可以选择是否立即显示这组数据: noShow
+	 * @name baidu.ui.Suggestion.Suggestion$data
+	 * @addon baidu.ui.Suggestion
+	 * @function
+	 * @param  {String}  word     关键字
+	 * @param  {Array}   data     数据数组，例如["aaa","bbb"]
+	 * @param  {Boolean} noShow  为true则不立即显示这组数据
      * @return {null}
      */
     setData: function(word, data, noShow) {

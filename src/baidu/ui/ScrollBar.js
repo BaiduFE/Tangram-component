@@ -21,6 +21,7 @@
  * @config  {Number}    dimension   滚动条滑块占全部内容的百分比，定义域(0, 100)
  * @config  {Number}    step        用户自定义当点击滚动按钮时每次滚动百分比距离，定义域(0, 100)
  * @config  {Function}  onscroll    当滚动时触发该事件，function(evt){}，evt.value可以取得滚动的百分比
+ * @plugin  container	支持绑定一个容器
  * @author linlingyu
  */
 baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
@@ -228,15 +229,23 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
                         || [];
                 return matcher[1] == 'mozilla' ? 'DOMMouseScroll' : 'mousewheel';
             },
-            entry = {
+            entry = me._mouseWheelEvent = {
                 target: target,
                 evtName: getEvtName(),
                 handler: baidu.fn.bind('_onMouseWheelHandler', me)
             };
         baidu.event.on(entry.target, entry.evtName, entry.handler);
-        me.addEventListener('dispose', function() {
-            baidu.event.un(entry.target, entry.evtName, entry.handler);
-        });
+    },
+    
+    /**
+     * 对已经注册了滚轮事件的容器进行解除.
+     * @private
+     */
+    _cancelMouseWheelEvt: function(){
+        var entry = this._mouseWheelEvent;
+        if(!entry){return;}
+        baidu.event.un(entry.target, entry.evtName, entry.handler);
+        this._mouseWheelEvent = null;
     },
 
     /**
@@ -281,6 +290,7 @@ baidu.ui.ScrollBar = baidu.ui.createUI(function(options) {
     dispose: function() {
         var me = this;
         me.dispatchEvent('dispose');
+        me._cancelMouseWheelEvt();
         me._prev.dispose();
         me._thumbButton.dispose();
         me._slider.dispose();

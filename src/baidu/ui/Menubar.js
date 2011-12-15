@@ -35,6 +35,11 @@
  * @param {Object} data 数据项
  * @param {Number} hideDelay 鼠标移出子菜单多长时间，菜单消失，默认300
  * @param {Function} toggle 开关函数,返回false时不显示
+ * @param {Function} toggle 开关函数,返回false时不显示
+ * @plugin click	支持点击触发
+ * @plugin fx		动画效果
+ * @plugin hover	鼠标hover触发
+ * @plugin icon		菜单支持图标
  */
 baidu.ui.Menubar = baidu.ui.createUI(function(options){
     var me = this;

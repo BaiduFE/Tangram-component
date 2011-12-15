@@ -23,7 +23,7 @@ test('string', function(){
 //  目前这个bug改不了，暂时屏蔽
 //	equals(baidu.i18n.number.format('zh-CN', '12345678.90', 'en-US'), '12,345,678.90', 'zh-CN to en-US');
 	equals(baidu.i18n.number.format('10000,00000.1', 'zh-CN', 'en-US'), '1,000,000,000.1', 'en-US to zh-CN');
-	equals(baidu.i18n.number.format('abcd', 'zh-CN', 'en-US'), 'Not a number', 'en-US to zh-CN, special chars');
+	equals(baidu.i18n.number.format('abcd', 'zh-CN', 'en-US'), 'NAN', 'en-US to zh-CN, special chars');
 	equals(baidu.i18n.number.format('10000。1', 'zh-CN', 'en-US'), '10,000', 'en-US to zh-CN');
 });
 

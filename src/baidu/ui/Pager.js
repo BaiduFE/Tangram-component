@@ -22,7 +22,7 @@
  * @grammar new baidu.ui.Pager(option)
  * @param     {Object}            [options]         更新选项，若选项值不符合规则，则此次更新不予更新任何选项
  * @config    {Number}            beginPage         页码范围：起始页码，默认值1。
- * @config    {Number}            endPage           页码范围：最后页码+1，必须大于起始页码，默认值100。
+ * @config    {Number}            endPage           页码范围：最后页码，大于或者等于起始页码，默认值100。
  * @config    {Number}            currentPage       必须在页码范围内，若未指定currentPage且当前页码已超出页码范围，则会自动将currentPage更新到beginPage。
  * @config    {Number}            itemCount         默认显示多少个页面的链接（不包括“首页”等特殊链接），默认值10。
  * @config    {Number}            leftItemCount     当前页面链接在页面链接列表中的默认位置，必须小于itemCount，默认值4。
@@ -157,31 +157,30 @@ baidu.ui.Pager = baidu.ui.createUI(function (options){
      * @private
      */
     _genBody: function (){
-        var me = this;
-        var begin = me.beginPage;
-        var end = me.endPage;
-        var current = me.currentPage;
-        // 处理范围小于显示数量的情况
-        var numlist = Math.min(end - begin, me.itemCount);
-        // 处理当前页面在范围的两端的情况
-        var leftcnt = Math.min(current - begin, me.leftItemCount);
-        leftcnt = Math.max(numlist - (end - current), leftcnt);
-        var startPage = current - leftcnt;
-        // 生成特殊链接
-        var pageMap = {
-            first: begin,
-            last: end - 1,
-            previous: current - 1,
-            next: current + 1
-        };
-        var spec = {};
+        var me = this,
+            begin = me.beginPage,
+            end = me.endPage,
+            current = me.currentPage,
+            numlist = Math.min( Math.max(end - begin + 1, 1), me.itemCount),  // 处理范围小于显示数量的情况
+            leftcnt = Math.min(current - begin, me.leftItemCount), // 处理当前页面在范围的两端的情况
+            leftcnt = Math.max(numlist - (end + 1 - current), leftcnt),
+            startPage = current - leftcnt,
+            pageMap = {
+                first: begin,
+                last: end,
+                previous: current - 1,
+                next: current + 1
+            }, // 生成特殊链接
+            spec = {};
+
         baidu.object.each(pageMap, function (s, k){
             spec[k] = me._genItem(s, k);
         });
+
         spec.previous = pageMap.previous < begin ? '' : spec.previous;
-        spec.next = pageMap.next >= end ? '' : spec.next;
+        spec.next = pageMap.next > end ? '' : spec.next;
         spec.first = startPage == begin ? '' : spec.first;
-        spec.last = startPage + numlist >= end - 1 ? '' : spec.last;
+        spec.last = startPage + numlist > end ? '' : spec.last;
         // 生成常规链接
         var buff = [];
         for (var i=0; i<numlist; i++) {

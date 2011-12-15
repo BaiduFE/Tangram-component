@@ -4,5 +4,8 @@
  */
 
 ///import baidu;
-/** @namespace */
+/**
+ * 使用flash资源封装的一些功能
+ * @namespace baidu.flash
+ */
 baidu.flash = baidu.flash || {};

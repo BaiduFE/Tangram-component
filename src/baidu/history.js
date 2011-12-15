@@ -4,5 +4,8 @@
  */
 
 ///import baidu;
-/** @namespace */
+/**
+ * 提供对浏览器处理浏览历史的功能
+ * @namespace baidu.history
+ */
 baidu.history = baidu.history || {};

@@ -40,6 +40,12 @@
  * @config {function} onnext 当翻到下一项或下一页时触发该事件
  * @config {function} onitemclick 当点击某个项时触发该事件
  * @config {function} onfocus 当某一项获得焦点时触发该事件
+ * @plugin autoScroll 为滚动组件增加自动滚动功能
+ * @plugin btn 为滚动组件添加控制按钮插件
+ * @plugin cycle 为滚动组件增加无限循环滚动功能
+ * @plugin fx 为滚动组件增加动画滚动功能
+ * @plugin splice 为滚动组件提供动态增加或是删减滚动项功能
+ * @plugin table 支持在一个滚动项中放多个图片或是其它文字内容
  * @author linlingyu
  */
 
