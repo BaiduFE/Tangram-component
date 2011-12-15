@@ -39,7 +39,7 @@ baidu.data.storage = (function(){
     
     function _getInstance(){
         var _storage;
-        if (window.ActiveXObject) {
+        if (window.ActiveXObject && baidu.ie.browser < 9) { //IE9不再支持userData，暂时采用版本判断的临时方法解决。by xiadengping
             _storage = _createUserData();
         }else if (window.localStorage) {
             _storage = _createLocalStorage();
