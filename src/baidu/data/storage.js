@@ -12,6 +12,7 @@
 ///import baidu.cookie.set;
 ///import baidu.cookie.get;
 ///import baidu.cookie.remove;
+///import baidu.browser.ie;
 
 /**
  * 一个本地存储对象，使用key-value的方式来存值，不具备夸浏览器通信功能，根据浏览器的不同自动选择userData或是localStorage或是cookie来存值.
@@ -39,7 +40,7 @@ baidu.data.storage = (function() {
 
     function _getInstance() {
         var _storage;
-        if (window.ActiveXObject && baidu.ie.browser < 9) { //IE9不再支持userData，暂时采用版本判断的临时方法解决。by xiadengping
+        if (window.ActiveXObject && baidu.browser.ie < 9) { //IE9不再支持userData，暂时采用版本判断的临时方法解决。by xiadengping
             _storage = _createUserData();
         }else if (window.localStorage) {
             _storage = _createLocalStorage();
@@ -69,7 +70,13 @@ baidu.data.storage = (function() {
                     newKey = _getKey(key),
                     time = options && options.expires ? options.expires
                         : new Date().getTime() + 365 * 24 * 60 * 60 * 1000;//默认保存一年时间
-                baidu.lang.isDate(time) && (time = time.getTime());
+                //bugfix 若expires是毫秒数，先要new Date().getTime()再加上毫秒数。 
+                //另外time有可能是字符串，需要变成数字。by xiadengping
+                if (baidu.lang.isDate(time)) {
+                    time = time.getTime();
+                } else {
+                    time = new Date().getTime() + (time - 0);
+                }
                 ele.expires = new Date(time).toUTCString();
                 try {
                     ele.setAttribute(newKey, value);
@@ -131,7 +138,14 @@ baidu.data.storage = (function() {
                     storage = window.localStorage,
                     newKey = _getKey(key),
                     time = options && options.expires ? options.expires : 0;
-                baidu.lang.isDate(time) && (time = time.getTime());
+                //bugfix 若expires是毫秒数，先要new Date().getTime()再加上毫秒数。
+                //另外time有可能是字符串，需要变成数字。by xiadengping
+                if (baidu.lang.isDate(time)) {
+                    time = time.getTime();
+                } else if (time > 0) {
+                    time = new Date().getTime() + (time - 0);
+                }
+                
                 try {
                     storage.setItem(newKey, time + '|' + value);
                 }catch (e) {
