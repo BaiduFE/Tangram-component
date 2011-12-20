@@ -3,20 +3,58 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<script language='JavaScript' src='../../../../src/import.php?f=baidu.data.storage'></script>
+<script language='JavaScript' src='../../../../src/import.php?f=baidu.data.storage,baidu.event.on,baidu.event.preventDefault'></script>
 </head>
 <body>
-
+<div class="demo">
+	<form name="setter">
+		key:<input type="text" name="key">
+		value:<input type="text" name="value">
+		expires:<input type="text" name="expires">
+		<input type="submit" value="set">
+	</form>
+	<form name="getter">
+		key:<input type="text" name="key">
+		<input type="submit" value="get">
+	</form>
+	<form name="remover">
+		key:<input type="text" name="key">
+		<input type="submit" value="remove">
+	</form>
+</div>
 </body>
 <script language='JavaScript'>
-    baidu.data.storage.set('Tangram', 'storage here', function(s, v){
-        alert(v);
-    });
-  
+	var setterForm = document.forms['setter'],
+		getterForm = document.forms['getter'],
+		removerForm = document.forms['remover'];
+	
+	baidu.event.on(setterForm, 'submit', function(e) {
+		baidu.event.preventDefault(e);
+		var key = setterForm.key.value,
+			value = encodeURIComponent(setterForm.value.value),
+			expires = setterForm.expires.value;
+		baidu.data.storage.set(key, value, function(s, v) {
+			alert('key:' + key + ', value:' + v + ' has been saved.');
+		}, {
+			'expires' : new Date(new Date().getTime() + 1000 * 60 * 60)
+		})
+	})
+	
+	baidu.event.on(getterForm, 'submit', function(e) {
+		baidu.event.preventDefault(e);
+		var key = getterForm.key.value;
+		baidu.data.storage.get(key, function(s, v) {
+			alert(key + '\'s value is ' + v + '.');
+		})
+	})
+	
+ 	baidu.event.on(removerForm, 'submit', function(e) {
+		baidu.event.preventDefault(e);
+		var key = removerForm.key.value;
+		baidu.data.storage.remove(key, function(s, v) {
+			alert(key + ' has been removed.');
+		})
+	}) 
 
-    baidu.data.storage.remove('Tangram');
-    baidu.data.storage.get('Tangram', function(status, val){
-        alert(val);
-    });
 </script>
 </html>
