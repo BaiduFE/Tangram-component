@@ -217,7 +217,7 @@ module('baidu.ui.Calendar');
 		var g = function(id, child) {
 			var _id = '';
 			if (id.charAt(0) == '#')
-				_id = '#' + ui.getId(id.substr(1));
+				_id = '#' + ui.getId(id.substr(1)).replace("$", "\\$");
 			else if (id.charAt(0) == '.')
 				_id = '.' + ui.getClass(id.substr(1));
 			child && (_id += ' ' + child);
