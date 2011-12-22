@@ -147,7 +147,7 @@ test('TreeNode constructor', function() {
 	});
 	equals(node.uiType, 'tree-node', 'check ui type');
 	equals(node.type, 'leaf', 'check node type');
-	ok(/TANGRAM__[a-z]+/.test(node.id), 'check node id : ' + node.id);
+	ok(/TANGRAM\$\d+/.test(node.id), 'check node id : ' + node.id);
 });
 
 test('TreeNode function appendData', function() {
