@@ -44,7 +44,7 @@ baidu.parser.Xml = baidu.parser.Xml || (function(){
     return function(options){
         
         var parser = new baidu.parser.Parser(options);
-        parser._type = baidu.parser.type.XML;
+        parser._type = baidu.parser.XML;
 
         baidu.extend(parser, {
     

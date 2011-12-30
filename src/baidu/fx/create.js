@@ -29,7 +29,7 @@ baidu.fx.create = function(element, options, fxName) {
     var timeline = new baidu.fx.Timeline(options);
 
     timeline.element = element;
-    timeline._className = fxName || timeline._className;
+    timeline.__type = fxName || timeline.__type;
     timeline["\x06original"] = {};   // 20100708
     var catt = "baidu_current_effect";
 
@@ -38,7 +38,7 @@ baidu.fx.create = function(element, options, fxName) {
      */
     timeline.addEventListener("onbeforestart", function(){
         var me = this, guid;
-        me.attribName = "att_"+ me._className.replace(/\W/g, "_");
+        me.attribName = "att_"+ me.__type.replace(/\W/g, "_");
         guid = me.element.getAttribute(catt);
         me.element.setAttribute(catt, (guid||"") +"|"+ me.guid +"|", 0);
 

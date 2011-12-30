@@ -40,7 +40,7 @@ baidu.data.dataSource.DataSource = baidu.lang.createClass(function(options){
         evt.returnValue = !!data;
     });
 }, {
-    className: "baidu.data.dataSource.DataSource"
+    type: "baidu.data.dataSource.DataSource"
 }).extend(
     /**
      *  @lends baidu.data.dataSource.DataSource.prototype

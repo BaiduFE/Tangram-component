@@ -21,7 +21,7 @@ baidu.parser.Json = baidu.parser.Json || (function(){
     return function(options){
         
         var parser = new baidu.parser.Parser(options);
-        parser._type = baidu.parser.type.JSON;
+        parser._type = baidu.parser.JSON;
 
         baidu.extend(parser, {
        
