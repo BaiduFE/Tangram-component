@@ -67,14 +67,14 @@ test("set,get,remove", function() {
 });
 
 test("expire time", function() {
-	expect(9);
+	expect(10);
 	stop();
 	var storage = baidu.data.storage;
 	storage.set('key1', 'value1',function(status, value){
 		equals(status, 0, 'set successfully');
 		equals(value, 'value1', 'set successfully');
 	},{
-		expires : 500
+		expires : 1000
 	});
 	storage.get('key1', function(status, value){
 		equals(status, 0, 'get successfully');
@@ -89,7 +89,7 @@ test("expire time", function() {
 			equals(status, 0, 'set successfully');
 			equals(value, 'value2', 'set successfully');
 		},{
-			expires : new Date(new Date().getTime() + 500)
+			expires : new Date(new Date().getTime() + 1000)
 		});
 		storage.get('key2', function(status, value){
 			equals(status, 0, 'get successfully');
@@ -100,8 +100,8 @@ test("expire time", function() {
 				equals(value, null, 'expire time');
 				start();
 			});
-		}, 500);
-	}, 500);
+		}, 2000);
+	}, 2000);
 	
 });
 
@@ -251,7 +251,7 @@ test("overflow", function() {
 	for(var i = 0; i < 3000; i++)
 		value += 'value';
 	var times = 5;
-	if(baidu.browser.chrome || baidu.browser.maxthon || baidu.browser.safari)
+	if(baidu.browser.chrome || baidu.browser.maxthon || baidu.browser.safari || baidu.browser.ie == 9)
 		times = 300;
 	if(baidu.browser.firefox)//FF太慢，所以不测overflow
 		times = 1;
