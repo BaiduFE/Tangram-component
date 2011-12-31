@@ -8,7 +8,6 @@
  */
 ///import baidu.data.dataSource;
 ///import baidu.lang.createClass;
-///import baidu.lang.Event;
 ///import baidu.object.extend;
 ///import baidu.object.keys;
 

@@ -15,7 +15,6 @@
 ///import baidu.event.on;
 ///import baidu.event.un;
 ///import baidu.event.preventDefault;
-///import baidu.lang.Event;
 
 
 

@@ -19,8 +19,6 @@
 ///import baidu.string.trim;
 ///import baidu.lang.createClass;
 
-///import baidu.lang.Event;
-
 
 /**
  * 数据验证组件
