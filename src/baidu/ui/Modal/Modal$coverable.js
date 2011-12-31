@@ -8,7 +8,7 @@
 
 ///import baidu.browser.isWebkit;
 ///import baidu.browser.isGecko;
-///import baidu.lang.Class.addEventListeners;
+///import baidu.lang.Class.$addEventListeners;
 /**
  * 支持背景遮罩掩盖select、flash、iframe元素
  * @name baidu.ui.Modal.Modal$coverable

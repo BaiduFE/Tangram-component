@@ -11,7 +11,7 @@
 ///import baidu.ui.ProgressBar;
 ///import baidu.dom.insertHTML;
 ///import baidu.string.format;
-///import baidu.lang.Class.addEventListeners;
+///import baidu.lang.Class.$addEventListeners;
 /**
   * 和进度条结合，进度条跟随滑块的滑动
  * @name baidu.ui.Slider.Slider$progressBar
