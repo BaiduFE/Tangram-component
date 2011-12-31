@@ -12,6 +12,7 @@
 ///import baidu.ajax.get;
 ///import baidu.ajax.post;
 
+
 baidu.parser.Parser = baidu.parser.Parser || (function(){
 
     /**
