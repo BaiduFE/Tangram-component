@@ -15,6 +15,7 @@
 ///import baidu.object.each;
 ///import baidu.object.extend;
 ///import baidu.array.each;
+///import baidu.lang.Class.$removeEventListener;
 
  /**
  * 生成分页功能，默认会有一个横向的页面跳转链接列表，其两端有首页，尾页，上一页，下一页。若要自定义样式（如隐藏某些部件），请使用css（注：控件中各部件的css类名都有控件的tangram类名前缀）首页：first，尾页：last，上一页：previous，下一页：next，当前页：current。若要自定义控件生成的HTML，请参考源代码中以tpl开头的模板属性，类中的属性和方法都可以通过options动态覆盖。
