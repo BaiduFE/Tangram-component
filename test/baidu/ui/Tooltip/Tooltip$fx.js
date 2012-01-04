@@ -14,7 +14,7 @@ test('Open a common tooltip(fadeIn) and '
 			showFxOptions : {
     	    	onafterfinish : function() {
     	    		var len = baidu.fx.current(tp.getMain()).length;
-    				equal(baidu.fx.current(tp.getMain())[len-1]['_className'], 
+    				equal(baidu.fx.current(tp.getMain())[len-1]['__type'], 
     						'baidu.fx.fadeIn', 'The tooltip fadeIn');
     				tp.close();
     	    	}
@@ -22,7 +22,7 @@ test('Open a common tooltip(fadeIn) and '
     	    hideFxOptions : {
     	    	onafterfinish : function() {
     	    		var len = baidu.fx.current(tp.getMain()).length;
-    			    equal(baidu.fx.current(tp.getMain())[len-1]['_className'], 
+    			    equal(baidu.fx.current(tp.getMain())[len-1]['__type'], 
     						'baidu.fx.fadeOut', 'The tooltip fadeOut');
     			    start();
     	    	}
@@ -52,7 +52,7 @@ test('Open a common tooltip(expand) and '
     	    	onafterfinish : function() {
     	    		var len = baidu.fx.current(tp.getMain()).length;
     			    var len = baidu.fx.current(tp.getMain()).length;
-    			    var fx = baidu.fx.current(tp.getMain())[len-1]['_className'];
+    			    var fx = baidu.fx.current(tp.getMain())[len-1]['__type'];
     			    var guid = baidu.fx.current(tp.getMain())[len-1]['guid'];
     			    ok(fx == 'baidu.fx.expand_collapse', 'The tooltip expand');
     			    tp.close();
@@ -61,7 +61,7 @@ test('Open a common tooltip(expand) and '
     	    hideFxOptions : {
     	    	onafterfinish : function() {
     	    		var len = baidu.fx.current(tp.getMain()).length;
-    			    var fx = baidu.fx.current(tp.getMain())[len-1]['_className'];
+    			    var fx = baidu.fx.current(tp.getMain())[len-1]['__type'];
     			    var guid = baidu.fx.current(tp.getMain())[len-1]['guid'];
     		    	ok((fx == 'baidu.fx.expand_collapse') &&
     			    		guid != baidu.fx.current(tp.getMain())[len-1]['_guid'],
