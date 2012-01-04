@@ -890,10 +890,13 @@ var UserAction = {
 			var p = win;
 			for ( var i = 0; i < mm.length; i++) {
 				if(i == mm.length - 1 && mm[i].indexOf("$") > -1){ //如果要加载的是插件
-					if (p._addons.length == 1) {
+					if (p._addons && p._addons.length == 1) { //ui的插件
 						// console.log(mm[i]);
 						return;
-					}		
+					}
+					if (!p._addons && typeof (p.prototype.un) == 'undefined') { //base的插件，如baidu.lang.Class.$removeEventListener
+							return;
+					}	
 				}
 				else{
 					if (typeof (p[mm[i]]) == 'undefined') {
@@ -906,7 +909,7 @@ var UserAction = {
 			clearInterval(h);
 			if (callback && 'function' == typeof callback)
 				callback();
-		}, 20);
+		}, 100);
 	},
 
 	/* 用于加载css文件，如果没有加载完毕则不执行回调函数 */

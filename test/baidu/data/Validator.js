@@ -10,7 +10,7 @@ module("baidu.data.Validator");
                ],
                "isNick": [
                    {rule: "remote", conf: {
-                       url: '../../baidu/data/Validator/remote_get.php?_charset=utf_8',
+                       url: upath + '../../baidu/data/Validator/remote_get.php?_charset=utf_8',
                        key: 'nick',
                        method: 'get',
                        onsuccess: function(value, xhr, responseText){
@@ -27,7 +27,7 @@ module("baidu.data.Validator");
                ],
                "isNickPost": [
                           {rule: "remote", conf: {
-                              url: '../../baidu/data/Validator/remote_post.php',
+                              url: upath + '../../baidu/data/Validator/remote_post.php',
                               key: 'nick',
                               method: 'post',
                               callback: function(value, xhr, responseText){

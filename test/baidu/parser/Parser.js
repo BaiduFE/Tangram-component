@@ -91,7 +91,7 @@ test("loadUrl xml get", function() {
 		}
 	});
 	
-	xmlparser.loadUrl("../../baidu/parser/Xml/books.xml");
+	xmlparser.loadUrl(upath + "../../baidu/parser/Xml/books.xml");
 });
 
 
@@ -108,7 +108,7 @@ test("loadUrl xml post", function() {
 		}
 	});
 	
-	xmlparser.loadUrl("../../baidu/parser/Xml/books.php", "POST", "var=title");
+	xmlparser.loadUrl(upath + "../../baidu/parser/Xml/books.php", "POST", "var=title");
 });
 
 test("loadUrl json get", function() {
@@ -124,7 +124,7 @@ test("loadUrl json get", function() {
 			start();
 		}
 	});
-	jsonparser.loadUrl("../../baidu/parser/Json/lib.json");
+	jsonparser.loadUrl(upath + "../../baidu/parser/Json/lib.json");
 });
 
 test("loadUrl json post", function() {
@@ -140,7 +140,7 @@ test("loadUrl json post", function() {
 			start();
 		}
 	});
-	jsonparser.loadUrl("../../baidu/parser/Json/lib.php", "POST", "var=title");
+	jsonparser.loadUrl(upath + "../../baidu/parser/Json/lib.php", "POST", "var=title");
 });
 
 test("query", function() {
