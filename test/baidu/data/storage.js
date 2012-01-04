@@ -21,12 +21,26 @@ module("baidu.data.storage");
 			pw.$(pw.document.body).append('<div id="div' + id + '"></div>');
 			pw.$('div#div' + id).append('<iframe id="' + id + '"></iframe>');
 		}
-		op.onafterstart && op.onafterstart($('iframe#f')[0]);
+		op.onafterstart && op.onafterstart($('iframe#' + id)[0]);
+		var f = '';
+		var e = '';
 		pw.$('script').each(function() {
 			if (this.src && this.src.indexOf('import.php') >= 0) {
-				url = this.src.split('import.php')[1];
+				//import.php?f=xxx&e=xxx&cov=xxx
+				//url = this.src.split('import.php')[1];
+				/[?&]f=([^&]+)/.test(this.src);
+				f+=','+RegExp.$1;
+				/[?&]e=([^&]+)/.test(this.src);
+				e+=RegExp.$1;
 			}
 		});
+		url='?f='+f.substr(1)+'&e='+e;
+		var srcpath = '';
+		if(location.href.indexOf("/run.do") > 0) {
+			srcpath = location.href.replace("run.do","frame.do");
+		} else {
+			srcpath = cpath + 'frame.php' + url;
+		}
 		pw.$(fid).one('load', function(e) {
 			var w = e.target.contentWindow;
 			var h = setInterval(function() {
@@ -36,7 +50,7 @@ module("baidu.data.storage");
 				}
 			}, 20);
 			// 找到当前操作的iframe，然后call ontest
-		}).attr('src', cpath + 'frame.php' + url);
+		}).attr('src', srcpath);
 	};
 })();
 

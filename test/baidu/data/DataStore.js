@@ -32,7 +32,7 @@ module("baidu.data.DataStore");
 		};
 		  
 		te.createDataSource = function(){
-			 var url = '../../baidu/data/DataStore/books.xml';
+			 var url = upath + '../../baidu/data/DataStore/books.xml';
 			    var dsOptions = {
 			        cache: false,
 			        dataType:  baidu.parser.type.XML,
@@ -515,7 +515,7 @@ test("load replace", function() {
         	
         	dataStore._action = "REPLACE";
             dataStore.load({
-            	key : '../../baidu/data/DataStore/newbooks.xml',
+            	key : upath + '../../baidu/data/DataStore/newbooks.xml',
                 onsuccess: function(data){
                 	equals(data.success.length, 2, "The data is right");
                 	equals(data.fail.length, 0, "The data is right");
@@ -559,7 +559,7 @@ test("load merge", function() {
         onsuccess: function(data){
         	dataStore._action = "MERGE";
             dataStore.load({
-            	key : '../../baidu/data/DataStore/newbooks.xml',
+            	key : upath + '../../baidu/data/DataStore/newbooks.xml',
                 onsuccess: function(data){
                 	equals(this._dataModel._index, 4, "the _index is right");
                 	equals(this._dataModel._data[0].author, "Rowling", "the _data is right");
@@ -605,7 +605,7 @@ test("Json", function() {
     var DM = baidu.data.ModelManager.createDM('lib');
     DM = DM[1];
     
-    var url = '../../baidu/data/DataStore/lib.json';
+    var url = upath + '../../baidu/data/DataStore/lib.json';
     var dsOptions = {
         cache: false,
         dataType:  baidu.parser.type.JSON,
@@ -673,7 +673,7 @@ test("validator, default validations", function() {
 	    var DM = baidu.data.ModelManager.createDM('lib');
 	    DM = DM[1];
 	    
-	    var url = '../../baidu/data/DataStore/newlib.json';
+	    var url = upath + '../../baidu/data/DataStore/newlib.json';
 	    var dsOptions = {
 	        cache: false,
 	        dataType:  baidu.parser.type.JSON,
@@ -749,7 +749,7 @@ test("validator, validations and setValidator", function() {
 	    var DM = baidu.data.ModelManager.createDM('lib');
 	    DM = DM[1];
 	    
-	    var url = '../../baidu/data/DataStore/newlib.json';
+	    var url = upath + '../../baidu/data/DataStore/newlib.json';
 	    var dsOptions = {
 	        cache: false,
 	        dataType:  baidu.parser.type.JSON,
