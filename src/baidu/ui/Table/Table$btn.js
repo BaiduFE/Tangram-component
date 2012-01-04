@@ -14,7 +14,7 @@
 ///import baidu.event.on;
 ///import baidu.dom.g;
 ///import baidu.dom.setStyle;
-///import baidu.lang.Class.addEventListeners;
+///import baidu.lang.Class.$addEventListeners;
 /**
  * 为翻页功能增加相关按钮
  * @name  baidu.ui.Table.Table$btn
