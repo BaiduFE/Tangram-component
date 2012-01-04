@@ -74,7 +74,7 @@ test("expire time", function() {
 		equals(status, 0, 'set successfully');
 		equals(value, 'value1', 'set successfully');
 	},{
-		expires : 500
+		expires : 1000
 	});
 	storage.get('key1', function(status, value){
 		equals(status, 0, 'get successfully');
@@ -89,7 +89,7 @@ test("expire time", function() {
 			equals(status, 0, 'set successfully');
 			equals(value, 'value2', 'set successfully');
 		},{
-			expires : new Date(new Date().getTime() + 500)
+			expires : new Date(new Date().getTime() + 1000)
 		});
 		storage.get('key2', function(status, value){
 			equals(status, 0, 'get successfully');
@@ -100,8 +100,8 @@ test("expire time", function() {
 				equals(value, null, 'expire time');
 				start();
 			});
-		}, 1500);
-	}, 1500);
+		}, 2000);
+	}, 2000);
 	
 });
 

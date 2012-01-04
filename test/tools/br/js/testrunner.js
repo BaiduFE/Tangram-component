@@ -99,7 +99,7 @@ var QUnit = {
 				config.blocking = false;
 				config.testTimeoutFlag = true;
 			    process();
-			}, 5000);
+			}, 3000);
 			// 田丽丽添加对test的timeout处理 end
 			
 			testEnvironment = extend({
