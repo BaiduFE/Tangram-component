@@ -10,8 +10,7 @@
 
 ///import baidu.fx;
 ///import baidu.lang.Event;
-///import baidu.lang.Class;
-///import baidu.lang.inherits;
+///import baidu.lang.createClass;
 ///import baidu.object.extend;
 
 /**
@@ -44,19 +43,19 @@
  * @config {Number} duration 时间线总时长（毫秒）
  * @config {Number} percent  时间线进度的百分比
  */
-baidu.fx.Timeline = function(options){
-    baidu.lang.Class.call(this);
-
-    this.interval = 16;
-    this.duration = 500;
-    this.dynamic  = true;
-
+baidu.fx.Timeline = baidu.lang.createClass(function(options) {
+    baidu.object.extend(this, baidu.fx.Timeline.options);
     baidu.object.extend(this, options);
-};
-baidu.lang.inherits(baidu.fx.Timeline, baidu.lang.Class, "baidu.fx.Timeline").extend({
+},
+{
+    className: "baidu.fx.Timeline"
+    ,options:{interval:16, duration:500, dynamic:true}
+}).extend(
 /**
  *  @lends baidu.fx.Timeline.prototype
  */
+{
+
     /**
      * 启动时间线
      * @return {instance} 类实例

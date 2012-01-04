@@ -15,7 +15,6 @@
 ///import baidu.lang.isNumber;
 ///import baidu.lang.isFunction;
 ///import baidu.lang.createClass;
-///import baidu.lang.isString;
 
 ///import baidu.data;
 ///import baidu.data.Field;

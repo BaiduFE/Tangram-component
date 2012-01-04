@@ -11,7 +11,7 @@ test('dom', function() {
 	$(t).css('position', 'absolute');
 	baidu.fx.mask(t, {
 		onafterfinish : function() {
-			equals(this.__type, 'baidu.fx.mask', 'after finish');
+			equals(this._className, 'baidu.fx.mask', 'after finish');
 			start();
 		}
 	});
@@ -27,7 +27,7 @@ test('id', function() {
 	$(t).css('position', 'absolute');
 	h = baidu.fx.mask(t, {
 		onafterfinish : function() {
-			equals(this.__type, 'baidu.fx.mask');
+			equals(this._className, 'baidu.fx.mask');
 			start();
 		}
 	});

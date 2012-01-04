@@ -7,7 +7,6 @@
 ///import baidu.ui.Base;
 ///import baidu.ui.create;
 ///import baidu.object.extend;
-///import baidu.lang.isFunction;
 
 /**
  * 创建一个UI控件类

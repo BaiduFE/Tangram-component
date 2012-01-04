@@ -17,7 +17,7 @@
 ///import baidu.event.getTarget;
 ///import baidu.dom.getAncestorByTag;
 ///import baidu.fn.bind;
-///import baidu.lang.Class.$addEventListeners;
+///import baidu.lang.Class.addEventListeners;
 /**
  * 使单元格支持编辑
  * @name  baidu.ui.Table.Table$edit

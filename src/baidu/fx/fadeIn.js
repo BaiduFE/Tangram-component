@@ -34,7 +34,7 @@ baidu.fx.fadeIn = function(element, options) {
     var fx = baidu.fx.opacity(element,
         baidu.object.extend({from:0, to:1, restoreAfterFinish:true}, options||{})
     );
-    fx.__type = "baidu.fx.fadeIn";
+    fx._className = "baidu.fx.fadeIn";
 
     return fx;
 };

@@ -14,7 +14,7 @@
 ///import baidu.array.each;
 ///import baidu.dom.g;
 ///import baidu.string.format;
-///import baidu.lang.Class.$addEventListeners;
+///import baidu.lang.Class.addEventListeners;
 /**
  * 增加列标题
  * @name  baidu.ui.Table.Table$title

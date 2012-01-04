@@ -25,7 +25,7 @@ test('Open a common Menubar(fadeIn) '
 									+ 'a custom onafterfinish function');
 							var len = baidu.fx.current(menu.getBody()).length;
 							equal(
-									baidu.fx.current(menu.getBody())[len - 1]['__type'],
+									baidu.fx.current(menu.getBody())[len - 1]['_className'],
 									'baidu.fx.fadeIn', 'The menubar fadeIn');
 							menu.close();
 						}
@@ -40,7 +40,7 @@ test('Open a common Menubar(fadeIn) '
 									+ 'a custom onafterfinish function');
 							var len = baidu.fx.current(menu.getBody()).length;
 							equal(
-									baidu.fx.current(menu.getBody())[len - 1]['__type'],
+									baidu.fx.current(menu.getBody())[len - 1]['_className'],
 									'baidu.fx.fadeOut', 'The menubar fadeOut');
 							start();
 						}
@@ -72,7 +72,7 @@ test('Open a common Menubar(expand) and'
 				showFxOptions : {
 					onafterfinish : function() {
 						var len = baidu.fx.current(menu.getBody()).length;
-						var fx = baidu.fx.current(menu.getBody())[len - 1]['__type'];
+						var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
 						var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
 						ok(fx == 'baidu.fx.expand_collapse',
 								'The menubar expand');
@@ -82,7 +82,7 @@ test('Open a common Menubar(expand) and'
 				hideFxOptions : {
 					onafterfinish : function() {
 						var len = baidu.fx.current(menu.getBody()).length;
-						var fx = baidu.fx.current(menu.getBody())[len - 1]['__type'];
+						var fx = baidu.fx.current(menu.getBody())[len - 1]['_className'];
 						var guid = baidu.fx.current(menu.getBody())[len - 1]['guid'];
 						ok((fx == 'baidu.fx.expand_collapse')
 										&& guid != baidu.fx

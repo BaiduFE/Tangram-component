@@ -17,7 +17,7 @@
 ///import baidu.array.each;
 ///import baidu.object.each;
 ///import baidu.fn.bind;
-///import baidu.lang.Class.$addEventListeners;
+///import baidu.lang.Class.addEventListeners;
 
 /**
  * 为ui控件添加状态管理行为

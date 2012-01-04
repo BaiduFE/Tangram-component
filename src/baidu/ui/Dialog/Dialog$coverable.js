@@ -5,7 +5,7 @@
 
 ///import baidu.ui.Dialog;
 ///import baidu.ui.behavior.coverable;
-///import baidu.lang.Class.$addEventListeners;
+///import baidu.lang.Class.addEventListeners;
 /**
  * 支持遮盖页面的任意元素
  * @name baidu.ui.Dialog.Dialog$coverable

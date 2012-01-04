@@ -8,6 +8,7 @@
  */
 ///import baidu.data.dataSource;
 ///import baidu.lang.createClass;
+///import baidu.lang.Event;
 ///import baidu.object.extend;
 ///import baidu.object.keys;
 
@@ -39,7 +40,7 @@ baidu.data.dataSource.DataSource = baidu.lang.createClass(function(options){
         evt.returnValue = !!data;
     });
 }, {
-    type: "baidu.data.dataSource.DataSource"
+    className: "baidu.data.dataSource.DataSource"
 }).extend(
     /**
      *  @lends baidu.data.dataSource.DataSource.prototype

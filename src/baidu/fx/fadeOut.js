@@ -37,7 +37,7 @@ baidu.fx.fadeOut = function(element, options) {
         baidu.object.extend({from:1, to:0, restoreAfterFinish:true}, options||{})
     );
     fx.addEventListener("onafterfinish", function(){baidu.dom.hide(this.element);});
-    fx.__type = "baidu.fx.fadeOut";
+    fx._className = "baidu.fx.fadeOut";
 
     return fx;
 };

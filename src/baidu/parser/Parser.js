@@ -12,7 +12,6 @@
 ///import baidu.ajax.get;
 ///import baidu.ajax.post;
 
-
 baidu.parser.Parser = baidu.parser.Parser || (function(){
 
     /**
@@ -32,7 +31,7 @@ baidu.parser.Parser = baidu.parser.Parser || (function(){
         me.onload = options.onload || baidu.fn.blank;
 
     },{
-        type: 'baidu.parser.Parser'
+        className: 'baidu.parser.Parser'
     }).extend({
         /**
          *  @lends baidu.parser.Parser.prototype

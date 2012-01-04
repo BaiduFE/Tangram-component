@@ -5,7 +5,7 @@
 
 ///import baidu.ui.Carousel;
 ///import baidu.ui.Carousel.Carousel$cycle;
-///import baidu.lang.Class.$addEventListeners;
+///import baidu.lang.Class.addEventListeners;
 
 /**
  * 为滚动组件增加自动滚动功能

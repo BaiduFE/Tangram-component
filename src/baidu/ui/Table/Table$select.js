@@ -18,7 +18,7 @@
 ///import baidu.dom.getAncestorByTag;
 ///import baidu.object.values;
 ///import baidu.object.keys;
-///import baidu.lang.Class.$addEventListeners;
+///import baidu.lang.Class.addEventListeners;
 /**
  * 增加选择列的插件
  * @name  baidu.ui.Table.Table$select

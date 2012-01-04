@@ -20,7 +20,6 @@
 ///import baidu.dom.removeClass;
 ///import baidu.fn.bind;
 ///import baidu.object.each;
-///import baidu.lang.Class.$removeEventListener;
 
 
 
