@@ -5,7 +5,7 @@
 
 ///import baidu.ui.ScrollBar;
 ///import baidu.dom.g;
-///import baidu.lang.Class.addEventListeners;
+///import baidu.lang.Class.$addEventListeners;
 /**
  * 让滚动条绑定一个容器
  * @name baidu.ui.ScrollBar.ScrollBar$container

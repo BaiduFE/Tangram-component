@@ -217,7 +217,7 @@ module('baidu.ui.Calendar');
 		var g = function(id, child) {
 			var _id = '';
 			if (id.charAt(0) == '#')
-				_id = '#' + ui.getId(id.substr(1));
+				_id = '#' + ui.getId(id.substr(1)).replace("$", "\\$");
 			else if (id.charAt(0) == '.')
 				_id = '.' + ui.getClass(id.substr(1));
 			child && (_id += ' ' + child);
@@ -263,7 +263,7 @@ module('baidu.ui.Calendar');
 test('base', function() {
 	stop();
 	// 默认值取当前日期
-	ua.importsrc('baidu.i18n.cultures.zh-CN,baidu.dom.getStyle', te.check);
+	ua.importsrc('baidu.lang.Class.$removeEventListener,baidu.dom.getStyle', te.check, 'baidu.lang.Class.$removeEventListener', 'baidu.ui.Calendar');
 });
 
 test('界面操作', function() {

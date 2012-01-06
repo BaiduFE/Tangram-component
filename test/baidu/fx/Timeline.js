@@ -2,12 +2,16 @@ module("baidu.fx.Timeline");
 
 // test default params
 test('test default params', function() {
-	var option = {};
-	var timeline = new baidu.fx.Timeline(option);
-	ok(true, 'tes default params');
-	equals(timeline.interval, 16, 'interval = ' + timeline.interval);
-	equals(timeline.duration, 500, 'duration = ' + timeline.duration);
-	equals(timeline.dynamic, true, 'dynamic = ' + timeline.dynamic);
+	stop();
+	ua.importsrc("baidu.lang.Class.$removeEventListener", function(){
+		var option = {};
+		var timeline = new baidu.fx.Timeline(option);
+		ok(true, 'tes default params');
+		equals(timeline.interval, 16, 'interval = ' + timeline.interval);
+		equals(timeline.duration, 500, 'duration = ' + timeline.duration);
+		equals(timeline.dynamic, true, 'dynamic = ' + timeline.dynamic);
+		start();
+	}, "baidu.lang.Class.$removeEventListener", "baidu.fx.Timeline");
 });
 
 // test options
