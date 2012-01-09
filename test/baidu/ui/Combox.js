@@ -37,7 +37,7 @@ test("createMenu", function() {
 		input.focus();
 		$(arrow).click();
 		setTimeout(function() {
-			TT.event.fire(cb.menu.getItem('0-0'), 'click');
+			ua.click(cb.menu.getItem('0-0'));
 			equal(input.value, 'a-content-1');
 			ua.click(arrow);
 			equals(cb.menu.getBody().style.display, "");
@@ -102,7 +102,7 @@ test("events", function() {
     input.value = 'A';
     input.focus();
 	setTimeout(function() {
-		TT.event.fire(cb.menu.getItem('0-0'), 'click');
+		ua.click(cb.menu.getItem('0-0'));
 		equal(input.value, 'A-a');
 		cb.dispose();
 		start();
