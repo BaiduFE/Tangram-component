@@ -135,9 +135,10 @@ test('timer', function() {
 	}
 	setTimeout(function() {
 		equals(actualList.length, 4, 'info log');
-		TT.array.each(actualList, function(item) {
+		for(i = 0; i < actualList.length; i++){
+			item = actualList[i];
 			ok(Math.abs(item - 200) < 30, '误差正负30 : ' + item);
-		});
+		}
 		QUnit.start();
 	}, time + 100);
 	stop();

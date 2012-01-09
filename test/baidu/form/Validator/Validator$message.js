@@ -2,7 +2,7 @@ module("baidu.form.Validator.Validator$message");
 //
 (function() {
 	function _createForm() {
-		var fadiv = TT.dom.create('div');
+		var fadiv = document.createElement('div');
 		fadiv.id = 'test';
 		document.body.appendChild(fadiv);
 		var form = document.createElement('form');
@@ -29,7 +29,7 @@ module("baidu.form.Validator.Validator$message");
 	};
 	var stop = QUnit.testDone;
 	QUnit.testDone = function() {
-		TT.dom.remove('test');
+		$('#test').remove();
 		s.apply(this, arguments);
 	}
 })();
@@ -128,7 +128,7 @@ test('验证定义 failure Message', function() {
 });
 //
 test('验证定义 success Message', function() {
-	TT.dom.setAttr('email', 'value', 'email@baidu.com');
+	$("#email").attr('value', 'email@baidu.com');
 	var validator = new baidu.form.Validator('testform', {
 		email : {
 			rule : {
@@ -156,7 +156,7 @@ test('验证定义 success Message', function() {
 });
 // 多个success message 会去返回返回最后一条正确的message 该正确message在2期可能会提供一个success message接口
 test('验证定义 success Message返回最后一条', function() {
-	TT.dom.setAttr('email', 'value', 'email@baidu.com');
+	$("#email").attr('value', 'email@baidu.com');
 	var validator = new baidu.form.Validator('testform', {
 		email : {
 			rule : {
@@ -192,8 +192,8 @@ test('验证定义 success Message返回最后一条', function() {
 });
 // 多条验证
 test('验证多条 success Message', function() {
-	TT.dom.setAttr('name', 'value', 'name');
-	TT.dom.setAttr('email', 'value', 'email@baidu.com');
+	$("#name").attr('value', 'name');
+	$("#email").attr('value', 'email@baidu.com');
 	var validator = new baidu.form.Validator('testform', {
 		email : {
 			rule : {
