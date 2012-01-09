@@ -127,8 +127,8 @@ test("event", function() {
 	input.disable();
 	input.enable();
     
-    TT.event.fire(input.getBody(), 'focus');
-    TT.event.fire(input.getBody(), 'blur');
+    $(input.getBody()).focus();
+    $(input.getBody()).blur();
 
 	input.getBody().value = 'blah blah blah';
 	te.dom.push(input.getMain());
