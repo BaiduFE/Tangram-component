@@ -48,6 +48,7 @@ test('base', function() {
 		}
 		dialog.clear('log');
 		dialog.clear('all');
+		dialog.close();
 		start();
 	}, 'tangram-tab', 'height', '61px');
 	stop();
