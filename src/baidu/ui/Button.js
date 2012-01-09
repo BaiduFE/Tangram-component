@@ -75,7 +75,12 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
     render: function(target) {
         var me = this,
             body;
-        me.addState('click', 'click');
+        me.addState('click', 'click', function(id, group) {
+            var me = this;
+            if (!me.getState(id, group)['disabled']) {
+                return true;
+            }
+        });
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me._getString());
 
         body = baidu.g(target).lastChild;
