@@ -41,16 +41,16 @@
 		<get src="http://${serverip}/addTask?proj=${git.user}.${git.project}&amp;release=true" dest="/tmp/${git.user}_${git.project}.php" />
 	</target>
 	<target name="getreport" depends="execute">
-		<waitfor maxwait="600" maxwaitunit="second">
+		<waitfor maxwait="40" maxwaitunit="minute">
 			<available file="${report.file}" />
 		</waitfor>
 
-		<!-- junit report and mail -->
+		<!-- junit report and mail 
 		<antcall target="mail" />
-		<!-- junit report and mail end -->
+		junit report and mail end -->
 	</target>
 	<target name="getreport_release" depends="execute_release">
-			<waitfor maxwait="1000" maxwaitunit="second">
+			<waitfor maxwait="40" maxwaitunit="minute">
 				<available file="${report.file}" />
 			</waitfor>
 
