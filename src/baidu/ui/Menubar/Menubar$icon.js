@@ -10,13 +10,18 @@
 ///import baidu.dom.insertHTML;
 
 /**
- * 菜单图标
+ * 支持菜单图标
+ * @name baidu.ui.Menubar.Menubar$icon
+ * @addon baidu.ui.Menubar
  */
 baidu.ui.Menubar.extend({
     tplIcon : '<span class="#{icon}" style="#{iconStyle};"></span>',
     
     /**
      * 更新item图标
+	 * @name baidu.ui.Menubar.Menubar$icon.updateIcons
+	 * @addon baidu.ui.Menubar.Menubar$icon
+	 * @function
      */
     updateIcons : function(){
         var me = this;

@@ -219,6 +219,42 @@ test("isDisabled",function() {
 			te.dom.push(button.getMain());
 		});
 
+test("click-disable", function(){
+	expect(3);
+	var count = 0;
+	var options = {
+		disabled : true,
+		onclick : function() {
+			count ++;
+			equals(count, 2, 'on click');
+		},
+		ondisable : function() {
+			count ++;
+			equals(count, 3, 'on disable');
+		},
+		onenable : function() {
+			count ++;
+			equals(count, 1, 'on enable');
+		}
+	};
+	var button = new baidu.ui.Button(options);
+	var div = document.createElement('div');
+	document.body.appendChild(div);
+	button.render(div);
+
+	// disable后不触发onclick
+	ua.click(button.getId());
+
+	button.enable(button.getId());
+	// 测试再enable是否使得按钮有效。会触发onclick
+	ua.click(button.getId());
+	
+	button.disable(button.getId());
+	// 测试再disable是否使得按钮有效。不会触发onclick
+	ua.click(button.getId());
+	button.dispose();
+})
+
 test("dispose",
 		function() {
 			var options = {};

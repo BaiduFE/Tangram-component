@@ -23,6 +23,7 @@
  /**
  * 弹出tip层,类似鼠标划过含title属性元素的效果
  * @class
+ * @grammar new baidu.ui.Tooltip(options)
  * @param       {Object}          options         选项.
  * @config      {String|Array}    target          目标元素或元素id。可直接设置多个目标元素
  * @config      {String}          type            （可选）触发展开的类型，可以为:hover和click。默认为click
@@ -40,7 +41,10 @@
  * @config      {Function}        onclose         （可选）关闭tooltip时触发。
  * @config      {Function}        onbeforeopen    （可选）打开tooltip前触发。
  * @config      {Function}        onbeforeclose   （可选）关闭tooltip前触发。
- * @plugin      fx                Tooltip的展现和消失效果支持。
+ * @plugin      click				支持单击隐藏显示
+ * @plugin      close				支持关闭按钮
+ * @plugin      fx					动画效果
+ * @plugin      hover				支持鼠标滑过隐藏显示
  * @return     {baidu.ui.Tooltip}        Tooltip实例
  */
 
@@ -54,9 +58,9 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
     baidu.ui.Tooltip.showing[me.guid] = me;
 
 }).extend(
-    /**
-     *  @lends baidu.ui.Tooltip.prototype
-     */
+/**
+ *  @lends baidu.ui.Tooltip.prototype
+ */
 {
     uiType: 'tooltip',
 

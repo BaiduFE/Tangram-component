@@ -78,7 +78,9 @@ baidu.data.XPC = baidu.lang.createClass(function(isParent, url, options) {
             this.dispatchEvent(this._createEvent('error', e.message));
         }
     }
-}).extend({
+}).extend(
+/**@lends baidu.data.XPC.prototype*/
+{
     //创建iframe，并返回DOM引用
     _createIframe: function(url) {
         var ifrm = document.createElement('IFRAME');
@@ -148,6 +150,7 @@ baidu.data.XPC = baidu.lang.createClass(function(isParent, url, options) {
     },
     /**
      * 发送消息方法。
+     * @function
      * @param {string} msg 要发送的消息.
      */
     send: function(msg) {

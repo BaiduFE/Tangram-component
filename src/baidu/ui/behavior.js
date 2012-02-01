@@ -9,13 +9,7 @@
  */
 
 ///import baidu.ui;
-
 /**
- * 定义名字空间
- */
-
- /**
- * 为各个控件增加装饰器。
- * @class Behavior类
+ * @namespace baidu.ui.behavior 为各个控件增加装饰器
  */
 baidu.ui.behavior = baidu.ui.behavior || {};

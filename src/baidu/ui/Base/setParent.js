@@ -13,7 +13,7 @@
 
 /**
  * 设置UI控件的父控件
- *
+ * @memberOf baidu.ui.Base.prototype
  * @param {UI} 父控件
  */
 baidu.ui.Base.setParent = function(parent){

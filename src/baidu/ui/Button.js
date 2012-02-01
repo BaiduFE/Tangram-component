@@ -19,7 +19,9 @@
 
 /**
  * button基类，创建一个button实例
- * @class button类
+ * @name baidu.ui.Button
+ * @class
+ * @grammar new baidu.ui.Button(options)
  * @param {Object} [options] 选项
  * @config {String}             content     按钮文本信息
  * @config {Boolean}            disabled    按钮是否有效，默认为false（有效）。
@@ -33,7 +35,8 @@
  * @config {Function}           ondisable   当调用button的实例方法disable，使得按钮失效时触发。
  * @config {Function}           onenable    当调用button的实例方法enable，使得按钮有效时触发。
  * @returns {Button}                        Button类
- * @plugin statable             状态行为，为button组件添加事件和样式。
+ * @plugin  capture            使按钮支持capture
+ * @plugin  poll               使按钮支持poll轮询
  * @remark  创建按钮控件时，会自动为控件加上四种状态的style class，分别为正常情况(tangram-button)、鼠标悬停在按钮上(tangram-button-hover)、鼠标按下按钮时(tangram-button-press)、按钮失效时(tangram-button-disable)，用户可自定义样式。
  */
 baidu.ui.Button = baidu.ui.createUI(new Function).extend(
@@ -67,13 +70,17 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      *  将button绘制到DOM树中。
-     *  @public
      *  @param {HTMLElement|String} target  需要渲染到的元素
      */	
     render: function(target) {
         var me = this,
             body;
-        me.addState('click', 'click');
+        me.addState('click', 'click', function(id, group) {
+            var me = this;
+            if (!me.getState(id, group)['disabled']) {
+                return true;
+            }
+        });
         baidu.dom.insertHTML(me.renderMain(target), 'beforeEnd', me._getString());
 
         body = baidu.g(target).lastChild;
@@ -87,7 +94,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      *  判断按钮是否处于失效状态。
-     *  @public
      *  @return {Boolean} 是否失效的状态
      */
     isDisabled: function() {
@@ -98,7 +104,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      *  销毁实例。
-     *  @public
      */
 	dispose : function(){
 		var me = this,
@@ -116,8 +121,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      * 设置disabled属性
-     * @pubic
-     * 
 	 */
     disable: function() {
         var me = this,
@@ -127,8 +130,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      * 删除disabled属性
-     * @pubic
-     * 
 	 */
     enable: function() {
         var me = this;
@@ -138,7 +139,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      * 触发button事件
-     * @public
      * @param {String} eventName   要触发的事件名称
      * @param {Object} e           事件event
      */
@@ -152,7 +152,6 @@ baidu.ui.Button = baidu.ui.createUI(new Function).extend(
 
     /**
      * 更新button的属性
-	 * @public
      * @param {Object}              options     更新button的属性
 	 * @config {String}             content     按钮文本信息
 	 * @config {Boolean}            disabled    按钮是否有效，默认为false（有效）。

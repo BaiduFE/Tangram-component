@@ -6,7 +6,8 @@ module('baidu.tools.log.Dialog');
 test('base', function() {
 
 	ua.loadcss(upath + 'test.css', function() {
-		var dialog = baidu.tools.log.DInstance;
+		baidu.log.enableDialog();
+        var dialog = baidu.tools.log.DInstance;
 
 		var data = [ {
 			head : 'all'
@@ -45,6 +46,9 @@ test('base', function() {
 								'check data');
 					});
 		}
+		dialog.clear('log');
+		dialog.clear('all');
+		dialog.close();
 		start();
 	}, 'tangram-tab', 'height', '61px');
 	stop();

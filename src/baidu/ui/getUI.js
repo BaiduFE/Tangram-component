@@ -7,14 +7,11 @@
 
 /**
  * 通过uiType找到UI类
- * 查找规则：
- * suggestion -> baidu.ui.Suggestion
- * toolbar-spacer -> baidu.ui.Toolbar.Spacer.
- *
- * @author berg
- *
- * @param {String} uiType
+ * @function
+ * @grammar baidu.ui.getUI(uiType)
+ * @param  {String} uiType  查找规则：suggestion -> baidu.ui.Suggestion，toolbar-spacer -> baidu.ui.Toolbar.Spacer.
  * @return {object} UI类
+ * @author berg
  */
 baidu.ui.getUI = function(uiType){
     var uiType = uiType.split('-'),

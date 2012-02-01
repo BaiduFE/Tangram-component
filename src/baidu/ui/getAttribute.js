@@ -15,8 +15,9 @@
 
 /**
  *  从指定的dom元素中获取ui控件的属性值
- *
- *  todo: &datasource支持
+ *  @grammar baidu.ui.getAttribute(element)
+ *  @param {element} element dom元素
+ *  @return {Object} params 属性值集合对象
  */
 
 baidu.ui.getAttribute = function(element){

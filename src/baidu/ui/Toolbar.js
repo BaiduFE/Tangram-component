@@ -21,7 +21,9 @@
 ///import baidu.array.contains;
 
 /**
- * @class   toolBar基类，建立toolBar实例
+ * toolBar基类，建立toolBar实例
+ * @class
+ * @grammar new baidu.ui.Toolbar(options)
  * @param   {Object}    options config参数.
  * @config  {String}    [title=""]  toolbar的title参数，默认为空.
  * @config  {String}    [name="ToolBar_item_xxx"]   name参数，每个toolbar对象都有一个name参数.
@@ -52,32 +54,14 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
     me._positionStr = positionPrefix + me.position + '"';
 
 }).extend(
-    
-    /*
-     * @lends baidu.ui.Toolbar.prototype
-     */
+/**
+ * @lends baidu.ui.Toolbar.prototype
+ */
 {
-    /**
-     * title
-     */
     title: '',
-
-    /**
-     * direction
-     */
     direction: 'horizontal',
-
-    /**
-     * position
-     */
     position: 'left',
-
     cellIndex: 0,
-
-    /**
-     * tplMain
-     * @private
-     */
     tplMain: '<div id="#{bodyId}" class="#{bodyClass}" onmousedown="javascript:return false;">' +
             '#{title}' +
             '<div id="#{bodyInner}" class="#{bodyInnerClass}">' +
@@ -88,29 +72,9 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
                 '</table>' +
             '</div>' +
             '</div>',
-
-    /**
-     * tplTitle
-     * @private
-     */
     tplTitle: '<div id="#{titleId}" class="#{titleClass}"><div id="#{titleInnerId}" class="#{titleInnerClass}">#{title}</div></div>',
-
-    /**
-     * tplHorizontalCell
-     * @private
-     */
     tplHorizontalCell: '<td id="#{id}" valign="middle" style="overflow:hidden;"></td>',
-    
-    /**
-     * tplVerticalCell
-     * @private
-     */
     tplVerticalCell: '<tr><td id="#{id}" valign="middle" style="overflow:hidden;"></td></tr>',
-
-    /**
-     * uiType
-     * @private
-     */
     uiType: 'toolbar',
 
     /**

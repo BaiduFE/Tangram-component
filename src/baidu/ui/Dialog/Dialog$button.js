@@ -13,17 +13,18 @@
 ///import baidu.i18n.cultures.zh-CN;
 
 /**
- * 根据this.buttons创建dialog下部的buttons
- * butions格式
- * {
- *  name,{baidu.ui.button.Button相同的参数}
- * }
+ * 允许创建底部按钮
+ * @name baidu.ui.Dialog.Dialog$button
+ * @addon baidu.ui.Dialog
  */
 baidu.extend(baidu.ui.Dialog.prototype,{
     
     /**
      * 创建底部按钮
-     * @param {Object} option 创建按钮的options
+	 * @name baidu.ui.Dialog.Dialog$button.createButton
+	 * @addon  baidu.ui.Dialog.Dialog$button
+	 * @function 
+     * @param {Object} option 创建按钮的options，格式与baidu.ui.Button的参数相同
      * @param {String} name 按钮的唯一标识符
      * @return void
      */
@@ -42,6 +43,9 @@ baidu.extend(baidu.ui.Dialog.prototype,{
    
     /**
      * 删除底部按钮
+	 * @name baidu.ui.Dialog.Dialog$button.removeButton
+	 * @addon  baidu.ui.Dialog.Dialog$button
+	 * @function 
      * @param {String} name 按钮的唯一标识符
      * @return void
      */

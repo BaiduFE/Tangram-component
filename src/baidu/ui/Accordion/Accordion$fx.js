@@ -13,9 +13,11 @@
 ///import baidu.fx.expand;
 ///import baidu.fx.collapse;
 ///import baidu.dom.getStyle;
-///import baidu.lang.Class.addEventListeners;
+///import baidu.lang.Class.$addEventListeners;
 /**
- * 手风琴的动画效果
+ * 为手风琴组件添加动画效果
+ * @name  baidu.ui.Accordion.Accordion$fx
+ * @addon baidu.ui.Accordion
  */
 baidu.ui.Accordion.register(function(me) {
 //  me._fxElement = null;//用于存放当前正在进行动画的对象

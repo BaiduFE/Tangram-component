@@ -41,7 +41,7 @@ module('baidu.ui.Table.Table$edit');
 		// TT.event.fire(cell, 'dblclick');
 		$(cell).dblclick();
 
-		var input = TT.e(cell).first();
+		var input = baidu.e(cell).first();
 		equals(input._dom.length == 1 && input._dom[0] != null, editable,
 				'可编辑状态和输入框的显示保持一致');
 		if (editable) {
@@ -62,11 +62,14 @@ module('baidu.ui.Table.Table$edit');
 })();
 
 test('可编辑状态', function() {
-	var ui = te.getUI();
-	te.checkCell(0, 1, {
-		editable : true,
-		value : 'test'
-	});
+	stop();
+	ua.importsrc("baidu.element,baidu.dom.first,baidu.dom.getStyle", function(){
+		var ui = te.getUI();
+		te.checkCell(0, 1, {
+			editable : true,
+			value : 'test'
+		});
+	}, "baidu.element", "baidu.ui.Table.Table$edit");
 });
 
 test('不可编辑状态，更新为可编辑', function() {

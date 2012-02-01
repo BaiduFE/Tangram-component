@@ -8,8 +8,13 @@
 ///import baidu.string.format;
 ///import baidu.dom.setStyles;
 ///import baidu.object.extend;
-///import baidu.event.on;
 
+
+/**
+ * 创建一个content是iframe的dialog
+ * @name baidu.ui.Dialog.Dialog$iframe
+ * @addon baidu.ui.Dialog
+ */
 baidu.ui.Dialog.register(function(me){
     if(me.type == "iframe"){
         baidu.extend(me,{
@@ -18,7 +23,9 @@ baidu.ui.Dialog.register(function(me){
 
             /**
              * 获取iframe
-             * @public
+			 * @name baidu.ui.Dialog.Dialog$iframe.getIframe
+			 * @addon baidu.ui.Dialog.Dialog$iframe
+			 * @function 
              * @return {HTMLElement} iframe
              */
             getIframe: function(){
@@ -27,8 +34,10 @@ baidu.ui.Dialog.register(function(me){
 
             /**
              * 更新iframe的Style，更新dialog
-             * @public
-             * @param {Object} styles {width:width,height:height}
+			 * @name baidu.ui.Dialog.Dialog$iframe.updateIframe
+			 * @addon baidu.ui.Dialog.Dialog$iframe
+			 * @function 
+             * @param {Object} styles 样式名称和值组成的对象，例如{width:"500px",height:"300px"}
              * @return {Null}
              */
             updateIframe:function(styles){
@@ -55,7 +64,7 @@ baidu.ui.Dialog.register(function(me){
             iframeElement = baidu.g(iframeId);
     
             //解决iframe加载后无法准确定位dialog的问题
-            baidu.on(iframeElement, 'onload', function() {
+            me.on(iframeElement, 'onload', function() {
                 me._updatePosition();
                 me.dispatchEvent('onupdate');
             });

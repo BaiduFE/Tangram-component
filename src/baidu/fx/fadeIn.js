@@ -14,6 +14,7 @@
 /**
  * 渐现渐变效果。注意，如果元素的visibility属性如果为hidden，效果将表现不出来。
  * @function
+ * @grammar baidu.fx.fadeIn(element, options)
  * @param      {string|HTMLElement}     element            元素或者元素的ID
  * @param      {Object}                 options            选项。参数的详细说明如下表所示
  * @config     {Number}                 duration           500,//效果持续时间，默认值为500ms
@@ -33,7 +34,7 @@ baidu.fx.fadeIn = function(element, options) {
     var fx = baidu.fx.opacity(element,
         baidu.object.extend({from:0, to:1, restoreAfterFinish:true}, options||{})
     );
-    fx._className = "baidu.fx.fadeIn";
+    fx.__type = "baidu.fx.fadeIn";
 
     return fx;
 };

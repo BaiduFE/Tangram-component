@@ -214,3 +214,42 @@ test("不存在的资源", function() {
 		start();
 	}, 500);
 });
+
+test("依赖一个LazyLoad的widget", function() {
+	expect(3);
+	var count = 0,
+	w1 = baidu.widget.create("t11", function() {
+		count++;
+	}, {
+		lazyLoad : true
+	});
+	w2 = baidu.widget.create("t12", function() {
+		count++;
+	}, {
+		lazyLoad : false,
+		depends : 't11'
+	});
+	equals(count, 2, 'after load t12');
+	
+	w3 = baidu.widget.create("t13", function() {
+		count++;
+	}, {
+		lazyLoad : true
+	});
+	w4 = baidu.widget.create("t14", function() {
+		count++;
+	}, {
+		lazyLoad : true,
+		depends : 't13'
+	});
+	w4.load();
+	equals(count, 4, 'after load t14');
+	
+	w5 = baidu.widget.create("t15", function() {
+		count++;
+	}, {
+		lazyLoad : false,
+		depends : 't13'
+	});
+	equals(count, 5, 'after load t15');
+});

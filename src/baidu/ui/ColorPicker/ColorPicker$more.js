@@ -15,8 +15,9 @@
 
 
 /**
- * ColorPalette 插件
+ * 调色板插件
  * @name baidu.ui.ColorPicker.ColorPicker$more
+ * @addon baidu.ui.ColorPicker
  * @param {Number} [options.sliderLength = 150] 滑动条长度.
  * @param {String} options.coverImgSrc 调色板背景渐变图片路径.
  * @param {String} options.sliderImgSrc 滑动条背景图片路径.

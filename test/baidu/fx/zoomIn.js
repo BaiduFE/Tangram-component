@@ -3,7 +3,7 @@ module("baidu.fx.zoomIn");
 // scale的一种调用，仅校验参数即可
 test('test id', function() {
 	stop();
-	document.body.appendChild(TT.g('img_id'));
+	document.body.appendChild(document.getElementById('img_id'));
 	$('#img_id').css('position', 'absolute').css('left', 0).css('top', 0).css('width', 100).css('height', 100);
 //	$('img_div').css('position', 'absolute').css('left', 0).css('top', 0);
 	setTimeout(function(){//等待图片加载
@@ -23,7 +23,7 @@ test('test id', function() {
 								+ this.restoreAfterFinish);
 				equals(this.transition(2), 4, 'default: this.transition(2) = '
 						+ this.transition(2));
-				TT.e('img_id').remove();
+				$('#img_id').remove();
 				setTimeout(QUnit.start, 200);
 			}
 		});

@@ -32,6 +32,7 @@
 /**
  * Dialog基类，建立一个dialog实例
  * @class Dialog类
+ * @grammar new baidu.ui.Dialog(options)
  * @param     {Object}        options               选项
  * @config    {DOMElement}    content               要放到dialog中的元素，如果传此参数时同时传contentText，则忽略contentText。
  * @config    {String}        contentText           dialog中的内容
@@ -56,13 +57,15 @@
  * @config    {Function}      ondragstart           draggable模块支持，当拖拽开始时触发
  * @config    {Function}      ondrag                draggable模块支持，拖拽过程中触发
  * @config    {Function}      ondragend             draggable模块支持，拖拽结束时触发
- * @plugin    modal           可以让dialog后面加一个半透明层，并且锁定窗口。
- * @plugin    draggable       可以让dialog支持被拖拽。
- * @plugin    keyboard        可以让dialog支持一些常用的键盘操作。
- * @plugin    button          可以让dialog底部添加按钮。
- * @plugin    closeButton     可以让dialog右上角添加一个关闭按钮。
- * @plugin    smartCover      可以让dialog支持遮罩下方的select和flash。
- * @plugin    resizable       可以为Dialog添加缩放功能。
+ * @plugin    autoDispose		支持关闭后自动销毁组建
+ * @plugin    button			Dialog底部按钮
+ * @plugin    closeButton		支持关闭按钮
+ * @plugin    coverable			支持遮盖页面的任意元素
+ * @plugin    draggable       	支持被拖拽
+ * @plugin    iframe	      	支持创建的content是一个iframe
+ * @plugin    keyboard	      	键盘支持插件
+ * @plugin    modal		      	背景遮罩插件
+ * @plugin    resizable		    缩放功能插件
  */
 
 baidu.ui.Dialog = baidu.ui.createUI(function (options){
@@ -78,9 +81,9 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
     me.titleText = me.titleText || '';
 
 }).extend(
-    /**
-     *  @lends baidu.ui.Dialog.prototype
-     */
+/**
+ *  @lends baidu.ui.Dialog.prototype
+ */
 {
     //ui控件的类型，传入给UIBase **必须**
     uiType: 'dialog',
@@ -174,7 +177,7 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         });
         //当居中时，窗口改变大小时候要重新计算位置
         me.windowResizeHandler = me.getWindowResizeHandler();
-        baidu.on(window, 'resize', me.windowResizeHandler);
+        me.on(window, 'resize', me.windowResizeHandler);
 
         me.dispatchEvent('onload');
 
@@ -491,7 +494,6 @@ baidu.ui.Dialog = baidu.ui.createUI(function (options){
         //删除实例引用
         delete baidu.ui.Dialog.instances[me.guid];
         me.dispatchEvent('dispose');
-        baidu.un(window, 'resize', me.windowResizeHandler);
         baidu.dom.remove(me.getMain());
         baidu.lang.Class.prototype.dispose.call(me);
     }

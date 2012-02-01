@@ -21,12 +21,26 @@ module("baidu.data.storage");
 			pw.$(pw.document.body).append('<div id="div' + id + '"></div>');
 			pw.$('div#div' + id).append('<iframe id="' + id + '"></iframe>');
 		}
-		op.onafterstart && op.onafterstart($('iframe#f')[0]);
+		op.onafterstart && op.onafterstart($('iframe#' + id)[0]);
+		var f = '';
+		var e = '';
 		pw.$('script').each(function() {
 			if (this.src && this.src.indexOf('import.php') >= 0) {
-				url = this.src.split('import.php')[1];
+				//import.php?f=xxx&e=xxx&cov=xxx
+				//url = this.src.split('import.php')[1];
+				/[?&]f=([^&]+)/.test(this.src);
+				f+=','+RegExp.$1;
+				/[?&]e=([^&]+)/.test(this.src);
+				e+=RegExp.$1;
 			}
 		});
+		url='?f='+f.substr(1)+'&e='+e;
+		var srcpath = '';
+		if(location.href.indexOf("/run.do") > 0) {
+			srcpath = location.href.replace("run.do","frame.do");
+		} else {
+			srcpath = cpath + 'frame.php' + url;
+		}
 		pw.$(fid).one('load', function(e) {
 			var w = e.target.contentWindow;
 			var h = setInterval(function() {
@@ -36,7 +50,7 @@ module("baidu.data.storage");
 				}
 			}, 20);
 			// 找到当前操作的iframe，然后call ontest
-		}).attr('src', cpath + 'frame.php' + url);
+		}).attr('src', srcpath);
 	};
 })();
 
@@ -64,6 +78,45 @@ test("set,get,remove", function() {
 	storage.get('key1', function(status, value){
 		equals(value, null, 'remove successfully');
 	});
+});
+
+test("expire time", function() {
+	expect(10);
+	stop();
+	var storage = baidu.data.storage;
+	storage.set('key1', 'value1',function(status, value){
+		equals(status, 0, 'set successfully');
+		equals(value, 'value1', 'set successfully');
+	},{
+		expires : 1000
+	});
+	storage.get('key1', function(status, value){
+		equals(status, 0, 'get successfully');
+		equals(value, 'value1', 'get successfully');
+	});
+	setTimeout(function(){
+		storage.get('key1', function(status, value){
+			equals(value, null, 'expire time');
+		});
+		
+		storage.set('key2', 'value2',function(status, value){
+			equals(status, 0, 'set successfully');
+			equals(value, 'value2', 'set successfully');
+		},{
+			expires : new Date(new Date().getTime() + 1000)
+		});
+		storage.get('key2', function(status, value){
+			equals(status, 0, 'get successfully');
+			equals(value, 'value2', 'get successfully');
+		});
+		setTimeout(function(){
+			storage.get('key2', function(status, value){
+				equals(value, null, 'expire time');
+				start();
+			});
+		}, 2000);
+	}, 2000);
+	
 });
 
 test("set,get,remove between iframes", function() {
@@ -212,7 +265,7 @@ test("overflow", function() {
 	for(var i = 0; i < 3000; i++)
 		value += 'value';
 	var times = 5;
-	if(baidu.browser.chrome || baidu.browser.maxthon || baidu.browser.safari)
+	if(baidu.browser.chrome || baidu.browser.maxthon || baidu.browser.safari || baidu.browser.ie == 9)
 		times = 300;
 	if(baidu.browser.firefox)//FF太慢，所以不测overflow
 		times = 1;

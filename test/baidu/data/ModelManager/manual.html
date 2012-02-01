@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Model Manager测试</title>
+<script language='JavaScript' src='../../../../src/import.php?f=baidu.data.ModelManager'></script>
+</head>
+<body>
+    <p>请看console输出</p>
+</body>
+<script language='JavaScript'>
+    var DMdefine = {
+        fields:[{
+            name: 'firstName',
+            type: 'string',
+            defaultValue: 'my firstName'
+        },{
+            name: 'lastName',
+            type: 'string',
+            defaultValue: 'my lastName'
+        },{
+            name: 'age',
+            type: 'number',
+            defaultValue: 20
+        },{
+            name: 'isMarried',
+            type: 'boolean',
+            defaultValue: false
+        }]
+    };
+
+    baidu.data.ModelManager.defineDM('user', DMdefine);
+    var DMInfo= baidu.data.ModelManager.createDM('user');
+    console.log(DMInfo);
+    
+    var DMIndex = DMInfo[0];
+    var DM1 = DMInfo[1];
+
+    var DM2 = baidu.data.ModelManager.getDMByIndex(DMIndex);
+    var DM3 = baidu.data.ModelManager.getDMByType('user');
+
+    console.log(DM1);
+    console.log(DM2);
+    console.log(DM3);
+
+    console.log(DM1 === DM2);
+    console.log(DM2 === DM3[DMIndex]);
+</script>
+</html>

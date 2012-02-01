@@ -27,6 +27,7 @@
  * 应用实现 login 备注：涉及passport的API接口参数可以参见http://fe.baidu.com/doc/zhengxin/passport/openapi_help.text
  * @name baidu.ui.Login
  * @class
+ * @grammar new baidu.ui.Login(options)
  * @param  {String|DOMElement}  content               内容或者内容对应的元素
  * @param  {Object}             [options]             选项参数
  * @config {DOMElement}         content               要放到dialog中的元素，如果传此参数时同时传contentText，则忽略contentText。
@@ -54,17 +55,20 @@
  * @config {String}             loginURL              登陆地址,无须改动
  * @config {String}             regURL                注册地址,无须改动
  * @config {String}             loginJumpURL          登陆跳转地址,必须，为提交表单跨域使用，可前往 http://fe.baidu.com/~zhengxin/passport/jump.html  下载，或者线上 http://passport.baidu.com/jump.html 
- * @config {String}             regJumpURL            注册跳转地址,必须，为提交表单跨域使用，可前往 http://fe.baidu.com/~zhengxin/passport/jump.html  下载，或者线上
-http://passport.baidu.com/jump.html 
+ * @config {String}             regJumpURL            注册跳转地址,必须，为提交表单跨域使用，可前往 http://fe.baidu.com/~zhengxin/passport/jump.html  下载，或者线上http://passport.baidu.com/jump.html 
  * @config {String}             defaultStatus         弹出时初始状态(登录或注册),取值 ['login','reg'],默认为 login
  * @config {Function}           onLoginSuccess        登录成功回调 TODO 默认处理函数 json.un
  * @config {Function}           onLoginFailure        登录失败回调 TODO 默认处理函数, json.error
  * @config {Function}           onRegisterSuccess     注册成功回调函数
  * @config {Function}           onRegisterFailure     注册失败回调函数
+ * @plugin register				应用实现tab:login
  *
  */
 
 baidu.ui.Login = baidu.ui.createUI(function(options){ },{superClass:baidu.ui.Dialog}).extend(
+/**
+ * @lends baidu.ui.Login.prototype
+ */
 {
     		//ui控件的类型，传入给UIBase **必须**
 		uiType: 'login',
@@ -73,9 +77,15 @@ baidu.ui.Login = baidu.ui.createUI(function(options){ },{superClass:baidu.ui.Dia
 		//titleText: '登录',
 		loginURL: 'http://passport.baidu.com/api/?login&time=&token=&tpl=pp',
 		loginJumpURL: window.location.href,
-		//登录成功回调 TODO 默认处理函数 json.un
+		/**
+		 * 登录成功回调 TODO 默认处理函数 json.un
+		 * @private
+		 */
 		onLoginSuccess: function(obj, json) {},
-		//登录失败回调 TODO 默认处理函数, json.error
+		/**
+		 * 登录失败回调 TODO 默认处理函数, json.error
+		 * @private
+		 */
 		onLoginFailure: function(obj, json) {},
 		loginContainerId: 'loginContainer',
 		loginPanelId: 'loginPanel',
@@ -128,7 +138,8 @@ baidu.ui.Login = baidu.ui.createUI(function(options){ },{superClass:baidu.ui.Dia
         });
 
 },
-  open: function() {
+    
+    open: function() {
     		var me = this;
     		me.renderLogin();
     		me.dispatchEvent('onopen');

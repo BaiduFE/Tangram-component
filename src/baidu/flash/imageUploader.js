@@ -11,30 +11,48 @@
 /**
  * 创建flash based imageUploader
  * @class
+ * @grammar baidu.flash.imageUploader(options)
  * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
  * @config {Object} vars 创建imageUploader时所需要的参数
- * @config {String} [vars.url] 图片上传的url地址,默认值'Upload.php'
- * @config {String} [vars.fileType] 可上传的图片的类型字符串，默认值
- *                  '{"description":"图片", "extension":"*.gif; *.jpeg; *.png; *.jpg; *.bmp"}'
- * @config {Number} [vars.maxNum] 允许上传的最大图片数量，默认值32
- * @config {Number} [vars.maxSize] 允许上传的单张图片的最大体积,默认值3MB
- * @config {Number} [vars.compressSize] 超过多少MB的图片需要压缩,默认值3MB
- * @config {Number} [vars.compressLength] 允许上传的图片最大尺寸,默认值1200px
- * @config {String} [vars.uploadDataFieldName] 上传的图片数据在POST请求中的key值,默认值'uploadDataField'
- * @config {String} [vars.picDescFieldName] 图片的描述信息在POST请求中的key值,默认值'uploadDescField'
- * @config {object} [vars.ext] 其他需要通过post上传的参数，默认值null
- * @config {Number} [vars.supportGif] 是否支持动态gif图片,取值范围[0,1]，默认值为0
+ * @config {Number} vars.gridWidth 每一个预览图片所占的宽度，应该为flash寛的整除
+ * @config {Number} vars.gridHeight 每一个预览图片所占的高度，应该为flash高的整除
+ * @config {Number} vars.picWidth 单张预览图片的宽度
+ * @config {Number} vars.picHeight 单张预览图片的高度
+ * @config {String} vars.uploadDataFieldName POST请求中图片数据的key,默认值'picdata'
+ * @config {String} vars.picDescFieldName POST请求中图片描述的key,默认值'picDesc'
+ * @config {Number} vars.maxSize 文件的最大体积,单位'MB'
+ * @config {Number} vars.compressSize 上传前如果图片体积超过该值，会先压缩
+ * @config {Number} vars.maxNum:32 最大上传多少个文件
+ * @config {Number} vars.compressLength 能接受的最大边长，超过该值会等比压缩
+ * @config {String} vars.url 上传的url地址
+ * @config {Number} vars.mode mode == 0时，是使用滚动条，mode == 1时，拉伸flash, 默认值为0
+ * @see baidu.swf.createHTML
+ * @param {String} backgroundUrl 背景图片路径
+ * @param {String} listBacgroundkUrl 布局控件背景
+ * @param {String} buttonUrl 按钮图片不背景
+ * @param {String|Function} selectFileCallback 选择文件的回调
+ * @param {String|Function} exceedFileCallback文件超出限制的最大体积时的回调
+ * @param {String|Function} deleteFileCallback 删除文件的回调
+ * @param {String|Function} startUploadCallback 开始上传某个文件时的回调
+ * @param {String|Function} uploadCompleteCallback 某个文件上传完成的回调
+ * @param {String|Function} uploadErrorCallback 某个文件上传失败的回调
+ * @param {String|Function} allCompleteCallback 全部上传完成时的回调
+ * @param {String|Function} changeFlashHeight 改变Flash的高度，mode==1的时候才有用
  */ 
-baidu.flash.imageUploader = function(options){
+baidu.flash.imageUploader = baidu.flash.imageUploader || function(options){
    
     var me = this,
         options = options || {},
         _flash = new baidu.flash._Base(options, [
-                'single',    
-                'allComplete',
-                'changeHigh'
-            ]);
-
+            'selectFileCallback', 
+            'exceedFileCallback', 
+            'deleteFileCallback', 
+            'startUploadCallback',
+            'uploadCompleteCallback',
+            'uploadErrorCallback',
+            'allCompleteCallback',
+            'changeFlashHeight'
+        ]);
     /**
      * 开始或回复上传图片
      * @public

@@ -16,19 +16,40 @@
 ///import baidu.event.un;
 ///import baidu.event.preventDefault;
 
+
+
+
+/**
+ *
+ *
+ * 拆分方法，将baidu.data.form中方法拆分到baidu.validator.Validator中
+ * 当前文件保留，但使用上述类中验证方法进行验证
+ * 当前文件中方法只进行对form表单的事件绑定，message显示等操作
+ *
+ *
+ *
+ * */
+
+
+
+
+
+
 /**
  * 表单验证组件
- * @name baidu.form.Validate
+ * @name baidu.form.Validator
  * @class
+ * @grammar new baidu.form.Validator(form, fieldRule, options)
  * @param {HTMLElement|String} form 一个表单对象的引用或是该id的字符串标识
  * @param {Object} fieldRule 对验证规则的配置，一个验证域需要的配置包括验证域名称，验证规则，提示信息(可选，需要Validator$message支持)，提示信息存放容器(可选，需要Validator$message支持)，验证触发事件(可选)，一个完整的配置大致如：fieldName: {rule: {required: {param: true, message: {success: 'success msg', failure: 'failure msg'}}, maxlength: {param: 50, message: 'failure msg'}, email: true}, messageContainer: 'myMsgElement', eventName: 'keyup,blur'}
- * @param {Object} options参数描述
- * @config {String} validateEvent：描述全局的各个验证域的触发验证事件，如'blur,click'，默认是blur
- * @config {Boolean} validateOnSubmit：描述是否当提交表单时做验证，默认是true.
- * @config {Function} onvalidatefield: 验证单个验证域结束时的触发事件，function(event){}，event.field返回当次验证域的名称，event.resultList返回验证失败的项目数组(当验证成功时该数组长度为0)，各个项是json数据，格式如：{type: 类型, field: 被验证域名称}.
- * @config {Function} onvalidate：验证全部验证域结束时的触发事件，function(event){}，event.resultList返回验证失败的项目数组(当验证成功时该数组长度为0)，各个项是json数据，格式如：{type: 类型, field: 被验证域名称}.
+ * @param {Object} options 参数描述
+ * @config {String} validateEvent 描述全局的各个验证域的触发验证事件，如'blur,click'，默认是blur
+ * @config {Boolean} validateOnSubmit 描述是否当提交表单时做验证，默认是true.
+ * @config {Function} onvalidatefield 验证单个验证域结束时的触发事件，function(event){}，event.field返回当次验证域的名称，event.resultList返回验证失败的项目数组(当验证成功时该数组长度为0)，各个项是json数据，格式如：{type: 类型, field: 被验证域名称}.
+ * @config {Function} onvalidate 验证全部验证域结束时的触发事件，function(event){}，event.resultList返回验证失败的项目数组(当验证成功时该数组长度为0)，各个项是json数据，格式如：{type: 类型, field: 被验证域名称}.
+ * @return {baidu.form.Validator} validator对象
  */
-baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(form, fieldRule, options){
+baidu.form.Validator = baidu.lang.createClass(function(form, fieldRule, options){
     var me = this,
         fn = baidu.form.Validator,
         count = fn._addons.length,
@@ -168,6 +189,9 @@ baidu.form.Validator = baidu.form.Validator || baidu.lang.createClass(function(f
 });
 //构造函数插件器
 baidu.form.Validator._addons = [];
+/**
+ * @private
+ */
 baidu.form.Validator.register = function(fn){
     typeof fn == 'function'
         && baidu.form.Validator._addons.push(fn);

@@ -16,6 +16,7 @@
 /**
  * 面具遮罩效果。注意：只适用于绝对定位的DOM元素.
  * @function
+ * @grammar baidu.fx.mask(element, options)
  * @param       {string|HTMLElement}      element           元素或者元素的ID
  * @param       {Object}                  options           选项。参数的详细说明如下表所示
  * @config      {String}                  startOrigin       "0px 0px",//起始坐标描述。"x y"：x方向和y方向坐标。取值包括像素(含px字符)，百分比，top、left、center、bottom、right，默认"0px 0px"。

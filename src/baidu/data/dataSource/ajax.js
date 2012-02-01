@@ -13,12 +13,14 @@
 
 /**
  * 异步调用数据源类
+ * @function
+ * @grammar baidu.data.dataSource.ajax(url, options)
  * @param {String}     url                           数据源地址
  * @param {Object}     [options]                     配置
- * @param {Number}     [options.maxCache = 10]       缓存数据的最大个数
- * @param {Boolean}    [options.cache = true]        是否使用缓存
- * @param {Function}   [optons.transition]           转换数据算法  
- * @param {Function}   [options.onbeforeget]         beforeget事件
+ * @config {Number} maxCache 缓存数据的最大个数，默认10
+ * @config {Boolean} cache 是否使用缓存，默认开启
+ * @config {Function} transition 转换数据算法  
+ * @config {Function} onbeforeget beforeget事件
  */
 baidu.data.dataSource.ajax = function(url, options){
     options = baidu.object.extend({
@@ -42,7 +44,7 @@ baidu.data.dataSource.ajax = function(url, options){
         options = options || {};
         options.key = options.key || (me.url + (options.param ? "?" + baidu.json.stringify(options.param) : ""));
         if (!me.dispatchEvent("onbeforeget", options)) {
-            baidu.ajax.request(me.url, me.ajaxOption ||
+            baidu.ajax.request(options.key, me.ajaxOption ||
             {
                 method: options.method || 'get',
                 data: options.param,

@@ -18,11 +18,13 @@
 ///import baidu.dom.getAncestorByTag;
 ///import baidu.object.values;
 ///import baidu.object.keys;
-///import baidu.lang.Class.addEventListeners;
+///import baidu.lang.Class.$addEventListeners;
 /**
  * 增加选择列的插件
+ * @name  baidu.ui.Table.Table$select
+ * @addon baidu.ui.Table
  * @param   {Object} options config 参数
- * @config  {Object} columns，在columns的数据描述中加入type属性并设置为'checkbox'表示该列支持checkbox，如：{index:0, type: 'checkbox'}
+ * @config  {Object} columns 在columns的数据描述中加入type属性并设置为'checkbox'表示该列支持checkbox，如：{index:0, type: 'checkbox'}
  */
 baidu.ui.Table.register(function(me){
 //	me._selectedItems = {};      //当前选中的id:checkbox-id, data:row-data
@@ -85,7 +87,7 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 			}
 		});
 		if(me.title && baidu.lang.isNumber(index)){//如果存在表格标题,生成全选checkbox
-			if(me.getTitleBody()){//这里和$title插件存在文件载入先后关联
+			if(me.getTitleBody && me.getTitleBody()){//这里和$title插件存在文件载入先后关联
 				me._createTitleScelect(index);
 			}else{
 				me.addEventListener("titleload", function(){
@@ -121,8 +123,10 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 添加单个checkbox到行中
+	 * @name  baidu.ui.Table.Table$select.addCheckbox
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 * @param {String} rowId 该行的id
-	 * @memberOf {TypeName} 
 	 */
 	addCheckbox : function(rowId, index){
 		var me = this, row, cell, checkboxStr;
@@ -142,7 +146,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	/**
 	 * 移除一个checkbox
 	 * @param {Object} rowId 该行的id
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$select.removeCheckbox
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 */
 	removeCheckbox : function(rowId){
 		var me = this;
@@ -153,7 +159,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 取得表格标题的全选checkbox
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$select.getTitleCheckbox
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 * @return {html-element} 
 	 */
 	getTitleCheckbox : function(){
@@ -163,7 +171,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	/**
 	 * 设置一个自定义的全选checkbox
 	 * @param {String} checkboxId 该checkbox的id
-	 * @memberOf {TypeName}
+	 * @name  baidu.ui.Table.Table$select.setTitleCheckbox
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 */
 	setTitleCheckbox : function(checkbox){
 		this.titleCheckboxId = checkbox.id || checkbox;
@@ -221,7 +231,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	/**
 	 * 根据给定的数组索引选中checkbox
 	 * @param {Object} indexArr 格式：[1, 3, 8]
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$select.select
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 */
 	select : function(indexArr){
 		this._setCheckboxState(indexArr, true);
@@ -229,8 +241,10 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 根据给定的数组索引反选checkbox
-	 * @param {Object} indexArr
-	 * @memberOf {TypeName} 
+	 * @param {Object} indexArr 索引数组
+	 * @name  baidu.ui.Table.Table$select.unselect
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 */
 	unselect : function(indexArr){
 		this._setCheckboxState(indexArr, false);
@@ -238,8 +252,10 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 单项的切换选中或反选
-	 * @param {Object} rsid
-	 * @memberOf {TypeName} 
+	 * @param {Object} rsid 项ID
+	 * @name  baidu.ui.Table.Table$select.toggle
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 */
 	toggle : function(rsid){
 		var me = this,
@@ -262,7 +278,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 全部选中checkbox
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$select.selectAll
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 */
 	selectAll : function(){
 		this._setCheckboxState(null, true);
@@ -270,7 +288,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 全部反选checkbox
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$select.unselectAll
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 */
 	unselectAll : function(){
 		this._setCheckboxState(null, false);
@@ -278,7 +298,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 当全选的checkbox存在时才可以切换全选和全反选
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$select.toggleAll
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 */
 	toggleAll : function(){
 		var me = this, checkbox = me.getTitleCheckbox();
@@ -289,7 +311,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 取得已经选中的数据，如果该行的row.data中设置id则返回所选中的id数组，否则返回该row的data
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$select.getSelected
+	 * @addon baidu.ui.Table.Table$select
+	 * @function
 	 * @return {TypeName} 
 	 */
 	getSelected : function(){

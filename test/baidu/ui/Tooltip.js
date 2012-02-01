@@ -117,20 +117,20 @@ test("Set or don't set the offset of the tooltip", function(){
 	div.style.width = '100px';
 	var target = document.body.appendChild(document.createElement('div'));
 		target.id = 'targetid';
-		$(target).css('height','50px').css('width','50px').css('left','0px').css('top','0px').css('color','red');
+		$(target).css('position', 'absolute').css('height','50px').css('width','50px').css('left','0px').css('top','0px').css('backgroundColor','red');
 		var targetPos = baidu.dom.getPosition(target);
 	var tp = new baidu.ui.Tooltip({
 		target : target,
-		offset : [100,100],
+		offset : [10,10],
 		contentText : 'content'
 	});
 	tp.render(div);
 	tp.open();
-	equals(tp.getMain().style.top, targetPos.top+50+100+'px', 
+	equals(tp.getMain().style.top, targetPos.top+50+10+'px', 
 			"If set the offset, the top position of the "
 			+"tooltip = the top position of the div + the "
 			+"height of the div + the offset of the tooltip ");
-	equals(tp.getMain().style.left, targetPos.left+50+100+'px', 
+	equals(tp.getMain().style.left, targetPos.left+50+10+'px', 
 			"If set the offset, the left position of the "
 			+"tooltip = the left position of the div + the "
 			+"offset of the tooltip ");
@@ -370,7 +370,7 @@ test('Tooltip surround',function() {
 		t.dispose();
 		w.document.body.removeChild(target);
 		w.document.body.removeChild(div);
-		te.obj.push(f);
+		te.dom.push(f);
 		this.finish();
 	});
 });

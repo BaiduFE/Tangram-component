@@ -5,11 +5,13 @@
 
 ///import baidu.ui.ScrollBar;
 ///import baidu.dom.g;
-///import baidu.lang.Class.addEventListeners;
+///import baidu.lang.Class.$addEventListeners;
 /**
- * 让滚动条邦定一个容器
- * @param   {Object}                options config参数.
- * @config  {String|HTMLElement}    container 一个容器的dom或是id的字符串
+ * 让滚动条绑定一个容器
+ * @name baidu.ui.ScrollBar.ScrollBar$container
+ * @addon baidu.ui.ScrollBar
+ * @param   {Object}                options    config参数.
+ * @config  {String|HTMLElement}    container  一个容器的dom或是id的字符串
  * @author linlingyu
  */
 baidu.ui.ScrollBar.register(function(me) {
@@ -45,6 +47,9 @@ baidu.ui.ScrollBar.register(function(me) {
 baidu.object.extend(baidu.ui.ScrollBar.prototype, {
     /**
      * 取得用户传入的需要被滚动条管理的对象
+	 * @name baidu.ui.ScrollBar.ScrollBar$container.getContainer
+	 * @addon baidu.ui.ScrollBar.ScrollBar$container
+	 * @function
      * @return {HTMLElement}
      */
     getContainer: function() {

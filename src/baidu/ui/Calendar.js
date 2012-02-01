@@ -28,6 +28,7 @@
  * 创建一个简单的日历对象
  * @name baidu.ui.Calendar
  * @class
+ * @grammar new baidu.ui.Calendar(options)
  * @param {Object} options config参数
  * @config {String} weekStart 定义周的第一天，取值:'Mon'|'Tue'|'Web'|'Thu'|'Fri'|'Sat'|'Sun'，默认值'Sun'
  * @config {Date} initDate 以某个本地日期打开日历，默认值是当前日期
@@ -415,7 +416,7 @@ baidu.ui.Calendar = baidu.ui.createUI(function(options){
      * @return {Date} 返回一个本地当天的时间
      */
     getToday: function(){
-        return me._toLocalDate(new Date());
+        return this._toLocalDate(new Date());
     },
     
     /**

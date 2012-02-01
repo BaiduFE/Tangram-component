@@ -14,12 +14,14 @@
 ///import baidu.dom.remove;
 
 /**
- * @class 星级评价条
+ * 星级评价条
+ * @class
+ * @grammar new baidu.ui.StarRate(options)
  * @param {Object} [options] 选项
- * @param {Number} [options.total] 总数,默认5个
- * @param {Number} [options.current] 当前亮着的星星数
- * @param {String} [options.classOn] 星星点亮状态的className
- * @param {String} [options.classOff] 星星未点亮状态的className
+ * @param {Number} total 总数,默认5个
+ * @param {Number} current 当前亮着的星星数
+ * @param {String} classOn 星星点亮状态的className
+ * @param {String} classOff 星星未点亮状态的className
  */
 //TODO: 实现一个支持任意刻度的星的显示
 baidu.ui.StarRate = baidu.ui.createUI(function(options){
@@ -79,7 +81,7 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
             me.dispatchEvent("onleave");
         },me);
 
-        baidu.on(me.element, 'mouseout', me._mouseOutHandle);
+        me.on(me.element, 'mouseout', me._mouseOutHandle);
     },
 
     /**
@@ -135,7 +137,6 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
      */
     dispose:function(){
         var me = this;
-        baidu.un(me.element, 'mouseout', me._mouseOutHandle);
        
         for(i=0; i < me.total; ++i){
             baidu.dom.remove(me.getId(i));

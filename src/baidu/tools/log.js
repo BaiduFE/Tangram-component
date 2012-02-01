@@ -7,7 +7,14 @@
 ///import baidu.tools;
 ///import baidu.array.each;
 ///import baidu.fn.blank;
-
+/**
+ * 打印log
+ * @class
+ * @name baidu.tools.log
+ * @grammar baidu.tools.log
+ * @param {Object} data 需要打印的内容
+ * @return {Null}
+ */
 (function(){
  
         //日志队列
@@ -31,7 +38,8 @@
      
     /**
      * 打印log
-     * @public
+     * @class
+     * @grammar baidu.tools.log
      * @param {Object} data 需要打印的内容
      * @return {Null}
      */
@@ -41,7 +49,7 @@
 
     /**
      * 打印error
-     * @public
+     * @memberOf baidu.tools.log.prototype
      * @param {Object} data 需要打印的内容
      * @return {Null}
      */
@@ -51,7 +59,7 @@
 
     /**
      * 打印info
-     * @public
+     * @memberOf baidu.tools.log.prototype
      * @param {Object} data 需要打印的内容
      * @return {Null}
      */
@@ -61,7 +69,7 @@
 
     /**
      * 打印warn
-     * @public
+     * @memberOf baidu.tools.log.prototype
      * @param {Object} data 需要打印的内容
      * @return {Null}
      */
@@ -73,7 +81,7 @@
      * 设置timer
      * 若此时一寸在相同名称的计时器，则立即输出，并重新初始化
      * 若不存在，则初始化计时器
-     * @public
+     * @memberOf baidu.tools.log.prototype
      * @param {String} name timer的标识名称
      * @return {Null}
      */
@@ -89,7 +97,7 @@
 
     /**
      * 终止timer,并打印
-     * @public
+     * @memberOf baidu.tools.log.prototype
      * @param {String} name timer的标识名称
      * @return {Null}
      */
@@ -107,14 +115,14 @@
 
     /**
      * 开启dialog进行输出
-     * @public
+     * @memberOf baidu.tools.log.prototype
      * @return {Null}
      */
     log.enableDialog = function(){
         
         _enableDialg = true;
         if(!_dialog && baidu.tools.log.Dialog){
-            _dialog = new baidu.tools.log.Dialog();
+            baidu.tools.log.DInstance = _dialog = new baidu.tools.log.Dialog();
         }else{
             _dialog.open();
         }
@@ -122,7 +130,7 @@
 
     /**
      * 关闭dialog
-     * @public
+     * @memberOf baidu.tools.log.prototype
      * @return {Null}
      */
     log.disableDialog = function(){
@@ -133,7 +141,7 @@
    
     /**
      * 输出log
-     * @public
+     * @private
      * @param {String} data 需要打印的内容
      * @return {Null}
      */
@@ -166,7 +174,7 @@
         _logStack = [];
         _dialog && _dialog.push(data);
 
-        me.callBack.call(data);
+        me.callBack(data);
     };
 
     /**
@@ -176,6 +184,7 @@
      * 默认值为0
      * @param {Number} ts timeInterval
      * @return {Null}
+     * @memberOf baidu.tools.log.prototype
      */
     log.setTimeInterval = function(ti){
         
@@ -193,6 +202,7 @@
     * 设置所要记录的log的level
     * @param {String} 'log','error','info','warn'中一个或多个
     * @return {Null}
+    * @memberOf baidu.tools.log.prototype
     */ 
     log.setLogLevel = function(){
         var me = log,
@@ -215,7 +225,6 @@
 
     //回调函数
     log.callBack = baidu.fn.blank;
-
 
     baidu.log = baidu.tools.log = log;
 })();

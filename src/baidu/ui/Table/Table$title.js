@@ -14,10 +14,12 @@
 ///import baidu.array.each;
 ///import baidu.dom.g;
 ///import baidu.string.format;
-///import baidu.lang.Class.addEventListeners;
+///import baidu.lang.Class.$addEventListeners;
 /**
  * 增加列标题
- * @param   {Object} optoins config参数
+ * @name  baidu.ui.Table.Table$title
+ * @addon baidu.ui.Table
+ * @param   {Object} options config参数
  * @config  {Object} title 在表格头上增加一个行来说明各个表格列的标题，参数格式：['column-1', 'column-2', 'column-3'...]
  */
 baidu.ui.Table.register(function(me){
@@ -72,7 +74,9 @@ baidu.object.extend(baidu.ui.Table.prototype, {
 	
 	/**
 	 * 取得表格的table对象
-	 * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$title.getTitleBody
+	 * @addon baidu.ui.Table.Table$title
+	 * @function
 	 * @return {html-element} 
 	 */
 	getTitleBody : function(){

@@ -10,9 +10,9 @@ module('baidu.tools.log');
 		/**
 		 * 仅校验最后一次
 		 */
-		baidu.tools.log.callBack = function() {
-			if (!mydata.nooutput) {
-				var data = this[this.length - 1];
+		baidu.tools.log.callBack = function(data) {
+			var data = data[0]
+            if (!mydata.nooutput) {
 				/**
 				 * 提示和注释 提示：请使用 isNaN() 来判断一个值是否是数字。 原因是 NaN 与所有值都不相等，包括它自己。
 				 */
@@ -54,10 +54,10 @@ module('baidu.tools.log');
 })();
 test('base', function() {
 	expect(4);
-	baidu.log.callBack = function() {
-		if (this.length == 0)
+	baidu.log.callBack = function(data) {
+		var data = data[0];
+        if (this.length == 0)
 			return;
-		var data = this[this.length - 1];
 		equals(data.data, 'test');
 		equals(data.type, 'log');
 	};
@@ -122,9 +122,8 @@ test('timer', function() {
 	// 每次都应该输出50
 	var expectList = [];
 	var actualList = [];
-	baidu.log.callBack = function() {
-		var data = this[this.length - 1];
-		actualList[actualList.length] = data.data;
+	baidu.log.callBack = function(data) {
+        actualList[actualList.length] = data[0].data;
 	};
 	baidu.log.time('a');// 启动计时器
 	var time;
@@ -136,9 +135,10 @@ test('timer', function() {
 	}
 	setTimeout(function() {
 		equals(actualList.length, 4, 'info log');
-		TT.array.each(actualList, function(item) {
+		for(i = 0; i < actualList.length; i++){
+			item = actualList[i];
 			ok(Math.abs(item - 200) < 30, '误差正负30 : ' + item);
-		});
+		}
 		QUnit.start();
 	}, time + 100);
 	stop();
@@ -165,28 +165,29 @@ test('timeStep', function() {
 	} ];
 	var start = new Date().getTime();
 	// 校验整体结构
-	baidu.log.callBack = function() {
-		// 会有两次没有数据输出，这用例设计的，太巧妙。。。
+	baidu.log.callBack = function(data) {
+	    console.log(data);
+        // 会有两次没有数据输出，这用例设计的，太巧妙。。。
 		var now = new Date().getTime() - start;// 50, 100, 150, 200
 		var expList = [];
 		var i = 0;
 		for (; i < dataList.length; i++) {
 			if (dataList[i].time < now) {
-				var data = dataList[i];
-				delete data.time;
-				expList.push(data);
+				var d = dataList[i];
+				delete d.time;
+				expList.push(d);
 			}
 		}
-		same(this, expList, 'check data');
+		same(data, expList, 'check data');
 //		 equals(this.length, 2, '每次出来两个数据');
 //		 same(this.shift(), dataList.shift(), '数据校验');
 //		 same(this.shift(), dataList.shift(), '数据校验');
 	};
 	var idx = 0;
-	var call = function(data) {
+	var call = function(d) {
 		setTimeout(function() {
-			baidu.log[data.type](data.data);
-		}, data.time);
+			baidu.log[d.type](d.data);
+		}, d.time);
 	};
 	for (; idx < dataList.length; idx++) {
 		call(dataList[idx]);

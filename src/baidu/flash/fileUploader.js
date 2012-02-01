@@ -14,18 +14,22 @@
 
 /**
  * 创建flash based fileUploader
- * @param {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
- * @param {String} width
- * @param {String} height
- * @param {Function|String} selectiFile
- * @param {Function|String} exceedMaxSize
- * @param {Function|String} deleteFile
- * @param {Function|String} uploadStart
- * @param {Function|String} uploadComplete
- * @param {Function|String} uploadError
- * @param {Function|String} uploadProgress
+ * @class
+ * @grammar baidu.flash.fileUploader(options)
+ * @param {Object} options
+ * @config {Object} createOptions 创建flash时需要的参数，请参照baidu.swf.create文档
+ * @config {String} createOptions.width
+ * @config {String} createOptions.height
+ * @config {Number} maxNum 最大可选文件数
+ * @config {Function|String} selectFile
+ * @config {Function|String} exceedMaxSize
+ * @config {Function|String} deleteFile
+ * @config {Function|String} uploadStart
+ * @config {Function|String} uploadComplete
+ * @config {Function|String} uploadError
+ * @config {Function|String} uploadProgress
  */
-baidu.flash.fileUploader = function(options){
+baidu.flash.fileUploader = baidu.flash.fileUploader || function(options){
     var me = this,
         options = options || {};
     
@@ -34,7 +38,7 @@ baidu.flash.fileUploader = function(options){
     },options.createOptions || {});
     
     var _flash = new baidu.flash._Base(options, [
-        'selectiFile',
+        'selectFile',
         'exceedMaxSize',
         'deleteFile',
         'uploadStart',
@@ -42,6 +46,8 @@ baidu.flash.fileUploader = function(options){
         'uploadError', 
         'uploadProgress'
     ]);
+
+    _flash.call('setMaxNum', options.maxNum ? [options.maxNum] : [1]);
 
     /**
      * 设置当鼠标移动到flash上时，是否变成手型
@@ -100,7 +106,7 @@ baidu.flash.fileUploader = function(options){
     me.deleteFile = function(index, callBack){
 
         var callBackAll = function(list){
-                callBack(list);
+                callBack && callBack(list);
             };
 
         if(typeof index === 'undefined'){
@@ -124,7 +130,10 @@ baidu.flash.fileUploader = function(options){
      * @return {Null};
      */
     me.addFileType = function(type){
-        if(typeof type !== 'Array') type = [type];
+        var type = type || [[]];
+        
+        if(type instanceof Array) type = [type];
+        else type = [[type]];
         _flash.call('addFileTypes', type);
     };
     
@@ -135,8 +144,11 @@ baidu.flash.fileUploader = function(options){
      * @return {Null};
      */
     me.setFileType = function(type){
-        if(typeof type !== 'Array') type = [type];
-        _flash.call('setFileTypes', type); 
+        var type = type || [[]];
+        
+        if(type instanceof Array) type = [type];
+        else type = [[type]];
+        _flash.call('setFileTypes', type);
     };
 
     /**

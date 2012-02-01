@@ -15,11 +15,11 @@
 
 ///import baidu.ui.behavior.posable;
 
-///import baidu.event.on;
-///import baidu.event.un;
 
 /**
  * 为Suggestion提供位置校准功能
+ * @name  baidu.ui.Suggestion.Suggestion$fixWidth
+ * @addon baidu.ui.Suggestion
  * @author berg
  */
 baidu.ui.Suggestion.extend({
@@ -77,7 +77,7 @@ baidu.ui.Suggestion.register(function(me) {
             }, 100);
         }
         //当窗口变化的时候重新放置
-        baidu.on(window, 'resize', me.windowResizeHandler);
+        me.on(window, 'resize', me.windowResizeHandler);
     });
 
     //每次出现的时候都重新定位，保证用户在初始化之后修改了input的位置，也不会出现混乱
@@ -86,7 +86,6 @@ baidu.ui.Suggestion.register(function(me) {
     });
 
     me.addEventListener('ondispose', function() {
-        baidu.un(window, 'resize', me.windowResizeHandler);
         clearInterval(me.fixWidthTimer);
     });
 

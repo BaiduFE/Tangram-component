@@ -6,7 +6,8 @@
 ///import baidu;
 
 /**
- * @namespace baidu.widget widget机制, 用于模块化开发.
+ * widget机制, 用于模块化开发.
+ * @namespace baidu.widget
  * @remark
  *     widget是指一个包含它依赖信息的完整功能块. 
  * widget机制是通过一些api封装,解决widget的依赖管理,通信机制以及部署支持.
@@ -22,7 +23,7 @@ baidu.widget = baidu.widget || {
      * widget url查找的根路径, 相对根路径或绝对根路径皆可.
      */
     _basePath : '',
-    _widgetInUse : {},
+    _widgetAll : {},
     _widgetLoading : {},
     _defaultContext : {}
 };

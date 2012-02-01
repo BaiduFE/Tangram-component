@@ -22,20 +22,21 @@
 ///import baidu.object.extend;
 
  /**
- * Tab标签组
+ * Tab标签组，说明：该组件继承于baidu.ui.ItemSet，相关的方法请参考ItemSet
  * @class
- * @param      {Object}                 [options]          选项
- * @config     {Function}               items              tab中的内容<pre> [{head : "label1",body : "<p>content1</p>"},{head : "label2",body : "<p>content2</p>"},{head : "label3",body : "<p>content3</p>"}]</pre>
- * @plugin      dom                让Tab类支持从已有dom渲染出tab。
+ * @grammar new baidu.ui.Tab(options)
+ * @param      {Object} [options] 选项
+ * @config {Array} items 数据项，格式如：[{head: 'text-0', body: 'content-0'}, {head: 'text-1', body: 'content-1'}...]
+ * @see <a href="#baidu.ui.ItemSet">baidu.ui.ItemSet</a>
  */
  
 baidu.ui.Tab = baidu.ui.createUI( function (options) {
     var me = this;
     me.items = me.items || [];//初始化防止空
 }, {superClass : baidu.ui.ItemSet}).extend( 
-    /**
-     *  @lends baidu.ui.Tab.prototype
-     */
+/**
+ *  @lends baidu.ui.Tab.prototype
+ */
 {
 	//ui控件的类型 **必须**
     uiType             :  "tab", 

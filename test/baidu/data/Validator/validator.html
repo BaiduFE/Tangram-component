@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>validator</title>
+        <link href="./ui.css" rel="stylesheet" />
+        <script type="text/javascript" src="./tangram_validator_base.js"></script>
+        <script type="text/javascript" src="../Tangram-component/src/baidu/data/Validator.js"></script>
+        <script type="text/javascript" src="../Tangram-component/src/baidu/data/validatorRules.js"></script>
+        <script type="text/javascript" src="../Tangram-component/src/baidu/data/validatorResultTypes.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            var validator = new baidu.data.Validator({
+                "isName": [
+                    {rule: "length", conf: {len: 7}}
+                ],
+                "isSchools": [
+                    {rule: "array" }
+                ],
+                "isNick": [
+                    {rule: "remote", conf: {
+                        url: './remote_get.php?_charset=utf_8',
+                        key: 'nick',
+                        method: 'get',
+                        onsuccess: function(xhr, responseText){
+                            console.info("responseText:");
+                            console.log(responseText);
+                            if(responseText == 'jianling')
+                                return false;
+                            else
+                                return true;
+                        },
+                        onfailure: function(xhr){
+                            console.log('failure');
+                        }
+                    }},
+                     {rule: "length", conf: {len: 8}}
+                ],
+                "isDate": [
+                    {rule: "date"}
+                ]
+            });
+            
+            // validator.addEventListener("onAddRule", function(obj){
+                // console.log(obj);
+            // });
+            // //addRule
+            // validator.addRule("name", function(value){
+                // return /^\w$/.test(value);
+            // });
+//             
+            // //addValidation
+            // validator.addValidation("isRoles", [
+                        // {
+                            // rule: "name"
+                        // }
+                    // ]);
+            // validator.addEventListener("onvalidate", function(obj){
+                // console.log("from custonEvent");
+                // console.log(obj);
+            // });
+            
+            //validate
+            // validator.addEventListener("onvalidatefield", function(obj){
+                // console.info("onvalidatefield:");
+                // console.log(obj);
+            // });
+            var result = validator.validate([["chengyn", "isName"], [[1,2,3], "isSchools"], ["jianling", "isNick"], ["chengyang", "isNick"], ["chengyang", "inexistence"]]);
+            console.info("result:");
+            console.log(result);
+            
+            
+            // var result = validator.test("fdaffds", "isName");
+            // console.info("use test():");
+            // console.log(result);
+            var result2 = validator.validate([["chengyn", "isName"], [[1,2,3], "isSchools"]]);
+            console.info("result2:");
+            console.log(result2);
+            
+            
+        </script>
+    </body>
+</html>

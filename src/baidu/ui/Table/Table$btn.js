@@ -14,9 +14,11 @@
 ///import baidu.event.on;
 ///import baidu.dom.g;
 ///import baidu.dom.setStyle;
-///import baidu.lang.Class.addEventListeners;
+///import baidu.lang.Class.$addEventListeners;
 /**
- * 使单元格支持编辑
+ * 为翻页功能增加相关按钮
+ * @name  baidu.ui.Table.Table$btn
+ * @addon baidu.ui.Table
  * @param {Object} options config参数
  * @config {Object} widthPager 当该参数要在table的结尾处增加翻页按钮
  */
@@ -41,7 +43,8 @@ baidu.ui.Table.register(function(me){
 baidu.object.extend(baidu.ui.Table.prototype, {
     /**
      * 取得存放pager的容器
-     * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$btn.getPagerContainer
+	 * @addon baidu.ui.Table.Table$btn
      * @return {html-element} 
      */
     getPagerContainer : function(){
@@ -50,7 +53,8 @@ baidu.object.extend(baidu.ui.Table.prototype, {
     
     /**
      * 重设pager容器的大小
-     * @memberOf {TypeName} 
+	 * @name  baidu.ui.Table.Table$btn.resize
+	 * @addon baidu.ui.Table.Table$btn
      */
     resize : function(){
         var me = this;

@@ -6,7 +6,14 @@
 ///import baidu.history;
 ///import baidu.browser.ie;
 ///import baidu.browser.firefox;
-
+/**
+ * 通过hash值的来记录页面的状态
+ * 通过js改变hash的时候，浏览器会增加历史记录，并且执行回调函数
+ * @name baidu.history.listen
+ * @function
+ * @grammar baidu.history.listen(callback)
+ * @param {Function} callBack hash值变更时的回调函数.
+ */
 (function() {
 
     var _curHash,       //当前hash值，用来判断hash变化
@@ -53,11 +60,7 @@
         }
     };
 
-    /**
-     * 通过hash值的来记录页面的状态
-     * 通过js改变hash的时候，浏览器会增加历史记录，并且执行回调函数
-     * @param {Function} callBack hash值变更时的回调函数.
-     */
+    
     function listen(callBack) {
         _curHash = ('');
         if (callBack)
@@ -89,6 +92,6 @@
             window.onhashchange = _hashChangeCallBack;
         }
     };
-
+    
     baidu.history.listen = listen;
 })();

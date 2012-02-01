@@ -13,6 +13,7 @@
 /**
  * 创建一个panel来作为滚动条的容器
  * @class ScrollPanel基类
+ * @grammar new baidu.ui.ScrollPanel(options)
  * @param   {Object}                options config参数.
  * @config  {String}                overflow 取值'overflow-y':创建竖向滚动, 'overflow-x':创建横向滚动条, 'auto':创建滚动条(默认)
  * @config  {String|HTMLElement}    container 需要被滚动条管理的容器对象
@@ -37,14 +38,16 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
             unSize: 'width',
             unScrollSize: 'scrollWidth',
             unClientSize: 'clientWidth',
-            offsetSize: 'offsetHeight'
+            offsetSize: 'offsetHeight',
+            unOffsetSize: 'offsetWidth'
         },
         x: {
             size: 'width',
             unSize: 'height',
             unScrollSize: 'scrollHeight',
             unClientSize: 'clientHeight',
-            offsetSize: 'offsetWidth'
+            offsetSize: 'offsetWidth',
+            unOffsetSize: 'offsetHeight'
         }
     },
 
@@ -81,6 +84,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
         baidu.dom.insertHTML(me.getTarget(), 'afterEnd', me.getString());
         me.renderMain(me.getId('main'));
         me._renderUI();
+        me.dispatchEvent('onload');
     },
 
     /**
@@ -236,7 +240,7 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
             instance = pos ? me['_' + pos + 'Scrollbar'] : null;
         if(!instance){
             instance = (me._yScrollbar && me._xScrollbar) ? [me._yScrollbar, me._xScrollbar]
-                : (me._yScrollbar || me._xScrollbar)
+                : (me._yScrollbar || me._xScrollbar);
         }
         return instance;
     },
@@ -283,7 +287,8 @@ baidu.ui.ScrollPanel = baidu.ui.createUI(function(options) {
             ybar = me._yScrollbar,
             xbar = me._xScrollbar;
         me.dispatchEvent('dispose');
-        me.getMain().parentNode.appendChild(me.getTarget());
+        me.setVisible(false);
+        me.getMain().parentNode.insertBefore(me.getTarget(), me.getMain());
         if (ybar) {ybar.dispose();}
         if (xbar) {xbar.dispose();}
         baidu.dom.remove(me.getMain());

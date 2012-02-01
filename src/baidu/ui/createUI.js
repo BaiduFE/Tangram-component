@@ -7,14 +7,15 @@
 ///import baidu.ui.Base;
 ///import baidu.ui.create;
 ///import baidu.object.extend;
+///import baidu.lang.isFunction;
 
 /**
  * 创建一个UI控件类
- *
- * @param {function} constructor ui控件构造器
- * @param {object} options 选项
- *
- * @return {object} ui控件
+ * @function
+ * @grammar baidu.ui.createUI(constructor, options)
+ * @param {Function} constructor ui控件构造器
+ * @param {Object} options 选项
+ * @return {Object} ui控件
  */
 baidu.ui.createUI = function(constructor, options) {
     options = options || {};

@@ -11,7 +11,7 @@ module("baidu.form.Validator");
 			}, 1000);
 		},
 		down : function() {
-			TT.dom.remove('test');
+			$('#test').remove();
 			clearTimeout(valid.sto);
 			QUnit.start();
 		},
@@ -39,9 +39,9 @@ module("baidu.form.Validator");
 // validate all true
 test("验证构造函数,存在的ID,构建返回true", function() {
 	valid.init();
-	TT.dom.setAttr('name', 'value', 'new user');
-	TT.dom.setAttr('pwd', 'value', 'password');
-	TT.dom.setAttr('email', 'value', 'email@baidu.com');
+	$("#name").attr('value', 'name');
+	$("#pwd").attr('value', 'password');
+	$("#email").attr('value', 'email@baidu.com');
 	var validator = new baidu.form.Validator('testform', {
 		name : {
 			rule : {
@@ -159,7 +159,7 @@ test("验证构造函数,feildRule fieldName不存在", function() {
 // validateField true
 test("验证构造函数,feildRule 各种语法糖集合", function() {
 	valid.init();
-	TT.dom.setAttr('name', 'value', 'new user');
+	$("#name").attr('value', 'new user');
 	var validator = new baidu.form.Validator('testform', {
 		name : {
 			rule : {
@@ -180,8 +180,8 @@ test("验证构造函数,feildRule 各种语法糖集合", function() {
 //
 test("验证构造函数,feildRule required组合测试", function() {
 	valid.init();
-	TT.dom.setAttr('name', 'value', 'new user');
-	TT.dom.setAttr('pwd', 'value', 'newuser');
+	$("#name").attr('value', 'new user');
+	$("#pwd").attr('value', 'new user');
 	var validator = new baidu.form.Validator('testform', {
 		name : {
 			rule : {
@@ -209,7 +209,7 @@ test("验证构造函数,feildRule required组合测试", function() {
 //
 test("验证构造函数,feildRule 非语法糖集合", function() {
 	valid.init();
-	TT.dom.setAttr('name', 'value', 'new user');
+	$("#name").attr('value', 'new user');
 	var validator = new baidu.form.Validator('testform', {
 		name : {
 			rule : {
@@ -238,7 +238,7 @@ test("验证构造函数,feildRule 非语法糖集合", function() {
 //
 test("验证构造函数,feildRule 错误消息队列", function() {
 	valid.init();
-	TT.dom.setAttr('name', 'value', '123456789012345678901');
+	$("#name").attr('value', '123456789012345678901');
 	var validator = new baidu.form.Validator('testform', {
 		name : {
 			rule : {
@@ -273,38 +273,40 @@ test("验证构造函数,feildRule 错误消息队列", function() {
 test("验证构造函数,feildRule eventName校验keyup", function() {
 	valid.init();
 	expect(2);
-	TT.dom.setAttr('name', 'value', '123456789');
-	var validator = new baidu.form.Validator('testform', {
-		name : {
-			rule : {
-				required : true,
-				rangelength : [ 4, 15 ]
-			},
-			eventName : 'keyup'
-		}
-	}, {
-		onvalidatefield : function(event) {
-			if ('name' == event.field) {
-				equal(event.field, 'name', 'validate field是');
-				equal(event.resultList.length, 0, '错误消息队列大小');
-				validator.dispose();
-				valid.down();
-			} else {
-				ok(false, "onvalidatefield error!");
+	ua.importsrc("baidu.event.fire", function(){
+		$("#name").attr('value', '123456789');
+		var validator = new baidu.form.Validator('testform', {
+			name : {
+				rule : {
+					required : true,
+					rangelength : [ 4, 15 ]
+				},
+				eventName : 'keyup'
 			}
-		}
-	});
-	// blur失效
-	TT.event.fire('name', 'blur');
-	// setTimeout(function() {
-	TT.event.fire('name', 'keyup');
-	// }, 50);
+		}, {
+			onvalidatefield : function(event) {
+				if ('name' == event.field) {
+					equal(event.field, 'name', 'validate field是');
+					equal(event.resultList.length, 0, '错误消息队列大小');
+					validator.dispose();
+					valid.down();
+				} else {
+					ok(false, "onvalidatefield error!");
+				}
+			}
+		});
+		// blur失效
+		baidu.event.fire('name', 'blur');
+		// setTimeout(function() {
+		baidu.event.fire('name', 'keyup');
+		// }, 50);
+	}, "baidu.event.fire", "baidu.form.Validator");
 });
 //
 test("验证构造函数,feildRule eventName校验默认blur", function() {
 	valid.init();
 	expect(2);
-	TT.dom.setAttr('email', 'value', '123456789');
+	$("#email").attr('value', '123456789');
 	var validator = new baidu.form.Validator('testform', {
 		email : {
 			rule : {
@@ -326,12 +328,12 @@ test("验证构造函数,feildRule eventName校验默认blur", function() {
 		}
 	});
 	// 校验默认 name blur
-	TT.event.fire('email', 'blur');
+	baidu.event.fire('email', 'blur');
 });
 //
 test("验证构造函数,feildRule validateEvent设定keyup,event blur", function() {
 	valid.init();
-	TT.dom.setAttr('email', 'value', '123456789');
+	$("#email").attr('value', '123456789');
 	var validator = new baidu.form.Validator('testform', {
 		email : {
 			rule : {
@@ -352,7 +354,7 @@ test("验证构造函数,feildRule validateEvent设定keyup,event blur", functio
 		}
 	});
 	// 校验默认 name blur
-	TT.event.fire('email', 'blur');
+	baidu.event.fire('email', 'blur');
 	setTimeout(function() {
 		ok(true, '无事件响应');
 		validator.dispose();
@@ -364,7 +366,7 @@ test("验证构造函数,feildRule options设定keyup,event keyup", function() {
 	valid.init();
 	// 无响应
 	expect(2);
-	TT.dom.setAttr('email', 'value', '123456789');
+	$("#email").attr('value', '123456789');
 	var validator = new baidu.form.Validator('testform', {
 		email : {
 			rule : {
@@ -385,7 +387,7 @@ test("验证构造函数,feildRule options设定keyup,event keyup", function() {
 		}
 	});
 	// 校验默认 name blur
-	TT.event.fire('email', 'keyup');
+	baidu.event.fire('email', 'keyup');
 });
 //
 test("验证构造函数,feildRule options设定validateOnSubmit默认true", function() {
@@ -445,7 +447,7 @@ test("验证构造函数,feildRule options设定validateOnSubmit false", functio
 //
 test("验证构造函数,addRule 成功", function() {
 	valid.init();
-	TT.dom.setAttr('email', 'value', '1');
+	$("#email").attr('value', '1');
 	// 无响应
 	expect(1);
 	var validator = new baidu.form.Validator('testform', {
@@ -469,7 +471,7 @@ test("验证构造函数,addRule 成功", function() {
 // dispose
 test("dispose方法", function() {
 	valid.init();
-	TT.dom.setAttr('email', 'value', '1');
+	$("#email").attr('value', '1');
 	expect(1);
 	var validator = new baidu.form.Validator('testform', {
 		email : {

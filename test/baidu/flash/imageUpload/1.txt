@@ -1,0 +1,15 @@
+array(1) {
+  ["picdata"]=>
+  array(5) {
+    ["name"]=>
+    string(42) "Street_Fighter_IV_Wallpaper_by_Nekrono.jpg"
+    ["type"]=>
+    string(24) "application/octet-stream"
+    ["tmp_name"]=>
+    string(14) "/tmp/phpKd9BGR"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1408428)
+  }
+}

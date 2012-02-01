@@ -10,7 +10,8 @@
 
 ///import baidu.fx;
 ///import baidu.lang.Event;
-///import baidu.lang.createClass;
+///import baidu.lang.Class;
+///import baidu.lang.inherits;
 ///import baidu.object.extend;
 
 /**
@@ -31,15 +32,31 @@
  * @config {Number} duration 时间线总时长（毫秒）
  * @config {Number} percent  时间线进度的百分比
  */
-baidu.fx.Timeline = baidu.lang.createClass(function(options) {
-    baidu.object.extend(this, baidu.fx.Timeline.options);
-    baidu.object.extend(this, options);
-},
-{
-    className: "baidu.fx.Timeline"
-    ,options:{interval:16, duration:500, dynamic:true}
-}).extend({  // 类的方法的扩展
+ 
+ 
+ 
+/**
+ * 提供一个按时间进程的时间线类
+ * @class
+ * @grammar new baidu.fx.Timeline(options)
+ * @param {Object} options 参数
+ * @config {Number} interval 脉冲间隔时间（毫秒）
+ * @config {Number} duration 时间线总时长（毫秒）
+ * @config {Number} percent  时间线进度的百分比
+ */
+baidu.fx.Timeline = function(options){
+    baidu.lang.Class.call(this);
 
+    this.interval = 16;
+    this.duration = 500;
+    this.dynamic  = true;
+
+    baidu.object.extend(this, options);
+};
+baidu.lang.inherits(baidu.fx.Timeline, baidu.lang.Class, "baidu.fx.Timeline").extend({
+/**
+ *  @lends baidu.fx.Timeline.prototype
+ */
     /**
      * 启动时间线
      * @return {instance} 类实例
@@ -60,8 +77,10 @@ baidu.fx.Timeline = baidu.lang.createClass(function(options) {
         return me;
     }
 
-    /** @ignore
-     * [privite] 每个时间脉冲所执行的程序
+    /**
+     * 每个时间脉冲所执行的程序
+     * @ignore
+     * @private
      */
     ,"\x06pulsed" : function(){
         var me = this;
@@ -91,16 +110,18 @@ baidu.fx.Timeline = baidu.lang.createClass(function(options) {
 
         me["\x06timer"] = setTimeout(function(){me["\x06pulsed"]()}, me.interval);
     }
-
     /**
      * 重新计算 schedule，以产生各种适合需求的进度曲线
+     * @function
+     * @param {Function} percent 
      */
-    ,transition : function(percent) {
+    ,transition: function(percent) {
         return percent;
     }
 
     /**
      * 撤销当前时间线的操作，并引发 restore() 接口函数的操作
+     * @function
      */
     ,cancel : function() {
         this["\x06timer"] && clearTimeout(this["\x06timer"]);
