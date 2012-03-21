@@ -59,7 +59,7 @@ baidu.fx.opacity = function(element, options) {
         ,render : function(schedule) {
             var n = this.distance * schedule + this.from;
 
-            if(!baidu.browser.ie < 9) {
+            if(!(baidu.browser.ie < 9)) {
                 e.style.opacity = n;
                 e.style.KHTMLOpacity = n;
             } else {
