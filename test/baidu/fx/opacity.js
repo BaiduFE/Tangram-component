@@ -13,7 +13,7 @@ test('dom', function() {
 				from : 0.1,
 				to : 0.9,
 				onafterfinish : function() {
-					if (baidu.browser.ie) {
+					if (baidu.browser.ie < 9) {
 						var re = /opacity\:\d+/;
 						var opacity = re.exec($(t).css('filter')).toString()
 								.split(':')[1];
@@ -38,7 +38,7 @@ test('id', function() {
 				from : 0.1,
 				to : 0.9,
 				onafterfinish : function() {
-					if (baidu.browser.ie) {
+					if (baidu.browser.ie < 9) {
 						var re = /opacity\:\d+/;
 						var opacity = re.exec($(t).css('filter')).toString()
 								.split(':')[1];
@@ -73,7 +73,7 @@ test('timeline', function() {
 				onafterupdate : function() {
 					var percent = (new Date().getTime() - startTime) / 400;
 					var n = (0.8 - 0.1) * percent + 0.1;
-					if (baidu.browser.ie) {
+					if (baidu.browser.ie < 9) {
 						var re = /opacity\:\d+/;
 						var opacity = re.exec($(t).css('filter')).toString()
 								.split(':')[1];
@@ -85,7 +85,7 @@ test('timeline', function() {
 				},
 				onafterfinish : function() {
 					var dura = new Date().getTime() - startTime;
-					if (baidu.browser.ie) {
+					if (baidu.browser.ie < 9) {
 						var re = /opacity\:\d+/;
 						var opacity = re.exec($(t).css('filter')).toString()
 								.split(':')[1];
