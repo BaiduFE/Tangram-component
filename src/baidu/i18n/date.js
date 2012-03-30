@@ -84,7 +84,7 @@ baidu.i18n.date = baidu.i18n.date || /**@lends baidu.i18n.date.prototype*/{
         // 拿到对应locale的format类型配置
         var c = baidu.i18n.cultrues[tLocale || baidu.i18n.currentLocale];
         return baidu.date.format(
-            baidu.i18n.date.toLocaleDate(dateObject),
+            baidu.i18n.date.toLocaleDate(dateObject, "", tLocale),
             c.calendar.dateFormat);
     }
 };
