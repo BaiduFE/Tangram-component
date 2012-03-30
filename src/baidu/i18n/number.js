@@ -3,6 +3,7 @@
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
 ///import baidu.i18n;
+///import baidu.string.format;
 /**
  * number
  * @name baidu.i18n.number
@@ -56,7 +57,7 @@ baidu.i18n.number = baidu.i18n.number || /**@lends baidu.i18n.number.prototype*/
     /**
      * 格式化数字
      * @private
-     * @param {Number} number 需要个数化的数字
+     * @param {Number} number 需要格式化的数字
      * @param {Object} options 格式化数字使用的参数
      * @return {String}
      */
@@ -78,5 +79,22 @@ baidu.i18n.number = baidu.i18n.number || /**@lends baidu.i18n.number.prototype*/
         result = options.symbol + preNum.join('') + (aftNum.length > 0 ? options.decimal + aftNum : '');
 
         return result;
+    },
+
+    /*
+     * 根据给定的参数数值，返回对应的参数项
+     * @grammar baidu.i18n.number.plural(_('#{num} 1_book'),_('#{num} 2_books'),_('#{num} 3_books'), 100)
+     * @param   参数项不定，但大于2
+     * @return  返回对应的参数项内容
+     */
+    plural: function() {
+        if (arguments.length == 0) return;
+        if (arguments.length == 1) return arguments[0];
+        var num = arguments.pop();  // 最后一个参数是对应的数值
+        if (parseInt(num) > arguments.length - 1) {
+            return baidu.string.format(arguments.pop(), num);
+        } else {
+            return baidu.string.format(arguments[num-1], num);
+        }
     }
 };

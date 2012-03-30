@@ -55,7 +55,7 @@ baidu.i18n.date = baidu.i18n.date || /**@lends baidu.i18n.date.prototype*/{
      * @private
      * @param {Date} dateObject 需要转换的日期函数.
      * @param {String} sLocale dateObject 的地区标识，可选参数，否则以dateObject中获取的为准
-     * @param {string} tlocale 传入date的地区名称简写字符，不传入则从date中计算得出.
+     * @param {String} tlocale 传入date的地区名称简写字符，不传入则从date中计算得出.
      */
     _basicDate: function(dateObject, sLocale, tLocale) {
         var tTimeZone = baidu.i18n.cultures[tLocale || baidu.i18n.currentLocale].timeZone,
@@ -68,9 +68,23 @@ baidu.i18n.date = baidu.i18n.date || /**@lends baidu.i18n.date.prototype*/{
             sTimeOffset = sTimeZone * 60;
         }else{
             sTimeOffset = -1 * dateObject.getTimezoneOffset();
-            sTimeZone = sTimeZone / 60;
+            sTimeZone = sTimeOffset / 60;
         }
 
         return new Date(sTimeZone != tTimeZone ? (millisecond  + (tTimeOffset - sTimeOffset) * 60000) : millisecond);
+    },
+
+    /*
+     * @格式化日期显示
+     * @param {Date} dateObject  日期对象(必须)
+     * @param {String} tLocale 给定目标locale(可选)
+     * @return {String}  格式化后的日期字符串
+     */
+    format: function(dateObject, tLocale) {
+        // 拿到对应locale的format类型配置
+        var c = baidu.i18n.cultrues[tLocale || baidu.i18n.currentLocale];
+        return baidu.date.format(
+            baidu.i18n.date.toLocaleDate(dateObject),
+            c.calendar.dateFormat);
     }
 };
