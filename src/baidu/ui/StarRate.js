@@ -136,7 +136,7 @@ baidu.ui.StarRate = baidu.ui.createUI(function(options){
      * 销毁控件
      */
     dispose:function(){
-        var me = this;
+        var me = this, i;
        
         for(i=0; i < me.total; ++i){
             baidu.dom.remove(me.getId(i));

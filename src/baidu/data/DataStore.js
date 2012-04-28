@@ -48,7 +48,7 @@ baidu.data.DataStore = (function(){
      * @param {Boolean} usingLocal 当merge时出现数据冲突，以local为主还是remote数据为主,默认为本地.action为Function时，该选项不无效
      */
     return baidu.lang.createClass(function(options){
-        var me = this;
+        var me = this,
             dataModel = options.dataModel,
             dataSource = options.dataSource,
             action = options.action,

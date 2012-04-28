@@ -27,9 +27,9 @@
         var me = this;
 
         me.addEventListeners('ondisable,onenable', function(event,options) {
-            var element, group;
-            options = options || {};
-            elementId = (options.element || me.getMain()).id;
+            var element, group,
+            options = options || {},
+            elementId = (options.element || me.getMain()).id,
             group = options.group;
 
             if (event.type == 'ondisable' && !me.getState(elementId, group)['disabled']) {

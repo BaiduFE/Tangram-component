@@ -214,6 +214,7 @@ baidu.ui.Toolbar = baidu.ui.createUI(function(options) {
             td,
             cells = [],
             container,
+            containerTR,
             i;
         type == 'str' || (type = 'html');
 
