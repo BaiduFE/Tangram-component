@@ -231,7 +231,7 @@ baidu.ui.Slider = baidu.ui.createUI(function(options){
      */
     _parseValue: function(val, type){
         var me = this,
-            axis = me._axis[me.layout];
+            axis = me._axis[me.layout],
             len = me.getBody()[axis.clientSize] - me.getThumb()[axis.offsetSize];
         if(type == 'value'){
             val = (me.max - me.min) / len * val + me.min;

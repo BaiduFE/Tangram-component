@@ -203,7 +203,8 @@ baidu.ui.Tooltip = baidu.ui.createUI(function(options) {
 	
     _updateBodyByTitle:function(){
         var me = this,
-            body = me.getBody();
+            body = me.getBody(),
+            title;
         
         if(!me.contentElement && !me.content && me.currentTarget){
             if((title = baidu.getAttr(me.currentTarget, 'tangram-tooltip-title')) && title != ''){

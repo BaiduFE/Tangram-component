@@ -68,7 +68,7 @@ baidu.ui.Accordion = baidu.ui.createUI(function (options){
      * @param {number} index    索引，默认插入在最后一项
      */
     insertItemHTML:function(item, index){
-        var me = this;
+        var me = this,
             ids = me._headIds,
             index = ids[index] ? index : ids.length,
             container = baidu.dom.g(ids[index]) || me.getBody(),
