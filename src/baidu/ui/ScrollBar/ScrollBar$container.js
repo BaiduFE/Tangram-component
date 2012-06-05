@@ -24,7 +24,7 @@ baidu.ui.ScrollBar.register(function(me) {
             }
         },
         beforeupdate: function() {
-            var me = this;
+            var me = this,
                 axis = me._axis[me.orientation],
                 container = me.getContainer();
             if (!container) {return;}

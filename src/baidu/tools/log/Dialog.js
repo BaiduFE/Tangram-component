@@ -115,8 +115,8 @@ baidu.tools.log.Dialog.prototype = {
     push:function(data){
         var me =  this,
             data = data || [],
-            dataString = []
-            tmpChild = [],
+            dataString = [],
+            tmpChild = [];
 
         baidu.each(data,function(d,i){
             dataString.push(me._getString(d));

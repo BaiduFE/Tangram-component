@@ -686,7 +686,8 @@ baidu.ui.Tree.TreeNode.prototype =
     _getIdentString: function(isInit) {
         var me = this,
             string = '',
-            prifix;
+            prifix,
+            className;
         while (me.getParentNode() && me.getParentNode().type != 'root') {
             me = me.getParentNode();
             prifix =( me.isLastNode(isInit) ? 'blank' : 'I');
