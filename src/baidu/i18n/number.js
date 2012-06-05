@@ -88,13 +88,14 @@ baidu.i18n.number = baidu.i18n.number || /**@lends baidu.i18n.number.prototype*/
      * @return  {String }返回对应的参数项内容
      */
     plural: function() {
-        if (arguments.length == 0) return;
-        if (arguments.length == 1) return arguments[0];
-        var num = arguments.pop();  // 最后一个参数是对应的数值
-        if (parseInt(num) > arguments.length - 1) {
-            return baidu.string.format(arguments.pop(), num);
+        var _arg = Array.prototype.slice.call(arguments);
+        if (_arg.length == 0) return;
+        if (_arg.length == 1) return _arg[0];
+        var num = _arg.pop();  // 最后一个参数是对应的数值
+        if (parseInt(num) > _arg.length - 1) {
+            return baidu.string.format(_arg.pop(), num);
         } else {
-            return baidu.string.format(arguments[num-1], num);
+            return baidu.string.format(_arg[num-1], num);
         }
     }
 };
