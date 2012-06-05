@@ -11,6 +11,7 @@ baidu.i18n.cultures['en-US'] = baidu.object.extend(baidu.i18n.cultures['en-US'] 
         dateFormat: 'yyyy-MM-dd',
         titleNames: '#{MM}&nbsp;#{yyyy}',
         monthNames: ['January','February','March','April','May','June', 'July','August','September','October','November','December'],
+        monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         dayNames: {mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun'}
     },
     
@@ -46,4 +47,4 @@ baidu.i18n.cultures['en-US'] = baidu.object.extend(baidu.i18n.cultures['en-US'] 
     }
 });
 
-baidu.i18n.currentLocale = baidu.i18n.currentLocale || 'en-US';
+baidu.i18n.currentLocale = 'en-US';

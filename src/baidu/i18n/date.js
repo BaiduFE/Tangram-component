@@ -42,7 +42,7 @@ baidu.i18n.date = baidu.i18n.date || /**@lends baidu.i18n.date.prototype*/{
      * 将传入的date对象转换成指定地区的date对象
      * @grammar baidu.i18n.date.toLocaleDate(dateObject, sLocale, tLocale)
      * @param {Date} dateObject
-     * @param {String} sLocale dateObject 的地区标识，可选参数，传则以dateObject中获取的为准
+     * @param {String} sLocale dateObject 的地区标识，可选参数，不传则以dateObject中获取的为准
      * @param {String} tLocale 地区名称简写字符.
      * @return {Date}
      */

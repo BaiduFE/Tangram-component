@@ -10,6 +10,7 @@ baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] 
         dateFormat: 'yyyy-MM-dd',
         titleNames: '#{yyyy}年&nbsp;#{MM}月',
         monthNames: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二'],
+        monthNamesShort: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         dayNames: {mon: '一', tue: '二', wed: '三', thu: '四', fri: '五', sat: '六', sun: '日'}
     },
     
@@ -45,4 +46,4 @@ baidu.i18n.cultures['zh-CN'] = baidu.object.extend(baidu.i18n.cultures['zh-CN'] 
     }
 });
 
-baidu.i18n.currentLocale = baidu.i18n.currentLocale || 'zh-CN';
+baidu.i18n.currentLocale = 'zh-CN';
