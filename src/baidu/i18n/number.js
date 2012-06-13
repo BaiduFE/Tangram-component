@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Tangram
  * Copyright 2009 Baidu Inc. All rights reserved.
  */
@@ -56,7 +56,7 @@ baidu.i18n.number = baidu.i18n.number || /**@lends baidu.i18n.number.prototype*/
     /**
      * 格式化数字
      * @private
-     * @param {Number} number 需要个数化的数字
+     * @param {Number} number 需要格式化的数字
      * @param {Object} options 格式化数字使用的参数
      * @return {String}
      */

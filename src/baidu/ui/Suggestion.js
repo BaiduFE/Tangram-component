@@ -189,6 +189,9 @@ baidu.ui.Suggestion = baidu.ui.createUI(function(options) {
             len = data.length,
             me = this;
 
+        //如果返回的data对应的word不是当前的关键字，直接返回
+        if(word != me.getTargetValue())
+            return;
         me.enableIndex = [];
         me.currentIndex = -1;
 
