@@ -124,6 +124,7 @@ test("event list", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -149,6 +150,7 @@ test("confirm", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -191,6 +193,7 @@ test("hide", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -212,6 +215,7 @@ test("highlight", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -240,6 +244,7 @@ test("pick", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -262,6 +267,7 @@ test("show", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -300,6 +306,7 @@ test(
 			sugg = new baidu.ui.Suggestion(options);
 			sugg.render(input);
 			te.obj.push(sugg);
+			input.value = "a";
 			sugg.show('a', [ 'ab', 'ac' ]);
 		});
 
@@ -334,6 +341,7 @@ test("highlight with disabled items", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', te.defaultData);
 });
 
@@ -352,6 +360,7 @@ test("show with disabled item", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', te.defaultData);
 });
 
@@ -385,5 +394,6 @@ test("clearhighlight with disabled items", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', te.defaultData);
 });

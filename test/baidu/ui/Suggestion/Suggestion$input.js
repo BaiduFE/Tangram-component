@@ -90,6 +90,7 @@ test('key down', function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	input.focus();
 	sugg.show('a',  [ 'aa', 'ab' ]);
 	UserAction.keydown(input, {
@@ -134,6 +135,7 @@ test('key down with disable item', function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	input.focus();
 	sugg.show('a', te.defaultData);
 	UserAction.keydown(input, {
@@ -176,7 +178,7 @@ test('type enter', function() {
 			if (step == 2) {
 				setTimeout(function() {
 					equals(input.value, 'aa', 'type enter with select 0');
-					sugg.show('a', [ 'aa', 'ab' ]);
+					sugg.show('aa', [ 'aa', 'ab' ]);
 				}, 0);
 			} else if (step == 1) {
 				setTimeout(function() {
@@ -194,8 +196,8 @@ test('type enter', function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	input.focus();
-	input.value = 'a';
 	sugg.show('a', [ 'aa', 'ab' ]);
 });
 
@@ -231,7 +233,7 @@ test('type enter with disable item', function() {
 			if (step == 2) {
 				setTimeout(function() {
 					equals(input.value, 'ac', 'type enter with key down once');
-					sugg.show('a', te.defaultData);
+					sugg.show('ac', te.defaultData);
 				}, 0);
 			} else if (step == 1) {
 				setTimeout(function() {
@@ -249,8 +251,8 @@ test('type enter with disable item', function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
-	input.focus();
 	input.value = 'a';
+	input.focus();
 	sugg.show('a', te.defaultData);
 });
 
@@ -364,6 +366,7 @@ test('type tab and esc', function() {
 		onhide : function() {
 			ok(true, 'hide in type ' + (step == 1 ? 'tab' : 'esc'));
 			if (step == 1) {
+				input.value = 'b';
 				sugg.show('b', [ 'ba', 'bb' ]);
 			} else {
 				clearTimeout(handle);
@@ -415,6 +418,7 @@ test("suggestion in dialog, key options", function() {
 			};
 		sugg = new baidu.ui.Suggestion(s_options);
 		sugg.render(input);
+		input.value = 'a';
 		sugg.show('a', [ 'ab', 'ac' ]);
 	},'baidu.ui.Dialog','baidu.ui.Suggestion.Suggestion$input' );
 });
@@ -445,6 +449,7 @@ test("suggestion in dialog, mouse options", function() {
 			};
 		sugg = new baidu.ui.Suggestion(s_options);
 		sugg.render(input);
+		input.value = 'a';
 		sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -464,7 +469,7 @@ test("suggestion in dialog, hide", function() {
 				},
 				onhide : function() {
 					setTimeout(function() {
-						equals(input.value, '', 'select nothing');
+						equals(input.value, 'a', 'select nothing');
 						d.close();
 						d.dispose();
 						sugg.dispose();
@@ -474,6 +479,7 @@ test("suggestion in dialog, hide", function() {
 			};
 		sugg = new baidu.ui.Suggestion(s_options);
 		sugg.render(input);
+		input.value = 'a';
 		sugg.show('a', [ 'ab', 'ac' ]);
 });
 // TODO 输入法相关的测试，依然需要一组手工用例
