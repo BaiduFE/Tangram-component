@@ -27,7 +27,8 @@ baidu.form.ValidRule = baidu.form.ValidRule || baidu.lang.createClass(function()
                 return !!(val && val.toLowerCase() == 'true');
             },
             email: /^[\w!#\$%'\*\+\-\/=\?\^`{}\|~]+([.][\w!#\$%'\*\+\-\/=\?\^`{}\|~]+)*@[-a-z0-9]{1,20}[.][a-z0-9]{1,10}([.][a-z]{2})?$/i,
-            number: /^(?:[1-9]\d+|\d)(?:\.\d+)?$/,
+//            number: /^(?:[1-9]\d+|\d)(?:\.\d+)?$/,
+            number: /^\d+(?:\.\d+)?$/,
             maxlength: function(val, opt){
                 return val.length <= opt;
             },
