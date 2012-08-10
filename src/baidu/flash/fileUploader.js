@@ -175,7 +175,7 @@ baidu.flash.fileUploader = baidu.flash.fileUploader || function(options){
      * @public
      */
     me.getFileAll = function(callBack){
-        _flash.call('getFileAll', [], callBack);
+        _flash.call('getFilesAll', [], callBack);
     };
 
     /**

@@ -17,6 +17,7 @@ test("setData", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.setData('a', [ 'ab', 'ac' ]);
 })
 
@@ -40,6 +41,7 @@ test("support chinese", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "无";
 	sugg.setData("无", [ "无我相", "无他相", "无众生相" ]);
 });
 
@@ -62,6 +64,7 @@ test("10 item", function() {
 	te.obj.push(sugg);
 	for ( var i = 0; i < 10; i++)
 		datas.push('a' + i);
+	input.value = "a";
 	sugg.setData('a', datas);
 })
 
@@ -90,6 +93,7 @@ test("overwrite data", function() {
 	te.obj.push(sugg);
 	for ( var i = 0; i < 3; i++)
 		datas.push( [ 'a' + i, 'a' + (i + 1) ]);
+	input.value = "a";
 	sugg.setData('a', datas[0]);
 })
 
@@ -109,12 +113,14 @@ test('coninuously input', function() {
 				word += 'a';
 				data[0] = 'a' + data[0];
 				data[1] = 'a' + data[1];
+				input.value = word;
 				sugg.setData(word, data);
 			}
 		}
 	});
 	sugg.render(input);
 	te.obj.push(sugg);
+	input.value = "a";
 	sugg.setData('a', [ 'aa', 'ab' ]);
 })
 
@@ -133,9 +139,11 @@ test('delay in get data', function() {
 			ok(Math.abs(time1 + 200 - time2) < 20, 'get data delay');
 			start();
 		},
-		getData : function() {
+		getData : function(word) {
 			time1 = new Date().getTime();
-			setTimeout(function(word) {
+			var word = word;
+			setTimeout(function() {
+				input.value = word;
 				sugg.setData(word, [ 'aa', 'ab' ])
 			}, 200);
 		}
@@ -174,6 +182,7 @@ test('multi instance', function() {
 			equals(sugg1._getItem(0).innerHTML, 'aa',
 					'check data in multi instance');
 			this.hide();
+			input2.value = "a";
 			sugg2.setData('a', [ 'ab', 'ac' ]);
 		}
 	});
@@ -189,6 +198,7 @@ test('multi instance', function() {
 	sugg2.render(input2);
 	testingElement.obj.push(sugg1);
 	testingElement.obj.push(sugg2);
+	input1.value = "a";
 	sugg1.setData('a', [ 'aa', 'ab' ]);
 })
 

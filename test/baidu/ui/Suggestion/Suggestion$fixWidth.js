@@ -18,6 +18,7 @@ test("position", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	testingElement.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -44,6 +45,7 @@ test("position - absolute", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	testingElement.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -75,6 +77,7 @@ test("position - relative", function() {
 	testingElement.obj.push(sugg);
 	document.body.lastChild.style.borderStyle = 'solid';
 	document.body.lastChild.style.borderWidth = '2px';
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -103,6 +106,7 @@ test("position - left", function() {
 	sugg.render(input);
 	testingElement.obj.push(sugg);
 	document.body.lastChild.style.borderStyle = 'solid';
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -131,6 +135,7 @@ test("position - top", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	testingElement.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 
@@ -162,6 +167,7 @@ test("position - in container", function() {
 	sugg = new baidu.ui.Suggestion(options);
 	sugg.render(input);
 	testingElement.obj.push(sugg);
+	input.value = "a";
 	sugg.show('a', [ 'ab', 'ac' ]);
 });
 //
