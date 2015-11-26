@@ -76,19 +76,19 @@ test("numberRange", function(){
 
 test("email", function(){
 	expect(7);
-	var result = baidu.data.Validator.validatorRules.email("tianlili");
+	var result = baidu.data.Validator.validatorRules.email("xxxx");
 	ok(!result, "The result is right");
-	result = baidu.data.Validator.validatorRules.email("tianlili@");
+	result = baidu.data.Validator.validatorRules.email("xxxx@");
 	ok(!result, "The result is right");
-	result = baidu.data.Validator.validatorRules.email("tianlili@baidu");
+	result = baidu.data.Validator.validatorRules.email("xxxx@baidu");
 	ok(!result, "The result is right");
-	result = baidu.data.Validator.validatorRules.email("tianlili@baidu.com");
+	result = baidu.data.Validator.validatorRules.email("xxxx@baidu.com");
 	ok(result, "The result is right");
-	result = baidu.data.Validator.validatorRules.email("tianlili@.com");
+	result = baidu.data.Validator.validatorRules.email("xxxx@.com");
 	ok(!result, "The result is right");
 	result = baidu.data.Validator.validatorRules.email("@baidu.com");
 	ok(!result, "The result is right");
-	result = baidu.data.Validator.validatorRules.email("tianili_com@baidu.com");
+	result = baidu.data.Validator.validatorRules.email("xxxx_com@baidu.com");
 	ok(result, "The result is right");
 });
 

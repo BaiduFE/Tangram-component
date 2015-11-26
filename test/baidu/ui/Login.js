@@ -49,14 +49,14 @@ test("Login with right username and password", function() {
 		var login = new baidu.ui.Login(options);
 		var oo = baidu.ui.Dialog.prototype.open;
 		baidu.ui.Dialog.prototype.open = function() {
-			bdPass.s.preUrlPost = upath + "Login/loginResult.php?userName=tianlili_3283&passWord=19881129";
+			bdPass.s.preUrlPost = upath + "Login/loginResult.php?userName=xxxx&passWord=xxxx";
 			oo.apply(this, arguments);
 		};
 		login.open();
 		setTimeout(function(){
 			ok(baidu.g("PassFormlogin"), 'The login dialog is shown.');
-			baidu.g('PassInputUsername1').value = "tianlili_3283";
-			baidu.g('PassInputPassword1').value = "19881129";
+			baidu.g('PassInputUsername1').value = "xxxx";
+			baidu.g('PassInputPassword1').value = "xxxx";
 			$('button').click();
 		},100)
 	}, 'tangram-dialog', 'width', '500px');
@@ -79,14 +79,14 @@ test("Login with wrong username and password", function() {
 		var login = new baidu.ui.Login(options);
 		var oo = baidu.ui.Dialog.prototype.open;
 		baidu.ui.Dialog.prototype.open = function() {
-			bdPass.s.preUrlPost = upath + "Login/loginResult.php?userName=tianlili&passWord=19881129";
+			bdPass.s.preUrlPost = upath + "Login/loginResult.php?userName=xxxx&passWord=xxxx";
 			oo.apply(this, arguments);
 		};
 		login.open();
 		setTimeout(function(){
 			ok(baidu.g("PassFormlogin"), 'The login dialog is shown.');
-			baidu.g('PassInputUsername2').value = "tianlili";
-			baidu.g('PassInputPassword2').value = "19881129";
+			baidu.g('PassInputUsername2').value = "xxxx";
+			baidu.g('PassInputPassword2').value = "xxxx";
 			$('button').click();
 		},100)
 	}, 'tangram-dialog', 'width', '500px');
