@@ -49,16 +49,16 @@ test("Register with right information", function() {
 		var login = new baidu.ui.Login(options);
 		var oo = baidu.ui.Dialog.prototype.open;
 		baidu.ui.Dialog.prototype.open = function() {
-			bdPass.s.preUrlPost = upath + "registerResult.php?userName=yuanyuan_3283";
+			bdPass.s.preUrlPost = upath + "registerResult.php?userName=xxxx";
 			oo.apply(this, arguments);
 		};
 		login.open();
 		setTimeout(function(){
 			ok(baidu.g("PassFormreg"), 'The register dialog is shown.');
-			baidu.g('PassInputUsername1').value = "yuanyuan_3283";
-			baidu.g('PassInputLoginpass1').value = "19881129";
-			baidu.g('PassInputVerifypass1').value = "19881129";
-			baidu.g('PassInputEmail1').value = "tianlili3283@gmail.com";
+			baidu.g('PassInputUsername1').value = "xxxx";
+			baidu.g('PassInputLoginpass1').value = "xxxx";
+			baidu.g('PassInputVerifypass1').value = "xxxx";
+			baidu.g('PassInputEmail1').value = "xxxx@gmail.com";
 			baidu.g('PassInputVerifycode1').value = "1234";
 			$('button').click();
 		},100)
@@ -82,16 +82,16 @@ test("Register with wrong information", function() {
 		var login = new baidu.ui.Login(options);
 		var oo = baidu.ui.Dialog.prototype.open;
 		baidu.ui.Dialog.prototype.open = function() {
-			bdPass.s.preUrlPost = upath + "registerResult.php?userName=tianlili_3283";
+			bdPass.s.preUrlPost = upath + "registerResult.php?userName=xxxx";
 			oo.apply(this, arguments);
 		};
 		login.open();
 		setTimeout(function(){
 			ok(baidu.g("PassFormreg"), 'The register dialog is shown.');
-			baidu.g('PassInputUsername2').value = "yuanyuan_3283";
-			baidu.g('PassInputLoginpass2').value = "19881129";
-			baidu.g('PassInputVerifypass2').value = "19881129";
-			baidu.g('PassInputEmail2').value = "tianlili3283@gmail.com";
+			baidu.g('PassInputUsername2').value = "xxxx";
+			baidu.g('PassInputLoginpass2').value = "xxxx";
+			baidu.g('PassInputVerifypass2').value = "xxxx";
+			baidu.g('PassInputEmail2').value = "xxxx@gmail.com";
 			baidu.g('PassInputVerifycode2').value = "1234";
 			$('button').click();
 		},100)
