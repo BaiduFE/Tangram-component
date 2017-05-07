@@ -4,12 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>menuBar  manual test - by walter</title>
 <link rel="stylesheet" href="combox.css" type="text/css"/>
+<style type="text/css">
+.case {
+	margin-top : 200px;
+}
+</style>
 <script language="JavaScript" src="../../../../../src/import.php?f=baidu.ui.Combox.*"></script>
 </head>
 <body>
-<div id='combox'>
-</div>
-<div style="padding-top:200px;">
+<div id='combox'></div>
+<div class="case">
     <select id="flower">
     <option>牡丹花</option>
     <option>玫瑰花</option>
@@ -18,6 +22,11 @@
     <option>菊花</option>
 </select>
 </div>
+<div class="case">
+<p>case by Dengping</p>
+<div id="combox3"></div>
+</div>
+
 </body>
 <script language="javascript">
 var data = [{
@@ -50,9 +59,34 @@ var options = {
     autoRender: true
 };
 
-var combox2 = new baidu.ui.Combox({select:'flower',type:'select',autoRender:true});
 
 var combox1 = new baidu.ui.Combox(options);
+
+var combox2 = new baidu.ui.Combox({
+    select : 'flower',
+    type : 'select',
+    autoRender : true
+});
+
+
+var combox3 = new baidu.ui.Combox({
+	'autoRender' : true,
+	'element' : 'combox3',
+	'maxListItemNum' : 7,
+	'editable' : true,
+	'data' : [
+		{'content' : 'option0'},
+		{'content' : 'option1'},
+		{'content' : 'option2'},
+		{'content' : 'option3'},
+		{'content' : 'option4'},
+		{'content' : 'option5'},
+		{'content' : 'option6'},
+		{'content' : 'option7'},
+		{'content' : 'option8'},
+		{'content' : 'option9'}
+	]
+})
 
 </script>
 </html>
